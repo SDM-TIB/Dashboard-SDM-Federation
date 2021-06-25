@@ -1,0 +1,3183 @@
+[
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2002/07/owl#sameAs"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/description"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:x-identifiers.org"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-bindingdb"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-chemspider"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-pdb"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-pubchemcompound"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-pubchemsubstance"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:absorption"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:affected-organism"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:brand"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:calculated-properties"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:category"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:clearance"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:ddi-interactor-in"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:dosage"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:drug-classification-category"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:drugbank-id"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:enzyme"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:experimental-properties"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:food-interaction"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:group"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:half-life"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:indication"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:manufacturer"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:mechanism-of-action"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:mixture"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:packager"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:patent"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:pharmacodynamics"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:product"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:protein-binding"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:route-of-elimination"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:synonym"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:target"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:toxicity"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:transporter"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:volume-of-distribution"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-ahfs"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-atc"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-cas"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-chebi"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-genbank"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-gtp"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-iuphar"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-kegg"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-ndc"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Drug"
+        ],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-pharmgkb"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-uniprot"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:x-wikipedia"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:carrier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/drugbank_vocabulary:salt"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 7759,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+          "http://www.w3.org/2002/07/owl#sameAs",
+          "http://purl.org/dc/terms/title",
+          "http://purl.org/dc/terms/description",
+          "http://purl.org/dc/terms/identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/bio2rdf_vocabulary:x-identifiers.org",
+          "http://bio2rdf.org/drugbank_vocabulary:x-bindingdb",
+          "http://bio2rdf.org/drugbank_vocabulary:x-chemspider",
+          "http://bio2rdf.org/drugbank_vocabulary:x-pdb",
+          "http://bio2rdf.org/drugbank_vocabulary:x-pubchemcompound",
+          "http://bio2rdf.org/drugbank_vocabulary:x-pubchemsubstance",
+          "http://bio2rdf.org/drugbank_vocabulary:absorption",
+          "http://bio2rdf.org/drugbank_vocabulary:affected-organism",
+          "http://bio2rdf.org/drugbank_vocabulary:brand",
+          "http://bio2rdf.org/drugbank_vocabulary:calculated-properties",
+          "http://bio2rdf.org/drugbank_vocabulary:category",
+          "http://bio2rdf.org/drugbank_vocabulary:clearance",
+          "http://bio2rdf.org/drugbank_vocabulary:ddi-interactor-in",
+          "http://bio2rdf.org/drugbank_vocabulary:dosage",
+          "http://bio2rdf.org/drugbank_vocabulary:drug-classification-category",
+          "http://bio2rdf.org/drugbank_vocabulary:drugbank-id",
+          "http://bio2rdf.org/drugbank_vocabulary:enzyme",
+          "http://bio2rdf.org/drugbank_vocabulary:experimental-properties",
+          "http://bio2rdf.org/drugbank_vocabulary:food-interaction",
+          "http://bio2rdf.org/drugbank_vocabulary:group",
+          "http://bio2rdf.org/drugbank_vocabulary:half-life",
+          "http://bio2rdf.org/drugbank_vocabulary:indication",
+          "http://bio2rdf.org/drugbank_vocabulary:manufacturer",
+          "http://bio2rdf.org/drugbank_vocabulary:mechanism-of-action",
+          "http://bio2rdf.org/drugbank_vocabulary:mixture",
+          "http://bio2rdf.org/drugbank_vocabulary:packager",
+          "http://bio2rdf.org/drugbank_vocabulary:patent",
+          "http://bio2rdf.org/drugbank_vocabulary:pharmacodynamics",
+          "http://bio2rdf.org/drugbank_vocabulary:product",
+          "http://bio2rdf.org/drugbank_vocabulary:protein-binding",
+          "http://bio2rdf.org/drugbank_vocabulary:route-of-elimination",
+          "http://bio2rdf.org/drugbank_vocabulary:synonym",
+          "http://bio2rdf.org/drugbank_vocabulary:target",
+          "http://bio2rdf.org/drugbank_vocabulary:toxicity",
+          "http://bio2rdf.org/drugbank_vocabulary:transporter",
+          "http://bio2rdf.org/drugbank_vocabulary:volume-of-distribution",
+          "http://bio2rdf.org/drugbank_vocabulary:x-ahfs",
+          "http://bio2rdf.org/drugbank_vocabulary:x-atc",
+          "http://bio2rdf.org/drugbank_vocabulary:x-cas",
+          "http://bio2rdf.org/drugbank_vocabulary:x-chebi",
+          "http://bio2rdf.org/drugbank_vocabulary:x-genbank",
+          "http://bio2rdf.org/drugbank_vocabulary:x-gtp",
+          "http://bio2rdf.org/drugbank_vocabulary:x-iuphar",
+          "http://bio2rdf.org/drugbank_vocabulary:x-kegg",
+          "http://bio2rdf.org/drugbank_vocabulary:x-ndc",
+          "http://bio2rdf.org/drugbank_vocabulary:x-pharmgkb",
+          "http://bio2rdf.org/drugbank_vocabulary:x-uniprot",
+          "http://bio2rdf.org/drugbank_vocabulary:x-wikipedia",
+          "http://bio2rdf.org/drugbank_vocabulary:carrier",
+          "http://bio2rdf.org/drugbank_vocabulary:salt"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://bio2rdf.org/pharmgkb_vocabulary:Drug"
+    ],
+    "rootType": "http://bio2rdf.org/drugbank_vocabulary:Drug"
+  },
+  {
+    "predicates": [
+      {
+        "predicate": "http://dbpedia.org/ontology/drugbank",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/atcSuffix",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/casSupplemental",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/iupacName",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/depiction",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/casNumber",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/pubchem",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2004/02/skos/core#subject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/thumbnail",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/atcSupplemental",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/name",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/atcPrefix",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+        "range": []
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://dbpedia.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEendpoint",
+        "predicates": [
+          "http://dbpedia.org/ontology/drugbank",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://dbpedia.org/ontology/atcSuffix",
+          "http://dbpedia.org/ontology/casSupplemental",
+          "http://dbpedia.org/ontology/iupacName",
+          "http://xmlns.com/foaf/0.1/depiction",
+          "http://dbpedia.org/ontology/casNumber",
+          "http://dbpedia.org/ontology/pubchem",
+          "http://www.w3.org/2004/02/skos/core#subject",
+          "http://dbpedia.org/ontology/thumbnail",
+          "http://dbpedia.org/ontology/atcSupplemental",
+          "http://xmlns.com/foaf/0.1/name",
+          "http://dbpedia.org/ontology/atcPrefix",
+          "http://www.w3.org/2000/01/rdf-schema#label"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "rootType": "http://dbpedia.org/ontology/Drug"
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Drug",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 1005,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/label",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/externalLink",
+          "http://project-iasis.eu/vocab/drug_interactsWith_drug",
+          "http://project-iasis.eu/vocab/drug_interactsWith_enzyme",
+          "http://project-iasis.eu/vocab/drug_isRelatedTo_dse",
+          "http://project-iasis.eu/vocab/drug_isPredictedToInteractWith_drug",
+          "http://project-iasis.eu/vocab/drug_isPredictedToHave_sideEffect",
+          "http://project-iasis.eu/vocab/drug_isPredictedToInteractsWith_enzyme",
+          "http://project-iasis.eu/vocab/drug_interactsWith_protein"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Protein",
+      "http://project-iasis.eu/vocab/DrugSideEffect",
+      "http://project-iasis.eu/vocab/Drug",
+      "http://project-iasis.eu/vocab/Enzyme"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/externalLink",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_interactsWith_drug",
+        "range": [
+          "http://project-iasis.eu/vocab/Drug"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_interactsWith_enzyme",
+        "range": [
+          "http://project-iasis.eu/vocab/Enzyme"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_isRelatedTo_dse",
+        "range": [
+          "http://project-iasis.eu/vocab/DrugSideEffect"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_isPredictedToInteractWith_drug",
+        "range": [
+          "http://project-iasis.eu/vocab/Drug"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_isPredictedToHave_sideEffect",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_isPredictedToInteractsWith_enzyme",
+        "range": [
+          "http://project-iasis.eu/vocab/Enzyme"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/drug_interactsWith_protein",
+        "range": [
+          "http://project-iasis.eu/vocab/Protein"
+        ]
+      }
+    ]
+  },
+  {
+    "predicates": [
+      {
+        "predicate": "http://dbpedia.org/ontology/emedicineTopic",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/icd9",
+        "range": []
+      },
+      {
+        "predicate": "http://www.georss.org/georss/point",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/emedicineSubject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/diseasesdb",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/omim",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/depiction",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/medlineplus",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2004/02/skos/core#subject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/thumbnail",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/meshId",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/icdo",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/name",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/icd10",
+        "range": []
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://dbpedia.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEendpoint",
+        "predicates": [
+          "http://dbpedia.org/ontology/emedicineTopic",
+          "http://dbpedia.org/ontology/icd9",
+          "http://www.georss.org/georss/point",
+          "http://dbpedia.org/ontology/emedicineSubject",
+          "http://dbpedia.org/ontology/diseasesdb",
+          "http://dbpedia.org/ontology/omim",
+          "http://xmlns.com/foaf/0.1/depiction",
+          "http://dbpedia.org/ontology/medlineplus",
+          "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+          "http://www.w3.org/2004/02/skos/core#subject",
+          "http://dbpedia.org/ontology/thumbnail",
+          "http://dbpedia.org/ontology/meshId",
+          "http://dbpedia.org/ontology/icdo",
+          "http://xmlns.com/foaf/0.1/name",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://dbpedia.org/ontology/icd10"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "rootType": "http://dbpedia.org/ontology/Disease"
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Annotation",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 51599,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/annSource",
+          "http://project-iasis.eu/vocab/annLabel",
+          "http://project-iasis.eu/vocab/semanticTypes"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/annSource",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/annLabel",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/semanticTypes",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/HasTopic",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 391508,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/confidence",
+          "http://project-iasis.eu/vocab/hasAnnotation",
+          "http://project-iasis.eu/vocab/annotates"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/confidence",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/hasAnnotation",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/annotates",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/TumorStage",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 5556,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/hasObservation"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/TumorStageObservation"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/hasObservation",
+        "range": [
+          "http://project-iasis.eu/vocab/TumorStageObservation"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Ecog",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 771,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/hasObservation"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/EcogObservation"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/hasObservation",
+        "range": [
+          "http://project-iasis.eu/vocab/EcogObservation"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/CNV",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 22453,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/cnv_isLocatedIn_sample",
+          "http://project-iasis.eu/vocab/cnv_isLocatedIn_tumor",
+          "http://project-iasis.eu/vocab/total_cn",
+          "http://project-iasis.eu/vocab/cnv_isLocatedIn_gene",
+          "http://project-iasis.eu/vocab/cnv_start",
+          "http://project-iasis.eu/vocab/cnv_end",
+          "http://project-iasis.eu/vocab/cnv_chromosome",
+          "http://project-iasis.eu/vocab/cnv_study_id",
+          "http://project-iasis.eu/vocab/mutationType",
+          "http://project-iasis.eu/vocab/minor_allele"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Gene",
+      "http://project-iasis.eu/vocab/Tumor",
+      "http://project-iasis.eu/vocab/Sample"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_isLocatedIn_sample",
+        "range": [
+          "http://project-iasis.eu/vocab/Sample"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_isLocatedIn_tumor",
+        "range": [
+          "http://project-iasis.eu/vocab/Tumor"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/total_cn",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_isLocatedIn_gene",
+        "range": [
+          "http://project-iasis.eu/vocab/Gene"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_start",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_end",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_chromosome",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cnv_study_id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutationType",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/minor_allele",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/EQTL",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 42877,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/tissue",
+          "http://project-iasis.eu/vocab/type",
+          "http://project-iasis.eu/vocab/eqtl_position",
+          "http://project-iasis.eu/vocab/eqtl_chromosome",
+          "http://project-iasis.eu/vocab/variation_isLocatedIn_gene",
+          "http://project-iasis.eu/vocab/dbsnp",
+          "http://project-iasis.eu/vocab/qvalue",
+          "http://project-iasis.eu/vocab/gexpChanges_occuredIn_gene"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Gene"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/tissue",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/eqtl_position",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/eqtl_chromosome",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/variation_isLocatedIn_gene",
+        "range": [
+          "http://project-iasis.eu/vocab/Gene"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/dbsnp",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/qvalue",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/gexpChanges_occuredIn_gene",
+        "range": [
+          "http://project-iasis.eu/vocab/Gene"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/MentionedIn",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 1007181,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/confidence",
+          "http://project-iasis.eu/vocab/hasAnnotation",
+          "http://project-iasis.eu/vocab/annotates",
+          "http://project-iasis.eu/vocab/type",
+          "http://project-iasis.eu/vocab/relation_isRelatedTo_cui"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Annotation",
+      "http://project-iasis.eu/vocab/Publication"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/confidence",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/hasAnnotation",
+        "range": [
+          "http://project-iasis.eu/vocab/Annotation"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/annotates",
+        "range": [
+          "http://project-iasis.eu/vocab/Publication"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/relation_isRelatedTo_cui",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Tumor",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 38389,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/tumor_origin"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/tumor_origin",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Protein",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 44,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/label",
+          "http://project-iasis.eu/vocab/source"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/source",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Gene",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 20612,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/label",
+          "http://project-iasis.eu/vocab/gene_isRelatedTo_sample",
+          "http://project-iasis.eu/vocab/gene_isTranscribedAs_transcription",
+          "http://project-iasis.eu/vocab/cds_length"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Transcription",
+      "http://project-iasis.eu/vocab/Sample"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/gene_isRelatedTo_sample",
+        "range": [
+          "http://project-iasis.eu/vocab/Sample"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/gene_isTranscribedAs_transcription",
+        "range": [
+          "http://project-iasis.eu/vocab/Transcription"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cds_length",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/DrugSideEffect",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 4455,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/dse_StandardDeviation",
+          "http://project-iasis.eu/vocab/dse_AvgFrequency"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/dse_StandardDeviation",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/dse_AvgFrequency",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Transcription",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 18016,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/transcription_isExpressedAs_gexp"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Gexp"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/transcription_isExpressedAs_gexp",
+        "range": [
+          "http://project-iasis.eu/vocab/Gexp"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Publication",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 14,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/publication_hasTopic_cui",
+          "http://project-iasis.eu/vocab/title",
+          "http://project-iasis.eu/vocab/year",
+          "http://project-iasis.eu/vocab/authors",
+          "http://project-iasis.eu/vocab/journal"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Annotation"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/publication_hasTopic_cui",
+        "range": [
+          "http://project-iasis.eu/vocab/Annotation"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/title",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/year",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/authors",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/journal",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:brand_mixture"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:drug_class"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:generic_name"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:trade_name"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-atc"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-bindingdb"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-chebi"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-chemspider"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-clinicaltrials"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-dailymed"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-dpd"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/drugbank_vocabulary:Drug"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-drugbank"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-genbank"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-het"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-iupharligand"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-kegg"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-ndc"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-pdb"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-pubchemcompound"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-pubchemsubstance"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-ttd"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-uniprot"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-webresource"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Gene"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:gene"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:haplotype"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Variation"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:variantlocation"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Drug"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:drug"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 3168,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://purl.org/dc/terms/title",
+          "http://purl.org/dc/terms/identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/pharmgkb_vocabulary:brand_mixture",
+          "http://bio2rdf.org/pharmgkb_vocabulary:drug_class",
+          "http://bio2rdf.org/pharmgkb_vocabulary:generic_name",
+          "http://bio2rdf.org/pharmgkb_vocabulary:trade_name",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-atc",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-bindingdb",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-chebi",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-chemspider",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-clinicaltrials",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-dailymed",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-dpd",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-drugbank",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-genbank",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-het",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-iupharligand",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-kegg",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-ndc",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-pdb",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-pubchemcompound",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-pubchemsubstance",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-ttd",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-uniprot",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-webresource",
+          "http://bio2rdf.org/pharmgkb_vocabulary:gene",
+          "http://bio2rdf.org/pharmgkb_vocabulary:haplotype",
+          "http://bio2rdf.org/pharmgkb_vocabulary:variantlocation",
+          "http://bio2rdf.org/pharmgkb_vocabulary:drug"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://bio2rdf.org/drugbank_vocabulary:Drug",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Gene",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Drug",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Variation"
+    ],
+    "rootType": "http://bio2rdf.org/pharmgkb_vocabulary:Drug"
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/SideEffect",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 453,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/label",
+          "https://www.w3.org/2002/07/owl#sameAs"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "https://www.w3.org/2002/07/owl#sameAs",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2002/07/owl#sameAs"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:name"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:synonym"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-meddra"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-mesh"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-ndfrt"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-snomedct"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-umls"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Gene"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:gene"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:haplotype"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Variation"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:variantlocation"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Disease"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:disease"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 3478,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2002/07/owl#sameAs",
+          "http://purl.org/dc/terms/title",
+          "http://purl.org/dc/terms/identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/pharmgkb_vocabulary:name",
+          "http://bio2rdf.org/pharmgkb_vocabulary:synonym",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-meddra",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-mesh",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-ndfrt",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-snomedct",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-umls",
+          "http://bio2rdf.org/pharmgkb_vocabulary:gene",
+          "http://bio2rdf.org/pharmgkb_vocabulary:haplotype",
+          "http://bio2rdf.org/pharmgkb_vocabulary:variantlocation",
+          "http://bio2rdf.org/pharmgkb_vocabulary:disease"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://bio2rdf.org/pharmgkb_vocabulary:Variation",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Gene",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Disease"
+    ],
+    "rootType": "http://bio2rdf.org/pharmgkb_vocabulary:Disease"
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Transcript",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 102549,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/transcript_isRelatedTo_transcription",
+          "http://project-iasis.eu/vocab/translates_as"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Protein",
+      "http://project-iasis.eu/vocab/Transcription"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/transcript_isRelatedTo_transcription",
+        "range": [
+          "http://project-iasis.eu/vocab/Transcription"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/translates_as",
+        "range": [
+          "http://project-iasis.eu/vocab/Protein"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Sample",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 48326,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/primaryHistology",
+          "http://project-iasis.eu/vocab/histologySubtype1",
+          "http://project-iasis.eu/vocab/primaryTissue",
+          "http://project-iasis.eu/vocab/sample_isTakenFrom_tumor",
+          "http://project-iasis.eu/vocab/label",
+          "http://project-iasis.eu/vocab/tissueSubtype1",
+          "http://project-iasis.eu/vocab/source",
+          "http://project-iasis.eu/vocab/age",
+          "http://project-iasis.eu/vocab/sampleSource",
+          "http://project-iasis.eu/vocab/tissueSubtype2"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Tumor"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/primaryHistology",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/histologySubtype1",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/primaryTissue",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/sample_isTakenFrom_tumor",
+        "range": [
+          "http://project-iasis.eu/vocab/Tumor"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/tissueSubtype1",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/source",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/age",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/sampleSource",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/tissueSubtype2",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/CGI",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 73031,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/two_sided_p-value",
+          "http://project-iasis.eu/vocab/methylation",
+          "http://project-iasis.eu/vocab/cgi_chromosome",
+          "http://project-iasis.eu/vocab/avg_beta_value",
+          "http://project-iasis.eu/vocab/cgi_isLocatedIn_sample",
+          "http://project-iasis.eu/vocab/beta_value",
+          "http://project-iasis.eu/vocab/genomic_position",
+          "http://project-iasis.eu/vocab/cgi_study_id",
+          "http://project-iasis.eu/vocab/cgi_isLocatedIn_tumor",
+          "http://project-iasis.eu/vocab/cgi_isLocatedIn_gene"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Gene",
+      "http://project-iasis.eu/vocab/Tumor",
+      "http://project-iasis.eu/vocab/Sample"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/two_sided_p-value",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/methylation",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cgi_chromosome",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/avg_beta_value",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cgi_isLocatedIn_sample",
+        "range": [
+          "http://project-iasis.eu/vocab/Sample"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/beta_value",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/genomic_position",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cgi_study_id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cgi_isLocatedIn_tumor",
+        "range": [
+          "http://project-iasis.eu/vocab/Tumor"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/cgi_isLocatedIn_gene",
+        "range": [
+          "http://project-iasis.eu/vocab/Gene"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Gene"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:gene"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:x-identifiers.org"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 24784848,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/pharmgkb_vocabulary:gene",
+          "http://purl.org/dc/terms/title",
+          "http://bio2rdf.org/bio2rdf_vocabulary:x-identifiers.org",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://purl.org/dc/terms/identifier"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://bio2rdf.org/pharmgkb_vocabulary:Gene"
+    ],
+    "rootType": "http://bio2rdf.org/pharmgkb_vocabulary:Variation"
+  },
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:name"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-uniprot"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:alternate-symbol"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:alternative-name"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:chromosome"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:chromosome-end"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:chromosome-start"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:cpic-dosing-guideline"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:has-variant-annotation"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:is-vip"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:symbol"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-alfred"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-ctd"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-ensembl"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-genatlas"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-genecards"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-go"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-hgnc"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-huge"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-humancyc"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-iupharreceptor"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-modbase"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-mutdb"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-ncbigene"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-omim"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-refseq"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Disease"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:disease"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Drug"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:drug"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pharmgkb_vocabulary:Gene"
+        ],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:gene"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/pharmgkb_vocabulary:x-webresource"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 27023,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+          "http://purl.org/dc/terms/title",
+          "http://purl.org/dc/terms/identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/pharmgkb_vocabulary:name",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-uniprot",
+          "http://bio2rdf.org/pharmgkb_vocabulary:alternate-symbol",
+          "http://bio2rdf.org/pharmgkb_vocabulary:alternative-name",
+          "http://bio2rdf.org/pharmgkb_vocabulary:chromosome",
+          "http://bio2rdf.org/pharmgkb_vocabulary:chromosome-end",
+          "http://bio2rdf.org/pharmgkb_vocabulary:chromosome-start",
+          "http://bio2rdf.org/pharmgkb_vocabulary:cpic-dosing-guideline",
+          "http://bio2rdf.org/pharmgkb_vocabulary:has-variant-annotation",
+          "http://bio2rdf.org/pharmgkb_vocabulary:is-vip",
+          "http://bio2rdf.org/pharmgkb_vocabulary:symbol",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-alfred",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-ctd",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-ensembl",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-genatlas",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-genecards",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-go",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-hgnc",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-huge",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-humancyc",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-iupharreceptor",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-modbase",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-mutdb",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-ncbigene",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-omim",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-refseq",
+          "http://bio2rdf.org/pharmgkb_vocabulary:disease",
+          "http://bio2rdf.org/pharmgkb_vocabulary:drug",
+          "http://bio2rdf.org/pharmgkb_vocabulary:gene",
+          "http://bio2rdf.org/pharmgkb_vocabulary:x-webresource"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://bio2rdf.org/pharmgkb_vocabulary:Disease",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Gene",
+      "http://bio2rdf.org/pharmgkb_vocabulary:Drug"
+    ],
+    "rootType": "http://bio2rdf.org/pharmgkb_vocabulary:Gene"
+  },
+  {
+    "predicates": [
+      {
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/depiction",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2004/02/skos/core#subject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/thumbnail",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/name",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+        "range": []
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://dbpedia.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEendpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://xmlns.com/foaf/0.1/depiction",
+          "http://www.w3.org/2004/02/skos/core#subject",
+          "http://dbpedia.org/ontology/thumbnail",
+          "http://xmlns.com/foaf/0.1/name",
+          "http://www.w3.org/2000/01/rdf-schema#label"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "rootType": "http://dbpedia.org/ontology/ChemicalCompound"
+  },
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:x-identifiers.org"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/clinicaltrials_vocabulary:citation"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/created"
+      },
+      {
+        "operator": "PR",
+        "range": [
+          "http://bio2rdf.org/pubmed_vocabulary:Resource"
+        ],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:article"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:expansion-method"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:interactor_a"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:interactor_b"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:maximum-number-interactions-reported"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:minimum-number-interactions-reported"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:number-supporting-articles"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:source"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:taxon-sequence-identical-interaction"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:host-organism"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:interactor_a_biological_role"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:interactor_a_experimental_role"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:interactor_b_biological_role"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:interactor_b_experimental_role"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/irefindex_vocabulary:method"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 1116020,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+          "http://purl.org/dc/terms/title",
+          "http://purl.org/dc/terms/identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/bio2rdf_vocabulary:x-identifiers.org",
+          "http://bio2rdf.org/clinicaltrials_vocabulary:citation",
+          "http://purl.org/dc/terms/created",
+          "http://bio2rdf.org/irefindex_vocabulary:article",
+          "http://bio2rdf.org/irefindex_vocabulary:expansion-method",
+          "http://bio2rdf.org/irefindex_vocabulary:interactor_a",
+          "http://bio2rdf.org/irefindex_vocabulary:interactor_b",
+          "http://bio2rdf.org/irefindex_vocabulary:maximum-number-interactions-reported",
+          "http://bio2rdf.org/irefindex_vocabulary:minimum-number-interactions-reported",
+          "http://bio2rdf.org/irefindex_vocabulary:number-supporting-articles",
+          "http://bio2rdf.org/irefindex_vocabulary:source",
+          "http://bio2rdf.org/irefindex_vocabulary:taxon-sequence-identical-interaction",
+          "http://bio2rdf.org/irefindex_vocabulary:host-organism",
+          "http://bio2rdf.org/irefindex_vocabulary:interactor_a_biological_role",
+          "http://bio2rdf.org/irefindex_vocabulary:interactor_a_experimental_role",
+          "http://bio2rdf.org/irefindex_vocabulary:interactor_b_biological_role",
+          "http://bio2rdf.org/irefindex_vocabulary:interactor_b_experimental_role",
+          "http://bio2rdf.org/irefindex_vocabulary:method"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://bio2rdf.org/pubmed_vocabulary:Resource"
+    ],
+    "rootType": "http://bio2rdf.org/pubmed_vocabulary:Resource"
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Mutation",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 405471,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/fathmm_prediction",
+          "http://project-iasis.eu/vocab/mutation_isLocatedIn_sample",
+          "http://project-iasis.eu/vocab/fathmm_score",
+          "http://project-iasis.eu/vocab/zygosity",
+          "http://project-iasis.eu/vocab/loh",
+          "http://project-iasis.eu/vocab/mutationDescription",
+          "http://project-iasis.eu/vocab/mutation_aa",
+          "http://project-iasis.eu/vocab/mutation_end",
+          "http://project-iasis.eu/vocab/mutation_study_id",
+          "http://project-iasis.eu/vocab/mutation_chromosome",
+          "http://project-iasis.eu/vocab/mutation_isLocatedIn_tumor",
+          "http://project-iasis.eu/vocab/mutation_isLocatedIn_gene",
+          "http://project-iasis.eu/vocab/mutation_start",
+          "http://project-iasis.eu/vocab/mutation_pepSeq",
+          "http://project-iasis.eu/vocab/mutation_strand",
+          "http://project-iasis.eu/vocab/mutation_cds",
+          "http://project-iasis.eu/vocab/mutation_isLocatedIn_transcript",
+          "http://project-iasis.eu/vocab/mutation_somatic_status",
+          "http://project-iasis.eu/vocab/snp",
+          "http://project-iasis.eu/vocab/mutation_mentionedIn_publication",
+          "http://project-iasis.eu/vocab/mutation_NucleotideSeq",
+          "http://project-iasis.eu/vocab/mutation_isResistantTo_drug"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/Drug",
+      "http://project-iasis.eu/vocab/Gene",
+      "http://project-iasis.eu/vocab/Transcript",
+      "http://project-iasis.eu/vocab/Tumor",
+      "http://project-iasis.eu/vocab/Sample"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/fathmm_prediction",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_isLocatedIn_sample",
+        "range": [
+          "http://project-iasis.eu/vocab/Sample"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/fathmm_score",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/zygosity",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/loh",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutationDescription",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_aa",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_end",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_study_id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_chromosome",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_isLocatedIn_tumor",
+        "range": [
+          "http://project-iasis.eu/vocab/Tumor"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_isLocatedIn_gene",
+        "range": [
+          "http://project-iasis.eu/vocab/Gene"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_start",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_pepSeq",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_strand",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_cds",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_isLocatedIn_transcript",
+        "range": [
+          "http://project-iasis.eu/vocab/Transcript"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_somatic_status",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/snp",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_mentionedIn_publication",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_NucleotideSeq",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutation_isResistantTo_drug",
+        "range": [
+          "http://project-iasis.eu/vocab/Drug"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/EcogObservation",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 771,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/identifier",
+          "http://project-iasis.eu/vocab/value",
+          "http://project-iasis.eu/vocab/date"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/identifier",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/value",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/date",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/LCPatient",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 534,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/hasEcog",
+          "http://project-iasis.eu/vocab/egfrMutation",
+          "http://project-iasis.eu/vocab/tumorStageList",
+          "http://project-iasis.eu/vocab/birthDate",
+          "http://project-iasis.eu/vocab/monthsInTreatment",
+          "http://project-iasis.eu/vocab/diagnosisAge",
+          "http://project-iasis.eu/vocab/diagnosisAgeGroup",
+          "http://project-iasis.eu/vocab/gender",
+          "http://project-iasis.eu/vocab/biopsyList",
+          "http://project-iasis.eu/vocab/weeksInTreatment",
+          "http://project-iasis.eu/vocab/ageStart",
+          "http://project-iasis.eu/vocab/ecogList",
+          "http://project-iasis.eu/vocab/toxicHabit",
+          "http://project-iasis.eu/vocab/diagnosisDate",
+          "http://project-iasis.eu/vocab/hasTumorStage"
+        ]
+      }
+    ],
+    "linkedTo": [
+      "http://project-iasis.eu/vocab/TumorStage",
+      "http://project-iasis.eu/vocab/Ecog"
+    ],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/hasEcog",
+        "range": [
+          "http://project-iasis.eu/vocab/Ecog"
+        ]
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/egfrMutation",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/tumorStageList",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/birthDate",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/monthsInTreatment",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/diagnosisAge",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/diagnosisAgeGroup",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/gender",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/biopsyList",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/weeksInTreatment",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/ageStart",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/ecogList",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/toxicHabit",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/diagnosisDate",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/hasTumorStage",
+        "range": [
+          "http://project-iasis.eu/vocab/TumorStage"
+        ]
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/TumorStageObservation",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 5556,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/identifier",
+          "http://project-iasis.eu/vocab/date",
+          "http://project-iasis.eu/vocab/tumorStage"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/identifier",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/date",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/tumorStage",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/title"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://purl.org/dc/terms/identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://rdfs.org/ns/void#inDataset"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:identifier"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:namespace"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/bio2rdf_vocabulary:uri"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/sider_vocabulary:side-effect"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/sider_vocabulary:stitch-flat"
+      },
+      {
+        "operator": "PR",
+        "range": [],
+        "predicate": "http://bio2rdf.org/sider_vocabulary:stitch-stereo"
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://bio2rdf.org/sparql",
+        "urlparam": "",
+        "wrapperType": "SPARQLEndpoint",
+        "cardinality": 140064,
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://purl.org/dc/terms/title",
+          "http://purl.org/dc/terms/identifier",
+          "http://rdfs.org/ns/void#inDataset",
+          "http://bio2rdf.org/bio2rdf_vocabulary:identifier",
+          "http://bio2rdf.org/bio2rdf_vocabulary:namespace",
+          "http://bio2rdf.org/bio2rdf_vocabulary:uri",
+          "http://bio2rdf.org/sider_vocabulary:side-effect",
+          "http://bio2rdf.org/sider_vocabulary:stitch-flat",
+          "http://bio2rdf.org/sider_vocabulary:stitch-stereo"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "rootType": "http://bio2rdf.org/sider_vocabulary:Side-Effect"
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/LiquidBiopsyObservation",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 282,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/targetTotal",
+          "http://project-iasis.eu/vocab/sampleDate",
+          "http://project-iasis.eu/vocab/mutationName",
+          "http://project-iasis.eu/vocab/copiesMicroliterVic",
+          "http://project-iasis.eu/vocab/copiesMicroliterFam",
+          "http://project-iasis.eu/vocab/resultDate",
+          "http://project-iasis.eu/vocab/identifier"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/targetTotal",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/sampleDate",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/mutationName",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/copiesMicroliterVic",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/copiesMicroliterFam",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/resultDate",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/identifier",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Enzyme",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 531,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/id",
+          "http://project-iasis.eu/vocab/label"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/id",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      }
+    ]
+  },
+  {
+    "subClassOf": [],
+    "rootType": "http://project-iasis.eu/vocab/Gexp",
+    "wrappers": [
+      {
+        "url": "http://node2.research.tib.eu:9191/sparql",
+        "urlparam": "",
+        "cardinality": 18016,
+        "wrapperType": "SPARQLEndpoint",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://project-iasis.eu/vocab/label",
+          "http://project-iasis.eu/vocab/z_score",
+          "http://project-iasis.eu/vocab/regulation",
+          "http://project-iasis.eu/vocab/gexp_study_id"
+        ]
+      }
+    ],
+    "linkedTo": [],
+    "predicates": [
+      {
+        "operator": "PR",
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/label",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/z_score",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/regulation",
+        "range": []
+      },
+      {
+        "operator": "PR",
+        "predicate": "http://project-iasis.eu/vocab/gexp_study_id",
+        "range": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Ontario: RDF Molecule Templates</title>
+
+
+    <!-- MetisMenu CSS -->
+    <link href="/css/metisMenu.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/css/dataTables.responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link href="/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="/css/select.dataTables.min.css" rel="stylesheet">
+    <link href="/css/buttons.dataTables.min.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <style>
+
+        svg {
+          background-color: #FFF;
+          cursor: default;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -o-user-select: none;
+          user-select: none;
+        }
+        svg:not(.active):not(.ctrl) {
+          cursor: crosshair;
+        }
+        path.link {
+          fill: none;
+          stroke: #000;
+          stroke-width: 4px;
+          cursor: default;
+        }
+        svg:not(.active):not(.ctrl) path.link {
+          cursor: pointer;
+        }
+        path.link.selected {
+          stroke-dasharray: 10,2;
+        }
+        path.link.dragline {
+          pointer-events: none;
+        }
+        path.link.hidden {
+          stroke-width: 0;
+        }
+        circle.node {
+          stroke-width: 1.5px;
+          cursor: pointer;
+        }
+        circle.node.reflexive {
+          stroke: #000 !important;
+          stroke-width: 2.5px;
+        }
+        text {
+          font: 12px sans-serif;
+          pointer-events: none;
+        }
+        text.id {
+          text-anchor: middle;
+          font-weight: bold;
+          word-wrap: break-word;
+        }
+        .card rect {
+          stroke-width: 1px;
+          stroke: #e6e6b8;
+          fill: #ffffcc;
+        }
+        .card p {
+          font: 300 14px "Helvetica Neue";
+          color: #000;
+        }
+        .selectList {
+            width: 60%;
+        }
+        .large {
+            width: 70%;
+        }
+
+        circle.dragging {
+          fill: red;
+          stroke: brown;
+        }
+
+
+
+        .donut-legend > span {
+          display: block;
+          margin-right: 25px;
+          margin-bottom: 10px;
+          font-size: 13px;
+        }
+        .donut-legend > span:last-child {
+          margin-right: 0;
+        }
+        .donut-legend > span > i {
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          margin-right: 7px;
+          margin-top: -3px;
+          vertical-align: middle;
+          border-radius: 1px;
+        }
+        #browsers_chart {
+          max-height: 280px;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar  navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
+            <!--**********************************************-->
+            <!--************** TOP BAR *******************  -->
+            <!--*********************************************-->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">FedSDM: Federated Semantic Data Manager</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <!-- /.navbar-header -->
+
+            <!--**********************************************-->
+            <!--************** SIDE BAR *******************  -->
+            <!--*********************************************-->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <!--<li>-->
+                            <!--<a href="datasources.html"><i class="fa fa-database  fa-fw"></i> Data Sources</a>-->
+                        <!--</li>-->
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Federations <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="newfed.html"><i class="fa fa-gear"></i> Create New Federation</a>
+                                </li>
+                                <li>
+                                    <a href="manageds.html"><i class="fa fa-database"></i> Manage Federations</a>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-life-ring fa-fw"></i> RDF Molecule Templates <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="rdfmts.html"><i class="fa fa-database"></i> Molecule Templates</a>
+                                </li>
+                                <li>
+                                    <a href="managerdfmts.html"><i class="fa fa-gear"></i> Manage RDF-MTs</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="query.html"><i class="fa fa-search fa-fw"></i> Query </a>
+                        </li>
+                        <li>
+                            <a href="analysis.html"><i class="fa fa-line-chart fa-fw"></i> Advanced Analysis </a>
+                        </li>
+
+                        <li>
+                            <a href="blank.html"><i class="fa fa-gear"></i> Settings</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Manage RDF-MTs</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="/js/libs/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/libs/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/js/libs/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="/js/libs/jquery.dataTables.min.js"></script>
+    <script src="/js/libs/dataTables.bootstrap.min.js"></script>
+    <script src="/js/libs/dataTables.responsive.min.js"></script>
+    <script src="/js/libs/responsive.bootstrap.min.js"></script>
+
+    <script src="/js/libs/dataTables.buttons.min.js"></script>
+    <script src="/js/libs/buttons.bootstrap.min.js"></script>
+
+    <script src="/js/libs/jszip.min.js"></script>
+    <script src="/js/libs/pdfmake.min.js"></script>
+    <script src="/js/libs/vfs_fonts.js"></script>
+    <script src="/js/libs/buttons.html5.min.js"></script>
+
+    <script src="/js/libs/buttons.print.min.js"></script>
+    <script src="/js/libs/dataTables.select.min.js"></script>
+
+    <script src="/js/libs/popper.min.js"></script>
+    <script src="/js/libs/d3.v3.min.js"></script>
+    <script src="/js/libs/dagre-d3.js"></script>
+    <script src="/js/libs/d3-polygon.v1.min.js"></script>
+        <!-- Morris Charts JavaScript -->
+    <script src="/js/libs/raphael.min.js"></script>
+    <script src="/js/libs/morris.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/main.js"></script>
+    <!--Custom script-->
+    <script src="/js/rdfmtmgmt.js"></script>
+
+</body>
+
+</html>

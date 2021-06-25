@@ -1,0 +1,238 @@
+[
+  {
+    "rootType": "http://dbpedia.org/ontology/ChemicalCompound",
+    "linkedTo": [],
+    "predicates": [
+      {
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/depiction",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2004/02/skos/core#subject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/thumbnail",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/name",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+        "range": []
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://dbpedia.org/sparql",
+        "predicates": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://xmlns.com/foaf/0.1/depiction",
+          "http://www.w3.org/2004/02/skos/core#subject",
+          "http://dbpedia.org/ontology/thumbnail",
+          "http://xmlns.com/foaf/0.1/name",
+          "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
+        "urlparam": "",
+        "wrapperType": "SPARQLEendpoint"
+      }
+    ]
+  },
+  {
+    "rootType": "http://dbpedia.org/ontology/Disease",
+    "linkedTo": [],
+    "predicates": [
+      {
+        "predicate": "http://dbpedia.org/ontology/emedicineTopic",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/icd9",
+        "range": []
+      },
+      {
+        "predicate": "http://www.georss.org/georss/point",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/emedicineSubject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/diseasesdb",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/omim",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/depiction",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/medlineplus",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2004/02/skos/core#subject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/thumbnail",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/meshId",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/icdo",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/name",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/icd10",
+        "range": []
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://dbpedia.org/sparql",
+        "predicates": [
+          "http://dbpedia.org/ontology/emedicineTopic",
+          "http://dbpedia.org/ontology/icd9",
+          "http://www.georss.org/georss/point",
+          "http://dbpedia.org/ontology/emedicineSubject",
+          "http://dbpedia.org/ontology/diseasesdb",
+          "http://dbpedia.org/ontology/omim",
+          "http://xmlns.com/foaf/0.1/depiction",
+          "http://dbpedia.org/ontology/medlineplus",
+          "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+          "http://www.w3.org/2004/02/skos/core#subject",
+          "http://dbpedia.org/ontology/thumbnail",
+          "http://dbpedia.org/ontology/meshId",
+          "http://dbpedia.org/ontology/icdo",
+          "http://xmlns.com/foaf/0.1/name",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+          "http://www.w3.org/2000/01/rdf-schema#label",
+          "http://dbpedia.org/ontology/icd10"
+        ],
+        "urlparam": "",
+        "wrapperType": "SPARQLEendpoint"
+      }
+    ]
+  },
+  {
+    "rootType": "http://dbpedia.org/ontology/Drug",
+    "linkedTo": [],
+    "predicates": [
+      {
+        "predicate": "http://dbpedia.org/ontology/drugbank",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/atcSuffix",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/casSupplemental",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/iupacName",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/depiction",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/casNumber",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/pubchem",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2004/02/skos/core#subject",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/thumbnail",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/atcSupplemental",
+        "range": []
+      },
+      {
+        "predicate": "http://xmlns.com/foaf/0.1/name",
+        "range": []
+      },
+      {
+        "predicate": "http://dbpedia.org/ontology/atcPrefix",
+        "range": []
+      },
+      {
+        "predicate": "http://www.w3.org/2000/01/rdf-schema#label",
+        "range": []
+      }
+    ],
+    "wrappers": [
+      {
+        "url": "http://dbpedia.org/sparql",
+        "predicates": [
+          "http://dbpedia.org/ontology/drugbank",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://dbpedia.org/ontology/atcSuffix",
+          "http://dbpedia.org/ontology/casSupplemental",
+          "http://dbpedia.org/ontology/iupacName",
+          "http://xmlns.com/foaf/0.1/depiction",
+          "http://dbpedia.org/ontology/casNumber",
+          "http://dbpedia.org/ontology/pubchem",
+          "http://www.w3.org/2004/02/skos/core#subject",
+          "http://dbpedia.org/ontology/thumbnail",
+          "http://dbpedia.org/ontology/atcSupplemental",
+          "http://xmlns.com/foaf/0.1/name",
+          "http://dbpedia.org/ontology/atcPrefix",
+          "http://www.w3.org/2000/01/rdf-schema#label"
+        ],
+        "urlparam": "",
+        "wrapperType": "SPARQLEendpoint"
+      }
+    ]
+  }
+
+]
