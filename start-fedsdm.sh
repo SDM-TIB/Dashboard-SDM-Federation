@@ -11,6 +11,12 @@ kill "$(ps aux | grep '[v]irtuoso-t' | awk '{print $2}')"
 virtuoso-t -f &
 cd /FedSDM
 
+if ! test -f "instance/fedsdm.sqlite"; then
+  mkdir -p instance
+  chmod 775 instance
+  cat fedsdm/schema.sql | sqlite3 instance/fedsdm.sqlite
+fi
+
 export FLASK_ENV=development
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8

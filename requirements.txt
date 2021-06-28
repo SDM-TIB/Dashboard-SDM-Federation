@@ -4,7 +4,7 @@ hdfs
 pyspark
 pymongo
 mysql-connector-python
-neo4j-driver
+neo4j-driver==1.7.6
 rdflib
 networkx
 ply

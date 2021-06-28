@@ -107,8 +107,7 @@ CREATE TABLE predicate (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     predicate TEXT UNIQUE NOT NULL,
     description TEXT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -136,7 +135,6 @@ CREATE TABLE rdfmtpredsources (
     sourceID INTEGER NOT NULL,
     rdfmtID INTEGER NOT NULL,
     predicateID INTEGER NOT NULL,
-    sourceID INTEGER NOT NULL,
     rangeID INTEGER NOT NULL,
     predrange TEXT,
     cardinality INTEGER NOT NULL DEFAULT -1,
