@@ -100,10 +100,6 @@ class MediatorDecomposer(object):
             return None
 
     def decomposeBGP(self, tl):
-
-        return [Service("<http://complete>", tl)]
-
-    def decomposeBGPX(self, tl):
         stars = self.getQueryStar(tl)
         conn = self.getStarsConnections(stars)
         selectedmolecules = {}

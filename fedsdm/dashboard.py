@@ -11,7 +11,8 @@ bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 
 @bp.route('/')
-def index():
+@login_required
+def stats():
     db = get_db()
     # feds = db.execute(
     #     'SELECT f.uri as feduri'

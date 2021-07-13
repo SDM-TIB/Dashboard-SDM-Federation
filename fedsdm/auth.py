@@ -65,7 +65,7 @@ def register():
                 (username, generate_password_hash(password))
             )
             db.commit()
-            return redirect('auth/login')
+            return redirect(url_for('auth.login'))
 
         flash(error)
 
@@ -107,11 +107,10 @@ def login():
             session['user_id'] = user['id']
             session['user_name'] = user['username']
             print('redirecting to index')
-            return redirect('dashboard/')
+            return redirect(url_for('index'))
 
         flash(error)
         print(error)
-
     return render_template('auth/login.html')
 
 
@@ -143,7 +142,7 @@ def logout():
     :return:
     """
     session.clear()
-    return redirect('auth/login')
+    return redirect(url_for('index'))
 
 
 # Require Authentication in Other Views
@@ -159,7 +158,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect('auth/login')
+            return redirect(url_for('auth.login'))
 
         return view(**kwargs)
 

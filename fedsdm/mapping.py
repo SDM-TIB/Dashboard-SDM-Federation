@@ -1,8 +1,10 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, Response, send_from_directory, request, url_for
 )
+from werkzeug.exceptions import abort
 from bson import json_util
 
+from flask.json import jsonify
 import json
 import traceback
 from multiprocessing import Process, Queue, active_children
@@ -40,6 +42,7 @@ if not logger.handlers:
 
 
 @bp.route('/mapping')
+@login_required
 def mapping():
     db = get_db()
     # federations = db.execute(

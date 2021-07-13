@@ -32,7 +32,8 @@ if not logger.handlers:
     logger.addHandler(consoleHandler)
 
 
-@bp.route('/')
+@bp.route('/query')
+@login_required
 def query():
     db = get_db()
     federations = db.execute(
@@ -187,7 +188,7 @@ def sparql():
             exc_type, exc_value, exc_traceback = sys.exc_info()
             emsg = repr(traceback.format_exception(exc_type, exc_value,
                                                    exc_traceback))
-            logger.error("Exception .. " + emsg)
+            logger.error("Exception while semantifying .LC.. " + emsg)
             print ("Exception: ", e)
             import pprint
             pprint.pprint(emsg)
@@ -198,7 +199,7 @@ def sparql():
 
 def execute_query(graph, query, output=Queue()):
     mdb = get_mdb()
-    configuration = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, "dba", 'dba')
+    configuration = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, "dba", 'dba123')
     #pprint.pprint(configuration.metadata)
     print("config loaded!")
     start = time()

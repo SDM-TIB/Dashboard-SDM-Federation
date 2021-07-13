@@ -1,54 +1,55 @@
 <!DOCTYPE html>
-<title>{% block title %}{% endblock %} - Semantic Data Manager</title>
-<!--<link rel="stylesheet" href="/style.css') }}">-->
+<title>{% block title %}{% endblock %} - Federated Semantic Data Manager</title>
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
 <!-- Bootstrap Core CSS -->
-<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 <!-- MetisMenu CSS -->
-<link href="/css/metisMenu.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/metisMenu.min.css') }}" rel="stylesheet">
 <!-- Custom CSS -->
-<link href="/css/sb-admin-2.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
 <!-- Morris Charts CSS -->
-<link href="/css/morris.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/morris.css') }}" rel="stylesheet">
 <!-- Custom Fonts -->
-<link href="/css/fontawesome.min.css" type="text/css">
-<link href="/css/jquery-ui.css" rel="stylesheet" >
-
+<link href="{{ url_for('static', filename='css/fontawesome.min.css') }}" type="text/css">
+<link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" >
 <!-- DataTables CSS -->
-<link href="/css/dataTables.bootstrap.css" rel="stylesheet">
-<link href="/css/dataTables.responsive.css" rel="stylesheet">
-<link href="/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="/css/select.dataTables.min.css" rel="stylesheet">
-<link href="/css/buttons.dataTables.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dataTables.bootstrap.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dataTables.responsive.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/jquery.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/select.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/buttons.dataTables.min.css') }}" rel="stylesheet">
 
 
 
 <!-- jQuery -->
-<script src="/js/libs/jquery.min.js"></script>
-<script src="/js/libs/jquery-ui.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/jquery-ui.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="/js/libs/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
 
 <!-- DataTables JavaScript -->
-<script src="/js/libs/jquery.dataTables.min.js"></script>
-<script src="/js/libs/dataTables.bootstrap.min.js"></script>
-<script src="/js/libs/dataTables.responsive.min.js"></script>
-<script src="/js/libs/dataTables.select.min.js"></script>
-<script src="/js/libs/dataTables.buttons.min.js"></script>
-<script src="/js/libs/fontawesome.all.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/dataTables.bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/dataTables.select.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/fontawesome.all.min.js') }}"></script>
 <!-- Metis Menu Plugin JavaScript -->
-<script src="/js/libs/metisMenu.min.js"></script>
-<script src="/js/libs/Chart.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/metisMenu.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/Chart.min.js') }}"></script>
 <!-- Morris Charts JavaScript -->
-<script src="/js/libs/raphael.min.js"></script>
-<script src="/js/libs/morris.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/raphael.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/morris.min.js') }}"></script>
 
-<script src="/js/libs/jszip.min.js"></script>
-<script src="/js/libs/pdfmake.min.js"></script>
-<script src="/js/libs/vfs_fonts.js"></script>
-<script src="/js/libs/buttons.html5.min.js"></script>
+
+
+<script src="{{ url_for('static', filename='js/libs/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/buttons.html5.min.js') }}"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="/js/menu-setup.js"></script>
+<script src="{{ url_for('static', filename='js/menu-setup.js') }}"></script>
 
  <div id="wrapper">
         <!-- Navigation -->
@@ -57,7 +58,7 @@
             <!--************** TOP BAR *******************  -->
             <!--*********************************************-->
             <div class="navbar-header">
-                <a class="navbar-brand" href="/dashboard/">Ontario Semantic Data Lake</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Ontario Semantic DataLake</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -74,7 +75,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-messages" id="messagesdropdown">
                         <li>
-                            <a href="/feedback/">
+                            <a href="#">
                                 <div>
                                     <strong>Reported Issues</strong>
                                     <span class="pull-right text-muted">
@@ -216,12 +217,12 @@
                             <li><a href="#"><i class="fas fa-cogs"></i> Settings</a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="/auth/logout"><i class="fas fa-sign-out"></i> Logout</a>
+                            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out"></i> Logout</a>
                             </li>
 
                         {% else %}
-                            <li><a href="/auth/register">Register</a> </li>
-                            <li><a href="/auth/login">Log In</a> </li>
+                            <li><a href="{{ url_for('auth.register') }}">Register</a> </li>
+                            <li><a href="{{ url_for('auth.login') }}">Log In</a> </li>
                         {% endif %}
 
                     </ul>
@@ -249,31 +250,44 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="/dashboard/"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a href="{{ url_for('index') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        </li>
+                        <!--<li>-->
+                            <!--<a href="datasources.html"><i class="fa fa-database  fa-fw"></i> Data Sources</a>-->
+                        <!--</li>-->
+                        <li>
+                            <a href="{{ url_for('federation.index') }}"><i class="fas fa-sitemap fa-fw"></i> Federations </a>
+                            <!--<ul class="nav nav-second-level">-->
+                                <!--<li>-->
+                                    <!--<a href="{{ url_for('federation.create') }}"><i class="fal fa-gear"></i> Create New Federation</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href=""><i class="fas fa-database"></i> Manage Federations</a>-->
+                                <!--</li>-->
+
+                            <!--</ul>-->
+                            <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="/federation/"><i class="fas fa-sitemap fa-fw"></i> Federations </a>
+                            <a href="{{ url_for('rdfmts.rdfmt') }}"><i class="fa fa-life-ring fa-fw"></i> RDF Molecule Templates </a>
+
                         </li>
                         <li>
-                            <a href="/rdfmts/"><i class="fa fa-life-ring fa-fw"></i> RDF-MTs </a>
+                            <a href="{{ url_for('query.query') }}"><i class="fa fa-search fa-fw"></i> Query </a>
                         </li>
                         <li>
-                            <a href="/query/"><i class="fa fa-search fa-fw"></i> Query </a>
+                            <a href="{{ url_for('mapping.mapping') }}"><i class="fa fa-table fa-fw"></i> RML Mapping </a>
                         </li>
-                        <!--<li>-->
-                            <!--<a href="/mapping/mapping"><i class="fa fa-table fa-fw"></i> RML Mapping </a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href="#"><i class="fa fa-life-ring fa-fw"></i> KG Exploration </a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href=""><i class="fa fa-connect "></i> Ontologies</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href=""><i class="fa fa-cogs  fa-fw"></i> Advanced Analysis </a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href=""><i class="fa fa-tools"></i> Settings</a>-->
+                        <li>
+                            <a href="ontologies.html"><i class="fab fa-connectdevelop"></i> Ontologies</a>
+                        </li>
+
+                        <li>
+                            <a href="analysis.html"><i class="far fa-analytics  fa-fw"></i> Advanced Analysis </a>
+                        </li>
+
+                        <li>
+                            <a href="blank.html"><i class="fas fa-cogs"></i> Settings</a>
                         </li>
 
                     </ul>

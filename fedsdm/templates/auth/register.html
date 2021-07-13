@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <title>Register - FedSDM </title>
-<!--<link rel="stylesheet" href="/style.css') }}">-->
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
 <!-- Bootstrap Core CSS -->
-<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 <!-- MetisMenu CSS -->
-<link href="/css/metisMenu.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/metisMenu.min.css') }}" rel="stylesheet">
 <!-- Custom CSS -->
-<link href="/css/sb-admin-2.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
 <!-- Morris Charts CSS -->
-<link href="/css/morris.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/morris.css') }}" rel="stylesheet">
 <!-- Custom Fonts -->
-<link href="/css/fontawesome.min.css" type="text/css">
-<link href="/css/jquery-ui.css" rel="stylesheet" >
+<link href="{{ url_for('static', filename='css/fontawesome.min.css') }}" type="text/css">
+<link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" >
 
   <div class="container">
         <div class="row">
@@ -33,7 +33,7 @@
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
                                 </div>
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value="Register">
-                                <a href="/auth/login">Login</a>
+                                <a href="{{ url_for('auth.login') }}">Login</a>
                             </fieldset>
                         </form>
                     </div>
@@ -43,15 +43,15 @@
     </div>
 
 <!-- jQuery -->
-<script src="/js/libs/jquery.min.js"></script>
-<script src="/js/libs/jquery-ui.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/jquery-ui.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="/js/libs/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
 <!-- Metis Menu Plugin JavaScript -->
-<script src="/js/libs/metisMenu.min.js"></script>
-<script src="/js/libs/Chart.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/metisMenu.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/Chart.min.js') }}"></script>
 <!-- Morris Charts JavaScript -->
-<script src="/js/libs/raphael.min.js"></script>
-<script src="/js/libs/morris.min.js"></script>
+<script src="{{ url_for('static', filename='js/libs/raphael.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/morris.min.js') }}"></script>
 <!-- Custom Theme JavaScript -->
-<script src="/js/menu-setup.js"></script>
+<script src="{{ url_for('static', filename='js/menu-setup.js') }}"></script>

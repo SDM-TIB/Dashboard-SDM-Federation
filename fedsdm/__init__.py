@@ -57,6 +57,7 @@ def create_app(test_config=None):
     # Register the federations manager blueprint
     from . import dashboard
     app.register_blueprint(dashboard.bp)
+    app.add_url_rule('/', endpoint='index')
 
     # Register the federations manager blueprint
     from . import federation

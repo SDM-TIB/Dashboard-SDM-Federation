@@ -48,6 +48,7 @@ def index():
 
 
 @bp.route('/stats')
+@login_required
 def stats():
     try:
         graph = request.args["graph"]
@@ -76,9 +77,9 @@ def stats():
 
 
 @bp.route('/create', methods=("GET", "POST"))
+@login_required
 def create():
     if request.method == "POST":
-
         name = request.form['name']
         description = request.form['description']
         ispublic = 'public' in request.form
@@ -106,6 +107,7 @@ def create():
 
 
 @bp.route('/datasources', methods=["GET"])
+@login_required
 def datasources():
     try:
         graph = request.args["graph"]
@@ -167,7 +169,6 @@ def api_add_source():
         e = request.form
         fed = request.args['fed']
         if fed is None or len(fed) == 0:
-            print("federation name is empty:", fed)
             return Response(json.dumps({}), mimetype="application/json")
         session['fed'] = fed
 
@@ -225,7 +226,6 @@ def add_data_source(federation, datasource):
         data = datasource.to_rdf()
         insertquery = "INSERT DATA { GRAPH <" + federation + "> { " + " . \n".join(data) + "} }"
         rr = mdb.update(insertquery)
-
         p = Process(target=mgr.create, args=(datasource, outqueue, [], ))
         p.start()
         logger.info("Collecting RDF-MTs started")
@@ -237,7 +237,6 @@ def add_data_source(federation, datasource):
         if rr:
             logger.info("non triple store source added")
             return {"status": 0}, None
-
         else:
             return {"status": -2}, None
 
@@ -436,6 +435,7 @@ def get_datasource(graph=None, dstype=None):
 
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
+@login_required
 def update(id):
     federation = get_federation(id)
 
@@ -464,6 +464,7 @@ def update(id):
 
 
 @bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
 def delete(id):
     federation = get_federation(id)
     db = get_db()

@@ -31,7 +31,7 @@
 {% endblock %}
 
 {% block content %}
-<link href="/css/yasqe.min.css" rel='stylesheet' type='text/css'/>
+<link href="{{ url_for('static', filename='css/yasqe.min.css') }}" rel='stylesheet' type='text/css'/>
 
 <div class="row col-lg-12" id="queryrow" style="display:none">
                 <div class="col-lg-1">
@@ -51,11 +51,11 @@
                         </div>
                         <div class="panel-body">
                             <ul>
-                                <li><a href="#" id="pubassociationbiomark">Publications associated with the biomarkers &quot;bioALK:C1332080 &quot;, &quot;bioEGFR:C1414313&quot;.</a></li>
-                                <li><a href="#" id="interacttype">Type of interactions of the drugs associated with the biomarker  &quot;bioEGFR:C1414313&quot;.</a></li>
-                                <li><a href="#" id="drugforlc">Drugs indicated for the lung cancer patients with the biomarker &quot;bioEGFR:C1414313&quot; and interactions between these drugs.</a></li>
-                                <li><a href="#" id="lcpatientproperties">Properties of a lung cancer patient.</a></li>
-                                <li><a href="#" id="pubassociationwithcomorbidities">Publications associated with the Comorbidities of the Lung cancer patients .</a></li>
+                                <li><a href="#" id="analyticalnumtheoryex">A Video about &quot;Analytic number theory around torsion homology&quot;</a></li>
+                                <li><a href="#" id="analyticalnumtheorydbpediaex">A video about &quot;Analytic number theory around torsion homology&quot; related information in DBpedia</a></li>
+                                <li><a href="#" id="analyticalnumtheorygndex">A video about &quot;Analytic number theory around torsion homology&quot; related bibliographic information about the author</a></li>
+                                <li><a href="#" id="analyticalnumtheorydbpndgndex">A video about &quot;Analytic number theory around torsion homology&quot; related information in DBpedia and bibliographic information about the author</a></li>
+                                <li><a href="#" id="alenguthex">Master class with Alan Guth</a></li>
                             </ul>
                             <div class="form-group">
                                 <button type="button" class="btn btn-success" id="showtablebtn" style="display:none">Show Table</button>
@@ -136,7 +136,7 @@
 <script src="/js/libs/dagre-d3.js"></script>
 <script src="/js/libs/d3-polygon.v1.min.js"></script>
 
-<script src="/js/libs/yasqe.bundled.min.js"></script>
-<script src="/js/query.js"></script>
+<script src="{{ url_for('static', filename='js/libs/yasqe.bundled.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/query.js') }}"></script>
 
 {% endblock %}

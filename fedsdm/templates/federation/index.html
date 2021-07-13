@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="pull-right">
-                    <a class="action btn btn-primary" href="/federation/create">Create New Federation</a>
+                    <a class="action btn btn-primary" href="{{ url_for('federation.create') }}">Create New Federation</a>
             </div>
         </div>
     {% endif %}
@@ -234,7 +234,7 @@
 </div>
 <!-- end of edit dialog -->
 
-<script src="/js/federations.js"></script>
+<script src="{{ url_for('static', filename='js/federations.js') }}"></script>
 
 
 {% endblock %}

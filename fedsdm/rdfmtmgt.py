@@ -17,7 +17,8 @@ from fedsdm.ui.utils import get_mtconns, get_num_properties, get_num_rdfmts, get
 bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
 
 
-@bp.route('/')
+@bp.route('/rdfmt')
+@login_required
 def rdfmt():
     db = get_db()
     federations = db.execute(

@@ -805,7 +805,7 @@ def contactSource(molecule, query, queue, config, limit=-1):
     molecule = config.mgr.get_data_source(molecule)
     server = molecule.url
     #server = "http://node2.research.tib.eu:19191/sparql"
-    # referer = server
+    referer = server
     if 'http://' in server:
         server = server.split("http://")[1]
     if '/' in server:
@@ -815,22 +815,24 @@ def contactSource(molecule, query, queue, config, limit=-1):
     host_port = server.split(":")
     port = 80 if len(host_port) == 1 else host_port[1]
     card = 0
-    limit = 5000
-    # Contacts the datasource (i.e. real endpoint) incrementally,
-    # retreiving partial result sets combining the SPARQL sequence
-    # modifiers LIMIT and OFFSET.
+    if limit == -1:
+        b, card = contactSourceAux(referer, server, path, port, query, queue)
+    else:
+        # Contacts the datasource (i.e. real endpoint) incrementally,
+        # retreiving partial result sets combining the SPARQL sequence
+        # modifiers LIMIT and OFFSET.
 
-    # Set up the offset.
-    offset = 0
+        # Set up the offset.
+        offset = 0
 
-    while True:
-        query_copy = query + " LIMIT " + str(limit) + " OFFSET " + str(offset)
-        b, cardinality = contactSourceAux(referer, server, path, port, query_copy, queue)
-        card += cardinality
-        if cardinality < limit:
-            break
+        while True:
+            query_copy = query + " LIMIT " + str(limit) + " OFFSET " + str(offset)
+            b, cardinality = contactSourceAux(referer, server, path, port, query_copy, queue)
+            card += cardinality
+            if cardinality < limit:
+                break
 
-        offset = offset + limit
+            offset = offset + limit
 
     # Close the queue
     queue.put("EOF")
