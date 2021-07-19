@@ -1,30 +1,23 @@
-from flask import (
-    Blueprint, flash, g, redirect, render_template, session, Response, send_from_directory, request, url_for
-)
-from werkzeug.exceptions import abort
-import os
-import json
-from flask.json import jsonify
-from time import time
-import traceback
-from multiprocessing import Process, Queue, active_children
 import hashlib
+import json
 import logging
+import os
+import traceback
+from multiprocessing import Queue
+from time import time
+
+from flask import (
+    Blueprint, g, render_template, session, Response, request
+)
+from flask.json import jsonify
+
 from DeTrusty.Decomposer.Decomposer import Decomposer
 from DeTrusty.Decomposer.Planner import Planner
-#from DeTrusty.Decomposer.Planner import contactSource as clm
 from DeTrusty.Wrapper.RDFWrapper import contact_source
-
-
-from mulder.mediator.decomposition.MediatorDecomposer import MediatorDecomposer
-from mulder.mediator.planner.MediatorPlanner import MediatorPlanner
-#from mulder.mediator.planner.MediatorPlanner import contactSource as clm
-
-from fedsdm.config import ConfigSimpleStore
-
 from fedsdm.auth import login_required
+from fedsdm.config import ConfigSimpleStore
 from fedsdm.db import get_db, get_mdb
-from fedsdm.ui.utils import get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations
+from fedsdm.ui.utils import get_federations
 
 bp = Blueprint('query', __name__, url_prefix='/query')
 
@@ -72,7 +65,7 @@ def feedback():
     query = e['query']
     desc = e['desc']
     selectedrow = {}
-    for c,v in zip(columns, row):
+    for c, v in zip(columns, row):
         selectedrow[c] = v
     print(fed, pred, query, selectedrow, desc)
 
@@ -195,7 +188,7 @@ def sparql():
             exc_type, exc_value, exc_traceback = sys.exc_info()
             emsg = repr(traceback.format_exception(exc_type, exc_value,
                                                    exc_traceback))
-            logger.error("Exception while semantifying .LC.. " + emsg)
+            logger.error("Exception while semantifying: " + emsg)
             print("Exception: ", e)
             import pprint
             pprint.pprint(emsg)
@@ -207,27 +200,19 @@ def sparql():
 def execute_query(graph, query, output=Queue()):
     mdb = get_mdb()
     config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, "dba", 'dba123')
-    #pprint.pprint(configuration.metadata)
-    print("config loaded!")
+    # pprint.pprint(configuration.metadata)
     start = time()
-    #dc = MediatorDecomposer(query, configuration)
-    #quers = dc.decompose()
     decomposer = Decomposer(query, config)
     decomposed_query = decomposer.decompose()
-    #print("Mediator Decomposer: \n", quers)
     logger.info(decomposed_query)
     if decomposed_query is None:
-        #print("Query decomposer returns None")
-        #return None, None, 1, 1, 1, 0,None, []
-        return "The query cannot be answered by the endpoints in the federation"
+        logger.warning("Decomposer returned None. It might be that the query cannot be answered by the endpoints in the federation.")
+        return None, None, 1, 1, 1, 0, None, []
 
     planner = Planner(decomposed_query, True, contact_source, 'RDF', config)
     plan = planner.createPlan()
 
     res = []
-    #planner = MediatorPlanner(quers, True, clm, None, configuration)
-    #plan = planner.createPlan()
-    #print("Mediator Planner: \n", plan)
     logger.info(plan)
     processqueue = Queue()
     plan.execute(output, processqueue)
