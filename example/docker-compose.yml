@@ -1,0 +1,70 @@
+version: '2.3'
+
+services:
+
+  lslod_diseasome:
+    container_name: fedsdm_lslod_diseasome
+    image: kemele/virtuoso:7-stable
+    ports:
+      - "12003:8890"
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./datasources/diseasome
+        target: /data/toLoad
+    mem_limit: 16g
+    environment:
+      DEFAULT_GRAPH: http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome
+
+  lslod_drugbank:
+    container_name: fedsdm_lslod_drugbank
+    image: kemele/virtuoso:7-stable
+    ports:
+      - "12004:8890"
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./datasources/drugbank
+        target: /data/toLoad
+    mem_limit: 16g
+    environment:
+      DEFAULT_GRAPH: http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank
+      
+  lslod_sider:
+    container_name: fedsdm_lslod_sider
+    image: kemele/virtuoso:7-stable
+    ports:
+      - "12008:8890"
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./datasources/sider
+        target: /data/toLoad
+    mem_limit: 16g
+    environment:
+      DEFAULT_GRAPH: http://www4.wiwiss.fu-berlin.de/sider/resource/sider
+
+  dashboard:
+    container_name: fedsdm_dashboard
+    image: fedsdm
+    build: ../
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./dashboard/sqlite
+        target: /FedSDM/instance
+      - type: bind
+        source: ./dashboard/virtuoso/
+        target: /data/
+    ports:
+      - "5003:5003"
+      - "18000:8890"
+
+networks:
+  lslod:
+    name: fedsdm_network
+    driver: bridge
