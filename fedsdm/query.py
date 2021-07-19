@@ -10,9 +10,16 @@ import traceback
 from multiprocessing import Process, Queue, active_children
 import hashlib
 import logging
+from DeTrusty.Decomposer.Decomposer import Decomposer
+from DeTrusty.Decomposer.Planner import Planner
+#from DeTrusty.Decomposer.Planner import contactSource as clm
+from DeTrusty.Wrapper.RDFWrapper import contact_source
+
+
 from mulder.mediator.decomposition.MediatorDecomposer import MediatorDecomposer
 from mulder.mediator.planner.MediatorPlanner import MediatorPlanner
-from mulder.mediator.planner.MediatorPlanner import contactSource as clm
+#from mulder.mediator.planner.MediatorPlanner import contactSource as clm
+
 from fedsdm.config import ConfigSimpleStore
 
 from fedsdm.auth import login_required
@@ -189,7 +196,7 @@ def sparql():
             emsg = repr(traceback.format_exception(exc_type, exc_value,
                                                    exc_traceback))
             logger.error("Exception while semantifying .LC.. " + emsg)
-            print ("Exception: ", e)
+            print("Exception: ", e)
             import pprint
             pprint.pprint(emsg)
             return jsonify({"result": [], "error": str(emsg)})
@@ -199,29 +206,35 @@ def sparql():
 
 def execute_query(graph, query, output=Queue()):
     mdb = get_mdb()
-    configuration = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, "dba", 'dba123')
+    config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, "dba", 'dba123')
     #pprint.pprint(configuration.metadata)
     print("config loaded!")
     start = time()
-    dc = MediatorDecomposer(query, configuration)
-    quers = dc.decompose()
-    print("Mediator Decomposer: \n", quers)
-    logger.info(quers)
-    if quers is None:
-        print("Query decomposer returns None")
-        return None, None, 1, 1, 1, 0,None, []
+    #dc = MediatorDecomposer(query, configuration)
+    #quers = dc.decompose()
+    decomposer = Decomposer(query, config)
+    decomposed_query = decomposer.decompose()
+    #print("Mediator Decomposer: \n", quers)
+    logger.info(decomposed_query)
+    if decomposed_query is None:
+        #print("Query decomposer returns None")
+        #return None, None, 1, 1, 1, 0,None, []
+        return "The query cannot be answered by the endpoints in the federation"
+
+    planner = Planner(decomposed_query, True, contact_source, 'RDF', config)
+    plan = planner.createPlan()
 
     res = []
-    planner = MediatorPlanner(quers, True, clm, None, configuration)
-    plan = planner.createPlan()
-    print("Mediator Planner: \n", plan)
+    #planner = MediatorPlanner(quers, True, clm, None, configuration)
+    #plan = planner.createPlan()
+    #print("Mediator Planner: \n", plan)
     logger.info(plan)
     processqueue = Queue()
     plan.execute(output, processqueue)
 
     i = 0
     r = output.get()
-    variables = [p.name[1:] for p in dc.query.args]
+    variables = [p.name[1:] for p in decomposer.query.args]
     first = time() - start
 
     if r == "EOF":
@@ -234,4 +247,4 @@ def execute_query(graph, query, output=Queue()):
         res.append(r)
         i += 1
     total = time() - start
-    return variables, res, start, total, first, i, processqueue, dc.alltriplepatterns
+    return variables, res, start, total, first, i, processqueue, decomposer.alltriplepatterns

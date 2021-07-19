@@ -1,10 +1,6 @@
-#!/usr/bin/env python3.5
-
 import hashlib
-import json
 import pprint as pp
 import pprint
-import random
 from multiprocessing import Queue, Process
 from multiprocessing.queues import Empty
 import logging
@@ -1317,7 +1313,7 @@ class MTManager(object):
                     'linkedTo': [r['mtr']] if 'mtr' in r else [],
                     'wrappers': [
                         {
-                            'url': r['datasource'],
+                            'url': self.get_data_source(r['datasource']).url,
                             "predicates": [
                                 r['pred']
                             ],
@@ -1349,13 +1345,13 @@ class MTManager(object):
                     })
                 wfound = False
                 for w in results[r['rid']]['wrappers']:
-                    if w['url'] == r['datasource']:
+                    if w['url'] == r['datasource']:  # TODO: is this correct due to the changes?
                         wfound = True
                         w['predicates'].append(r['pred'])
                         w['predicates'] = list(set(w['predicates']))
                 if not wfound:
                     results[r['rid']]['wrappers'].append({
-                        'url': r['datasource'],
+                        'url': self.get_data_source(r['datasource']).url,
                         "predicates": [
                             r['pred']
                         ],
@@ -1406,7 +1402,7 @@ class MTManager(object):
                             'linkedTo': [r['mtr']] if 'mtr' in r else [],
                             'wrappers': [
                                 {
-                                    'url': r['datasource'],
+                                    'url': self.get_data_source(r['datasource']).url,
                                     "predicates": [
                                         r['pred']
                                          ],
@@ -1438,13 +1434,13 @@ class MTManager(object):
                     })
                 wfound = False
                 for w in results[r['rid']]['wrappers']:
-                    if w['url'] == r['datasource']:
+                    if w['url'] == r['datasource']:  # TODO: is this correct due to the changes
                         wfound = True
                         w['predicates'].append(r['pred'])
                         w['predicates'] = list(set(w['predicates']))
                 if not wfound:
                     results[r['rid']]['wrappers'].append({
-                        'url': r['datasource'],
+                        'url': self.get_data_source(r['datasource']).url,
                         "predicates": [
                             r['pred']
                             ],
@@ -1455,7 +1451,6 @@ class MTManager(object):
         return results
 
     def get_rdfmt(self, rdfclass):
-
         query = "SELECT distinct ?datasource  ?pred " \
                 " WHERE { " \
                 " GRAPH <" + self.graph + "> {" \
@@ -1490,7 +1485,7 @@ class MTManager(object):
                             'linkedTo': [r['mtr']] if 'mtr' in r else [],
                             'wrappers': [
                                 {
-                                    'url': r['datasource'],
+                                    'url': self.get_data_source(r['datasource']).url,
                                     "predicates": [
                                         r['pred']
                                          ],
@@ -1522,13 +1517,13 @@ class MTManager(object):
                     })
                 wfound = False
                 for w in results[r['rid']]['wrappers']:
-                    if w['url'] == r['datasource']:
+                    if w['url'] == r['datasource']:  # TODO: is this correct due to the changes?
                         wfound = True
                         w['predicates'].append(r['pred'])
                         w['predicates'] = list(set(w['predicates']))
                 if not wfound:
                     results[r['rid']]['wrappers'].append({
-                        'url': r['datasource'],
+                        'url': self.get_data_source(r['datasource']).url,
                         "predicates": [
                             r['pred']
                             ],

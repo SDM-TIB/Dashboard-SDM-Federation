@@ -29,6 +29,7 @@ class Decomposer(object):
         self.prefixes = utils.getPrefs(self.query.prefs)
         self.config = config
         self.joinlocally = joinstarslocally
+        self.alltriplepatterns = []
 
     def decompose(self):
         groups = self.decomposeUnionBlock(self.query.body) if not self.sparql_one_dot_one else self.query.body
@@ -66,6 +67,7 @@ class Decomposer(object):
         for bgp in jb.triples:
             if isinstance(bgp, Triple):
                 tl.append(bgp)
+                self.alltriplepatterns.append(bgp)
             elif isinstance(bgp, Filter):
                 fl.append(bgp)
             elif isinstance(bgp, Optional):
@@ -87,10 +89,7 @@ class Decomposer(object):
                     sl.append(pub)
 
         if tl:
-            if self.tempType == "METIS" or self.tempType == "SemEP":
-                gs = self.decomposeForMETIS(tl)
-            else:
-                gs = self.decomposeBGP(tl)
+            gs = self.decomposeBGP(tl)
 
             if gs:
                 gs.extend(sl)
@@ -107,67 +106,6 @@ class Decomposer(object):
             return j
         else:
             return None
-
-    def decomposeForMETIS(self, tl):
-        results = []
-        stars = self.getQueryStar(tl)
-
-        for s in stars:
-            ltr = stars[s]
-            mols = {}
-            unions = {}
-            for tp in ltr:
-                if tp.predicate.constant:
-                    p = utils.getUri(tp.predicate, self.prefixes)[1:-1]
-                    t = self.config.findbypred(p)
-
-                    if len(t) > 0:
-                        if len(t) == 1:
-                            for c in t:
-                                if c in mols:
-                                    mols[c].append(tp)
-                                else:
-                                    mols[c] = [tp]
-                                break
-                        else:
-                            unions[tp] = t
-
-                    else:
-                        print("cannot find any matching cluster for:", tl)
-                        return []
-                else:
-                    mm = [m for m in self.config.metadata]
-                    unions[tp] = mm
-            for m in mols:
-                results.append(Service("<" + m + ">", mols[m]))
-
-            for tp in unions.copy():
-                cs = unions[tp]
-
-                tps = [t for t in unions if t != tp and unions[t] == cs]
-                if len(tps) > 0:
-                    for u in tps:
-                        del unions[u]
-                tps.append(tp)
-                samesource = None
-                url = None
-                differents = None
-                for s in cs:
-                    wr = self.config.findMolecule(s)
-                    wrs = [w for w in wr['wrappers']]
-                    wrr = wrs[0]['url']
-                    if url is None or wrr == url:
-                        url = wrr
-                        samesource = s
-                    else:
-                        differents = s
-                        break
-                if differents is None:
-                    results.append(Service("<" + samesource + ">", tps))
-                else:
-                    results.append(UnionBlock([UnionBlock([Service("<" + c + ">", tps)]) for c in cs]))
-
-        return results
 
     def decomposeBGP(self, tl):
         stars = self.getQueryStar(tl)
