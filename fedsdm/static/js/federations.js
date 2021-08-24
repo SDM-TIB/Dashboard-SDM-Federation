@@ -467,7 +467,8 @@ $(document).ready(function() {
                         $('#validateTips').html("Error while adding data source to the federation!")
                     }
                     table.clear().draw();
-                    table.ajax.url("/federation/api/datasources?graph=" + federation).load()
+                    alert('The new Data source was added.');
+                    table.ajax.url("/federation/datasources?graph=" + federation).load();
                 },
                 error: function(jqXHR, textStatus, errorThrown){
                     console.log(jqXHR.status);
