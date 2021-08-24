@@ -16,11 +16,12 @@ $(document).ready(function() {
                 },
                 url: '/federation/create',
                 data: {'name':name, 'description':desc},
-                dataType: "json",
+
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR){
                     console.log(data);
                     if (data != null && data.length > 0){
+                        alert('The new data federation was successfully created!');
                         federation = data;
                         $("#fedName").html(name);
                         $('#newfedform').hide();
