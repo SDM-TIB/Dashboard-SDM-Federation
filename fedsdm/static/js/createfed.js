@@ -37,6 +37,9 @@ $(document).ready(function() {
                 }
             });
         }
+        if (name == null || name == '' || name.length <= 0) {
+            alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
+        }
         return false
     });
 
