@@ -61,8 +61,9 @@ $(document).ready(function() {
                 responsive: true,
                 select: true,
                 defaultContent: "<i>Not set</i>",
-                ajax: "/federation/api/datasources?graph=" + fed
+                ajax: "/federation/datasources?graph=" + fed
                 });
+            
             // Dat source table select action
             table.on( 'select', function ( e, dt, type, indexes ) {
                     selectedRow = table.rows( indexes ).data().toArray();
