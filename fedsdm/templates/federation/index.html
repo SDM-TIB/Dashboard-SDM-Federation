@@ -20,7 +20,30 @@
                 </div>
             </div>
             <div class="pull-right">
-                    <a class="action btn btn-primary" href="{{ url_for('federation.create') }}">Create New Federation</a>
+                <button type="button" class="btn btn-success"
+                        name="CreateNewFed" id="CreateNewFed" > Create New Federation </button>
+                <div id="my-form" title="Create a New Federation"  style="display:none">
+                    <p class="validateTips">Some fields are required.</p>
+                    <form method="post">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input class="form-control" name="name" id="name" placeholder="Enter name of the new federation"
+                                       value="{{ request.form['name'] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control"  name="description"
+                                          id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="public">Public</label>
+                                <input type="checkbox" value="1" name="public" id="public"  checked=checked>
+                            </div>
+                            <span id="errormsg" style="color:red"></span>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
     {% endif %}
