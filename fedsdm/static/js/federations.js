@@ -397,6 +397,8 @@ $(document).ready(function() {
     allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
     tips = $( ".validateTips" );
 
+     var crnfdialog;   
+    
     dialog = $( "#add-form" ).dialog({
               autoOpen: false,
               height: 800,
@@ -430,7 +432,38 @@ $(document).ready(function() {
     form = dialog.find("form" ).on("submit", function( event ) {
           event.preventDefault();
           addDataSource(true);
-     });
+     });    
+    
+     $( "#CreateNewFed" ).click(function() {
+        crnfdialog.dialog("open");
+    });
+    
+    
+    crnfdialog = $( "#my-form" ).dialog({
+        autoOpen: false,
+        height: 550,
+        width: 550,
+        modal: true,
+        classes: {
+            "ui-dialog": "ui-corner-all"
+        },
+        buttons: [{
+            text: "Create",
+            click: createnewfederation,
+            class: "btn btn-success"
+        },{
+            text: "Cancel",
+            click: function() {
+                crnfdialog.dialog( "close" );
+            },
+            class: "btn btn-danger"
+        }
+        ],
+        close: function() {
+            form[0].reset();
+            allFields.removeClass("ui-state-error" );
+        }
+    });
 
     function addDataSource(close) {
           var valid = true;
@@ -567,6 +600,50 @@ $(document).ready(function() {
           }
     }
 
+    var federation = null,
+        datasource = null;
+    function createnewfederation() {
+        var name = $('#name').val();
+        var desc = $('#description').val();
+        console.log(name + " " + desc);
+        if (name != null && name != '' && name.length > 0){
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    Accept : "application/json"
+                },
+                url: '/federation/create',
+                data: {'name':name, 'description':desc},
+
+                crossDomain: true,
+                success: function(data, textStatus, jqXHR){
+                    console.log(data);
+                    if (data != null && data.length > 0){
+                        alert('The new data federation was successfully created!');
+                        federation = data;
+                        $("#fedName").html(name);
+                        $('#newfedform').hide();
+                        crnfdialog.dialog( "close" );
+                        manage(federation);
+                        // what to do next?
+
+                    }else{
+                        $('#errormsg').html("Error while creating the new federation! Please enter a valid name (var name).")
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR.status);
+                    console.log(jqXHR.responseText);
+                    console.log(textStatus);
+                }
+            });
+        }
+        if (name == null || name == '' || name.length <= 0) {
+            alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
+        }
+        return false
+    }
+    
     /*
     *********************************************************
     *********** Visualize sample graph **********************
