@@ -603,7 +603,7 @@ $(document).ready(function() {
     var federation = null,
         datasource = null;
     function createnewfederation() {
-        var name = $('#name').val();
+        var name = $('#namecf').val();
         var desc = $('#description').val();
         console.log(name + " " + desc);
         if (name != null && name != '' && name.length > 0){
