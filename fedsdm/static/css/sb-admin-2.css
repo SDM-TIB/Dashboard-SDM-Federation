@@ -1,3 +1,5 @@
+@import "fontawesome.all.min.css";
+
 /*!
  * Start Bootstrap - SB Admin 2 v3.3.7+1 (http://startbootstrap.com/template-overviews/sb-admin-2)
  * Copyright 2013-2016 Start Bootstrap
@@ -185,23 +187,25 @@ table.dataTable thead .sorting_desc,
 table.dataTable thead .sorting_asc_disabled,
 table.dataTable thead .sorting_desc_disabled {
   background: transparent;
-}/*
+}
+
 table.dataTable thead .sorting_asc:after {
   content: "\f0de";
   float: right;
-  font-family: fontawesome;
+  font-family: "Font Awesome 5 Free", fontawesome;
 }
 table.dataTable thead .sorting_desc:after {
   content: "\f0dd";
   float: right;
-  font-family: fontawesome;
+  font-family: "Font Awesome 5 Free", fontawesome;
 }
 table.dataTable thead .sorting:after {
   content: "\f0dc";
   float: right;
-  font-family: fontawesome;
+  font-family: "Font Awesome 5 Free", fontawesome;
   color: rgba(50, 50, 50, 0.5);
-}*/
+}
+
 .btn-circle {
   width: 30px;
   height: 30px;
