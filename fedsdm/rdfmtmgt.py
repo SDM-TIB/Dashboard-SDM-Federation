@@ -802,7 +802,7 @@ def get_graph_stat(graph=None, source=None):
                         nodes.append(r['target'])
 
                     if (r['subject'], r['target']) not in edges:
-                        edges.append((r['subject'], r['target'])) # , {'relation': r['mtp'] if 'mtp' in r else " "}
+                        edges.append((r['subject'], r['target']))  # , {'relation': r['mtp'] if 'mtp' in r else " "}
             result = compute_graph_properties(list(set(nodes)), edges)
             print("Graph analysis time: ", (time.time()-processtime))
             return result
@@ -837,15 +837,15 @@ def compute_graph_properties(nodes, edges):
         ["Avg. Clustering", c],
         ["Transitivity", t],
         # [6, "Avg. Node Connectivity", x],
-        [ "Avg. Neighbours", avg_neig]
-        ]
+        ["Avg. Neighbours", avg_neig]
+    ]
     print(res)
     return res
 
 
 meta = ["http://purl.org/goodrelations/",
-                     "http://rdfs.org/ns/void#",
-                     'http://www.w3.org/ns/dcat',
-                     'http://www.w3.org/2001/vcard-rdf/',
-                     'http://www.ebusiness-unibw.org/ontologies/eclass',
-                     "http://bio2rdf.org/bio2rdf.dataset_vocabulary:Dataset"]
+        "http://rdfs.org/ns/void#",
+        "http://www.w3.org/ns/dcat",
+        "http://www.w3.org/2001/vcard-rdf/",
+        "http://www.ebusiness-unibw.org/ontologies/eclass",
+        "http://bio2rdf.org/bio2rdf.dataset_vocabulary:Dataset"]

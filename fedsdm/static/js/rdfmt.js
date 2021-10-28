@@ -179,7 +179,7 @@ $(document).ready(function() {
     }
 
     function get_rdfmts_graph_analys(fed, source){
-        if (fed == null || (fed == federation && galoaded == 1)){
+        if (fed == null || (fed === federation && galoaded === 1)){
                 return
          }
         $("#fedName").html(fed);
@@ -194,29 +194,29 @@ $(document).ready(function() {
                 dom: 'Blfrtip',
                 buttons: [
                      {
-                     text:'copy'
+                        text:'copy'
                      },
                      {
-                     text:'csv',
-                     extend: 'csvHtml5',
-                     title: 'mt-graph-analysis'
+                        text:'csv',
+                        extend: 'csvHtml5',
+                        title: 'mt-graph-analysis'
                      },
                      {
-                     text:'excel',
-                     extend: 'excelHtml5',
-                     title: 'mt-graph-analysis'
+                        text:'excel',
+                        extend: 'excelHtml5',
+                        title: 'mt-graph-analysis'
                      },
                      {
-                     text:'pdf',
-                     extend: 'pdfHtml5',
-                     title: 'mt-graph-analysis'
+                        text:'pdf',
+                        extend: 'pdfHtml5',
+                        title: 'mt-graph-analysis'
                      },
                      {
-                     text: 'TSV',
-                     extend: 'csvHtml5',
-                     fieldSeparator: '\t',
-                     extension: '.tsv',
-                     title: 'mt-graph-analysis'
+                        text: 'TSV',
+                        extend: 'csvHtml5',
+                        fieldSeparator: '\t',
+                        extension: '.tsv',
+                        title: 'mt-graph-analysis'
                      }
                 ],
                 ajax: '/rdfmts/api/rdfmtanalysis?graph='+fed+"&source="+source
