@@ -52,7 +52,7 @@
 {% block content %}
 <style>
     label, input { display:block; }
-    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    input.text { margin-bottom:12px; width:100%; padding: .4em; }
     fieldset { padding:0; border:0; margin-top:25px; }
     h1 { font-size: 1.2em; margin: .6em 0; }
     div#users-contain { width: 350px; margin: 20px 0; }
@@ -163,7 +163,7 @@
 </div>
 <!-- /.row -->
 
-<div id="add-form" title="Add New Data Source"  style="display:none">
+<div id="add-form" title="Add New Data Source" style="display:none">
     <p class="validateTips">Some fields are required.</p>
     <form>
         <fieldset>
@@ -175,9 +175,9 @@
              class="text ui-widget-content ui-corner-all">
 
       <label for="dstype">Data Source Type <span style="color:red">*</span></label>
-        <select name="dstype" required="required" id="dstype" class="form-control ui-widget-content ui-corner-all">
+        <select name="dstype" id="dstype" class="form-control ui-widget-content ui-corner-all" required disabled>
             <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
-            <option value="MongoDB">MongoDB</option>
+<!--            <option value="MongoDB">MongoDB</option>
             <option value="Neo4j">Neo4j</option>
             <option value="MySQL">MySQL</option>
             <option value="SPARK_CSV">Hadoop CSV File</option>
@@ -188,7 +188,7 @@
             <option value="LOCAL_TSV">Local TSV File</option>
             <option value="LOCAL_JSON">Local JSON File</option>
             <option value="LOCAL_XML">Local XML File</option>
-            <option value="REST_Service">REST Service</option>
+            <option value="REST_Service">REST Service</option> -->
         </select>
 
       <label for="URL">URL <span style="color:red">*</span> </label>

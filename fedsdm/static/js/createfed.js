@@ -8,7 +8,7 @@ $(document).ready(function() {
         var name = $('#name').val();
         var desc = $('#description').val();
         console.log(name + " " + desc);
-        if (name != null && name != '' && name.length > 0){
+        if (name != null && name !== '' && name.length > 0){
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -37,7 +37,7 @@ $(document).ready(function() {
                 }
             });
         }
-        if (name == null || name == '' || name.length <= 0) {
+        if (name == null || name === '' || name.length <= 0) {
             alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
         }
         return false
@@ -86,7 +86,6 @@ $(document).ready(function() {
         }
     }
 
-
     // Add data source click action
      $( "#addds" ).click(function() {
       dialog.dialog("open");
@@ -117,7 +116,6 @@ $(document).ready(function() {
     $('#createmapping').click( function () {
           window.location = "/federation/api/mappings"
     });
-
 
     /*
     ***************************************************
