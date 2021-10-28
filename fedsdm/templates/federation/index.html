@@ -27,7 +27,7 @@
                     <form method="post">
                         <fieldset>
                             <div class="form-group">
-                                <label for="namecf">Name  <span style="color:red">*</span></label>
+                                <label for="namecf" class="required">Name</label>
                                 <input class="form-control" name="namecf" id="namecf" placeholder="Enter name of the new federation"
                                        value="{{ request.form['namecf'] }}" required>
                             </div>
@@ -167,14 +167,14 @@
     <p class="validateTips">Some fields are required.</p>
     <form>
         <fieldset>
-      <label for="name">Name <span style="color:red">*</span></label>
+      <label for="name" class="required">Name</label>
       <input type="text" name="name" id="name" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" required>
 
       <label for="desc">Short Description</label>
       <input type="text" name="label" id="desc" placeholder="DBpedia - a Public Data Infrastructure for a Large Semantic Knowledge Graph"
              class="text ui-widget-content ui-corner-all">
 
-      <label for="dstype">Data Source Type <span style="color:red">*</span></label>
+      <label for="dstype" class="required">Data Source Type</label>
         <select name="dstype" id="dstype" class="form-control ui-widget-content ui-corner-all" required disabled>
             <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
 <!--            <option value="MongoDB">MongoDB</option>
@@ -191,10 +191,10 @@
             <option value="REST_Service">REST Service</option> -->
         </select>
 
-      <label for="URL">URL <span style="color:red">*</span> </label>
+      <label for="URL" class="required">URL</label>
       <input type="url" name="URL" id="URL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="params">Parameters(key-value):</label>
+      <label for="params">Parameters (key-value):</label>
       <input type="text"
              name="params" id="params"
              placeholder="username:user1;password:1234;timeout:100000;Content-type:application/json"
@@ -221,18 +221,18 @@
 <!-- end of add dialog -->
 
 <div id="editdsdialog" title="Edit Data Source" style="display:none">
-  <p class="validateTips">* fields are required.</p>
+  <p class="validateTips">Some fields are required.</p>
   <form>
     <fieldset>
-      <label for="ename">Name</label>
-      <input type="text" name="ename" id="ename" required="required" placeholder="DBpedia" class="text ui-widget-content ui-corner-all">
+      <label for="ename" class="required">Name</label>
+      <input type="text" name="ename" id="ename" required placeholder="DBpedia" class="text ui-widget-content ui-corner-all">
       <label for="elabel">Short Description</label>
       <input type="text" name="elabel" id="elabel" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph"
              class="text ui-widget-content ui-corner-all">
       <label for="edstype">Data Source Type</label>
-        <select name="edstype" required="required" id="edstype" class="form-control ui-widget-content ui-corner-all">
+        <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required disabled>
             <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
-            <option value="MongoDB">MongoDB</option>
+<!--            <option value="MongoDB">MongoDB</option>
             <option value="Neo4j">Neo4j</option>
             <option value="MySQL">MySQL</option>
             <option value="SPARK_CSV">Hadoop CSV File</option>
@@ -243,11 +243,11 @@
             <option value="LOCAL_TSV">Local TSV File</option>
             <option value="LOCAL_JSON">Local JSON File</option>
             <option value="LOCAL_XML">Local XML File</option>
-            <option value="REST_Service">REST Service</option>
+            <option value="REST_Service">REST Service</option> -->
         </select>
-      <label for="eURL">URL</label>
-      <input type="url" name="eURL" required="required" id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
-      <label for="eparams">Parameters(key-value):</label>
+      <label for="eURL" class="required">URL</label>
+      <input type="url" name="eURL" required id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
+      <label for="eparams">Parameters (key-value):</label>
       <input type="text" name="eparams" id="eparams" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->

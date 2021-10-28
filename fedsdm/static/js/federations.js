@@ -28,11 +28,11 @@ $(document).ready(function() {
 
     // check if federation name is set, and show statistics and management data
     function showFederations(fed){
-        if (federation != null && federation != ""){
+        if (federation != null && federation !== ""){
             $("#mfedName").html(federation);
             basic_stat(federation);
             manage(federation);
-            if (federation != "All"){
+            if (federation !== "All"){
                 $("#addds").prop( "disabled", false );
                 $("#findalllinks" ).prop( "disabled", false );
             }else{
@@ -417,9 +417,7 @@ $(document).ready(function() {
                     class: "btn btn-primary"
                 },{
                     text: "Cancel",
-                    click: function() {
-                        dialog.dialog( "close" );
-                        },
+                    click: function() { dialog.dialog( "close" ); },
                     class: "btn btn-danger"
                 }
               ],
@@ -453,15 +451,13 @@ $(document).ready(function() {
             class: "btn btn-success"
         },{
             text: "Cancel",
-            click: function() {
-                crnfdialog.dialog( "close" );
-            },
+            click: function() { crnfdialog.dialog( "close" ); },
             class: "btn btn-danger"
         }
         ],
         close: function() {
             form[0].reset();
-            allFields.removeClass("ui-state-error" );
+            allFields.removeClass("ui-state-error");
         }
     });
 
@@ -532,19 +528,23 @@ $(document).ready(function() {
               width: 700,
               modal: true,
               classes: {
-                  "ui-dialog": "highlight"
+                  "ui-dialog": "ui-corner-all"
               },
-              buttons: {
-                "Update Data Source": updateDS,
-                Cancel: function() {
-                   edialog.dialog( "close" );
-                }
-              },
+              buttons: [{
+                  text: "Update Data Source",
+                  click: updateDS,
+                  class: "btn btn-success"
+              },{
+                  text: "Cancel",
+                  click: function() { edialog.dialog( "close" ); },
+                  class: "btn btn-danger"
+              }],
               close: function() {
                 form[ 0 ].reset();
                 allFields.removeClass( "ui-state-error" );
               }
         });
+
     function updateDS() {
        var  name =     $("#ename" ),
             desc =     $("#edesc" ),
