@@ -50,7 +50,9 @@ services:
   dashboard:
     container_name: fedsdm_dashboard
     image: fedsdm
-    build: ../
+    build:
+      context: ../
+      dockerfile: Dockerfile.alpine
     networks:
       - lslod
     volumes:
