@@ -48,7 +48,7 @@
 
  <div id="wrapper">
         <!-- Navigation -->
-        <nav class="navbar  navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
             <!--**********************************************-->
             <!--************** TOP BAR *******************  -->
             <!--*********************************************-->
@@ -304,6 +304,7 @@
             </div>
 
             {% block content %} {% endblock %}
-        </div>
 
+            <div style="display: flex; flex-flow: row"><div style="flex: 1 0 auto"></div></div> <!-- enlarge the page content to full size -->
+        </div>
 </div>
