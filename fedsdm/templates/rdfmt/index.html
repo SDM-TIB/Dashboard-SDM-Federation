@@ -25,9 +25,6 @@
                     </select>
                 </div>
             </div>
-<!--            <div class="pull-right">
-                    <a class="action btn btn-success" href="{{ url_for('federation.create') }}">Create New Federation</a>
-            </div>  -->
         </div>
     {% endif %}
 {% endblock %}
@@ -46,10 +43,9 @@
         <div class="tab-content">
             <div class="tab-pane fade in active" id="home">
                 <div class="panel panel-default">
-                    <div class="row">
                     <div class="panel-heading">
-                        <i class="far fa-chart-bar fa-fw"></i>RDF-MTS
-                        <div class="pull-right">
+                        <i class="far fa-chart-bar fa-fw"></i>RDF-MTs Statistics
+                        <div class="pull-right" style="padding-left:2em">
                             <p><b>Federation: <span id="fedName" style="color:#D2691E"></span></b></p>
                         </div>
 
@@ -60,7 +56,6 @@
                             <button class="btn btn-warning" name="add" id="editmt" disabled="disabled" > Edit </button>
                             <button class="btn btn-danger" name="add" id="removemt" disabled="disabled" > Remove </button>
                         </div>
-                    </div>
                     </div>
                     <div class="row">
                     <div class="panel-body" id="listofrdfmts">
@@ -90,7 +85,7 @@
             <div class="tab-pane fade" id="visualize">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="far fa-chart-bar fa-fw"></i>RDF-MTS Visualization
+                        <i class="far fa-chart-bar fa-fw"></i>RDF-MTs Visualization
                         <div class="pull-right" style="padding-left:2em">
                             <button type="button" class="btn btn-success" id="startforce">Expand</button>
                             <button type="button" class="btn btn-danger" id="stopforce">Stop</button>
@@ -146,9 +141,8 @@
 
             <div class="tab-pane fade" id="analysis">
                 <div class="panel panel-default">
-                    <div class="row">
                     <div class="panel-heading">
-                        <i class="far fa-chart-bar fa-fw"></i>Graph analaysis
+                        <i class="far fa-chart-bar fa-fw"></i>Graph Analysis
                         <div class="pull-right" style="padding-left:2em">
                             <p><b>Federation: <span id="afedName" style="color:#D2691E"></span></b></p>
                             <p><b>Data Source: <span id="adsname" style="color:#D2691E"></span></b></p>
@@ -165,7 +159,6 @@
 
                         </div>
                     </div>
-                </div>
                     <div class="row" >
                         <div class="col-lg-6">
                             <div class="panel-body ">

@@ -206,12 +206,12 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user" id="'userdropdown">
                         {% if g.user %}
-                            <li><a href="#"><i class="fas fa-user"></i> User Profile</a>
+                            <li><a href="#"><i class="fas fa-user fa-fw"></i> User Profile</a>
                             </li>
-                            <li><a href="#"><i class="fas fa-cogs"></i> Settings</a>
+                            <li><a href="#"><i class="fas fa-user-cog fa-fw"></i> Settings</a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out"></i> Logout</a>
+                            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt fa-fw"></i> Logout</a>
                             </li>
 
                         {% else %}
@@ -263,7 +263,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="{{ url_for('rdfmts.rdfmt') }}"><i class="fa fa-life-ring fa-fw"></i> RDF Molecule Templates </a>
+                            <a href="{{ url_for('rdfmts.rdfmt') }}"><i class="fa fa-cogs fa-fw"></i> RDF Molecule Templates </a>
 
                         </li>
                         <li>
