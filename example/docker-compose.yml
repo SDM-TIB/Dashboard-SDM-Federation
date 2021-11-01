@@ -59,10 +59,10 @@ services:
         target: /FedSDM/instance
       - type: bind
         source: ./dashboard/virtuoso/
-        target: /data/
+        target: /database
     ports:
       - "5003:5003"
-      - "18000:8890"
+      - "18000:9000"
 
 networks:
   lslod:

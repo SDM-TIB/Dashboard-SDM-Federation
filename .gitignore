@@ -8,3 +8,4 @@ virtuoso.lck
 virtuoso.log
 virtuoso.pxa
 virtuoso-temp.db
+autoexec.isql

@@ -1,27 +1,32 @@
-FROM kemele/virtuoso:7-stable
+#FROM kemele/virtuoso:7-stable
+FROM prohde/virtuoso-opensource-7:7.2.6
 
 # Define environment variables
-ENV METADATA_ENDPOINT="http://localhost:8890/sparql" \
+ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
     DEFAULT_GRAPH="http://ontario.tib.eu" \
     APP_PREFIX="/" \
-    LC_ALL="C.UTF-8" \
-    LANG="C.UTF-8"
+    VIRT_HTTPSERVER_SERVERPORT="9000" \
+    VIRT_URIQA_DEFAULTHOST="localhost:9000" \
+    VIRT_PARAMETERS_NUMBEROFBUFFERS="340000" \
+    VIRT_PARAMETERS_MAXDIRTYBUFFERS="250000" \
+    VIRT_PARAMETERS_MAXQUERY_MEM="2G"
 
-# Install Virtuoso prerequisites and crudini Python lib
+# Install Python3 and SQLite
 RUN apt-get update &&\
-    apt-get install -y python3.5 python3-pip python3-setuptools sqlite3 &&\
+    apt-get install -y python3 python3-pip python3-setuptools sqlite3 curl &&\
     apt-get clean
 
 # Set the working directory to /FedSDM
 WORKDIR /FedSDM
 
-VOLUME /data
+VOLUME /database
 
 COPY . /FedSDM
 # Install any needed packages specified in requirements.txt
 RUN pip3 install --no-cache-dir -r /FedSDM/requirements.txt
 
-EXPOSE 5003 8890
+EXPOSE 5003 9000
 
 # Run virtuoso-t and fedsdm_service.py when the container launches
-CMD ["/FedSDM/start-fedsdm.sh"]
+ENTRYPOINT ["/FedSDM/start-fedsdm.sh"]
+#COPY start-fedsdm.sh /opt/virtuoso-opensource/initdb.d/start-fedsdm.sh
