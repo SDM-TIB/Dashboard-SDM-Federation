@@ -1,4 +1,3 @@
-#FROM kemele/virtuoso:7-stable
 FROM prohde/virtuoso-opensource-7:7.2.6
 
 # Define environment variables
@@ -29,4 +28,3 @@ EXPOSE 5003 9000
 
 # Run virtuoso-t and fedsdm_service.py when the container launches
 ENTRYPOINT ["/FedSDM/start-fedsdm.sh"]
-#COPY start-fedsdm.sh /opt/virtuoso-opensource/initdb.d/start-fedsdm.sh

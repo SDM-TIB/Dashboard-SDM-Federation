@@ -354,8 +354,4 @@ $(document).ready(function() {
 
         }
     }
-
-
-
-
 });

@@ -496,7 +496,6 @@ $(document).ready(function() {
                         $('#validateTips').html("Error while adding data source to the federation!")
                     }
                     table.clear().draw();
-                    alert('The new Data source was added.');
                     table.ajax.url("/federation/datasources?graph=" + federation).load();
                 },
                 error: function(jqXHR, textStatus, errorThrown){
@@ -508,10 +507,10 @@ $(document).ready(function() {
           }else{
             name.addClass( "ui-state-error" )
             URL.addClass( "ui-state-error" )
-            console.log("Invalid data....");
+            console.log("Invalid data...");
           }
           if (close){
-            dialog.dialog( "close" );
+            dialog.dialog("close");
             return valid;
           }
     }
@@ -519,7 +518,7 @@ $(document).ready(function() {
     function saveAndMore(){
         addDataSource(false);
         form[0].reset();
-        allFields.removeClass("ui-state-error" );
+        allFields.removeClass("ui-state-error");
     }
 
     edialog = $( "#editdsdialog" ).dialog({
@@ -606,27 +605,26 @@ $(document).ready(function() {
         var name = $('#namecf').val();
         var desc = $('#description').val();
         console.log(name + " " + desc);
-        if (name != null && name != '' && name.length > 0){
+        if (name != null && name !== '' && name.length > 0){
             $.ajax({
                 type: 'POST',
                 headers: {
                     Accept : "application/json"
                 },
                 url: '/federation/create',
-                data: {'name':name, 'description':desc},
+                data: {'name': name, 'description': desc},
 
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR){
                     console.log(data);
                     if (data != null && data.length > 0){
-                        alert('The new data federation was successfully created!');
                         federation = data;
                         $("#fedName").html(name);
                         $('#newfedform').hide();
                         crnfdialog.dialog( "close" );
                         manage(federation);
                         // what to do next?
-
+                        // TODO: select new federation and go to the 'manage data sources' tab
                     }else{
                         $('#errormsg').html("Error while creating the new federation! Please enter a valid name (var name).")
                     }
@@ -638,7 +636,7 @@ $(document).ready(function() {
                 }
             });
         }
-        if (name == null || name == '' || name.length <= 0) {
+        if (name == null || name === '' || name.length <= 0) {
             alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
         }
         return false
