@@ -2,3 +2,10 @@
     content: ' *';
     color: red;
 }
+
+.row-header {
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 20px;
+    margin-left: 0;
+    margin-right: 0;
+}
