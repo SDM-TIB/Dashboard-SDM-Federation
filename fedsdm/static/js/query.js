@@ -10,7 +10,7 @@ $(document).ready(function() {
             $("#queryrow").show();
             $("#resultrow").hide();
         }
-        else{
+        else {
              $("#resultinfo").hide();
              $("#resstatus").hide();
              $("#queryrow").hide();
@@ -66,9 +66,7 @@ $(document).ready(function() {
                         msourcelinks[o.source.datasource].push(o);
                     else
                         msourcelinks[o.source.datasource] =[o];
-
                 }
-
            }
            malinks = mlinks;
 
@@ -78,12 +76,12 @@ $(document).ready(function() {
                mtcards["All"].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
                if (val.datasource in mtcards){
                     mtcards[val.datasource].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
-               }else{
+               } else {
                     mtcards[val.datasource] = [{"label":val.label, "value":val.weight}]; // , "color": color(val.datasource)
                }
                if (val.datasource in msourcenodes){
                    msourcenodes[val.datasource].push(val);
-               }else{
+               } else {
                   msourcenodes[val.datasource] = [val]
                }
            });
@@ -145,7 +143,7 @@ $(document).ready(function() {
         var queryvars = []
         yasqe.options.sparql.callbacks.success =  function(data){
             $("#resulttablediv").empty();
-            $("#resulttablediv").append('<table width="100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
+            $("#resulttablediv").append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
             if ('error' in data){
                 $("#resstatus").html("Error:" + data.error);
@@ -162,9 +160,9 @@ $(document).ready(function() {
 
             var results = data.result;
             if (results.length > 0){
-               $("#resstatus").hide();
-               $("#resultinfo").show();
-               $("#resultrow").show();
+                $("#resstatus").hide();
+                $("#resultinfo").show();
+                $("#resultrow").show();
 
                 vars = data.vars;
 
@@ -226,7 +224,7 @@ $(document).ready(function() {
                         if('http' == val.substring(0, 4) ){
                             // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
                             rowml.push(val);
-                        }else{
+                        } else {
                             rowml.push(val);
                         }
                         resmap[vars[j]] = val;
@@ -273,7 +271,7 @@ $(document).ready(function() {
                         if (ltix > 0){
                             var value = selectedRow[0][i].substring(ltix+4, selectedRow[0][i].indexOf('&gt;'));
                             selectedRowData.push(value)
-                        }else{
+                        } else {
                             selectedRowData.push(selectedRow[0][i])
                         }
                     }
@@ -287,7 +285,7 @@ $(document).ready(function() {
                     selectedRow = null;
                 });
 
-            }else{
+            } else {
                 $("#resstatus").html("No results found!");
                 $("#resstatus").show();
                 $("#resultinfo").show();
@@ -367,7 +365,7 @@ $(document).ready(function() {
                     console.log(data);
                     if (data != null && data.length > 0){
                         // load_query_table(data);
-                    }else{
+                    } else {
                         $('#validateTips').html("Error while adding data source to the federation!")
                     }
                     // showqueries(datasource);
@@ -378,7 +376,7 @@ $(document).ready(function() {
                     console.log(textStatus);
                 }
             });
-      }else{
+      } else {
         feedbackdesc.addClass( "ui-state-error" )
         console.log("Invalid data....");
       }
@@ -400,11 +398,6 @@ $(document).ready(function() {
         addfeedbackdialog.dialog("open");
     });
 
-
-
-
-
-
         function append_nodes_edges(rowmap, qtripl){
             for (t in qtripl){
                 t = qtripl[t];
@@ -413,7 +406,7 @@ $(document).ready(function() {
 
                    s = rowmap[variab];
                    setNodeData(s);
-                }else{
+                } else {
                     s = t.s
                     setNodeData(s);
                 }
@@ -421,7 +414,7 @@ $(document).ready(function() {
                    variab = t.p.substring(1, t.p.length);
                    //setNodeData(rowmap, variab);
                     p = rowmap[variab];
-                }else{
+                } else {
                     p = t.p;
                 }
                 if (t.o.indexOf('?') == 0){
@@ -429,7 +422,7 @@ $(document).ready(function() {
                    // setNodeData(rowmap, variab);
                    o = rowmap[variab];
                    setNodeData(o);
-                }else{
+                } else {
                     o = t.o
                     setNodeData(o);
                 }
@@ -464,7 +457,6 @@ $(document).ready(function() {
 
         var response = false;
         function show_incremental(){
-
             if(response == true){
                 // This makes it unable to send a new request
                 // unless you get response from last request
@@ -495,10 +487,10 @@ $(document).ready(function() {
                             if (val.indexOf("^^<") != -1){
                                 val = val.substring(0, val.indexOf("^^"));
                             }
-                            if('http' == val.substring(0, 4) ){
+                            if('http' == val.substring(0, 4)){
                                 // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
                                 rowml.push(val);
-                            }else{
+                            } else {
                                 rowml.push(val);
                             }
                             resmap[vars[j]] = val;
@@ -545,7 +537,7 @@ $(document).ready(function() {
                         response = true;
                          show_incremental()
                         }
-                    else{
+                    else {
                         $("#stopbutton").prop( "disabled", true );
                     }
                 });
@@ -576,13 +568,12 @@ $(document).ready(function() {
             // console.log(row);
                 if ('type' in row)
                     completionsArray.push(row['type']);//remove quotes
-                else{
+                else {
                     completionsArray.push(row['property']);//remove quotes
                 }
             });
             return completionsArray;
         }
-
 
         var customPropertyCompleter = function(yasqe) {
             //we use several functions from the regular property autocompleter (this way, we don't have to re-define code such as determining whether we are in a valid autocompletion position)
@@ -662,50 +653,14 @@ $(document).ready(function() {
         };
 
         YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
-
         //And, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
         YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
 
-
-        var iasisq = "PREFIX rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n "+
-                        "PREFIX iasis:    <http://project-iasis.eu/vocab/>\n "+
-                        "PREFIX   owl:                 <http://www.w3.org/2002/07/owl#>\n "+
-                        "PREFIX drugbank: <http://bio2rdf.org/drugbank_vocabulary:>          \n "+
-                        "SELECT DISTINCT ?mutation ?transcript ?proteinName ?drug ?drug1\n "+
-                        "WHERE {        \n "+
-                        "     ?mutation    rdf:type                              iasis:Mutation .\n "+
-                        "     ?mutation    iasis:mutation_somatic_status        'Confirmed somatic variant'.\n "+
-                        "     ?mutation    iasis:mutation_isLocatedIn_transcript ?transcript .\n "+
-                        "     ?transcript  iasis:translates_as                    ?protein .      \n "+
-                        "      ?drug        iasis:drug_interactsWith_protein       ?protein .\n "+
-                        "     ?protein     iasis:label                            ?proteinName .\n "+
-                        "     ?drug        iasis:label                            'docetaxel' .\n "+
-                        "     ?drug        iasis:externalLink                             ?drug1 .\n "+
-                        "      ?drug1         drugbank:transporter     ?transporter .\n "+
-                        "      ?transporter   drugbank:gene-name       ?proteinName .\n "+
-                        "} LIMIT 10"
-
-        var bouncerquery =
-                            "SELECT * WHERE {\n "+
-                            "    ?s <http://project-iasis.eu/vocab/egfr_mutated> ?egfrmut .\n "+
-                            "    ?s <http://project-iasis.eu/vocab/gender> ?gender.\n "+
-                            "    ?s <http://project-iasis.eu/vocab/smoking> \"1\"^^<http://www.w3.org/2001/XMLSchema#integer>  .\n "+
-                            "    ?s <http://project-iasis.eu/vocab/stage> ?stage.\n "+
-                            "    ?s <http://project-iasis.eu/vocab/biopsy> ?biopsy .\n "+
-                            "    ?biopsy <http://project-iasis.eu/vocab/mutation_aa> ?mutation .\n "+
-                            "    ?biopsy <http://project-iasis.eu/vocab/resultsDate> ?resultdate.\n "+
-                            "    ?cmut <http://project-iasis.eu/vocab/mutation_cds> ?mutcds .\n "+
-                            "    ?cmut <http://project-iasis.eu/vocab/mutation_aa> ?mutation .\n "+
-                            "    ?cmut <http://project-iasis.eu/vocab/is_located> ?gene. \n "+
-                            "    ?gene <http://project-iasis.eu/vocab/gene_name> \"EGFR\" .\n "+
-                            "    ?gene <http://project-iasis.eu/vocab/accession_number> ?acc_num .\n "+
-                            "    } \n "+
-                            "    LIMIT 10"
-        $("#people").click(function(){
-            yasqe.setValue(iasisq);
-        });
-        $("#lungcancer").click(function(){
-            yasqe.setValue(bouncerquery);
+        var query_classes = "SELECT DISTINCT ?c WHERE {\n" +
+                            "  ?s a ?c\n" +
+                            "}"
+        $("#classes").click(function(){
+            yasqe.setValue(query_classes);
         });
 
         var analytics = "PREFIX schema: <http://schema.org/> \n" +
@@ -716,88 +671,8 @@ $(document).ready(function() {
         $("#analyticalnumtheoryex").click(function(){
             yasqe.setValue(analytics);
         });
-        var pubassociationwithcomorbidities = "SELECT distinct ?l ?p ?id1 ?au1 ?j1 ?y1 WHERE {\n" +
-                        "\t?pt  a <http://project-iasis.eu/vocab/LCPatient> . \n" +
-                        "\t?pt <http://project-iasis.eu/vocab/hasComorbidity> ?c . \n" +
-                        "\t?c <http://project-iasis.eu/vocab/disorderLabel> ?l . \n" +
-                        "\t?c <http://www.w3.org/2002/07/owl#sameAs> ?l1 . \n" +
-                        "\t?c <http://project-iasis.eu/vocab/disorderCuiID> ?o2 . \n" +
-                        "\t?c1 <http://project-iasis.eu/vocab/annID> ?o2 . \n" +
-                        "\t?a1 <http://project-iasis.eu/vocab/hasAnnotation> ?c1 . \n" +
-                        "\t?a1   a <http://project-iasis.eu/vocab/MENTIONED_IN>  . \n" +
-                        "\t?a1 <http://project-iasis.eu/vocab/annotates> ?p. \n" +
-                        "\t?p <http://project-iasis.eu/vocab/pubmedID> ?id1. \n" +
-                        "\t?p <http://project-iasis.eu/vocab/author> ?au1. \n" +
-                        "\t?p <http://project-iasis.eu/vocab/journal> ?j1. \n" +
-                        "\t?p <http://project-iasis.eu/vocab/year> ?y1. \n" +
-                        "}  LIMIT 100"
-        $("#pubassociationwithcomorbidities").click(function(){
-            yasqe.setValue(pubassociationwithcomorbidities);
-        });
 
-        var lcpatientproperties = "SELECT distinct ?p  WHERE {\n" +
-                        "\t?pt  a <http://project-iasis.eu/vocab/LCPatient> . \n" +
-                        "\t?pt ?p ?o. \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/biopsyList>). \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/chemotherapyList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/comorbidityList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/drugGroupList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/ecogList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/familialAntecedentList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/immunotherapyList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/nonOncologicalTreatmentList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/stageList>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/tkiList>) . \n" +
-                        "}  LIMIT 100"
-        $("#lcpatientproperties").click(function(){
-            yasqe.setValue(lcpatientproperties);
-        });
-        var drugforlc = "SELECT DISTINCT  ?label ?p ?label1 WHERE {\n" +
-                        "\t <http://project-iasis.eu/Biomarker/C1414313> <http://project-iasis.eu/vocab/hasIndication> ?d . \n" +
-                        "\t?d ?p ?d1 . \n" +
-                        "\t?d <http://project-iasis.eu/vocab/drugLabel> ?label. \n" +
-                        "\t?d1 <http://project-iasis.eu/vocab/drugLabel> ?label1. \n" +
-                        "\tFILTER (?p != <http://www.w3.org/2002/07/owl#sameAs>). \n" +
-                        "\tFILTER (?p != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/drugBankID> ) . \n" +
-                        "\tFILTER (?p != <http://project-iasis.eu/vocab/externalLink> )  \n" +
-                        "}  LIMIT 50"
-        $("#drugforlc").click(function(){
-            yasqe.setValue(drugforlc);
-        });
-
-        var pubassociationbiomark = "PREFIX iASIS_vocab: <http://project-iasis.eu/vocab/> \n" +
-                                " PREFIX iASIS: <http://project-iasis.eu/> \n" +
-                                " PREFIX rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-                                " PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-
-                                "SELECT DISTINCT ?p ?id1 ?au1 ?j1 ?y1 WHERE {\n" +
-                                "\t?a1   a   <http://project-iasis.eu/vocab/MENTIONED_IN>  . \n" +
-                                "\t?a1 <http://project-iasis.eu/vocab/hasAnnotation> <http://project-iasis.eu/Annotation/C1414313> . \n" +
-                                "\t?a1 <http://project-iasis.eu/vocab/annotates> ?p .\n" +
-                                "\t?p <http://project-iasis.eu/vocab/pubmedID> ?id1 . \n" +
-                                "\t?p <http://project-iasis.eu/vocab/author> ?au1 . \n" +
-                                "\t?p <http://project-iasis.eu/vocab/journal> ?j1 . \n" +
-                                "\t?p <http://project-iasis.eu/vocab/year> ?y1. \n" +
-                                "\t?a2  a <http://project-iasis.eu/vocab/MENTIONED_IN>  . \n" +
-                                "\t?a2  <http://project-iasis.eu/vocab/hasAnnotation> <http://project-iasis.eu/Annotation/C1332080> . \n" +
-
-                                "}  LIMIT 100"
-        $("#pubassociationbiomark").click(function(){
-            yasqe.setValue(pubassociationbiomark);
-        });
-        var interacttype = "SELECT DISTINCT ?p WHERE {\n" +
-                            "\t<http://project-iasis.eu/Biomarker/C1414313> <http://project-iasis.eu/vocab/hasIndication> ?d . \n" +
-                            "\t?d ?p ?d1 . \n" +
-                            "\tFILTER (?p != <http://www.w3.org/2002/07/owl#sameAs>). \n" +
-                            "\tFILTER (?p != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>) . \n" +
-                            "\tFILTER (?p != <http://project-iasis.eu/vocab/drugBankID> ) . \n" +
-                            "\tFILTER (?p != <http://project-iasis.eu/vocab/externalLink> ) . \n" +
-                            "\tFILTER (?p != <http://project-iasis.eu/vocab/drugLabel>) \n" +
-                        "}  LIMIT 50"
-        $("#interacttype").click(function(){
-            yasqe.setValue(interacttype);
-        });
+        // TODO: add more example queries here
 
     function nodeid(n) {
       return n.size ? "_g_"+n.datasource : n.label;
@@ -1082,7 +957,7 @@ $(document).ready(function() {
             width = $("#graph").width();
             height = 980;
             canv = "graph"
-        }else{
+        } else {
             $("#graph").empty();
             svg = d3.select("#graph").append("svg");
             width = $("#graph").width();
@@ -1213,7 +1088,7 @@ $(document).ready(function() {
               .style(tocolor, function(d) {
                     if (divcanv ==null){
                         return color(d.datasource)
-                    }else{
+                    } else {
                         ci += 1
                         return color(d.datasource + (ci-1));
                     }
@@ -1438,11 +1313,10 @@ $(document).ready(function() {
                        if (focus_node!==null)
                              set_focus(focus_node);
                        set_highlight(highlight_node);
-                  }else {
+                  } else {
                         exit_highlight();
                   }
                 }
-
             }
         }
 
@@ -1458,7 +1332,6 @@ $(document).ready(function() {
                         return (isNumber(o.datasource) && o.datasource >= 0)? color(o.datasource): default_link_color
                       });
                 }
-
             }
         }
 
@@ -1477,7 +1350,6 @@ $(document).ready(function() {
                 });
                 }
         }
-
 
         function set_highlight(d) {
             svg.style("cursor","pointer");
@@ -1498,12 +1370,7 @@ $(document).ready(function() {
                     });
             }
         }
-
     }
-
-
-
-
 
     function updateTips( t ) {
           tips.text( t ).addClass( "ui-state-highlight" );
@@ -1532,5 +1399,4 @@ $(document).ready(function() {
             return true;
           }
     }
-
  });
