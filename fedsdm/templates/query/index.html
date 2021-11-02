@@ -25,73 +25,57 @@
 <link href="{{ url_for('static', filename='css/yasqe.min.css') }}" rel='stylesheet' type='text/css'/>
 
 <div class="row col-lg-12" id="queryrow" style="display:none">
-                <div class="col-lg-1">
-
-                </div>
-                <div class="col-lg-6">
-                  <div id="yasqe"></div>
-                  <div class="form-group">
-                        <label class="control-label " for="timeout">Timeout</label>
-                        <input class="form-control" id="timeout" name="timeout" type="text"/>
-                  </div>
-                </div>
-                <div class="col-lg-5">
-                    <div>
-                        <div class="panel-heading">
-                            Example Queries
-                        </div>
-                        <div class="panel-body">
-                            <ul>
-                                <li><a href="#" id="analyticalnumtheoryex">A Video about &quot;Analytic number theory around torsion homology&quot;</a></li>
-                                <li><a href="#" id="analyticalnumtheorydbpediaex">A video about &quot;Analytic number theory around torsion homology&quot; related information in DBpedia</a></li>
-                                <li><a href="#" id="analyticalnumtheorygndex">A video about &quot;Analytic number theory around torsion homology&quot; related bibliographic information about the author</a></li>
-                                <li><a href="#" id="analyticalnumtheorydbpndgndex">A video about &quot;Analytic number theory around torsion homology&quot; related information in DBpedia and bibliographic information about the author</a></li>
-                                <li><a href="#" id="alenguthex">Master class with Alan Guth</a></li>
-                            </ul>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-success" id="showtablebtn" style="display:none">Show Table</button>
-                                <button type="button" class="btn btn-success" id="visualizebtn">Visulaize</button>
-                            </div>
-                        </div>
-
-                    </div>
+    <div class="col-lg-7">
+        <div id="yasqe"></div>
+        <div class="form-group" style="margin-top: 15px">
+            <label class="control-label " for="timeout">Timeout (in seconds)</label>
+            <input class="form-control" id="timeout" name="timeout" type="text"/>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div>
+            <div class="panel-heading">Example Queries</div>
+            <div class="panel-body">
+                <ul>
+                    <li><a href="#" id="analyticalnumtheoryex">A Video about &quot;Analytic number theory around torsion homology&quot;</a></li>
+                    <li><a href="#" id="analyticalnumtheorydbpediaex">A video about &quot;Analytic number theory around torsion homology&quot; related information in DBpedia</a></li>
+                    <li><a href="#" id="analyticalnumtheorygndex">A video about &quot;Analytic number theory around torsion homology&quot; related bibliographic information about the author</a></li>
+                    <li><a href="#" id="analyticalnumtheorydbpndgndex">A video about &quot;Analytic number theory around torsion homology&quot; related information in DBpedia and bibliographic information about the author</a></li>
+                    <li><a href="#" id="alenguthex">Master class with Alan Guth</a></li>
+                </ul>
+                <div class="form-group">
+                    <button type="button" class="btn btn-success" id="showtablebtn" style="display:none">Show Table</button>
+                    <button type="button" class="btn btn-success" id="visualizebtn">Visulaize</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 <!--/ .row -->
 
 <div class="row" id="resultrow" style="display:none">
     <div class="col-lg-12">
         <div class="panel panel-default" >
-
-             <p><b><span id="resstatus" style="color:red"></span></b></p>
+            <p><b><span id="resstatus" style="color:red"></span></b></p>
             <div class="panel-heading" id="resultinfo">
-                    Results
+                Results
                 <div class="pull-right">
-
                     <p><b>1st Result time:<span id="frestime" style="color:#D2691E"></span></b> &nbsp;|&nbsp;
                     <b>Execution time:<span id="exetime" style="color:#D2691E"></span></b></p>
-
                 </div>
             </div>
-
             <!-- /.panel-heading -->
             <div class="panel-body" id="results">
-                <div id="fedbackdiv"  class="form-group" align="right">
-
+                <div id="fedbackdiv"  class="form-group" style="text-align: right">
                     <button class="btn btn-primary" name="addfeedback" id="addfeedback" disabled="disabled" > Report an Issue </button>
                     <button class="btn btn-danger" name="stop" id="stopbutton" disabled="disabled" > Stop </button>
                 </div>
                 <div class="row" id="resulttablediv">
-
-                    <table width="100%" class="table display table-striped table-bordered table-hover" id="queryresultstable">
-
-                    </table>
-                <!-- /.table-responsive -->
+                    <table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>
+                    <!-- /.table-responsive -->
                 </div>
                 <div class="row" id="resultgraphdiv" style="display:none">
-                    <div id="graph" class="col-lg-12 rdfmt" >
-
-                    </div>
+                    <div id="graph" class="col-lg-12 rdfmt"></div>
                 </div>
             </div>
             <!-- /.panel-body -->
@@ -100,23 +84,22 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
- <!-- /.row -->
+<!-- /.row -->
 
 <div id="feedback-form" title="Add Feedback" class="ui-widget"  style="display:none">
     <p class="validateTips">Some fields are required.</p>
     <form>
         <fieldset>
-
-          <select class="form-control " id="fedbackpreds" style="width:300px;">
+            <select class="form-control " id="fedbackpreds" style="width:300px;">
                 <option value="-1">Select column</option>
                 <option value="All">All</option>
-          </select>
-          <label for="feedbackdesc" class="label-class" >Description</label>
-          <textarea class="form-control"  name="feedbackdesc" id="feedbackdesc" placeholder="Enter a query" rows="4" required></textarea>
+            </select>
+            <label for="feedbackdesc" class="label-class" >Description</label>
+            <textarea class="form-control"  name="feedbackdesc" id="feedbackdesc" placeholder="Enter a query" rows="4" required></textarea>
 
-          <!-- Allow form submission with keyboard without duplicating the dialog button -->
-          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-       </fieldset>
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
     </form>
 </div>
 <!-- end of add dialog -->
