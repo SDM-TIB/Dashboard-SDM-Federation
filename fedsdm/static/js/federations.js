@@ -59,7 +59,7 @@ $(document).ready(function() {
             // Construct basic statistics table
             statsTable = $("#basic-statistics").DataTable({
                     order: [[ 1, 'desc' ]],
-                    responsive: true,
+                    responsive: false,
                     defaultContent: "-1",
                     select: true
                 });
