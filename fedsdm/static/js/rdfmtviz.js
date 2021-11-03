@@ -1376,7 +1376,7 @@ $(document).ready(function() {
         gsource = source;
         if (gtable == null){
             gtable = $('#graph-analysis').DataTable({
-                responsive: true,
+                responsive: false,
                 order: false,
                 select: true,
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
