@@ -1,74 +1,80 @@
 {% extends 'base.html' %}
-{% block title %}Federations{% endblock %}
 
-{% block header %}Federations{% endblock %}
+{% block header %}
+    <h1>{% block title %}Federations{% endblock %}</h1>
+    {% if g.user %}
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group form-control-lg">
+                    <select class="form-control " id="federationslist">
+                        <option value="">Please select federation</option>
+                        {% for fed in federations %}
+                            {% if fed['uri'] == session['fed'] %}
+                                <option value="{{ fed['uri'] }}" selected> {{ fed['name'] }}</option>
+                            {% else %}
+                                <option value="{{ fed['uri'] }}"> {{ fed['name'] }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        <option value="All">All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-success"
+                        name="CreateNewFed" id="CreateNewFed"> Create New Federation </button>
+                <div id="my-form" title="Create New Federation" style="display:none">
+                    <p class="validateTips">Some fields are required.</p>
+                    <form method="post">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="namecf" class="required">Name</label>
+                                <input class="text ui-widget-content ui-corner-all" name="namecf" id="namecf" placeholder="Enter name of the new federation"
+                                       value="{{ request.form['namecf'] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="text ui-widget-content ui-corner-all"  name="description" style="resize: none; width: 100%"
+                                          id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="public">Public</label>
+                                <input type="checkbox" value="1" name="public" id="public" checked=checked>
+                            </div>
+                            <span id="errormsg" style="color:red"></span>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-<div class="row row-header">
-    <div class="col-lg-4">
-        <div class="form-group form-control-lg">
-            <select class="form-control " id="federationslist">
-                <option value="">Please select federation</option>
-                {% for fed in federations %}
-                    {% if fed['uri'] == session['fed'] %}
-                        <option value="{{ fed['uri'] }}" selected> {{ fed['name'] }}</option>
-                    {% else %}
-                        <option value="{{ fed['uri'] }}"> {{ fed['name'] }}</option>
-                    {% endif %}
-                {% endfor %}
-                <option value="All">All</option>
-            </select>
-        </div>
-    </div>
-    <div class="pull-right" style="padding-right: 15px">
-        <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed"> Create New Federation </button>
-        <div id="my-form" title="Create New Federation" style="display:none">
-            <p class="validateTips">Some fields are required.</p>
-            <form method="post">
-                <fieldset>
-                    <div class="form-group">
-                        <label for="namecf" class="required">Name</label>
-                        <input class="text ui-widget-content ui-corner-all" name="namecf" id="namecf" placeholder="Enter name of the new federation" value="{{ request.form['namecf'] }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="text ui-widget-content ui-corner-all"  name="description" style="resize: none; width: 100%" id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="public">Public</label>
-                        <input type="checkbox" value="1" name="public" id="public" checked=checked>
-                    </div>
-                    <span id="errormsg" style="color:red"></span>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
-
 <style>
     label, input { display:block; }
     input.text { margin-bottom:12px; width:100%; padding: .4em; }
     fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
     div#users-contain { width: 350px; margin: 20px 0; }
     div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
     div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
     .ui-dialog .ui-state-error { padding: .3em; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
-</style>
 
+</style>
 <div class="row">
     <div class="col-lg-12">
         <!--begin tabs going in wide content -->
        <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
-          <li class="active" id="dshome"><a href="#home" role="tab" data-toggle="tab">Available Data Sources</a></li>
-          <li id="dsmanage"><a href="#manage" role="tab" data-toggle="tab">Manage Data Sources</a></li>
+          <li class="active" id="dshome"><a href="#home" role="tab" data-toggle="tab">Available DataSources</a></li>
+          <li id="dsmanage"><a href="#manage" role="tab" data-toggle="tab">Manage DataSources</a></li>
        </ul>
        <!--/.nav-tabs.content-tabs -->
         <div class="tab-content">
             <div class="tab-pane fade in active" id="home">
                  <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-chart-bar fa-fw"></i> Basic Statistics
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Basic Statistics
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -83,9 +89,9 @@
                                     <table class="table table-bordered table-hover table-striped" id="basic-statistics">
                                         <thead>
                                             <tr>
-                                                <th>Data Source</th>
-                                                <th>#RDF-MTs</th>
-                                                <th>#Triples</th>
+                                                <th style="width: 60%">Data Source</th>
+                                                <th style="width: 20%">#RDF-MTs</th>
+                                                <th style="width: 20%">#Triples</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -105,14 +111,14 @@
             <div class="tab-pane fade" id="manage">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-coins fa-fw"></i> Data Sources
+                        <i class="fa fa-database fa-2x"></i><i class="fa fa-database fa-2x"></i><i class="fa fa-database fa-2x"></i>
                         <div class="pull-right">
-                            <p><b>Federation: <span id="mfedName" style="color:#D2691E"></span></b></p>
+                            <p><b>Federation:<span id="mfedName" style="color:#D2691E"></span></b></p>
                         </div>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="form-group" style="text-align: right">
+                        <div class="form-group" align="right">
                             <button type="button" class="btn btn-success"
                                     name="add" id="addds" > Add </button>
                              <button class="btn btn-warning" name="edit" id="editds" disabled="disabled" > Edit </button>
@@ -122,7 +128,7 @@
                              <button class="btn btn-primary" name="findlinks" id="findlinks" disabled="disabled" > Find Connection </button>
                             <button class="btn btn-primary" name="findalllinks" id="findalllinks"> Find All Connections </button>
                         </div>
-                        <table style="width: 100%" class="table table-striped table-bordered table-hover display" id="datasources">
+                        <table width="100%" class="table table-striped table-bordered table-hover display" id="datasources">
                             <thead>
                                 <tr>
                                     <th>ID</th> <!-- hidden-->
