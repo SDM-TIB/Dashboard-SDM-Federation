@@ -226,15 +226,6 @@ def query_rml(filenames, rdfmts=[]):
             sourceType = DataSourceType.LOCAL_TSV
         elif '.csv' in source or refForm is not None and 'CSV' in refForm:
             sourceType = DataSourceType.LOCAL_CSV
-        elif refForm is not None and 'Mongo' in refForm:
-            sourceType = DataSourceType.MONGODB
-
-            datasource.name = sourceDesc['http://ontario.tib.eu/mapping/database']
-            datasource.ID = sourceDesc['http://ontario.tib.eu/mapping/database']
-            datasource.ds_desc['dbName'] = sourceDesc['http://ontario.tib.eu/mapping/database']
-            datasource.ds_desc['username'] = sourceDesc['http://ontario.tib.eu/mapping/username']
-            datasource.ds_desc['password'] = sourceDesc['http://ontario.tib.eu/mapping/password']
-            datasource.ds_desc['mongoVersion'] = sqlVersion
         elif refForm is not None and 'Cypher' in refForm:
             sourceType = DataSourceType.NEO4J
             datasource.name = sourceDesc['http://ontario.tib.eu/mapping/database']

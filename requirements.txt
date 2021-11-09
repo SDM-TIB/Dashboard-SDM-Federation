@@ -2,7 +2,6 @@ requests==2.26.0
 flask==2.0.2
 hdfs==2.6.0
 pyspark==3.2.0
-pymongo==3.12.1
 mysql-connector-python==8.0.27
 neo4j-driver==1.7.6
 rdflib==5.0.0

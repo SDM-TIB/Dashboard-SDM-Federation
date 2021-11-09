@@ -1,32 +1,19 @@
-from flask import (
-    Blueprint, flash, g, redirect, render_template, session, Response, send_from_directory, request, url_for
-)
-from werkzeug.exceptions import abort
-from bson import json_util
-
-from flask.json import jsonify
 import json
-import traceback
-from multiprocessing import Process, Queue, active_children
-import hashlib
 import logging
-from mulder.mediator.decomposition.MediatorDecomposer import MediatorDecomposer
-from mulder.mediator.planner.MediatorPlanner import MediatorPlanner
-from mulder.mediator.planner.MediatorPlanner import contactSource as clm
-from fedsdm.config import ConfigSimpleStore
 
-from fedsdm.rdfmt import RDFMTMgr
-
-from fedsdm.rdfmt.model import *
-from ontario.wrappers.flatfile import LocalFlatFileClient, CSVTSVFileClient
-from ontario.wrappers.hadoop import SparkHDFSClient
-from ontario.wrappers.mysql import MySQLClient
-from ontario.wrappers.mongodb import MongoDBClient
-from ontario.wrappers.neo4j.sparql2cypher import Neo4jClient
+from flask import (
+    Blueprint, g, render_template, Response, request
+)
 
 from fedsdm.auth import login_required
 from fedsdm.db import get_db, get_mdb
-from fedsdm.ui.utils import get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations
+from fedsdm.rdfmt import RDFMTMgr
+from fedsdm.rdfmt.model import *
+from fedsdm.ui.utils import get_federations
+from ontario.wrappers.flatfile import LocalFlatFileClient, CSVTSVFileClient
+from ontario.wrappers.hadoop import SparkHDFSClient
+from ontario.wrappers.mysql import MySQLClient
+from ontario.wrappers.neo4j.sparql2cypher import Neo4jClient
 
 bp = Blueprint('mapping', __name__, url_prefix='/mapping')
 
@@ -67,12 +54,10 @@ def api_get_ds_collections():
         fed = request.args["fed"]
         ds = request.args["ds"]
     except KeyError:
-        return Response(json.dumps({}),
-                    mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
     res = get_ds_collections(fed, ds)
 
-    return Response(json.dumps({"data": res}),
-                    mimetype="application/json")
+    return Response(json.dumps({"data": res}), mimetype="application/json")
 
 
 def get_ds_collections(fed, ds):
@@ -82,7 +67,6 @@ def get_ds_collections(fed, ds):
 
     if len(datasource) > 0:
         datasource = datasource[0]
-
         datasource = DataSource(ds,
                                 datasource['url'],
                                 datasource['dstype'],
@@ -102,23 +86,6 @@ def get_ds_collections(fed, ds):
         elif datasource.dstype == DataSourceType.MYSQL:
             mysql = init_mysql_client(datasource)
             return mysql.list_tables()
-        elif datasource.dstype == DataSourceType.MONGODB:
-            mcl = init_mongo_client(datasource)
-            mongocols = []
-            if mcl is not None:
-                dbs = mcl.listDatabases()
-                for dbname in dbs:
-                    name = dbname['name']
-                    colls = mcl.listCollections(name)
-                    for c in colls:
-                        row = {
-                            "db": name,
-                            "document": c['name'],
-                            "count": c['count']
-                        }
-                        mongocols.append(row)
-
-            return mongocols
         elif datasource.dstype == DataSourceType.LOCAL_CSV or \
                 datasource.dstype == DataSourceType.LOCAL_TSV or \
                 datasource.dstype == DataSourceType.LOCAL_JSON or \
@@ -154,8 +121,7 @@ def api_get_columns_names():
         for c in cols:
             columns.append({'title': c, 'data': c})
 
-    return Response(json.dumps({"columns": columns, 'data': res}, default=json_util.default, indent=True),
-                    mimetype="application/json")
+    return Response(json.dumps({"columns": columns, 'data': res}, indent=True), mimetype="application/json")
 
 
 @bp.route('/api/show_sample_rows',methods=['POST'])
@@ -171,8 +137,7 @@ def api_show_sample_rows():
         return Response(json.dumps({}), mimetype="application/json")
     res, count = get_document(fed, ds, dbname, colls, dstype)
 
-    return Response(json.dumps({"data": res}, default=json_util.default, indent=True),
-                    mimetype="application/json")
+    return Response(json.dumps({"data": res}, indent=True), mimetype="application/json")
 
 
 @bp.route("/api/savemapping", methods=['POST'])
@@ -185,13 +150,11 @@ def api_savemapping():
         prefix = e['prefix']
     except KeyError:
         print('request args/form exception ... ', request.args, request.form)
-        return Response(json.dumps({}),
-                    mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
 
     res = save_mapping(fed, mapping, prefix)
 
-    return Response(json.dumps({"data": res}, default=json_util.default, indent=True),
-                    mimetype="application/json")
+    return Response(json.dumps({"data": res}, indent=True), mimetype="application/json")
 
 
 @bp.route("/api/get_mapping", methods=['GET'])
@@ -219,9 +182,7 @@ def api_show_mapping():
     else:
         results, subjmaps, rdftxt = get_mapping(fed, ds)
 
-    return Response(json.dumps({"data": rdftxt, "subjmap": subjmaps, "other": results},
-                               default=json_util.default,
-                               indent=True),
+    return Response(json.dumps({"data": rdftxt, "subjmap": subjmaps, "other": results}, indent=True),
                     mimetype="application/json")
 
 
@@ -242,9 +203,7 @@ def api_get_label_properties():
         columns.append({'title': c, 'data': c})
 
     data = get_document(fed, ds, None, label, "Neo4j")
-    return Response(json.dumps({"columns": columns, 'data': data},
-                               default=json_util.default, indent=True),
-                    mimetype="application/json")
+    return Response(json.dumps({"columns": columns, 'data': data}, indent=True), mimetype="application/json")
 
 
 def get_neo4j_lbl_properties(fed, ds, label):
@@ -304,22 +263,6 @@ def init_neo4j_client(datasource):
     return neo
 
 
-def init_mongo_client(datasource):
-
-    username = None
-    password = None
-    if datasource.params is not None and len(datasource.params) > 0:
-        import json
-        params = json.loads(datasource.params)
-        if 'username' in params:
-            username = params['username']
-        if 'password' in params:
-            password = params['password']
-
-    mcl = MongoDBClient(datasource.url, username, password)
-    return mcl
-
-
 def get_document(federation, ds, dbname, colname, dstype, limit=15):
     mdb = get_mdb()
     mtmgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, "dba", "dba", federation)
@@ -354,10 +297,6 @@ def get_document(federation, ds, dbname, colname, dstype, limit=15):
                 datasource.dstype == DataSourceType.SPARK_XML:
             hcl = SparkHDFSClient(datasource)
             return hcl.get_documents(dbname+'/'+colname, limit)
-        else:
-            mcl = init_mongo_client(datasource)
-            if mcl is not None:
-                return mcl.get_documents(dbname, colname, limit)
     return [], -1
 
 

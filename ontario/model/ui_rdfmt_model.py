@@ -148,11 +148,8 @@ class DataSource(object):
         else:
             if 'SPARQL_Endpoint' in dstype:
                 self.dstype = DataSourceType.SPARQL_ENDPOINT
-            elif 'MongoDB' in dstype:
-                self.dstype = DataSourceType.MONGODB
             elif "Neo4j" in dstype:
                 self.dstype = DataSourceType.NEO4J
-
             elif "SPARK_CSV" in dstype:
                 self.dstype = DataSourceType.SPARK_CSV
             elif "SPARK_XML" in dstype:
@@ -161,7 +158,6 @@ class DataSource(object):
                 self.dstype = DataSourceType.SPARK_JSON
             elif "SPARK_TSV" in dstype:
                 self.dstype = DataSourceType.SPARK_TSV
-
             elif "HADOOP_CSV" in dstype:
                 self.dstype = DataSourceType.HADOOP_CSV
             elif "HADOOP_XML" in dstype:
@@ -170,10 +166,8 @@ class DataSource(object):
                 self.dstype = DataSourceType.HADOOP_JSON
             elif "HADOOP_TSV" in dstype:
                 self.dstype = DataSourceType.HADOOP_TSV
-
             elif "REST" in dstype:
                 self.dstype = DataSourceType.REST_SERVICE
-
             elif "LOCAL_CSV" in dstype:
                 self.dstype = DataSourceType.LOCAL_CSV
             elif "LOCAL_TSV" in dstype:
@@ -182,7 +176,6 @@ class DataSource(object):
                 self.dstype = DataSourceType.LOCAL_JSON
             elif "LOCAL_XML" in dstype:
                 self.dstype = DataSourceType.LOCAL_XML
-
             elif "MySQL" in dstype:
                 self.dstype = DataSourceType.MYSQL
             else:
@@ -219,7 +212,6 @@ class DataSource(object):
         return False
 
     def to_rdf(self):
-
         data = []
         data.append("<" + self.rid + "> a <" + mtonto + "DataSource> ")
         data.append("<" + self.rid + "> <" + mtonto + "dataSourceType> <" + mtresource + 'DatasourceType/' + str(

@@ -379,8 +379,6 @@ def getdsscore(dstype):
 
     if dstype == DataSourceType.SPARQL_ENDPOINT:
         return 20
-    elif dstype == DataSourceType.MONGODB:
-        return 15
     elif dstype == DataSourceType.NEO4J:
         return 15
     elif dstype == DataSourceType.HADOOP_CSV:

@@ -981,7 +981,6 @@ class RDFMTMgr(object):
         queue.put("EOF")
 
     def get_links_bn_ds(self, reslist, m2, e2):
-
         resdict = {}
         results = {}
         prefixes = {}
@@ -1139,7 +1138,7 @@ class RDFMTMgr(object):
                             rtype = 0
                             for mrr in preds[p][mr]:
                                 print(p, mr, mrr)
-                                rds = DataSource(mrr, ds.url, DataSourceType.MONGODB) # Only mrr is important here for the range
+                                rds = DataSource(mrr, ds.url, DataSourceType.MYSQL) # Only mrr is important here for the range
                                 ran = PropRange(mrpid, mr, rds, range_type=rtype, cardinality=-1)
                                 ranges.append(ran)
 

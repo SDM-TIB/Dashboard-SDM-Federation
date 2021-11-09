@@ -267,9 +267,7 @@ class LeafOperator(object):
         processqueue.put(p.pid)
 
     def get_wrapper_fun(self, datasource):
-        if datasource.dstype == DataSourceType.MONGODB:
-            return SPARQL2Mongo(datasource, self.config, self.rdfmts, self.star)
-        elif datasource.dstype == DataSourceType.LOCAL_TSV or datasource.dstype == DataSourceType.LOCAL_CSV \
+        if datasource.dstype == DataSourceType.LOCAL_TSV or datasource.dstype == DataSourceType.LOCAL_CSV \
             or datasource.dstype == DataSourceType.LOCAL_JSON or \
                 datasource.dstype == DataSourceType.HADOOP_TSV or datasource.dstype == DataSourceType.HADOOP_CSV \
                 or datasource.dstype == DataSourceType.HADOOP_JSON:

@@ -18,8 +18,6 @@ class DataSource(object):
         self.dstype = dstype
         if 'SPARQL_Endpoint' in dstype:
             self.dstype = DataSourceType.SPARQL_ENDPOINT
-        elif 'MongoDB' in dstype:
-            self.dstype = DataSourceType.MONGODB
         elif "Neo4j" in dstype:
             self.dstype = DataSourceType.NEO4J
         elif "HADOOP_CSV" in dstype:
