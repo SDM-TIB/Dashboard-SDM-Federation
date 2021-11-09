@@ -525,15 +525,6 @@ class DrillWrapper(object):
             elif self.datasource.dstype == DataSourceType.LOCAL_JSON:
                 # fileext = 'dfs.`/data/json/' + database_name + '/' + tablename + '.json`'
                 fileext = 'dfs.`/data/json/' + tablename + '`'
-            elif self.datasource.dstype == DataSourceType.HADOOP_TSV:
-                # fileext = 'hdfs.`/user/kemele/data/tsv/' + database_name + '/' + tablename + '.tsv`'
-                fileext = 'hdfs.`/user/kemele/data/tsv/' + tablename + '`'
-            elif self.datasource.dstype == DataSourceType.HADOOP_CSV:
-                # fileext = 'hdfs.`/user/kemele/data/csv/' + database_name + '/' + tablename + '.csv`'
-                fileext = 'hdfs.`/user/kemele/data/csv/' + tablename + '`'
-            elif self.datasource.dstype == DataSourceType.HADOOP_JSON:
-                # fileext = 'hdfs.`/user/kemele/data/json/' + database_name + '/' + tablename + '.json`'
-                fileext = 'hdfs.`/user/kemele/data/json/' + tablename + '`'
             else:
                 fileext = ''
 

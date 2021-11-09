@@ -11,7 +11,6 @@ from fedsdm.rdfmt import RDFMTMgr
 from fedsdm.rdfmt.model import *
 from fedsdm.ui.utils import get_federations
 from ontario.wrappers.flatfile import LocalFlatFileClient, CSVTSVFileClient
-from ontario.wrappers.hadoop import SparkHDFSClient
 from ontario.wrappers.mysql import MySQLClient
 from ontario.wrappers.neo4j.sparql2cypher import Neo4jClient
 
@@ -92,12 +91,6 @@ def get_ds_collections(fed, ds):
                 datasource.dstype == DataSourceType.LOCAL_XML:
             mcl = LocalFlatFileClient(datasource)
             return mcl.list_collections()
-        elif datasource.dstype == DataSourceType.SPARK_JSON or \
-                datasource.dstype == DataSourceType.SPARK_TSV or \
-                datasource.dstype == DataSourceType.SPARK_CSV or \
-                datasource.dstype == DataSourceType.SPARK_XML:
-            hcl = SparkHDFSClient(datasource)
-            return hcl.list_collections()
 
     return []
 
@@ -142,7 +135,6 @@ def api_show_sample_rows():
 
 @bp.route("/api/savemapping", methods=['POST'])
 def api_savemapping():
-
     try:
         e = request.form
         fed = request.args["fed"]
@@ -159,7 +151,6 @@ def api_savemapping():
 
 @bp.route("/api/get_mapping", methods=['GET'])
 def api_show_mapping():
-
     try:
         fed = request.args["fed"]
         ds = request.args["ds"]
@@ -291,12 +282,6 @@ def get_document(federation, ds, dbname, colname, dstype, limit=15):
         elif datasource.dstype == DataSourceType.MYSQL:
             mysql = init_mysql_client(datasource)
             return mysql.get_samples(dbname, colname, limit)
-        elif datasource.dstype == DataSourceType.SPARK_JSON or \
-                datasource.dstype == DataSourceType.SPARK_TSV or \
-                datasource.dstype == DataSourceType.SPARK_CSV or \
-                datasource.dstype == DataSourceType.SPARK_XML:
-            hcl = SparkHDFSClient(datasource)
-            return hcl.get_documents(dbname+'/'+colname, limit)
     return [], -1
 
 

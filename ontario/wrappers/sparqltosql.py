@@ -149,31 +149,22 @@ class SPARQL2SQL(object):
                 if isinstance(database_name, str):
                     database_name = {}
                 tablename = data_source.name
-                if self.datasource.dstype == DataSourceType.LOCAL_TSV or \
-                        self.datasource.dstype == DataSourceType.SPARK_TSV or \
-                        self.datasource.dstype == DataSourceType.HADOOP_TSV:
+                if self.datasource.dstype == DataSourceType.LOCAL_TSV:
                     fileext = self.datasource.url + ('/' if self.datasource.url[-1] != '/' else "") + \
                               tablename + ('.tsv' if '.tsv' not in data_source.name else "")
                     # fileext = '/media/kemele/DataHD/LSLOD-flatfile/tsv/' + tablename
-                elif self.datasource.dstype == DataSourceType.LOCAL_CSV or \
-                        self.datasource.dstype == DataSourceType.SPARK_CSV or \
-                        self.datasource.dstype == DataSourceType.HADOOP_CSV:
+                elif self.datasource.dstype == DataSourceType.LOCAL_CSV:
                     fileext = self.datasource.url + ('/' if self.datasource.url[-1] != '/' else "") + \
                               tablename + ('.csv' if '.csv' not in data_source.name else "")
                     # fileext = '/media/kemele/DataHD/LSLOD-flatfile/csv/' + tablename
-                elif self.datasource.dstype == DataSourceType.LOCAL_JSON or \
-                        self.datasource.dstype == DataSourceType.SPARK_JSON or \
-                        self.datasource.dstype == DataSourceType.HADOOP_JSON:
+                elif self.datasource.dstype == DataSourceType.LOCAL_JSON:
                     fileext = self.datasource.url + ('/' if self.datasource.url[-1] != '/' else "") + \
                               tablename + ('.json' if '.json' not in data_source.name else "")
                     # fileext = '/media/kemele/DataHD/LSLOD-flatfile/json/' + tablename
-                elif self.datasource.dstype == DataSourceType.LOCAL_XML or \
-                        self.datasource.dstype == DataSourceType.SPARK_XML or \
-                        self.datasource.dstype == DataSourceType.HADOOP_XML:
+                elif self.datasource.dstype == DataSourceType.LOCAL_XML:
                     fileext = self.datasource.url + ('/' if self.datasource.url[-1] != '/' else "") + \
                               tablename + ('.xml' if '.xml' not in data_source.name else "")
                     # fileext = '/media/kemele/DataHD/LSLOD-flatfile/xml/' + tablename
-
                 else:
                     fileext = ''
 

@@ -381,22 +381,6 @@ def getdsscore(dstype):
         return 20
     elif dstype == DataSourceType.NEO4J:
         return 15
-    elif dstype == DataSourceType.HADOOP_CSV:
-        return 12
-    elif dstype == DataSourceType.HADOOP_XML:
-        return 5
-    elif dstype == DataSourceType.HADOOP_JSON:
-        return 8
-    elif dstype == DataSourceType.HADOOP_TSV:
-        return 12
-    elif dstype == DataSourceType.SPARK_CSV:
-        return 12
-    elif dstype == DataSourceType.SPARK_XML:
-        return 5
-    elif dstype == DataSourceType.SPARK_JSON:
-        return 8
-    elif dstype == DataSourceType.SPARK_TSV:
-        return 12
     elif dstype == DataSourceType.REST_SERVICE:
         return 5
     elif dstype == DataSourceType.LOCAL_CSV:
