@@ -1,7 +1,0 @@
-http://node2.research.tib.eu:1370/sparql
-http://node2.research.tib.eu:1371/sparql
-http://node2.research.tib.eu:1372/sparql
-http://node2.research.tib.eu:1373/sparql
-http://node2.research.tib.eu:1374/sparql
-http://node2.research.tib.eu:1375/sparql
-http://node2.research.tib.eu:1376/sparql
