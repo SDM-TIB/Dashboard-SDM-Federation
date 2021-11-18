@@ -15,7 +15,8 @@ $(document).ready(function() {
     var ctx = $("#myChart");
     var myBarChart = null;
     var bsloaded = 0;
-
+    var prefix = 'http://ontario.tib.eu/federation/g/';    
+    
     // if federation is set from session, then trigger visualization and management data
     showFederations(federation);
 
@@ -625,6 +626,14 @@ $(document).ready(function() {
                         manage(federation);
                         // what to do next?
                         // TODO: select new federation and go to the 'manage data sources' tab
+                        federation = prefix + name;
+                        fed = federation;
+                        showFederations(federation);
+                        $("#federationslist").append('<option value=' + federation + ' selected>' + name + '</option>');
+                        var aTab = '#manage';
+                        if(aTab){
+                            $('#maincontent a[href="' + aTab + '"]').tab('show');
+                        }                        
                     }else{
                         $('#errormsg').html("Error while creating the new federation! Please enter a valid name (var name).")
                     }
