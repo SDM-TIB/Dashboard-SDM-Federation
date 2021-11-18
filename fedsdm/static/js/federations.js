@@ -623,13 +623,11 @@ $(document).ready(function() {
                         $("#fedName").html(name);
                         $('#newfedform').hide();
                         crnfdialog.dialog( "close" );
-                        manage(federation);
-                        // what to do next?
-                        // TODO: select new federation and go to the 'manage data sources' tab
+                        // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name;
                         fed = federation;
-                        showFederations(federation);
                         $("#federationslist").append('<option value=' + federation + ' selected>' + name + '</option>');
+                        showFederations(federation);
                         var aTab = '#manage';
                         if(aTab){
                             $('#maincontent a[href="' + aTab + '"]').tab('show');
