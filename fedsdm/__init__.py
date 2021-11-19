@@ -25,6 +25,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=False)
     app.config["APPLICATION_ROOT"] = prefix
+    app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
     app.debug = True
 
     # app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=prefix)
