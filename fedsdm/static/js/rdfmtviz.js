@@ -511,10 +511,18 @@ $(document).ready(function() {
     function drawDonut(sourcemt){
         if (source != "All"){
             $("#graph").empty();
-            $("#graph").append('<div style="float:left"><div id="morris-donut-chart" style="float:left"></div><div  style="margin-top:10px;display:inline-block" id="legendd" class="donut-legend"></div></div>')
+            $.getJSON('/rdfmts/api/rdfmtstats?graph=' + federation,function(jdata) {
+                for (let i=0; i<jdata.data.length; i++) {
+                    for (let j in mtcards[sourcemt]) {
+                        if( mtcards[sourcemt][j].label.includes(jdata.data[i][1]))
+                            mtcards[sourcemt][j].value = jdata.data[i][3];
+                    }
+                }
                 mtcards[sourcemt].sort(function(a, b) {
                     return b.value - a.value;
                 });
+            });
+            $("#graph").append('<div style="float:left"><div id="morris-donut-chart" style="float:left"></div><div  style="margin-top:10px;display:inline-block" id="legendd" class="donut-legend"></div></div>');
                 var mtdonut = Morris.Donut({
                         element: 'morris-donut-chart',
                         data: mtcards[sourcemt],
@@ -569,9 +577,17 @@ $(document).ready(function() {
         }else{
             $("#graph").empty();
             $.each(mtcards, function (key, val) {
-                $("#graph").append('<div style="float:left"><div id="morris-donut-chart' + key +'" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legend'+key +'" class="donut-legend"></div></div>')
-                val.sort(function(a, b) {
-                    return b.value - a.value;
+                $("#graph").append('<div style="float:left"><div id="morris-donut-chart' + key +'" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legend'+key +'" class="donut-legend"></div></div>');
+                $.getJSON('/rdfmts/api/rdfmtstats?graph=' + federation,function(jdata) {
+                    for (let i=0; i<jdata.data.length; i++) {
+                        for (let ii in val) {
+                            if( val[ii].label.includes(jdata.data[i][1]))
+                                val[ii].value = jdata.data[i][3];
+                        }
+                    }
+                    val.sort(function(a, b) {
+                        return b.value - a.value;
+                    });
                 });
                 var mtdonut = Morris.Donut({
                         element: 'morris-donut-chart'+key,
