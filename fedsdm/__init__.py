@@ -70,8 +70,8 @@ def create_app(test_config=None):
     from . import query
     app.register_blueprint(query.bp)
 
-    from . import mapping
-    app.register_blueprint(mapping.bp)
+    # from . import mapping
+    # app.register_blueprint(mapping.bp)
 
     from . import feedback
     app.register_blueprint(feedback.bp)
@@ -105,6 +105,5 @@ def create_app(test_config=None):
     @app.route('/images/<path:path>')
     def send_images(path):
         return send_from_directory('static/css/images', path)
-
 
     return app
