@@ -7,6 +7,7 @@ $(document).ready(function() {
     $("#mtviz").hide();
 
     var federation =  $("#federationslist").val();
+    window.jsdata = new Array();
 
     var tabvisible = '#home';
     if (federation != null && federation != ""){
@@ -355,8 +356,10 @@ $(document).ready(function() {
                 stats.ajax.url("/rdfmts/api/rdfmtstats?graph=" + fed).load();
             }
     }
-
     function get_rdfmts(fed){
+        $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) {
+            jsdata = data2;
+        });
         if (fed == null || (fed == federation && vized == 1)){
             return
          }
@@ -507,20 +510,17 @@ $(document).ready(function() {
        console.log('p[class=legend'+key+']');
        $('p[class=legend'+key+']').toggle();
     };
-
     function drawDonut(sourcemt){
         if (source != "All"){
             $("#graph").empty();
-            $.getJSON('/rdfmts/api/rdfmtstats?graph=' + federation,function(jdata) {
-                for (let i=0; i<jdata.data.length; i++) {
-                    for (let j in mtcards[sourcemt]) {
-                        if( mtcards[sourcemt][j].label.includes(jdata.data[i][1]))
-                            mtcards[sourcemt][j].value = jdata.data[i][3];
-                    }
+            for (let i=0; i<jsdata.data.length; i++) {
+                for (let j in mtcards[sourcemt]) {
+                    if( mtcards[sourcemt][j].label.includes(jsdata.data[i][1]))
+                        mtcards[sourcemt][j].value = jsdata.data[i][3];
                 }
-                mtcards[sourcemt].sort(function(a, b) {
-                    return b.value - a.value;
-                });
+            }
+            mtcards[sourcemt].sort(function(a, b) {
+                return b.value - a.value;
             });
             $("#graph").append('<div style="float:left"><div id="morris-donut-chart" style="float:left"></div><div  style="margin-top:10px;display:inline-block" id="legendd" class="donut-legend"></div></div>');
                 var mtdonut = Morris.Donut({
@@ -578,17 +578,15 @@ $(document).ready(function() {
             $("#graph").empty();
             $.each(mtcards, function (key, val) {
                 $("#graph").append('<div style="float:left"><div id="morris-donut-chart' + key +'" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legend'+key +'" class="donut-legend"></div></div>');
-                $.getJSON('/rdfmts/api/rdfmtstats?graph=' + federation,function(jdata) {
-                    for (let i=0; i<jdata.data.length; i++) {
+                    for (let i=0; i<jsdata.data.length; i++) {
                         for (let ii in val) {
-                            if( val[ii].label.includes(jdata.data[i][1]))
-                                val[ii].value = jdata.data[i][3];
+                            if( val[ii].label.includes(jsdata.data[i][1]))
+                                val[ii].value = jsdata.data[i][3];
                         }
                     }
                     val.sort(function(a, b) {
                         return b.value - a.value;
                     });
-                });
                 var mtdonut = Morris.Donut({
                         element: 'morris-donut-chart'+key,
                         data: val,
