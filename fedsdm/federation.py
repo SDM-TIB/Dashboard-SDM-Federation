@@ -60,21 +60,31 @@ def stats():
     stats = {}
     if graph is not None:
         session['fed'] = graph
-        datasources = get_datasources(graph)
-        for s in list(datasources.keys()):
-            nummts = get_num_rdfmts(graph, s)
-            props = get_num_properties(graph, s)
-            linkss = get_mtconns(graph, s)
-            stat = {"rdfmts": nummts,
-                    "links": linkss,
-                    "triples": datasources[s]['triples'] if 'triples' in datasources[s] else -1,
-                    "properties": props,
-                    "ds": datasources[s]['source']}
-            stats[datasources[s]['source']] = stat
+        if graph == "All":
+            federations = get_federations(g.default_graph)
+            for fed in federations:
+                stats.update(get_stats(fed['uri']))
+        else:
+            stats.update(get_stats(graph))
 
     return Response(json.dumps({"data": stats}),
                     mimetype="application/json")
 
+
+def get_stats(graph):
+    stats = {}
+    datasources = get_datasources(graph)
+    for datasource in list(datasources.keys()):
+        nummts = get_num_rdfmts(graph, datasource)
+        props = get_num_properties(graph, datasource)
+        linkss = get_mtconns(graph, datasource)
+        stat = {"rdfmts": nummts,
+            "links": linkss,
+            "triples": datasources[datasource]['triples'] if 'triples' in datasources[datasource] else -1,
+            "properties": props,
+            "ds": datasources[datasource]['source']}
+        stats[datasources[datasource]['source']] = stat
+    return stats
 
 @bp.route('/create', methods=("GET", "POST"))
 @login_required

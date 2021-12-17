@@ -84,7 +84,7 @@ $(document).ready(function() {
                 var bardata = {labels:[], rdfmts:[], triples:[]};
                 for (d in datas){
                     rem = [];
-                    console.log(datas)
+                    //console.log(datas)
                     rem.push(datas[d].ds);
                     var rdfmts = datas[d].rdfmts;
 
