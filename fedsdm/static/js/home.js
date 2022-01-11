@@ -11,14 +11,16 @@ $(document).ready(function() {
     $('#contentrow').hide();
     var federations = null;
     var stats = null;
-
     var datas = [];
     var ctx = $("#rdfmt-dist-chart");
     var myBarChart = null;
     var bardata = {labels:[], rdfmts:[], links:[], properties:[], triples:[]};
+    var nctx = $("#rdfmt-dist-chart2");
+    var myBarChartn = null;
+    var nfeds = [];
+    var nds = [];
 
-
-    window.setFederation = function(feds){
+    window.setFederation = function(feds, ns, ms){
         federations = feds
 
         if (federations != null){
@@ -87,8 +89,6 @@ $(document).ready(function() {
                                 borderWidth: 1,
                                 backgroundColor:"#d64161"
                             }
-
-
                             ]
                     },
                 options: {
@@ -127,7 +127,53 @@ $(document).ready(function() {
                             }
                         }
                 }
-            });
+                });
+                nfeds=ns;
+                nds=ms;
+                myBarChartn = new Chart(nctx, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: nfeds,
+                        datasets : [
+                            {
+                                id: 1,
+                                label: "# of 1 (log)",
+                                data: nds,
+                                borderWidth: 1,
+                                backgroundColor: "#169649"
+                            },
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                },
+                                gridLines: {
+                                    offsetGridLines: true
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                },
+                                gridLines: {
+                                    offsetGridLines: true
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: true,
+                            title: "Summary of sample data sources",
+                            labels: {
+                                fontColor: 'rgb(25, 99, 132)',
+                                boxWidth: 8
+
+                            }
+                        },
+                    }
+                });
             }
             else{
             myBarChart.data.labels=[];
