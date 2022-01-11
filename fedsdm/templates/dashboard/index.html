@@ -199,7 +199,6 @@ $(document).ready(function(){
     var nproperties = {};
     var nlinks = {};
     var federations = JSON.parse('{{ dsstats | tojson | safe}}');
-    //console.log(federations);
     var nfd = JSON.parse('{{ federations | tojson | safe}}');
     for (let i = 0; i < nfd.length; i++) {
         if(ndict[nfd[i]['name']] == undefined){
@@ -214,14 +213,12 @@ $(document).ready(function(){
             {
                 ndict[nfd[i]['name']] ++;
                 ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(federations[j]['triples']);
-                //console.log(ndict[nfd[i]['triples']]);
                 nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(federations[j]['rdfmts']);
                 nproperties[nfd[i]['name']] = parseFloat(nproperties[nfd[i]['name']]) + parseFloat(federations[j]['properties']);
                 nlinks[nfd[i]['name']] = parseFloat(nlinks[nfd[i]['name']]) + parseFloat(federations[j]['links']);
             }
         }
     }
-    console.log(nrdftms);
     for (var key in ndict) {
         if (ndict.hasOwnProperty(key)) {
             nds.push(ndict[key]);
