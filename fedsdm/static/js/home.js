@@ -19,8 +19,12 @@ $(document).ready(function() {
     var myBarChartn = null;
     var nfeds = [];
     var nds = [];
+    var ntpl = [];
+    var nftm = [];
+    var nprp = [];
+    var nlnk = [];
 
-    window.setFederation = function(feds, ns, ms){
+    window.setFederation = function(feds, nf, nd, nl, nm, np, nk){
         federations = feds
 
         if (federations != null){
@@ -53,7 +57,6 @@ $(document).ready(function() {
                     break;
                 }
             }
-            console.log(bardata)
             if (myBarChart == null){
                 myBarChart = new Chart(ctx, {
                 type: 'horizontalBar',
@@ -91,17 +94,17 @@ $(document).ready(function() {
                             }
                             ]
                     },
-                options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                },
-                                gridLines: {
-                                    offsetGridLines: true
-                                }
-                            }]
-                        },
+                    options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    },
+                                    gridLines: {
+                                        offsetGridLines: true
+                                    }
+                                }]
+                         },
                         legend: {
                             display: true,
                             title: "Summary of sample data sources",
@@ -112,7 +115,7 @@ $(document).ready(function() {
                             }
                         },
                         tooltips: {
-                            callbacks: {
+                          callbacks: {
                                 label: function(tooltipItem, data) {
                                     var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
@@ -126,10 +129,39 @@ $(document).ready(function() {
                                 }
                             }
                         }
-                }
+                    }
                 });
-                nfeds=ns;
-                nds=ms;
+                nfeds = nf;
+                nds = nd;
+                for(let [i, v] of nds.entries())
+                {
+                    let bb = parseInt(v);
+                    nds[i] = Math.log10(bb);
+                }
+                ntpl = nl;
+                for(let [i, v] of ntpl.entries())
+                {
+                    let bb = parseInt(v);
+                    ntpl[i] = Math.log10(bb);
+                }
+                nftm = nm;
+                for(let [i, v] of nftm.entries())
+                {
+                    let bb = parseInt(v);
+                    nftm[i] = Math.log10(bb);
+                }
+                nprp = np;
+                for(let [i, v] of nprp.entries())
+                {
+                    let bb = parseInt(v);
+                    nprp[i] = Math.log10(bb);
+                }
+                nlnk = nk;
+                for(let [i, v] of nlnk.entries())
+                {
+                    let bb = parseInt(v);
+                    nlnk[i] = Math.log10(bb);
+                }
                 myBarChartn = new Chart(nctx, {
                     type: 'horizontalBar',
                     data: {
@@ -142,6 +174,34 @@ $(document).ready(function() {
                                 borderWidth: 1,
                                 backgroundColor: "#169649"
                             },
+                            {
+                                id: 2,
+                                label: "# of Triples (log)",
+                                data: ntpl,
+                                borderWidth: 1,
+                                backgroundColor: "#b2ad7f"
+                            },
+                            {
+                                id: 3,
+                                label: "# of RDF-MTs (log)",
+                                data: nftm,
+                                borderWidth: 1,
+                                backgroundColor: "#6b5b95"
+                            },
+                            {
+                                id: 4,
+                                label: "# of Properties (log)",
+                                data: nprp,
+                                borderWidth: 1,
+                                backgroundColor: "#feb236"
+                            },
+                            {
+                                id: 5,
+                                label: "# of Links (log)",
+                                data: nlnk,
+                                borderWidth: 1,
+                                backgroundColor:"#d64161"
+                            }
                         ]
                     },
                     options: {
@@ -162,6 +222,7 @@ $(document).ready(function() {
                                     offsetGridLines: true
                                 }
                             }],
+
                         },
                         legend: {
                             display: true,
@@ -214,6 +275,7 @@ $(document).ready(function() {
 
                             ]
             myBarChart.update();
+            myBarChartn.update();
 
         }
 
