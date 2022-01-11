@@ -137,7 +137,7 @@ $(document).ready(function() {
                         datasets : [
                             {
                                 id: 1,
-                                label: "# of 1 (log)",
+                                label: "# number of data sources",
                                 data: nds,
                                 borderWidth: 1,
                                 backgroundColor: "#169649"
