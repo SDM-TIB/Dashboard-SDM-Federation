@@ -19,7 +19,11 @@ def stats():
     #     ' FROM federation f '
     #     ' JOIN user u ON f.owner_id = u.id '
     # ).fetchall()
-
+    federations = get_federations(g.default_graph)
+    g.federations = federations
+    if 'fed' in session:
+            if session['fed'] not in [f['uri'] for f in federations]:
+                del session['fed']
     sourceids = []
     datasources = {}
     rdfmts = 0
@@ -63,5 +67,5 @@ def stats():
 
     g.stats = stats
 
-    return render_template('dashboard/index.html', dsstats=datasourcesstat,  fedstats=stat)
+    return render_template('dashboard/index.html', dsstats=datasourcesstat,  fedstats=stat, federations=g.federations)
 
