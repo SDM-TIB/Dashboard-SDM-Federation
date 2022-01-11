@@ -123,32 +123,26 @@
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
+
+        <!-- 00000000000000 -->
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Federations Summary
-                <div class="pull-right">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            Actions
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
             <!-- /.panel-heading -->
+            <!-- 00000000000000 -->
+
+            <!-- 00000000000000 -->
+            <!-- /.panel-heading -->
+            <div class="panel-body" id="datasummary2">
+                <canvas id="rdfmt-dist-chart2"></canvas>
+            </div>
+            <!-- 00000000000000 -->
+
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-4">
                         <div id="federationdonuts"></div>
-                        <a href="#" class="btn btn-default btn-block">View Details</a>
-                        <!-- /.table-responsive -->
                     </div>
                     <!-- /.col-lg-4 (nested) -->
                     <div class="col-lg-8">
@@ -163,6 +157,7 @@
         <!-- /.panel -->
     </div>
     <!-- /.col-lg-8 -->
+
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -188,21 +183,40 @@
             </div>
             <div class="panel-body">
                 <div id="ds-dist-chart"></div>
-                    <a href="viewds.html" class="btn btn-default btn-block">View Details</a>
-                </div>
-                <!-- /.panel-body -->
+                <a href="viewds.html" class="btn btn-default btn-block">View Details</a>
+            </div>
+            <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
     </div>
     <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
-
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 <script>
 $(document).ready(function(){
+    var nfeds = [];
+    var nds = [];
+    var ndict = {};
     var federations = JSON.parse('{{ dsstats | tojson | safe}}');
-    setFederation(federations);
+    var nfd = JSON.parse('{{ federations | tojson | safe}}');
+    for (let i = 0; i < nfd.length; i++) {
+        if(ndict[nfd[i]['name']] == undefined)
+            ndict[nfd[i]['name']] = 0;
+        for (let j = 0; j < federations.length; j++) {
+            if(federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase())>0)
+            {
+                ndict[nfd[i]['name']] ++;
+            }
+        }
+    }
+    for (var key in ndict) {
+        if (ndict.hasOwnProperty(key)) {
+            nds.push(ndict[key]);
+            nfeds.push(key);
+        }
+    }
+    setFederation(federations, nfeds, nds);
     var mts = JSON.parse('{{ fedstats | tojson | safe}}');
     setstats(mts);
     $("#totaldatasources").html(mts.sources);
@@ -213,5 +227,4 @@ $(document).ready(function(){
     $('#contentrow').show();
 });
 </script>
-
 {% endblock %}
