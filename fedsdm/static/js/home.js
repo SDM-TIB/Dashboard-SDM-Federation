@@ -26,7 +26,6 @@ $(document).ready(function() {
 
     window.setFederation = function(feds, nf, nd, nl, nm, np, nk){
         federations = feds
-
         if (federations != null){
             var data = federations;
             $("#summaryrow").show();
@@ -169,7 +168,7 @@ $(document).ready(function() {
                         datasets : [
                             {
                                 id: 1,
-                                label: "# number of data sources",
+                                label: "# of data sources (log)",
                                 data: nds,
                                 borderWidth: 1,
                                 backgroundColor: "#169649"
@@ -214,15 +213,6 @@ $(document).ready(function() {
                                     offsetGridLines: true
                                 }
                             }],
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                },
-                                gridLines: {
-                                    offsetGridLines: true
-                                }
-                            }],
-
                         },
                         legend: {
                             display: true,
@@ -233,6 +223,21 @@ $(document).ready(function() {
 
                             }
                         },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                                    if (label) {
+                                        label = label.substring(0, label.indexOf("("));
+                                        label += ': ';
+                                    }
+                                    var xv = Math.pow(10, tooltipItem.xLabel);
+                                    label += Math.round(xv * 100) / 100 ;
+                                    return label;
+                                }
+                            }
+                        }
                     }
                 });
             }
@@ -271,14 +276,10 @@ $(document).ready(function() {
                                 borderWidth: 1,
                                 backgroundColor:"#d64161"
                             }
-
-
                             ]
             myBarChart.update();
             myBarChartn.update();
-
         }
-
             Morris.Donut({
                 element: 'ds-dist-chart',
                 data: datas,
@@ -293,12 +294,7 @@ $(document).ready(function() {
 
     window.setstats = function(stat){
         stats = stat
-        console.log(stats)
     }
-
-    // $("#rdfmt-dist-chart").empty();
-
-
     var colors = [
 
         "#622569",
