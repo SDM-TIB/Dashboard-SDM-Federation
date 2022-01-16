@@ -47,9 +47,11 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    os.chmod(app.instance_path, 0o755)
 
     from . import db
-    db.init_app(app)
+    with app.app_context():
+        db.init_app(app)
 
     # Register the authentication blueprint
     from . import auth

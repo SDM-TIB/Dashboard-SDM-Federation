@@ -1,13 +1,12 @@
+import logging
+import os
 import sqlite3
-import click
-from flask import current_app, g
-from flask.cli import with_appcontext
-
 import urllib.parse as urlparse
 from http import HTTPStatus
+from multiprocessing import Queue
+
 import requests
-import logging
-from multiprocessing import Queue, Process
+from flask import current_app, g
 
 logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 logger = logging.getLogger('mtupdate')
@@ -52,7 +51,6 @@ class MetadataDB:
         self.mtresource = "http://tib.eu/dsdl/ontario/resource/"
 
     def query(self, query, outputqueue=Queue(), format="application/sparql-results+json"):
-
         # Formats of the response.
         json = format
         # Build the query and header.
@@ -115,7 +113,6 @@ class MetadataDB:
         return None, -2
 
     def update(self, insertquery):
-
         # Build the header.
         headers = {"Accept": "*/*",
                    "Referer": self.update_endpoint,
@@ -176,21 +173,18 @@ def close_db(e=None):
 
 
 def init_db():
+    db_nonexistent = False
+    if not os.path.isfile(current_app.config["DATABASE"]):
+        db_nonexistent = True
+
     db = get_db()
 
-    with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
-
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """ Clear the existing data and create new tables. """
-    init_db()
-    click.echo("Initialized the database. ")
+    if db_nonexistent:
+        # database did not exist; initialize database structure
+        with current_app.open_resource('schema.sql') as f:
+            db.executescript(f.read().decode('utf8'))
 
 
 def init_app(app):
     app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
-
+    init_db()

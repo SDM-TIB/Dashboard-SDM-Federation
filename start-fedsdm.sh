@@ -5,11 +5,6 @@ echo -e "GRANT SPARQL_UPDATE to \x22SPARQL\x22;" >> /opt/virtuoso-opensource/ini
 /virtuoso-entrypoint.sh &
 
 cd /FedSDM
-if ! test -f "instance/fedsdm.sqlite"; then
-  mkdir -p instance
-  chmod 775 instance
-  cat fedsdm/schema.sql | sqlite3 instance/fedsdm.sqlite
-fi
 
 # wait for Virtuoso to be available
 printf 'Waiting for Virtuoso'
