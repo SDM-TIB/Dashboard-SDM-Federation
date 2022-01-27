@@ -260,12 +260,15 @@ $(document).ready(function() {
 
     // Edit data source click action
     $( "#editds" ).click(function() {
-      console.log(selectedSource[0][0]);
-      $( "#ename" ).val(selectedSource[0][1]);
-      $( "#eURL" ).val(selectedSource[0][2]);
-      $( "#edstype" ).val(selectedSource[0][3]);
-      $( "#elabel" ).val(selectedSource[0][7]);
-      $( "#eparams" ).val(selectedSource[0][9]);
+        $( "#ename" ).val(selectedSource[0][1]);
+        $( "#eURL" ).val(selectedSource[0][2]);
+        $( "#edstype" ).val(selectedSource[0][3]);
+        $( "#ekeywords" ).val(selectedSource[0][4]);
+        $( "#ehomepage" ).val(selectedSource[0][5]);
+        $( "#eorganization" ).val(selectedSource[0][6]);
+        $( "#elabel" ).val(selectedSource[0][7]);
+        $( "#eversion" ).val(selectedSource[0][8]);
+        $( "#eparams" ).val(selectedSource[0][9]);
       edialog.dialog('open');
     });
 
@@ -546,15 +549,16 @@ $(document).ready(function() {
         });
 
     function updateDS() {
-       var  name =     $("#ename" ),
-            desc =     $("#edesc" ),
-            dstype =   $("#edstype"),
-            URL =      $("#eURL" ),
-            params =   $("#eparams" ),
-            keywords =     $("#ekeywords" ),
-            organization = $("#eorganization" ),
-            homepage =     $("#ehomepage" ),
-            version =      $("#eversion" ),
+       var  ename =     $("#ename" ),
+            edesc =     $("#elabel" ),
+            edstype =   $("#edstype"),
+            eURL =      $("#eURL" ),
+            eparams =   $("#eparams" ),
+            ekeywords =     $("#ekeywords" ),
+            eorganization = $("#eorganization" ),
+            ehomepage =     $("#ehomepage" ),
+            eversion =      $("#eversion" ),
+            eid = selectedSource[0][0],
           allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
           tips = $( ".validateTips" );
 
@@ -563,7 +567,7 @@ $(document).ready(function() {
        if ( valid ) {
 
             table.row('.selected').remove().draw( false );
-            table.row.add([ name.val(), desc.val(), dstype.val(), URL.val(), params.val(),,,,,]).draw( false );
+           table.row.add([ eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw( false );
             $( "#editds" ).prop( "disabled", true );
             $( "#removeds" ).prop( "disabled", true );
             $( "#createmapping" ).prop( "disabled", true );
