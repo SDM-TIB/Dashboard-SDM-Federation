@@ -215,39 +215,38 @@
 <!-- end of add dialog -->
 
 <div id="editdsdialog" title="Edit Data Source" style="display:none">
-  <p class="validateTips">Some fields are required.</p>
-  <form>
-    <fieldset>
-      <label for="ename" class="required">Name</label>
-      <input type="text" name="ename" id="ename" required placeholder="DBpedia" class="text ui-widget-content ui-corner-all">
-      <label for="elabel">Short Description</label>
-      <input type="text" name="elabel" id="elabel" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph"
-             class="text ui-widget-content ui-corner-all">
-      <label for="edstype">Data Source Type</label>
-        <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required disabled>
-            <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
-<!--            <option value="MongoDB">MongoDB</option>
-            <option value="Neo4j">Neo4j</option>
-            <option value="MySQL">MySQL</option>
-            <option value="SPARK_CSV">Hadoop CSV File</option>
-            <option value="SPARK_TSV">Hadoop TSV File</option>
-            <option value="SPARK_JSON">Hadoop JSON File</option>
-            <option value="SPARK_XML">Hadoop XML File</option>
-            <option value="LOCAL_CSV">Local CSV File</option>
-            <option value="LOCAL_TSV">Local TSV File</option>
-            <option value="LOCAL_JSON">Local JSON File</option>
-            <option value="LOCAL_XML">Local XML File</option>
-            <option value="REST_Service">REST Service</option> -->
-        </select>
-      <label for="eURL" class="required">URL</label>
-      <input type="url" name="eURL" required id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
-      <label for="eparams">Parameters (key-value):</label>
-      <input type="text" name="eparams" id="eparams" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
+    <p class="validateTips">Some fields are required.</p>
+    <form method="get" action="/action_page.php">
+        <fieldset>
+            <label for="ename" class="required">Name</label>
+            <input type="text" name="ename" id="ename" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" readonly>
+            <label for="elabel">Short Description</label>
+            <input type="text" name="elabel" id="elabel" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph" class="text ui-widget-content ui-corner-all">
+            <label for="edstype">Data Source Type</label>
+            <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required>
+                <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
+            </select>
+            <label for="eURL" class="required">URL</label>
+            <input type="url" name="eURL" required id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
+            <label for="eparams">Parameters (key-value):</label>
+            <input type="text" name="eparams" id="eparams" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
 
-      <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-    </fieldset>
-  </form>
+            <label for="keywords">Keywords:</label>
+            <input type="text" name="ekeywords" id="ekeywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
+
+            <label for="homepage">Homepage:</label>
+            <input type="text" name="ehomepage" id="ehomepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
+
+            <label for="organization">Organization:</label>
+            <input type="text" name="eorganization" id="eorganization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
+
+            <label for="version">Version:</label>
+            <input type="text" name="eversion" id="eversion" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+
+        </fieldset>
+    </form>
 </div>
 <!-- end of edit dialog -->
 
