@@ -11,7 +11,7 @@ ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
     VIRT_PARAMETERS_MAXQUERY_MEM="2G"
 
 # Install Python3 and SQLite
-RUN apk add --no-cache python3 py3-pip py3-setuptools sqlite curl
+RUN apk add --no-cache python3 py3-pip py3-setuptools curl
 
 # Set the working directory to /FedSDM
 WORKDIR /FedSDM
