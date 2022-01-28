@@ -60,7 +60,9 @@ class RDFMTMgr(object):
         self.user = user
         self.passwd = passwd
 
-    def create(self, ds, outqueue=Queue(), types=[], isupdate=False):
+    def create(self, ds, outqueue=Queue(), types=None, isupdate=False):
+        if types is None:
+            types = []
 
         endpoint = ds.url
         logger.info('----------------------' + endpoint + '-------------------------------------')
@@ -72,7 +74,7 @@ class RDFMTMgr(object):
                 triples = int(triples[:triples.find('^^')])
             ds.triples = triples
 
-            data = ds.to_rdf()
+            data = "<" + ds.rid + "> <" + mtonto + "triples> " + triples
             self.updateGraph(data)
         else:
             today = str(datetime.datetime.now())
