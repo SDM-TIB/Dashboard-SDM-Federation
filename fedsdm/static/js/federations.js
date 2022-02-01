@@ -362,7 +362,6 @@ $(document).ready(function() {
                 headers: {
                     Accept : "application/json"
                 },
-
                 url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
                 dataType: "json",
                 crossDomain: true,
@@ -468,12 +467,10 @@ $(document).ready(function() {
     function addDataSource(close) {
           var valid = true;
           allFields.removeClass( "ui-state-error" );
-
           valid = valid && checkLength( name, "name", 2, 169 );
           valid = valid && checkLength( URL, "url", 6, 100 );
           //valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, "Data source should consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
           //valid = valid && checkRegexp( URL, emailRegex, "eg. ui@jquery.com" );
-
           if(valid ) {
             $.ajax({
                 type: 'POST',
@@ -481,8 +478,9 @@ $(document).ready(function() {
                     Accept : "application/json"
                 },
                 url: '/federation/addsource?fed=' + federation,
-                data: { 'name':name.val(),
-                        "url":URL.val(),
+                data: {
+                        'name':name.val(),
+                        'url':URL.val(),
                         'dstype':dstype.val(),
                         'keywords':keywords.val(),
                         'params': params.val(),
@@ -561,16 +559,50 @@ $(document).ready(function() {
             eid = selectedSource[0][0],
           allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
           tips = $( ".validateTips" );
-
        var valid = true;
        allFields.removeClass( "ui-state-error" );
        if ( valid ) {
-
             table.row('.selected').remove().draw( false );
            table.row.add([ eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw( false );
             $( "#editds" ).prop( "disabled", true );
             $( "#removeds" ).prop( "disabled", true );
             $( "#createmapping" ).prop( "disabled", true );
+           $.ajax({
+               type: 'POST',
+               headers: {
+                   Accept : "application/json"
+               },
+               url: '/federation/editsource?fed=' + eid,
+               data: {
+                   'id' :eid,
+                   'name':ename.val(),
+                   'url':eURL.val(),
+                   'dstype':edstype.val(),
+                   'keywords':ekeywords.val(),
+                   'params': eparams.val(),
+                   'desc': edesc.val(),
+                   'version':eversion.val(),
+                   'homepage':ehomepage.val(),
+                   'organization':eorganization.val()
+               },
+               dataType: "json",
+               crossDomain: true,
+               success: function(data, textStatus, jqXHR){
+                   if (data != null && data.length > 0){
+                       manage(eid);
+                       console.log(data);
+                   }else{
+                       $('#validateTips').html("Error while adding data source to the federation!")
+                   }
+                   table.clear().draw();
+                   table.ajax.url("/federation/datasources?graph=" + eid).load();
+               },
+               error: function(jqXHR, textStatus, errorThrown){
+                   console.log(jqXHR.status);
+                   console.log(jqXHR.responseText);
+                   console.log(textStatus);
+               }
+           });
              edialog.dialog( "close" );
            }
        return valid;
