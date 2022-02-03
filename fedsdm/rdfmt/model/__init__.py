@@ -197,7 +197,7 @@ class DataSource(object):
 
         return False
 
-    def to_rdf(self):
+    def to_rdf(self, update=False):
         data = ["<" + self.rid + "> a <" + mtonto + "DataSource> ",
                 "<" + self.rid + "> <" + mtonto + "dataSourceType> <" + mtresource + 'DatasourceType/' + str(self.dstype.value) + "> ",
                 "<" + self.rid + "> <" + mtonto + "url> \"" + urlparse.quote(self.url, safe="/:") + "\" "]
@@ -220,7 +220,8 @@ class DataSource(object):
             data.append("<" + self.rid + "> <" + mtonto + "triples> " + str(self.triples))
 
         today = str(datetime.datetime.now())
-        data.append("<" + self.rid + '>  <http://purl.org/dc/terms/created> "' + today + '"')
+        if not update:
+            data.append("<" + self.rid + '>  <http://purl.org/dc/terms/created> "' + today + '"')
         data.append("<" + self.rid + '>  <http://purl.org/dc/terms/modified> "' + today + '"')
         return data
 

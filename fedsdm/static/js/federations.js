@@ -263,12 +263,12 @@ $(document).ready(function() {
         $( "#ename" ).val(selectedSource[0][1]);
         $( "#eURL" ).val(selectedSource[0][2]);
         $( "#edstype" ).val(selectedSource[0][3]);
-        $( "#ekeywords" ).val(selectedSource[0][4]);
-        $( "#ehomepage" ).val(selectedSource[0][5]);
-        $( "#eorganization" ).val(selectedSource[0][6]);
-        $( "#elabel" ).val(selectedSource[0][7]);
-        $( "#eversion" ).val(selectedSource[0][8]);
-        $( "#eparams" ).val(selectedSource[0][9]);
+        $( "#ekeywords" ).val(selectedSource[0][4].trim());
+        $( "#ehomepage" ).val(selectedSource[0][5].trim());
+        $( "#eorganization" ).val(selectedSource[0][6].trim());
+        $( "#elabel" ).val(selectedSource[0][7].trim());
+        $( "#eversion" ).val(selectedSource[0][8].trim());
+        $( "#eparams" ).val(selectedSource[0][9].trim());
       edialog.dialog('open');
     });
 
@@ -385,7 +385,7 @@ $(document).ready(function() {
     ***** Dialog management functions *****************
     ***************************************************
     */
-    var dialog, edialog, form,
+    var dialog, edialog, form, eform,
     // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
     name =     $("#name" ),
     desc =     $("#desc" ),
@@ -541,21 +541,26 @@ $(document).ready(function() {
                   class: "btn btn-danger"
               }],
               close: function() {
-                form[ 0 ].reset();
+                eform[0].reset();
                 allFields.removeClass( "ui-state-error" );
               }
         });
 
+    eform = edialog.find("form" ).on("submit", function( event ) {
+          event.preventDefault();
+          updateDS();
+     });
+
     function updateDS() {
-       var  ename =     $("#ename" ),
-            edesc =     $("#elabel" ),
+       var  ename =     $("#ename"),
+            edesc =     $("#elabel"),
             edstype =   $("#edstype"),
-            eURL =      $("#eURL" ),
-            eparams =   $("#eparams" ),
-            ekeywords =     $("#ekeywords" ),
-            eorganization = $("#eorganization" ),
-            ehomepage =     $("#ehomepage" ),
-            eversion =      $("#eversion" ),
+            eURL =      $("#eURL"),
+            eparams =   $("#eparams"),
+            ekeywords =     $("#ekeywords"),
+            eorganization = $("#eorganization"),
+            ehomepage =     $("#ehomepage"),
+            eversion =      $("#eversion"),
             eid = selectedSource[0][0],
           allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
           tips = $( ".validateTips" );
@@ -572,30 +577,30 @@ $(document).ready(function() {
                headers: {
                    Accept : "application/json"
                },
-               url: '/federation/editsource?fed=' + eid,
+               url: '/federation/editsource?fed=' + federation,
                data: {
-                   'id' :eid,
-                   'name':ename.val(),
-                   'url':eURL.val(),
-                   'dstype':edstype.val(),
-                   'keywords':ekeywords.val(),
-                   'params': eparams.val(),
-                   'desc': edesc.val(),
-                   'version':eversion.val(),
-                   'homepage':ehomepage.val(),
-                   'organization':eorganization.val()
+                   'id': eid,
+                   'name': ename.val().trim(),
+                   'url': eURL.val().trim(),
+                   'dstype': edstype.val().trim(),
+                   'keywords': ekeywords.val().trim(),
+                   'params': eparams.val().trim(),
+                   'desc': edesc.val().trim(),
+                   'version': eversion.val().trim(),
+                   'homepage': ehomepage.val().trim(),
+                   'organization': eorganization.val().trim()
                },
                dataType: "json",
                crossDomain: true,
                success: function(data, textStatus, jqXHR){
                    if (data != null && data.length > 0){
-                       manage(eid);
+                       manage(federation);
                        console.log(data);
                    }else{
-                       $('#validateTips').html("Error while adding data source to the federation!")
+                       $('#validateTips').html("Error while editing data source!")
                    }
                    table.clear().draw();
-                   table.ajax.url("/federation/datasources?graph=" + eid).load();
+                   table.ajax.url("/federation/datasources?graph=" + federation).load();
                },
                error: function(jqXHR, textStatus, errorThrown){
                    console.log(jqXHR.status);
@@ -636,8 +641,8 @@ $(document).ready(function() {
           }
     }
 
-    var federation = null,
-        datasource = null;
+//    var federation = null,
+//        datasource = null;
     function createnewfederation() {
         var name = $('#namecf').val();
         var desc = $('#description').val();

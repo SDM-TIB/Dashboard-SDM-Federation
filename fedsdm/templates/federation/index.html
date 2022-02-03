@@ -216,14 +216,14 @@
 
 <div id="editdsdialog" title="Edit Data Source" style="display:none">
     <p class="validateTips">Some fields are required.</p>
-    <form method="get" action="/action_page.php">
+    <form>
         <fieldset>
             <label for="ename" class="required">Name</label>
-            <input type="text" name="ename" id="ename" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" readonly>
+            <input type="text" name="ename" id="ename" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" disabled>
             <label for="elabel">Short Description</label>
             <input type="text" name="elabel" id="elabel" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph" class="text ui-widget-content ui-corner-all">
             <label for="edstype">Data Source Type</label>
-            <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required>
+            <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required disabled>
                 <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
             </select>
             <label for="eURL" class="required">URL</label>
@@ -244,7 +244,7 @@
             <input type="text" name="eversion" id="eversion" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
 
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
-
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
     </form>
 </div>

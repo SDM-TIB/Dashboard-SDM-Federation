@@ -251,6 +251,51 @@ def add_data_source(federation, datasource):
             return {"status": -2}, None
 
 
+@bp.route('/editsource', methods=['POST'])
+def api_edit_source():
+    try:
+        fed = request.args['fed']
+        if fed is None or len(fed) == 0:
+            return Response(json.dumps({}), mimetype="application/json")
+        session['fed'] = fed
+
+        e = request.form
+        ds = DataSource(e['id'],
+                        e['url'],
+                        e['dstype'],
+                        name=e['name'],
+                        desc=e['desc'] if "desc" in e else "",
+                        params=e['params'] if "params" in e else {},
+                        keywords=e['keywords'] if 'keywords' in e else "",
+                        version=e['version'] if 'version' in e else "",
+                        homepage=e['homepage'] if 'homepage' in e else "",
+                        organization=e['organization'] if 'organization' in e else "",
+                        ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None)
+        data = ds.to_rdf(update=True)
+        mdb = get_mdb()
+        insertquery = "INSERT { " + " . \n".join(data) + " }"
+        deletequery = "DELETE { <" + e['id'] + "> ?p ?o . }"
+        wherequery = "WHERE { <" + e['id'] + "> ?p ?o .\nFILTER( ?p != <http://purl.org/dc/terms/created> && ?p != <http://tib.eu/dsdl/ontario/ontology/triples> ) }"
+        rr = mdb.update("WITH GRAPH <" + fed + ">\n" + deletequery + "\n" + insertquery + "\n" + wherequery)
+
+        if not ds.isAccessible():
+            if rr:
+                return {"status": -1}, None
+            else:
+                return {"status": -2}, None
+        else:
+            # TODO: Is it a good idea to re-create the MTs here?
+            mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, "dba", "dba", fed)
+            outqueue = Queue()
+            p = Process(target=mgr.create, args=(ds, outqueue, [],))
+            p.start()
+            logger.info("Collecting RDF-MTs started")
+            return {"status": 1}, outqueue
+    except KeyError:
+        logger.error("KeyError: " + str(request.form.keys()))
+        return Response(json.dumps({}), mimetype="application/json")
+
+
 @bp.route('/api/findlinks', methods=['GET', 'POST'])
 def api_findlinks():
     try:
