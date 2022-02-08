@@ -31,7 +31,6 @@ if not logger.handlers:
 
 @bp.route('/')
 def index():
-    db = get_db()
     federations = get_federations(g.default_graph)
     g.federations = federations
     if 'fed' in session:
@@ -70,11 +69,6 @@ def index():
                     "properties": props,
                     "source": datasources[s]['source']}
             stats[f['uri']].append(stat)
-    stat = {
-        "rdfmts": rdfmts,
-        "sources": len(set(sourceids)),
-        "federations": len(feds),
-        "links": links}
     datasourcesstat = list(datasources.values())
     g.stats = stats
     return render_template('federation/index.html', dsstats=datasourcesstat, federations=g.federations)
@@ -119,6 +113,7 @@ def get_stats(graph):
         stats[datasources[datasource]['source']] = stat
     return stats
 
+
 @bp.route('/create', methods=("GET", "POST"))
 @login_required
 def create():
@@ -129,7 +124,7 @@ def create():
         error = None
 
         if not name:
-            error = "Name is rquired. "
+            error = "Name is required. "
         federation = ""
         if error is not None:
             flash(error)
@@ -142,8 +137,6 @@ def create():
             else:
                 federation = inserted
                 session['fed'] = federation
-                logger.info(federation)
-                return render_template('federation/index.html')
         return Response(federation, mimetype='text/plain')
 
     return render_template('federation/create.html')

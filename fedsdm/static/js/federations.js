@@ -1,29 +1,25 @@
 $(document).ready(function() {
 
-
     /*
     **********************************************************
     ************ Manage data source Data Table ***************
     **********************************************************
     */
 
-    var federation = $("#federationslist").val(),
-        datasource = null;
+    let federation = $("#federationslist").val();
 
-    var stats=[];
-    var statsTable = null;
-    var ctx = $("#myChart");
-    var myBarChart = null;
-    var bsloaded = 0;
-    var prefix = 'http://ontario.tib.eu/federation/g/';    
-    
+    let statsTable = null;
+    let ctx = $("#myChart");
+    let myBarChart = null;
+    let bsloaded = 0;
+    let prefix = 'http://ontario.tib.eu/federation/g/';
+
     // if federation is set from session, then trigger visualization and management data
     showFederations(federation);
 
     // Federation list dropdown change event, triggers visualization of statistics and management data
-     $("#federationslist").change(function(){
-        fed = $( this ).val()
-        federation = fed;
+    $("#federationslist").change(function(){
+        federation = $( this ).val();
         showFederations(federation);
     });
 
@@ -73,7 +69,7 @@ $(document).ready(function() {
     }
 
     // check if federation name is set, and show statistics and management data
-    function showFederations(fed){
+    function showFederations(federation){
         if (federation != null && federation !== ""){
             $("#mfedName").html(federation);
             basic_stat(federation);
@@ -113,7 +109,7 @@ $(document).ready(function() {
         else{
             statsTable.clear().draw();
         }
-        var datas = [];
+        let datas = [];
         $.ajax({
             type: 'GET',
             headers: {
@@ -126,15 +122,15 @@ $(document).ready(function() {
             success: function(data, textStatus, jqXHR){
                 datas = data.data;
                 datasdon = [];
-                var bardata = {labels:[], rdfmts:[], triples:[]};
+                let bardata = {labels:[], rdfmts:[], triples:[]};
                 for (d in datas){
                     rem = [];
                     //console.log(datas)
                     rem.push(datas[d].ds);
-                    var rdfmts = datas[d].rdfmts;
+                    let rdfmts = datas[d].rdfmts;
 
                     rem.push(rdfmts);
-                    var triples = datas[d].triples;
+                    let triples = datas[d].triples;
                     if (triples == null){
                         triples = "-1"
                     }
@@ -196,13 +192,12 @@ $(document).ready(function() {
                             tooltips: {
                                 callbacks: {
                                     label: function(tooltipItem, data) {
-                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
+                                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
                                         if (label) {
                                             label = label.substring(0, label.indexOf("("));
                                             label += ': ';
                                         }
-                                        var xv = Math.pow(10, tooltipItem.xLabel);
+                                        let xv = Math.pow(10, tooltipItem.xLabel);
                                         label += Math.round(xv * 100) / 100 ;
                                         return label;
                                     }
@@ -215,7 +210,6 @@ $(document).ready(function() {
                     myBarChart.data.labels=[];
                     myBarChart.data.datasets=[];
                     myBarChart.update();
-
 
                     myBarChart.data.labels = bardata.labels;
                     myBarChart.data.datasets = [{
@@ -234,7 +228,6 @@ $(document).ready(function() {
                                             }]
 
                     myBarChart.update();
-
                 }
         },
             error: function(jqXHR, textStatus, errorThrown){
@@ -246,8 +239,8 @@ $(document).ready(function() {
         bsloaded = 1;
     }
 
-    var table ;
-    var selectedSource = null;
+    var table;
+    let selectedSource = null;
 
     // basic information about data sources in a given federation
     function manage(fed){
@@ -265,7 +258,7 @@ $(document).ready(function() {
                 responsive: true,
                 select: true,
                 defaultContent: "<i>Not set</i>",
-                ajax: "/federation/datasources?graph=" + fed + "&dstype=All"
+                ajax: "/federation/datasources?graph=" + federation + "&dstype=All"
             });
             // Dat source table select action
             table.on( 'select', function ( e, dt, type, indexes ) {
@@ -273,9 +266,8 @@ $(document).ready(function() {
                     $( "#editds" ).prop( "disabled", false );
                     $( "#removeds" ).prop( "disabled", false );
                     $( "#recomputemts" ).prop( "disabled", false );
-
                 }).on( 'deselect', function ( e, dt, type, indexes ) {
-                    var rowData = table.rows( indexes ).data().toArray();
+                    let rowData = table.rows( indexes ).data().toArray();
                     $( "#editds" ).prop( "disabled", true );
                     $( "#removeds" ).prop( "disabled", true );
                     $( "#recomputemts" ).prop( "disabled", true );
@@ -295,7 +287,6 @@ $(document).ready(function() {
                 $( "#findlinks" ).prop( "disabled", true);
             }
         });
-
     }
 
     // Add data source click action
@@ -305,18 +296,20 @@ $(document).ready(function() {
 
     // Edit data source click action
     $( "#editds" ).click(function() {
-      console.log(selectedSource[0][0]);
-      $( "#ename" ).val(selectedSource[0][1]);
-      $( "#eURL" ).val(selectedSource[0][2]);
-      $( "#edstype" ).val(selectedSource[0][3]);
-      $( "#elabel" ).val(selectedSource[0][7]);
-      $( "#eparams" ).val(selectedSource[0][9]);
+        $( "#ename" ).val(selectedSource[0][1]);
+        $( "#eURL" ).val(selectedSource[0][2]);
+        $( "#edstype" ).val(selectedSource[0][3]);
+        $( "#ekeywords" ).val(selectedSource[0][4].trim());
+        $( "#ehomepage" ).val(selectedSource[0][5].trim());
+        $( "#eorganization" ).val(selectedSource[0][6].trim());
+        $( "#elabel" ).val(selectedSource[0][7].trim());
+        $( "#eversion" ).val(selectedSource[0][8].trim());
+        $( "#eparams" ).val(selectedSource[0][9].trim());
       edialog.dialog('open');
     });
 
     //Remove data source click action
     $('#removeds').click( function () {
-
         // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
                 type: 'GET',
@@ -346,12 +339,11 @@ $(document).ready(function() {
     // Create Mappings click action
     $('#recomputemts').click( function () {
         console.log(selectedSource[0][0]);
-          $.ajax({
+        $.ajax({
                 type: 'GET',
                 headers: {
                     Accept : "application/json"
                 },
-
                 url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) +"&datasource=" + encodeURIComponent(selectedSource[0][0]),
                 data: {'query':'all'},
                 dataType: "json",
@@ -373,7 +365,7 @@ $(document).ready(function() {
 
     $('#findlinks').click( function () {
         console.log(selectedSource[0][0]);
-          $.ajax({
+        $.ajax({
                 type: 'GET',
                 headers: {
                     Accept : "application/json"
@@ -399,12 +391,11 @@ $(document).ready(function() {
     });
 
     $('#findalllinks').click( function () {
-          $.ajax({
+        $.ajax({
                 type: 'GET',
                 headers: {
                     Accept : "application/json"
                 },
-
                 url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
                 dataType: "json",
                 crossDomain: true,
@@ -428,7 +419,7 @@ $(document).ready(function() {
     ***** Dialog management functions *****************
     ***************************************************
     */
-    var dialog, edialog, form,
+    let dialog, edialog, form, eform,
     // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
     name =     $("#name" ),
     desc =     $("#desc" ),
@@ -443,46 +434,47 @@ $(document).ready(function() {
     allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
     tips = $( ".validateTips" );
 
-     var crnfdialog;   
-    
-    dialog = $( "#add-form" ).dialog({
-              autoOpen: false,
-              height: 800,
-              width: 550,
-              modal: true,
-              classes: {
-                  "ui-dialog": "ui-corner-all"
-              },
-              buttons: [{
-                text: "Finish",
-                    click:addDataSource,
-                    class: "btn btn-success"
-                },{
-                    text: "Continue",
-                    click:saveAndMore,
-                    class: "btn btn-primary"
-                },{
-                    text: "Cancel",
-                    click: function() { dialog.dialog( "close" ); },
-                    class: "btn btn-danger"
-                }
-              ],
-              close: function() {
-                form[0].reset();
-                allFields.removeClass("ui-state-error" );
-              }
-         });
+    let crnfdialog;
 
-    form = dialog.find("form" ).on("submit", function( event ) {
-          event.preventDefault();
-          addDataSource(true);
-     });    
-    
-     $( "#CreateNewFed" ).click(function() {
+    dialog = $( "#add-form" ).dialog({
+        autoOpen: false,
+        height: 800,
+        width: 550,
+        modal: true,
+        classes: {
+            "ui-dialog": "ui-corner-all"
+        },
+        buttons: [{
+                text: "Finish",
+                click:addDataSource,
+                class: "btn btn-success"
+            },{
+                text: "Continue",
+                click:saveAndMore,
+                class: "btn btn-primary"
+            },{
+                text: "Cancel",
+                click: function() { dialog.dialog( "close" ); },
+                class: "btn btn-danger"
+            }],
+        close: function() {
+            form[0].reset();
+            allFields.removeClass("ui-state-error" );
+        }
+    });
+
+    form = dialog.find("form" ).on("submit", function(event) {
+        event.preventDefault();
+        addDataSource(true);
+    });
+
+    $( "#CreateNewFed" ).click(function() {
         crnfdialog.dialog("open");
     });
-    
-    
+    $( "#AddFed" ).click(function() {
+        crnfdialog.dialog("open");
+    });
+
     crnfdialog = $( "#my-form" ).dialog({
         autoOpen: false,
         height: 550,
@@ -499,8 +491,7 @@ $(document).ready(function() {
             text: "Cancel",
             click: function() { crnfdialog.dialog( "close" ); },
             class: "btn btn-danger"
-        }
-        ],
+        }],
         close: function() {
             form[0].reset();
             allFields.removeClass("ui-state-error");
@@ -508,30 +499,29 @@ $(document).ready(function() {
     });
 
     function addDataSource(close) {
-          var valid = true;
-          allFields.removeClass( "ui-state-error" );
-
-          valid = valid && checkLength( name, "name", 2, 169 );
-          valid = valid && checkLength( URL, "url", 6, 100 );
-          //valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, "Data source should consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-          //valid = valid && checkRegexp( URL, emailRegex, "eg. ui@jquery.com" );
-
-          if(valid ) {
+        let valid = true;
+        allFields.removeClass("ui-state-error");
+        valid = valid && checkLength(name, "name", 2, 169);
+        valid = valid && checkLength(URL, "url", 6, 100);
+        //valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, "Data source should consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+        //valid = valid && checkRegexp( URL, emailRegex, "eg. ui@jquery.com" );
+        if(valid) {
             $.ajax({
                 type: 'POST',
                 headers: {
                     Accept : "application/json"
                 },
                 url: '/federation/addsource?fed=' + federation,
-                data: { 'name':name.val(),
-                        "url":URL.val(),
-                        'dstype':dstype.val(),
-                        'keywords':keywords.val(),
-                        'params': params.val(),
-                        'desc': desc.val(),
-                        'version':version.val(),
-                        'homepage':homepage.val(),
-                        'organization':organization.val()
+                data: {
+                    'name': name.val(),
+                    'url': URL.val(),
+                    'dstype': dstype.val(),
+                    'keywords': keywords.val(),
+                    'params': params.val(),
+                    'desc': desc.val(),
+                    'version': version.val(),
+                    'homepage': homepage.val(),
+                    'organization': organization.val()
                 },
                 dataType: "json",
                 crossDomain: true,
@@ -550,15 +540,15 @@ $(document).ready(function() {
                     console.log(textStatus);
                 }
             });
-          }else{
-            name.addClass( "ui-state-error" )
-            URL.addClass( "ui-state-error" )
+        }else{
+            name.addClass("ui-state-error")
+            URL.addClass("ui-state-error")
             console.log("Invalid data...");
-          }
-          if (close){
+        }
+        if (close){
             dialog.dialog("close");
             return valid;
-          }
+        }
     }
 
     function saveAndMore(){
@@ -568,88 +558,128 @@ $(document).ready(function() {
     }
 
     edialog = $( "#editdsdialog" ).dialog({
-              autoOpen: false,
-              height: 800,
-              width: 700,
-              modal: true,
-              classes: {
-                  "ui-dialog": "ui-corner-all"
-              },
-              buttons: [{
-                  text: "Update Data Source",
-                  click: updateDS,
-                  class: "btn btn-success"
-              },{
-                  text: "Cancel",
-                  click: function() { edialog.dialog( "close" ); },
-                  class: "btn btn-danger"
-              }],
-              close: function() {
-                form[ 0 ].reset();
-                allFields.removeClass( "ui-state-error" );
-              }
-        });
+        autoOpen: false,
+        height: 800,
+        width: 700,
+        modal: true,
+        classes: {
+            "ui-dialog": "ui-corner-all"
+        },
+        buttons: [{
+                text: "Update Data Source",
+                click: updateDS,
+                class: "btn btn-success"
+            },{
+                text: "Cancel",
+                click: function() { edialog.dialog( "close" ); },
+                class: "btn btn-danger"
+            }],
+        close: function() {
+            eform[0].reset();
+            allFields.removeClass( "ui-state-error" );
+        }
+    });
+
+    eform = edialog.find("form" ).on("submit", function( event ) {
+        event.preventDefault();
+        updateDS();
+    });
 
     function updateDS() {
-       var  name =     $("#ename" ),
-            desc =     $("#edesc" ),
-            dstype =   $("#edstype"),
-            URL =      $("#eURL" ),
-            params =   $("#eparams" ),
-            keywords =     $("#ekeywords" ),
-            organization = $("#eorganization" ),
-            homepage =     $("#ehomepage" ),
-            version =      $("#eversion" ),
-          allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
-          tips = $( ".validateTips" );
-
-       var valid = true;
-       allFields.removeClass( "ui-state-error" );
-       if ( valid ) {
-
+        let ename = $("#ename"),
+        edesc = $("#elabel"),
+        edstype = $("#edstype"),
+        eURL = $("#eURL"),
+        eparams = $("#eparams"),
+        ekeywords = $("#ekeywords"),
+        eorganization = $("#eorganization"),
+        ehomepage = $("#ehomepage"),
+        eversion = $("#eversion"),
+        eid = selectedSource[0][0],
+        allFields = $( [] ).add( name ).add( desc ).add( dstype ).add( URL ).add( params ).add( keywords ).add( organization ).add( homepage ).add( version ),
+        tips = $( ".validateTips" );
+        let valid = true;
+        allFields.removeClass( "ui-state-error" );
+        valid = valid && checkLength(ename, "name", 2, 169);
+        valid = valid && checkLength(eURL, "url", 6, 100);
+        if (valid) {
             table.row('.selected').remove().draw( false );
-            table.row.add([ name.val(), desc.val(), dstype.val(), URL.val(), params.val(),,,,,]).draw( false );
+            table.row.add([ eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw( false );
             $( "#editds" ).prop( "disabled", true );
             $( "#removeds" ).prop( "disabled", true );
             $( "#createmapping" ).prop( "disabled", true );
-             edialog.dialog( "close" );
-           }
-       return valid;
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    Accept : "application/json"
+                },
+                url: '/federation/editsource?fed=' + federation,
+                data: {
+                    'id': eid,
+                    'name': ename.val().trim(),
+                    'url': eURL.val().trim(),
+                    'dstype': edstype.val().trim(),
+                    'keywords': ekeywords.val().trim(),
+                    'params': eparams.val().trim(),
+                    'desc': edesc.val().trim(),
+                    'version': eversion.val().trim(),
+                    'homepage': ehomepage.val().trim(),
+                    'organization': eorganization.val().trim()
+                },
+                dataType: "json",
+                crossDomain: true,
+                success: function(data, textStatus, jqXHR){
+                    if (data != null && data.length > 0){
+                        manage(federation);
+                        console.log(data);
+                    }else{
+                        $('#validateTips').html("Error while editing data source!")
+                    }
+                    table.clear().draw();
+                    table.ajax.url("/federation/datasources?graph=" + federation).load();
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log(jqXHR.status);
+                    console.log(jqXHR.responseText);
+                    console.log(textStatus);
+                }
+            });
+              edialog.dialog( "close" );
+            }
+        return valid;
     }
 
     function updateTips( t ) {
-          tips.text( t ).addClass( "ui-state-highlight" );
-          setTimeout(function() {
-                tips.removeClass( "ui-state-highlight", 1500 );
-          }, 500 );
-     }
+        tips.text( t ).addClass( "ui-state-highlight" );
+        setTimeout(function() {
+            tips.removeClass( "ui-state-highlight", 1500 );
+        }, 500 );
+    }
 
     function checkLength( o, n, min, max ) {
-          if ( o.val().length > max || o.val().length < min ) {
+        if ( o.val().length > max || o.val().length < min ) {
             o.addClass( "ui-state-error" );
             updateTips( "Length of " + n + " must be between " +
-              min + " and " + max + "." );
+            min + " and " + max + "." );
             return false;
-          } else {
+        }else{
             return true;
-          }
+        }
     }
 
     function checkRegexp( o, regexp, n ) {
-          if ( !( regexp.test( o.val() ) ) ) {
+        if ( !( regexp.test( o.val() ) ) ) {
             o.addClass( "ui-state-error" );
             updateTips( n );
             return false;
-          } else {
+        }else{
             return true;
-          }
+        }
     }
 
-    var federation = null,
-        datasource = null;
     function createnewfederation() {
-        var name = $('#namecf').val();
-        var desc = $('#description').val();
+        let name = $('#namecf').val();
+        let desc = $('#description').val();
         console.log(name + " " + desc);
         if (name != null && name !== '' && name.length > 0){
             $.ajax({
@@ -659,7 +689,6 @@ $(document).ready(function() {
                 },
                 url: '/federation/create',
                 data: {'name': name, 'description': desc},
-
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR){
                     console.log(data);
@@ -670,13 +699,12 @@ $(document).ready(function() {
                         crnfdialog.dialog( "close" );
                         // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name;
-                        fed = federation;
                         $("#federationslist").append('<option value=' + federation + ' selected>' + name + '</option>');
                         showFederations(federation);
-                        var aTab = '#manage';
+                        let aTab = '#manage';
                         if(aTab){
                             $('#maincontent a[href="' + aTab + '"]').tab('show');
-                        }                        
+                        }
                     }else{
                         $('#errormsg').html("Error while creating the new federation! Please enter a valid name (var name).")
                     }
@@ -693,7 +721,7 @@ $(document).ready(function() {
         }
         return false
     }
-    
+
     /*
     *********************************************************
     *********** Visualize sample graph **********************
@@ -702,12 +730,9 @@ $(document).ready(function() {
 
     function visualize_sample(){
 
-
-
-
     }
 
-    var colors = [
+    let colors = [
         "#6b5b95",
         "#feb236",
         "#d64161",
@@ -774,6 +799,5 @@ $(document).ready(function() {
         "#D2691E",
         "#8B4513",
         "#A52A2A"
-
     ];
 });
