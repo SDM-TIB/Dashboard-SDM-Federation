@@ -13,12 +13,6 @@ bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 @bp.route('/')
 @login_required
 def stats():
-    db = get_db()
-    # feds = db.execute(
-    #     'SELECT f.uri as feduri'
-    #     ' FROM federation f '
-    #     ' JOIN user u ON f.owner_id = u.id '
-    # ).fetchall()
     federations = get_federations(g.default_graph)
     g.federations = federations
     if 'fed' in session:
@@ -68,4 +62,3 @@ def stats():
     g.stats = stats
 
     return render_template('dashboard/index.html', dsstats=datasourcesstat,  fedstats=stat, federations=g.federations)
-
