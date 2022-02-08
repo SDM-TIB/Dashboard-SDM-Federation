@@ -541,20 +541,23 @@ $(document).ready(function() {
                 }
             });
         }else{
-            name.addClass("ui-state-error")
-            URL.addClass("ui-state-error")
+            close = false;
+            name.addClass("ui-state-error");
+            URL.addClass("ui-state-error");
             console.log("Invalid data...");
         }
         if (close){
             dialog.dialog("close");
-            return valid;
         }
+        return valid;
     }
 
     function saveAndMore(){
-        addDataSource(false);
-        form[0].reset();
-        allFields.removeClass("ui-state-error");
+        let valid = addDataSource(false);
+        if (valid) {
+            form[0].reset();
+            allFields.removeClass("ui-state-error");
+        }
     }
 
     edialog = $( "#editdsdialog" ).dialog({
