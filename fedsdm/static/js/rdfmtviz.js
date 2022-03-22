@@ -1,7 +1,10 @@
+let federationAll = null;
+function fn() {
+    federationAll = "All";
+}
+
 $(document).ready(function() {
-
-
-//    $("#federationslist").prop("disabled", true);
+    //$("#federationslist").prop("disabled", true);
     $("#datasources").prop("disabled", true);
     $("#mtdetails").prop('disabled', true);
     $("#mtviz").hide();
@@ -9,10 +12,15 @@ $(document).ready(function() {
     var federation =  $("#federationslist").val();
     window.jsdata = new Array();
 
-    var tabvisible = '#home';
+    var tabvisible = '#visualize';
     if (federation != null && federation != ""){
         load_data(federation);
     }
+    else if(federationAll != null)
+    {
+        load_data(federationAll);
+    }
+
 
     $("#federationslist").change(function(){
         fed = $( this ).val()
@@ -20,7 +28,6 @@ $(document).ready(function() {
     });
 
     function load_data(fed){
-
         $("#fedName").html(fed);
         $("#vfedName").html(fed);
         $("#afedName").html(fed);
@@ -37,13 +44,11 @@ $(document).ready(function() {
         get_rdfmts(fed);
         get_rdfmts_graph_analys(fed);
         federation = fed;
-
     }
     var width,height;
     var h=960, w =760;
     var chartWidth, chartHeight;
     var margin;
-
     var drag = d3.behavior.drag()
         .origin(function(d) { return d; })
         .on("dragstart", dragstarted)
