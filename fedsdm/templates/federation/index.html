@@ -60,7 +60,7 @@
     <div class="col-lg-12">
         <!--begin tabs going in wide content -->
         <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
-            <li class="active" id="dfe"><a href="#feder" role="tab" data-toggle="tab">Available Federations</a></li>
+            <li id="dfe" class="active"><a href="#feder" role="tab" data-toggle="tab">Available Federations</a></li>
             <li id="dshome"><a href="#home" role="tab" data-toggle="tab">Available Data Sources</a></li>
             <li id="dsmanage"><a href="#manage" role="tab" data-toggle="tab">Manage Data Sources</a></li>
         </ul>
@@ -347,6 +347,17 @@
             }
         }
         federationOverview(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
+        let activeTab = window.location.hash;
+        if (activeTab) {
+            $('#federationslist').val('All');
+            if (activeTab == "#home") {
+                $('#maincontent a[href="#home"]').click();
+
+            }
+            else if (activeTab == "#All"){
+                $('#maincontent a[href="#feder"]').click();
+            }
+        }
     });
 </script>
 {% endblock %}
