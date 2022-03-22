@@ -101,19 +101,7 @@
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Data Summary
                 <div class="pull-right">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            Actions
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">RDF Molecules</a></li>
-                            <li><a href="#">Properties per RDF-MT</a></li>
-                            <li><a href="#">RDF-MTs per Data Source</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Data Source Health Report</a></li>
-                        </ul>
-                    </div>
+                        <a href="{{ url_for('federation.index') }}#home" class="btn btn-default btn-block" style="padding: 5px; margin-top: -5px;">Details</a>
                 </div>
             </div>
             <!-- /.panel-heading -->
@@ -126,6 +114,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Federations Summary
+                <div class="pull-right">
+                    <a href="{{ url_for('federation.index') }}#All" class="btn btn-default btn-block" style="padding: 5px; margin-top: -5px;">Details</a>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body" id="datasummary2">
@@ -174,7 +165,7 @@
             </div>
             <div class="panel-body">
                 <div id="ds-dist-chart"></div>
-                <a href="viewds.html" class="btn btn-default btn-block">View Details</a>
+                <a href="{{ url_for('rdfmts.rdfmt') }}#All" class="btn btn-default btn-block">View Details</a>
             </div>
             <!-- /.panel-body -->
         </div>
