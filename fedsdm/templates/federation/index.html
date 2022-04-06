@@ -349,12 +349,12 @@
         federationOverview(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
         let activeTab = window.location.hash;
         if (activeTab) {
-            $('#federationslist').val('All');
             if (activeTab == "#home") {
                 $('#maincontent a[href="#home"]').click();
-
+                $('#federationslist').val('All');
+                $('#federationslist').change();
             }
-            else if (activeTab == "#All"){
+            else if (activeTab == "#All") {
                 $('#maincontent a[href="#feder"]').click();
             }
         }
