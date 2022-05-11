@@ -22,6 +22,7 @@ $(document).ready(function() {
             federation = fed;
             $("#queryrow").show();
             $("#resultrow").hide();
+            yasqe.setValue(yasqe.getValue());
         });
 
         $("#visualizebtn").hide();
@@ -121,7 +122,7 @@ $(document).ready(function() {
         });
 
         YASQE.defaults.sparql.showQueryButton = true;
-        YASQE.defaults.value = "SELECT DISTINCT ?concept\n WHERE {\n\t?s a ?concept\n} LIMIT 10";
+        YASQE.defaults.value = "SELECT DISTINCT ?concept\nWHERE {\n\t?s a ?concept\n} LIMIT 10";
         YASQE.defaults.sparql.endpoint = "/query/sparql";
         yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting){
                 //console.log('federation to query from',federation);
