@@ -1,6 +1,4 @@
 requests==2.27.1
-flask==2.0.2
-rdflib==6.1.1
-networkx==2.6.3
+flask==2.1.2
+networkx==2.8.0
 ply==3.11
-SPARQLWrapper==1.8.5
