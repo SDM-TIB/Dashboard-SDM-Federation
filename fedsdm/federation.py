@@ -5,7 +5,8 @@ from werkzeug.exceptions import abort
 
 import datetime as dtime
 import json
-import logging
+
+from fedsdm import get_logger
 
 from fedsdm.rdfmt import RDFMTMgr
 from multiprocessing import Process, Queue
@@ -18,15 +19,7 @@ from fedsdm.rdfmt.model import *
 
 bp = Blueprint('federation', __name__, url_prefix='/federation')
 
-
-logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-logger = logging.getLogger()
-if not logger.handlers:
-    logger.setLevel(logging.INFO)
-    consoleHandler = logging.StreamHandler()
-    consoleHandler.setLevel(logging.INFO)
-    consoleHandler.setFormatter(logFormatter)
-    logger.addHandler(consoleHandler)
+logger = get_logger(__name__)
 
 
 @bp.route('/')

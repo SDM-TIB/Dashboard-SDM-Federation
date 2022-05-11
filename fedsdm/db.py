@@ -1,4 +1,3 @@
-import logging
 import os
 import sqlite3
 import urllib.parse as urlparse
@@ -7,14 +6,9 @@ from multiprocessing import Queue
 
 import requests
 from flask import current_app, g
+from fedsdm import get_logger
 
-logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-logger = logging.getLogger('mtupdate')
-logger.setLevel(logging.INFO)
-fileHandler = logging.FileHandler("{0}/{1}.log".format('.', 'ontario-update-log'))
-fileHandler.setLevel(logging.INFO)
-fileHandler.setFormatter(logFormatter)
-logger.addHandler(fileHandler)
+logger = get_logger('mtupdate', file="{0}/{1}.log".format('.', 'ontario-update-log'))
 
 
 class MetadataDB:

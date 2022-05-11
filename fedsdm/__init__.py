@@ -1,5 +1,23 @@
 import os
+import logging
 from flask import Flask, send_from_directory, redirect
+
+
+def get_logger(name, file=None):
+    logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.INFO)
+    if file is not None:
+        fileHandler = logging.FileHandler(file)
+        fileHandler.setLevel(logging.INFO)
+        fileHandler.setFormatter(logFormatter)
+        logger.addHandler(fileHandler)
+    else:
+        consoleHandler = logging.StreamHandler()
+        consoleHandler.setLevel(logging.INFO)
+        consoleHandler.setFormatter(logFormatter)
+        logger.addHandler(consoleHandler)
+    return logger
 
 
 class PrefixMiddleware(object):

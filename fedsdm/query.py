@@ -1,6 +1,5 @@
 import hashlib
 import json
-import logging
 import os
 import traceback
 from multiprocessing import Queue
@@ -18,18 +17,11 @@ from fedsdm.auth import login_required
 from fedsdm.config import ConfigSimpleStore
 from fedsdm.db import get_db, get_mdb
 from fedsdm.ui.utils import get_federations
+from fedsdm import get_logger
 
 bp = Blueprint('query', __name__, url_prefix='/query')
 
-
-logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-logger = logging.getLogger()
-if not logger.handlers:
-    logger.setLevel(logging.INFO)
-    consoleHandler = logging.StreamHandler()
-    consoleHandler.setLevel(logging.INFO)
-    consoleHandler.setFormatter(logFormatter)
-    logger.addHandler(consoleHandler)
+logger = get_logger(__name__)
 
 
 @bp.route('/query')
