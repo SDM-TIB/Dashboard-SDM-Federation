@@ -161,7 +161,11 @@ def get_mdb():
         metaendpoint = "http://localhost:1300/sparql"
     if 'mdb' not in g:
         g.mdb = MetadataDB(metaendpoint)
-        g.default_graph = "http://ontario.tib.eu"
+
+        if 'DEFAULT_GRAPH' in os.environ:
+            g.default_graph = os.environ['DEFAULT_GRAPH']
+        else:
+            g.default_graph = "http://ontario.tib.eu"
     return g.mdb
 
 
