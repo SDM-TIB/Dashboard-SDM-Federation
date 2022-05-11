@@ -1,11 +1,11 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from fedsdm.db import get_db, init_db
+from fedsdm.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 

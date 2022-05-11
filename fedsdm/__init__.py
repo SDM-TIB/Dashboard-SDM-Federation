@@ -1,5 +1,5 @@
 import os
-from flask import Flask, url_for, send_from_directory, redirect
+from flask import Flask, send_from_directory, redirect
 
 
 class PrefixMiddleware(object):

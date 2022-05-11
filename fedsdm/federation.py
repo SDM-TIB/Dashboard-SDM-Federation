@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, session, Response, send_from_directory, request, url_for
+    Blueprint, flash, g, redirect, render_template, session, Response, request, url_for
 )
 from werkzeug.exceptions import abort
 
@@ -8,7 +8,7 @@ import json
 import logging
 
 from fedsdm.rdfmt import RDFMTMgr
-from multiprocessing import Process, Queue, active_children
+from multiprocessing import Process, Queue
 
 from fedsdm.auth import login_required
 from fedsdm.db import get_db, get_mdb

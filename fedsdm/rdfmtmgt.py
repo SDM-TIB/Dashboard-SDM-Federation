@@ -1,18 +1,14 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, session, Response, send_from_directory, request, url_for
+    Blueprint, g, render_template, session, Response, request
 )
-from werkzeug.exceptions import abort
 
-import urllib.parse as urlparse
-import datetime as dtime
-from flask.json import jsonify
 import json
 
 import networkx as nx
 
 from fedsdm.auth import login_required
-from fedsdm.db import get_db, get_mdb
-from fedsdm.ui.utils import get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations
+from fedsdm.db import get_mdb
+from fedsdm.ui.utils import get_federations
 
 bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
 

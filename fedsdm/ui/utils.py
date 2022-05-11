@@ -1,5 +1,5 @@
 from flask import g
-from fedsdm.db import get_db, MetadataDB, get_mdb
+from fedsdm.db import get_mdb
 
 
 def get_federations():

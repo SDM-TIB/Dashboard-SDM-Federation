@@ -1,10 +1,7 @@
 from flask import (
-    Blueprint, flash, g, redirect, session, render_template, request, url_for
+    Blueprint, g, session, render_template
 )
-from werkzeug.exceptions import abort
 
-from fedsdm.auth import login_required
-from fedsdm.db import get_db
 from fedsdm.ui.utils import get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
