@@ -26,7 +26,7 @@ def rdfmt():
     #     ' ORDER BY created DESC'
     # ).fetchall()
 
-    federations = get_federations(g.default_graph)
+    federations = get_federations()
     g.federations = federations
     if 'fed' in session:
         if session['fed'] not in [f['uri'] for f in federations]:

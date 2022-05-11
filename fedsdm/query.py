@@ -35,18 +35,14 @@ if not logger.handlers:
 @bp.route('/query')
 @login_required
 def query():
-    db = get_db()
-    federations = db.execute(
-        'SELECT f.id, name, description, is_public, created, username, owner_id'
-        ' FROM federation f JOIN user u ON f.owner_id = u.id'
-        ' ORDER BY created DESC'
-    ).fetchall()
-
     if 'federations' not in g:
-        federations = get_federations(g.default_graph)
+        federations = get_federations()
         g.federations = federations
     if 'fed' in session:
-        print(session['fed'])
+        if session['fed'] not in [f['uri'] for f in g.federations]:
+            del session['fed']
+    # if 'fed' in session:
+    #     print(session['fed'])
     return render_template('query/index.html', federations=g.federations)
 
 

@@ -1,11 +1,12 @@
+from flask import g
 from fedsdm.db import get_db, MetadataDB, get_mdb
 
 
-def get_federations(default_graph):
+def get_federations():
     mdb = get_mdb()
 
     query = "SELECT DISTINCT ?uri ?name WHERE {" \
-            " GRAPH <" + default_graph + "> {?uri a <http://tib.eu/dsdl/ontario/ontology/Federation>. "\
+            " GRAPH <" + g.default_graph + "> {?uri a <http://tib.eu/dsdl/ontario/ontology/Federation>. "\
                                            " ?uri <http://tib.eu/dsdl/ontario/ontology/name> ?name } }"
     res, card = mdb.query(query)
     if card > 0:

@@ -31,10 +31,10 @@ if not logger.handlers:
 
 @bp.route('/')
 def index():
-    federations = get_federations(g.default_graph)
-    g.federations = federations
+    feds = get_federations()
+    g.federations = feds
     if 'fed' in session:
-        if session['fed'] not in [f['uri'] for f in federations]:
+        if session['fed'] not in [f['uri'] for f in feds]:
             del session['fed']
 
     sourceids = []
@@ -42,10 +42,7 @@ def index():
     rdfmts = 0
     links = 0
     stats = {}
-    feds = get_federations(g.default_graph)
-    if 'fed' in session:
-        if session['fed'] not in [f['uri'] for f in feds]:
-            del session['fed']
+
     for f in feds:
         graph = f['uri']
         dss = get_datasources(graph)
@@ -88,7 +85,7 @@ def stats():
     if graph is not None:
         session['fed'] = graph
         if graph == "All":
-            federations = get_federations(g.default_graph)
+            federations = get_federations()
             for fed in federations:
                 stats.update(get_stats(fed['uri']))
         else:

@@ -20,14 +20,7 @@ bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
 @bp.route('/rdfmt')
 @login_required
 def rdfmt():
-    db = get_db()
-    federations = db.execute(
-        'SELECT f.id, name, description, is_public, created, username, owner_id'
-        ' FROM federation f JOIN user u ON f.owner_id = u.id'
-        ' ORDER BY created DESC'
-    ).fetchall()
-
-    federations = get_federations(g.default_graph)
+    federations = get_federations()
     g.federations = federations
     if 'fed' in session:
         if session['fed'] not in [f['uri'] for f in federations]:

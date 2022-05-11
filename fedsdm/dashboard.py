@@ -11,22 +11,18 @@ bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 
 @bp.route('/')
-@login_required
 def stats():
-    federations = get_federations(g.default_graph)
-    g.federations = federations
+    feds = get_federations()
+    g.federations = feds
     if 'fed' in session:
-            if session['fed'] not in [f['uri'] for f in federations]:
-                del session['fed']
+        if session['fed'] not in [f['uri'] for f in feds]:
+            del session['fed']
     sourceids = []
     datasources = {}
     rdfmts = 0
     links = 0
     stats = {}
-    feds = get_federations(g.default_graph)
-    if 'fed' in session:
-        if session['fed'] not in [f['uri'] for f in feds]:
-            del session['fed']
+
     for f in feds:
         graph = f['uri']
         dss = get_datasources(graph)
