@@ -1,4 +1,4 @@
-FROM prohde/virtuoso-opensource-7:7.2.6
+FROM prohde/virtuoso-opensource-7:7.2.7
 
 # Define environment variables
 ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
