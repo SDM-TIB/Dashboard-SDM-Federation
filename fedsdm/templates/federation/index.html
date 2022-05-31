@@ -287,22 +287,21 @@
 <script src="{{ url_for('static', filename='js/federations.js') }}"></script>
 <script>
     $(document).ready(function(){
-        var nfeds = [];
-        var nds = [];
-        var ntpl = [];
-        var nftm = [];
-        var nprp = [];
-        var nlnk = [];
-        var ndict = {};
-        var ntriples = {};
-        var nrdftms = {};
-        var nproperties = {};
-        var nlinks = {};
-        var federations;
-        var federations = JSON.parse('{{ dsstats | tojson | safe}}');
-        var nfd = JSON.parse('{{ federations | tojson | safe}}');
+        let nfeds = [],
+            nds = [],
+            ntpl = [],
+            nftm = [],
+            nprp = [],
+            nlnk = [];
+        let ndict = {},
+            ntriples = {},
+            nrdftms = {},
+            nproperties = {},
+            nlinks = {};
+        let federations = JSON.parse('{{ dsstats | tojson | safe }}');
+        let nfd = JSON.parse('{{ federations | tojson | safe }}');
         for (let i = 0; i < nfd.length; i++) {
-            if(ndict[nfd[i]['name']] == undefined){
+            if (ndict[nfd[i]['name']] === undefined) {
                 ndict[nfd[i]['name']] = 0;
                 ntriples[nfd[i]['name']] = 0;
                 nrdftms[nfd[i]['name']] = 0;
@@ -310,9 +309,8 @@
                 nlinks[nfd[i]['name']] = 0;
             }
             for (let j = 0; j < federations.length; j++) {
-                if(federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase())>0)
-                {
-                    ndict[nfd[i]['name']] ++;
+                if(federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase()) > 0) {
+                    ndict[nfd[i]['name']]++;
                     ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(federations[j]['triples']);
                     nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(federations[j]['rdfmts']);
                     nproperties[nfd[i]['name']] = parseFloat(nproperties[nfd[i]['name']]) + parseFloat(federations[j]['properties']);
@@ -320,45 +318,44 @@
                 }
             }
         }
-        for (var key in ndict) {
-            if (ndict.hasOwnProperty(key)) {
-                nds.push(ndict[key]);
-                nfeds.push(key);
+        for (let key_ndict in ndict) {
+            if (ndict.hasOwnProperty(key_ndict)) {
+                nds.push(ndict[key_ndict]);
+                nfeds.push(key_ndict);
             }
         }
-        for (var key in ntriples) {
-            if (ntriples.hasOwnProperty(key)) {
-                ntpl.push(ntriples[key]);
+        for (let key_ntriples in ntriples) {
+            if (ntriples.hasOwnProperty(key_ntriples)) {
+                ntpl.push(ntriples[key_ntriples]);
             }
         }
-        for (var key in nrdftms) {
-            if (nrdftms.hasOwnProperty(key)) {
-                nftm.push(nrdftms[key]);
+        for (let key_nrdftms in nrdftms) {
+            if (nrdftms.hasOwnProperty(key_nrdftms)) {
+                nftm.push(nrdftms[key_nrdftms]);
             }
         }
-        for (var key in nproperties) {
-            if (nproperties.hasOwnProperty(key)) {
-                nprp.push(nproperties[key]);
+        for (let key_nproperties in nproperties) {
+            if (nproperties.hasOwnProperty(key_nproperties)) {
+                nprp.push(nproperties[key_nproperties]);
             }
         }
-        for (var key in nlinks) {
-            if (nlinks.hasOwnProperty(key)) {
-                nlnk.push(nlinks[key]);
+        for (let key_nlinks in nlinks) {
+            if (nlinks.hasOwnProperty(key_nlinks)) {
+                nlnk.push(nlinks[key_nlinks]);
             }
         }
         federationOverview(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
         let activeTab = window.location.hash;
         if (activeTab) {
-            if (activeTab == "#home") {
+            if (activeTab === "#home") {
                 $('#maincontent a[href="#home"]').click();
                 $('#federationslist').val('All');
                 $('#federationslist').change();
             }
-            else if (activeTab == "#All") {
+            else if (activeTab === "#All") {
                 $('#maincontent a[href="#feder"]').click();
             }
         }
     });
 </script>
 {% endblock %}
-
