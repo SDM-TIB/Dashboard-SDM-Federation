@@ -1,0 +1,702 @@
+@prefix opg: <http://ogp.me/ns#> .
+@prefix wsdbm: <http://db.uwaterloo.ca/~galuc/wsdbm/> .
+
+wsdbm:SubGenre0 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic242,
+        wsdbm:Topic87 .
+
+wsdbm:SubGenre1 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic27,
+        wsdbm:Topic59 .
+
+wsdbm:SubGenre10 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic151,
+        wsdbm:Topic154 .
+
+wsdbm:SubGenre100 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic182,
+        wsdbm:Topic33,
+        wsdbm:Topic34 .
+
+wsdbm:SubGenre101 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic101,
+        wsdbm:Topic140,
+        wsdbm:Topic28,
+        wsdbm:Topic75 .
+
+wsdbm:SubGenre102 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic223,
+        wsdbm:Topic28,
+        wsdbm:Topic6 .
+
+wsdbm:SubGenre103 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic20,
+        wsdbm:Topic233 .
+
+wsdbm:SubGenre104 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic106,
+        wsdbm:Topic155,
+        wsdbm:Topic71,
+        wsdbm:Topic85,
+        wsdbm:Topic9 .
+
+wsdbm:SubGenre105 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic126,
+        wsdbm:Topic57 .
+
+wsdbm:SubGenre106 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic120,
+        wsdbm:Topic132,
+        wsdbm:Topic159,
+        wsdbm:Topic184,
+        wsdbm:Topic84 .
+
+wsdbm:SubGenre107 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic123,
+        wsdbm:Topic148,
+        wsdbm:Topic167,
+        wsdbm:Topic37 .
+
+wsdbm:SubGenre108 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic14,
+        wsdbm:Topic172,
+        wsdbm:Topic193,
+        wsdbm:Topic25,
+        wsdbm:Topic43 .
+
+wsdbm:SubGenre11 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic12,
+        wsdbm:Topic139,
+        wsdbm:Topic235,
+        wsdbm:Topic248 .
+
+wsdbm:SubGenre111 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic91 .
+
+wsdbm:SubGenre112 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic13,
+        wsdbm:Topic147,
+        wsdbm:Topic47,
+        wsdbm:Topic97 .
+
+wsdbm:SubGenre113 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic1,
+        wsdbm:Topic100,
+        wsdbm:Topic166,
+        wsdbm:Topic229,
+        wsdbm:Topic248,
+        wsdbm:Topic7 .
+
+wsdbm:SubGenre114 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic219,
+        wsdbm:Topic35 .
+
+wsdbm:SubGenre115 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic142,
+        wsdbm:Topic41 .
+
+wsdbm:SubGenre116 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic104,
+        wsdbm:Topic156 .
+
+wsdbm:SubGenre117 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic16,
+        wsdbm:Topic190,
+        wsdbm:Topic191,
+        wsdbm:Topic78 .
+
+wsdbm:SubGenre118 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic10,
+        wsdbm:Topic13,
+        wsdbm:Topic133,
+        wsdbm:Topic91 .
+
+wsdbm:SubGenre119 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic114,
+        wsdbm:Topic186,
+        wsdbm:Topic20,
+        wsdbm:Topic212,
+        wsdbm:Topic214,
+        wsdbm:Topic240 .
+
+wsdbm:SubGenre12 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic122,
+        wsdbm:Topic17,
+        wsdbm:Topic20,
+        wsdbm:Topic74 .
+
+wsdbm:SubGenre120 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic177,
+        wsdbm:Topic225,
+        wsdbm:Topic45,
+        wsdbm:Topic74,
+        wsdbm:Topic83,
+        wsdbm:Topic86 .
+
+wsdbm:SubGenre121 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic133,
+        wsdbm:Topic168,
+        wsdbm:Topic184,
+        wsdbm:Topic193,
+        wsdbm:Topic222,
+        wsdbm:Topic31 .
+
+wsdbm:SubGenre122 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic104,
+        wsdbm:Topic107,
+        wsdbm:Topic141,
+        wsdbm:Topic154,
+        wsdbm:Topic97 .
+
+wsdbm:SubGenre123 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic174,
+        wsdbm:Topic181 .
+
+wsdbm:SubGenre124 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic128,
+        wsdbm:Topic143,
+        wsdbm:Topic201 .
+
+wsdbm:SubGenre125 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic173 .
+
+wsdbm:SubGenre127 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic173,
+        wsdbm:Topic2,
+        wsdbm:Topic69 .
+
+wsdbm:SubGenre128 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic104,
+        wsdbm:Topic145,
+        wsdbm:Topic195 .
+
+wsdbm:SubGenre129 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic186,
+        wsdbm:Topic219,
+        wsdbm:Topic239,
+        wsdbm:Topic58,
+        wsdbm:Topic85 .
+
+wsdbm:SubGenre13 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic18,
+        wsdbm:Topic219,
+        wsdbm:Topic26,
+        wsdbm:Topic37,
+        wsdbm:Topic42 .
+
+wsdbm:SubGenre130 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic117,
+        wsdbm:Topic23,
+        wsdbm:Topic242,
+        wsdbm:Topic9 .
+
+wsdbm:SubGenre131 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic113,
+        wsdbm:Topic149,
+        wsdbm:Topic228,
+        wsdbm:Topic73 .
+
+wsdbm:SubGenre132 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic4,
+        wsdbm:Topic57 .
+
+wsdbm:SubGenre133 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic214,
+        wsdbm:Topic5,
+        wsdbm:Topic69,
+        wsdbm:Topic71 .
+
+wsdbm:SubGenre135 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic101 .
+
+wsdbm:SubGenre136 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic22,
+        wsdbm:Topic235,
+        wsdbm:Topic91 .
+
+wsdbm:SubGenre137 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic14,
+        wsdbm:Topic26 .
+
+wsdbm:SubGenre138 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic10,
+        wsdbm:Topic123,
+        wsdbm:Topic177,
+        wsdbm:Topic186,
+        wsdbm:Topic249 .
+
+wsdbm:SubGenre139 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic127,
+        wsdbm:Topic230 .
+
+wsdbm:SubGenre14 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic50 .
+
+wsdbm:SubGenre140 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic49 .
+
+wsdbm:SubGenre141 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic13,
+        wsdbm:Topic141,
+        wsdbm:Topic31 .
+
+wsdbm:SubGenre142 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic142,
+        wsdbm:Topic242 .
+
+wsdbm:SubGenre143 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic128,
+        wsdbm:Topic228 .
+
+wsdbm:SubGenre144 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic101,
+        wsdbm:Topic112,
+        wsdbm:Topic200,
+        wsdbm:Topic242,
+        wsdbm:Topic39,
+        wsdbm:Topic91 .
+
+wsdbm:SubGenre15 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic102,
+        wsdbm:Topic202,
+        wsdbm:Topic50,
+        wsdbm:Topic84 .
+
+wsdbm:SubGenre17 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic153,
+        wsdbm:Topic180,
+        wsdbm:Topic230,
+        wsdbm:Topic234,
+        wsdbm:Topic249,
+        wsdbm:Topic41 .
+
+wsdbm:SubGenre19 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic184,
+        wsdbm:Topic76 .
+
+wsdbm:SubGenre2 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic104,
+        wsdbm:Topic136,
+        wsdbm:Topic145,
+        wsdbm:Topic25,
+        wsdbm:Topic93 .
+
+wsdbm:SubGenre20 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic226,
+        wsdbm:Topic38 .
+
+wsdbm:SubGenre21 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic165,
+        wsdbm:Topic230,
+        wsdbm:Topic244,
+        wsdbm:Topic249,
+        wsdbm:Topic66 .
+
+wsdbm:SubGenre22 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic168 .
+
+wsdbm:SubGenre23 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic150,
+        wsdbm:Topic172,
+        wsdbm:Topic18,
+        wsdbm:Topic74 .
+
+wsdbm:SubGenre24 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic1,
+        wsdbm:Topic116,
+        wsdbm:Topic60 .
+
+wsdbm:SubGenre26 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic142,
+        wsdbm:Topic194,
+        wsdbm:Topic79 .
+
+wsdbm:SubGenre27 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic114,
+        wsdbm:Topic159,
+        wsdbm:Topic179,
+        wsdbm:Topic53 .
+
+wsdbm:SubGenre28 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic158,
+        wsdbm:Topic35,
+        wsdbm:Topic54 .
+
+wsdbm:SubGenre29 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic102,
+        wsdbm:Topic124,
+        wsdbm:Topic125,
+        wsdbm:Topic24,
+        wsdbm:Topic84 .
+
+wsdbm:SubGenre3 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic120,
+        wsdbm:Topic83 .
+
+wsdbm:SubGenre30 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic120,
+        wsdbm:Topic154,
+        wsdbm:Topic65 .
+
+wsdbm:SubGenre31 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic122,
+        wsdbm:Topic225,
+        wsdbm:Topic7 .
+
+wsdbm:SubGenre32 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic124,
+        wsdbm:Topic148,
+        wsdbm:Topic77,
+        wsdbm:Topic89 .
+
+wsdbm:SubGenre33 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic145,
+        wsdbm:Topic146,
+        wsdbm:Topic180,
+        wsdbm:Topic237,
+        wsdbm:Topic61 .
+
+wsdbm:SubGenre34 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic134,
+        wsdbm:Topic198 .
+
+wsdbm:SubGenre37 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic119,
+        wsdbm:Topic155,
+        wsdbm:Topic22,
+        wsdbm:Topic38 .
+
+wsdbm:SubGenre38 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic111,
+        wsdbm:Topic13,
+        wsdbm:Topic156,
+        wsdbm:Topic94 .
+
+wsdbm:SubGenre39 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic101,
+        wsdbm:Topic118,
+        wsdbm:Topic132,
+        wsdbm:Topic162,
+        wsdbm:Topic54,
+        wsdbm:Topic58 .
+
+wsdbm:SubGenre4 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic119,
+        wsdbm:Topic159,
+        wsdbm:Topic207,
+        wsdbm:Topic71 .
+
+wsdbm:SubGenre41 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic115,
+        wsdbm:Topic122,
+        wsdbm:Topic130,
+        wsdbm:Topic177,
+        wsdbm:Topic227,
+        wsdbm:Topic92 .
+
+wsdbm:SubGenre42 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic146,
+        wsdbm:Topic247 .
+
+wsdbm:SubGenre43 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic116,
+        wsdbm:Topic210,
+        wsdbm:Topic9,
+        wsdbm:Topic94 .
+
+wsdbm:SubGenre44 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic100,
+        wsdbm:Topic190,
+        wsdbm:Topic219,
+        wsdbm:Topic222,
+        wsdbm:Topic74 .
+
+wsdbm:SubGenre45 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic159,
+        wsdbm:Topic218,
+        wsdbm:Topic243 .
+
+wsdbm:SubGenre46 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic149,
+        wsdbm:Topic19,
+        wsdbm:Topic222,
+        wsdbm:Topic97 .
+
+wsdbm:SubGenre47 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic127,
+        wsdbm:Topic22,
+        wsdbm:Topic237,
+        wsdbm:Topic31 .
+
+wsdbm:SubGenre48 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic144,
+        wsdbm:Topic206 .
+
+wsdbm:SubGenre49 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic104 .
+
+wsdbm:SubGenre5 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic108,
+        wsdbm:Topic201,
+        wsdbm:Topic22,
+        wsdbm:Topic248,
+        wsdbm:Topic36,
+        wsdbm:Topic46 .
+
+wsdbm:SubGenre51 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic150,
+        wsdbm:Topic194,
+        wsdbm:Topic28,
+        wsdbm:Topic46,
+        wsdbm:Topic57,
+        wsdbm:Topic88 .
+
+wsdbm:SubGenre53 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic136,
+        wsdbm:Topic243 .
+
+wsdbm:SubGenre54 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic19,
+        wsdbm:Topic21,
+        wsdbm:Topic75 .
+
+wsdbm:SubGenre56 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic105,
+        wsdbm:Topic246,
+        wsdbm:Topic28 .
+
+wsdbm:SubGenre57 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic132 .
+
+wsdbm:SubGenre58 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic208 .
+
+wsdbm:SubGenre59 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic108,
+        wsdbm:Topic113,
+        wsdbm:Topic136,
+        wsdbm:Topic245,
+        wsdbm:Topic39,
+        wsdbm:Topic56 .
+
+wsdbm:SubGenre6 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic16,
+        wsdbm:Topic202,
+        wsdbm:Topic217,
+        wsdbm:Topic223,
+        wsdbm:Topic32,
+        wsdbm:Topic70 .
+
+wsdbm:SubGenre60 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic149,
+        wsdbm:Topic220,
+        wsdbm:Topic37,
+        wsdbm:Topic98 .
+
+wsdbm:SubGenre61 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic218,
+        wsdbm:Topic241,
+        wsdbm:Topic59 .
+
+wsdbm:SubGenre62 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic103,
+        wsdbm:Topic104 .
+
+wsdbm:SubGenre63 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic13,
+        wsdbm:Topic142,
+        wsdbm:Topic64 .
+
+wsdbm:SubGenre64 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic12,
+        wsdbm:Topic184,
+        wsdbm:Topic221,
+        wsdbm:Topic69,
+        wsdbm:Topic78 .
+
+wsdbm:SubGenre65 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic120,
+        wsdbm:Topic182,
+        wsdbm:Topic219,
+        wsdbm:Topic66,
+        wsdbm:Topic83 .
+
+wsdbm:SubGenre66 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic233,
+        wsdbm:Topic36,
+        wsdbm:Topic59 .
+
+wsdbm:SubGenre67 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic201,
+        wsdbm:Topic218,
+        wsdbm:Topic27 .
+
+wsdbm:SubGenre68 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic184,
+        wsdbm:Topic195,
+        wsdbm:Topic64 .
+
+wsdbm:SubGenre69 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic147,
+        wsdbm:Topic168,
+        wsdbm:Topic2,
+        wsdbm:Topic240,
+        wsdbm:Topic81 .
+
+wsdbm:SubGenre7 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic19,
+        wsdbm:Topic193,
+        wsdbm:Topic57,
+        wsdbm:Topic71,
+        wsdbm:Topic83 .
+
+wsdbm:SubGenre70 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic210,
+        wsdbm:Topic55 .
+
+wsdbm:SubGenre71 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic80 .
+
+wsdbm:SubGenre72 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic206,
+        wsdbm:Topic99 .
+
+wsdbm:SubGenre73 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic140,
+        wsdbm:Topic154,
+        wsdbm:Topic189,
+        wsdbm:Topic26 .
+
+wsdbm:SubGenre74 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic128,
+        wsdbm:Topic15,
+        wsdbm:Topic194,
+        wsdbm:Topic59,
+        wsdbm:Topic62,
+        wsdbm:Topic7 .
+
+wsdbm:SubGenre75 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic162,
+        wsdbm:Topic240,
+        wsdbm:Topic243,
+        wsdbm:Topic249,
+        wsdbm:Topic70 .
+
+wsdbm:SubGenre76 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic158,
+        wsdbm:Topic163,
+        wsdbm:Topic30,
+        wsdbm:Topic72 .
+
+wsdbm:SubGenre77 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic36,
+        wsdbm:Topic39,
+        wsdbm:Topic54 .
+
+wsdbm:SubGenre78 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic123,
+        wsdbm:Topic194 .
+
+wsdbm:SubGenre79 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic117,
+        wsdbm:Topic17,
+        wsdbm:Topic185 .
+
+wsdbm:SubGenre8 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic117,
+        wsdbm:Topic247,
+        wsdbm:Topic75,
+        wsdbm:Topic81 .
+
+wsdbm:SubGenre80 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic189,
+        wsdbm:Topic43,
+        wsdbm:Topic92 .
+
+wsdbm:SubGenre81 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic25,
+        wsdbm:Topic37,
+        wsdbm:Topic75,
+        wsdbm:Topic8,
+        wsdbm:Topic85 .
+
+wsdbm:SubGenre82 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic183,
+        wsdbm:Topic238,
+        wsdbm:Topic55,
+        wsdbm:Topic70 .
+
+wsdbm:SubGenre83 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic156,
+        wsdbm:Topic219,
+        wsdbm:Topic52 .
+
+wsdbm:SubGenre84 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic175,
+        wsdbm:Topic90 .
+
+wsdbm:SubGenre85 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic207,
+        wsdbm:Topic5,
+        wsdbm:Topic53 .
+
+wsdbm:SubGenre86 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic132,
+        wsdbm:Topic242 .
+
+wsdbm:SubGenre87 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic168,
+        wsdbm:Topic189,
+        wsdbm:Topic4,
+        wsdbm:Topic8 .
+
+wsdbm:SubGenre89 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic231,
+        wsdbm:Topic7 .
+
+wsdbm:SubGenre9 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic201 .
+
+wsdbm:SubGenre90 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic16,
+        wsdbm:Topic240,
+        wsdbm:Topic90 .
+
+wsdbm:SubGenre91 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic117 .
+
+wsdbm:SubGenre92 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic105,
+        wsdbm:Topic178,
+        wsdbm:Topic69 .
+
+wsdbm:SubGenre93 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic141,
+        wsdbm:Topic153,
+        wsdbm:Topic157,
+        wsdbm:Topic208,
+        wsdbm:Topic223,
+        wsdbm:Topic39 .
+
+wsdbm:SubGenre94 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic110,
+        wsdbm:Topic183,
+        wsdbm:Topic211,
+        wsdbm:Topic92 .
+
+wsdbm:SubGenre96 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic227,
+        wsdbm:Topic41 .
+
+wsdbm:SubGenre97 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic243 .
+
+wsdbm:SubGenre98 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic110 .
+
+wsdbm:SubGenre99 a wsdbm:Genre ;
+    opg:tag wsdbm:Topic215,
+        wsdbm:Topic236,
+        wsdbm:Topic75,
+        wsdbm:Topic80 .
+
