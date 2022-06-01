@@ -75,7 +75,7 @@ class RDFMTMgr(object):
             ds.triples = triples
 
             data = "<" + ds.rid + "> <" + mtonto + "triples> " + triples
-            self.updateGraph(data)
+            self.updateGraph([data])
         else:
             today = str(datetime.datetime.now())
             data = ["<" + ds.rid + '> <http://purl.org/dc/terms/modified> "' + today + '"']
