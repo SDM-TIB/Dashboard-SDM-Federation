@@ -50,51 +50,6 @@ services:
     environment:
       DEFAULT_GRAPH: http://db.uwaterloo.ca/~galuc/wsdbm/
 
-  lslod_diseasome:
-    container_name: fedsdm_lslod_diseasome
-    image: prohde/virtuoso-opensource-7:7.2.7-alpine
-    ports:
-      - "12003:8890"
-    networks:
-      - lslod
-    volumes:
-      - type: bind
-        source: ./datasources/diseasome
-        target: /database/toLoad
-    mem_limit: 4g
-    environment:
-      DEFAULT_GRAPH: http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome
-
-  lslod_drugbank:
-    container_name: fedsdm_lslod_drugbank
-    image: prohde/virtuoso-opensource-7:7.2.7-alpine
-    ports:
-      - "12004:8890"
-    networks:
-      - lslod
-    volumes:
-      - type: bind
-        source: ./datasources/drugbank
-        target: /database/toLoad
-    mem_limit: 4g
-    environment:
-      DEFAULT_GRAPH: http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank
-      
-  lslod_sider:
-    container_name: fedsdm_lslod_sider
-    image: prohde/virtuoso-opensource-7:7.2.7-alpine
-    ports:
-      - "12008:8890"
-    networks:
-      - lslod
-    volumes:
-      - type: bind
-        source: ./datasources/sider
-        target: /database/toLoad
-    mem_limit: 4g
-    environment:
-      DEFAULT_GRAPH: http://www4.wiwiss.fu-berlin.de/sider/resource/sider
-
   dashboard:
     container_name: fedsdm_dashboard
     image: fedsdm
@@ -111,9 +66,6 @@ services:
         source: ./dashboard/virtuoso/
         target: /database
     depends_on:
-      - lslod_diseasome
-      - lslod_drugbank
-      - lslod_sider
       - lubm
       - watdiv_product
       - watdiv_role
