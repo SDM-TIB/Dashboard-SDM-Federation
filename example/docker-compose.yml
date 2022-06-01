@@ -62,6 +62,10 @@ services:
       - type: bind
         source: ./dashboard/virtuoso/
         target: /database
+    depends_on:
+      - lslod_diseasome
+      - lslod_drugbank
+      - lslod_sider
     ports:
       - "5003:5003"
       - "18000:9000"
