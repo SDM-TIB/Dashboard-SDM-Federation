@@ -647,7 +647,7 @@ $(document).ready(function() {
                     console.log(textStatus);
                 }
             });
-              edialog.dialog( "close" );
+              edialog.dialog("close");
             }
         return valid;
     }
