@@ -7,5 +7,6 @@ parsetab.py
 virtuoso.lck
 virtuoso.log
 virtuoso.pxa
+virtuoso.trx
 virtuoso-temp.db
 autoexec.isql
