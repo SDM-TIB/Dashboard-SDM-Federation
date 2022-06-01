@@ -121,7 +121,7 @@ class MetadataDB:
                 print("Update Endpoint->", self.update_endpoint, resp.reason, resp.status_code, insertquery)
                 logger.error("______/_________/________/________/______________")
                 logger.error(self.update_endpoint + " - " + str(resp.reason) + " - " + str(resp.status_code))
-                logger.error("ERROR On: " + insertquery)
+                logger.error("ERROR ON: " + insertquery)
                 logger.error("________________________________________________")
         except Exception as e:
             print("Exception during update query execution to", self.update_endpoint, ': ', e, insertquery)

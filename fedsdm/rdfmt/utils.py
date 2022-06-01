@@ -113,7 +113,7 @@ def updateRDFSource(update, endpoint):
         else:
             print("Update Endpoint->", endpoint, resp.reason, resp.status_code, update)
             logger.error(endpoint+" - " + str(resp.reason) + " - "+ str(resp.status_code))
-            logger.error("ERROR On: " + update)
+            logger.error("ERROR ON: " + update)
     except Exception as e:
         print("Exception during update query execution to", endpoint, ': ', e, update)
         logger.error("Exception on update: " + endpoint + " " + str(e))
