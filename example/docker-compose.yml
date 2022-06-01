@@ -2,6 +2,54 @@ version: '2.3'
 
 services:
 
+  lubm:
+    container_name: fedsdm_lubm
+    image: prohde/virtuoso-opensource-7:7.2.7-alpine
+    ports:
+      - "12000:8890"
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./datasources/LUBM
+        target: /database/toLoad
+    mem_limit: 2g
+    environment:
+      DEFAULT_GRAPH: http://swat.cse.lehigh.edu/onto/univ-bench.owl#
+
+  watdiv_product:
+    container_name: fedsdm_watdiv_product
+    image: prohde/virtuoso-opensource-7:7.2.7-alpine
+    ports:
+      - "13000:8890"
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./datasources/WatDiv/watdiv_genre.ttl
+        target: /database/toLoad/watdiv_genre.ttl
+      - type: bind
+        source: ./datasources/WatDiv/watdiv_product.ttl
+        target: /database/toLoad/watdiv_product.ttl
+    mem_limit: 2g
+    environment:
+      DEFAULT_GRAPH: http://db.uwaterloo.ca/~galuc/wsdbm/
+
+  watdiv_role:
+    container_name: fedsdm_watdiv_role
+    image: prohde/virtuoso-opensource-7:7.2.7-alpine
+    ports:
+      - "13001:8890"
+    networks:
+      - lslod
+    volumes:
+      - type: bind
+        source: ./datasources/WatDiv/watdiv_role.ttl
+        target: /database/toLoad/watdiv_genre.ttl
+    mem_limit: 2g
+    environment:
+      DEFAULT_GRAPH: http://db.uwaterloo.ca/~galuc/wsdbm/
+
   lslod_diseasome:
     container_name: fedsdm_lslod_diseasome
     image: prohde/virtuoso-opensource-7:7.2.7-alpine
@@ -66,6 +114,9 @@ services:
       - lslod_diseasome
       - lslod_drugbank
       - lslod_sider
+      - lubm
+      - watdiv_product
+      - watdiv_role
     ports:
       - "5003:5003"
       - "18000:9000"
