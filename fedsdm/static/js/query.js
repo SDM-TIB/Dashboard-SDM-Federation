@@ -1,353 +1,353 @@
 $(document).ready(function() {
-        var table = 0;
-        var nodes = [], selectedRow=null, selectedRowData = [],
-            links = [];
-        $("#selectfederation").prop("disabled", true);
+    var table = 0;
+    var nodes = [], selectedRow=null, selectedRowData = [],
+        links = [];
+    $("#selectfederation").prop("disabled", true);
 
-        var federation = $("#federationslist").val();
+    var federation = $("#federationslist").val();
 
-        if (federation != null && federation != ""){
-            $("#queryrow").show();
-            $("#resultrow").hide();
-        }
-        else {
-             $("#resultinfo").hide();
-             $("#resstatus").hide();
-             $("#queryrow").hide();
-             $("#resultrow").hide();
-        }
+    if (federation != null && federation != ""){
+        $("#queryrow").show();
+        $("#resultrow").hide();
+    }
+    else {
+        $("#resultinfo").hide();
+        $("#resstatus").hide();
+        $("#queryrow").hide();
+        $("#resultrow").hide();
+    }
 
-        $("#federationslist").change(function(){
-            fed = $(this).val();
-            federation = fed;
-            $("#queryrow").show();
-            $("#resultrow").hide();
-            yasqe.setValue(yasqe.getValue());
-        });
+    $("#federationslist").change(function(){
+        fed = $(this).val();
+        federation = fed;
+        $("#queryrow").show();
+        $("#resultrow").hide();
+        yasqe.setValue(yasqe.getValue());
+    });
 
+    $("#visualizebtn").hide();
+
+    $("#visualizebtn").click(function(){
+        $("#resultgraphdiv").show();
+        $("#resulttablediv").hide();
         $("#visualizebtn").hide();
+        $("#showtablebtn").show();
+        drawresults();
+        $("#resultgraphdiv").show();
+    });
+    $("#showtablebtn").click(function(){
+        $("#resultgraphdiv").hide();
+        $("#resulttablediv").show();
+        $("#visualizebtn").show();
+        $("#showtablebtn").hide();
+    });
 
-        $("#visualizebtn").click(function(){
-            $("#resultgraphdiv").show();
-            $("#resulttablediv").hide();
-            $("#visualizebtn").hide();
-            $("#showtablebtn").show();
-            drawresults();
-            $("#resultgraphdiv").show();
-        });
-        $("#showtablebtn").click(function(){
-            $("#resultgraphdiv").hide();
-            $("#resulttablediv").show();
-            $("#visualizebtn").show();
-            $("#showtablebtn").hide();
-        });
-
-        var mnodes = [],
-            malinks = []
-            mlinks = [];
-        var msourcenodes = [],
-            msourcelinks = [];
-        var mtcards = {"All":[]};
-        var resdrawn = 0;
-        function drawresults(){
-            if (resdrawn == 1){
-                return
-            }
-            mlinks = vizdata.links;
-            mnodes = vizdata.nodes;
-
-            for (var i=0; i<mlinks.length; ++i) {
-                o = mlinks[i];
-
-                o.source = mnodes[o.source];
-                o.target = mnodes[o.target];
-                //console.log(o);
-                if (o.source.datasource == o.target.datasource){
-                    if (o.source.datasource in msourcelinks)
-                        msourcelinks[o.source.datasource].push(o);
-                    else
-                        msourcelinks[o.source.datasource] =[o];
-                }
-           }
-           malinks = mlinks;
-
-           flatnodes = [];
-           $.each(mnodes, function (key, val) {
-               flatnodes.push(val);
-               mtcards["All"].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
-               if (val.datasource in mtcards){
-                    mtcards[val.datasource].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
-               } else {
-                    mtcards[val.datasource] = [{"label":val.label, "value":val.weight}]; // , "color": color(val.datasource)
-               }
-               if (val.datasource in msourcenodes){
-                   msourcenodes[val.datasource].push(val);
-               } else {
-                  msourcenodes[val.datasource] = [val]
-               }
-           });
-           mnodes = flatnodes;
-           manodes = mnodes ;
-
-           data = {nodes: manodes, links: malinks};
-           //console.log('nodes;', manodes)
-           //console.log('links', malinks)
-           manodes.forEach(function(d){
-                    expand[d.datasource] = true;
-                });
-           resdrawn = 1;
-           drawRDFMTS(manodes, malinks, "mtviz");
+    var mnodes = [],
+        malinks = []
+    mlinks = [];
+    var msourcenodes = [],
+        msourcelinks = [];
+    var mtcards = {"All":[]};
+    var resdrawn = 0;
+    function drawresults(){
+        if (resdrawn == 1){
+            return
         }
-        //finally, initialize YASQE
-        var yasqe = YASQE(document.getElementById("yasqe"), {
-            // display full query
-            viewportMargin: Infinity,
-            // grey edit window during query execution
-            backdrop: 99,
-            // modify codemirror tab handling to solely use 2 spaces
-            tabSize: 2,
-            indentUnit: 2,
-            extraKeys: {
-             Tab: function (cm) {
+        mlinks = vizdata.links;
+        mnodes = vizdata.nodes;
+
+        for (var i=0; i<mlinks.length; ++i) {
+            o = mlinks[i];
+
+            o.source = mnodes[o.source];
+            o.target = mnodes[o.target];
+            //console.log(o);
+            if (o.source.datasource == o.target.datasource){
+                if (o.source.datasource in msourcelinks)
+                    msourcelinks[o.source.datasource].push(o);
+                else
+                    msourcelinks[o.source.datasource] =[o];
+            }
+        }
+        malinks = mlinks;
+
+        flatnodes = [];
+        $.each(mnodes, function (key, val) {
+            flatnodes.push(val);
+            mtcards["All"].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
+            if (val.datasource in mtcards){
+                mtcards[val.datasource].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
+            } else {
+                mtcards[val.datasource] = [{"label":val.label, "value":val.weight}]; // , "color": color(val.datasource)
+            }
+            if (val.datasource in msourcenodes){
+                msourcenodes[val.datasource].push(val);
+            } else {
+                msourcenodes[val.datasource] = [val]
+            }
+        });
+        mnodes = flatnodes;
+        manodes = mnodes ;
+
+        data = {nodes: manodes, links: malinks};
+        //console.log('nodes;', manodes)
+        //console.log('links', malinks)
+        manodes.forEach(function(d){
+            expand[d.datasource] = true;
+        });
+        resdrawn = 1;
+        drawRDFMTS(manodes, malinks, "mtviz");
+    }
+    //finally, initialize YASQE
+    var yasqe = YASQE(document.getElementById("yasqe"), {
+        // display full query
+        viewportMargin: Infinity,
+        // grey edit window during query execution
+        backdrop: 99,
+        // modify codemirror tab handling to solely use 2 spaces
+        tabSize: 2,
+        indentUnit: 2,
+        extraKeys: {
+            Tab: function (cm) {
                 var spaces = new Array(cm.getOption("indentUnit") + 1).join(" ");
                 cm.replaceSelection(spaces);
-              }
-            },
-            sparql: {
-                showQueryButton: true,
-                endpoint: "/query/sparql"
             }
-
-
-        });
-
-        YASQE.defaults.sparql.showQueryButton = true;
-        YASQE.defaults.value = "SELECT DISTINCT ?concept\nWHERE {\n\t?s a ?concept\n} LIMIT 10";
-        YASQE.defaults.sparql.endpoint = "/query/sparql";
-        yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting){
-                //console.log('federation to query from',federation);
-                $("#resstatus").hide();
-                $("#visualizebtn").hide();
-                $("#showtablebtn").hide();
-                setting.url = "/query/sparql?federation=" +federation + "&query=" + encodeURIComponent(yasqe.getValue());
-                setting.crossDomain = true;
-                setting.data ={"query": yasqe.getValue()};
-                $("#resultinfo").hide();
-                $('#queryresultstable').empty();
-
+        },
+        sparql: {
+            showQueryButton: true,
+            endpoint: "/query/sparql"
         }
 
-        var start=false, end = true;
-        var vars = [], query=encodeURIComponent(yasqe.getValue());
-        var querytriples = [];
-        var vizdata = {nodes: {}, links: []};
-        var queryvars = []
-        yasqe.options.sparql.callbacks.success =  function(data){
-            $("#resulttablediv").empty();
-            $("#resulttablediv").append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
-            if ('error' in data){
-                $("#resstatus").html("Error:" + data.error);
-                $("#resultrow").show();
-                $("#resstatus").show();
-                $("#resultinfo").show();
-                return true
+    });
+
+    YASQE.defaults.sparql.showQueryButton = true;
+    YASQE.defaults.value = "SELECT DISTINCT ?concept\nWHERE {\n\t?s a ?concept\n} LIMIT 10";
+    YASQE.defaults.sparql.endpoint = "/query/sparql";
+    yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting){
+        //console.log('federation to query from',federation);
+        $("#resstatus").hide();
+        $("#visualizebtn").hide();
+        $("#showtablebtn").hide();
+        setting.url = "/query/sparql?federation=" +federation + "&query=" + encodeURIComponent(yasqe.getValue());
+        setting.crossDomain = true;
+        setting.data ={"query": yasqe.getValue()};
+        $("#resultinfo").hide();
+        $('#queryresultstable').empty();
+
+    }
+
+    var start=false, end = true;
+    var vars = [], query=encodeURIComponent(yasqe.getValue());
+    var querytriples = [];
+    var vizdata = {nodes: {}, links: []};
+    var queryvars = []
+    yasqe.options.sparql.callbacks.success =  function(data){
+        $("#resulttablediv").empty();
+        $("#resulttablediv").append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
+
+        if ('error' in data){
+            $("#resstatus").html("Error:" + data.error);
+            $("#resultrow").show();
+            $("#resstatus").show();
+            $("#resultinfo").show();
+            return true
+        }
+        resdrawn = 0;
+        $("#frestime").html(" " + data.firstResult + " sec");
+        $("#exetime").html(" " + data.execTime + " sec");
+
+        query=encodeURIComponent(yasqe.getValue());
+
+        var results = data.result;
+        if (results.length > 0){
+            $("#resstatus").hide();
+            $("#resultinfo").show();
+            $("#resultrow").show();
+
+            vars = data.vars;
+
+            var theader = "<thead><tr>";
+            var tfooter = "<tfoot><tr>";
+            for (var i=0; i<vars.length;i++){
+                theader =  theader + "<th>" + vars[i] + "</th> ";
+                tfooter =  tfooter + "<th>" + vars[i] + "</th> ";
+                queryvars.push(vars[i]);
             }
-            resdrawn = 0;
-            $("#frestime").html(" " + data.firstResult + " sec");
-            $("#exetime").html(" " + data.execTime + " sec");
+            $("#queryresultstable").append(theader + "</tr></thead> ");
 
-            query=encodeURIComponent(yasqe.getValue());
+            $("#queryresultstable").append("<tbody></tbody>");
+            $("#queryresultstable").append(tfooter + "</tr></tfoot> ");
 
-            var results = data.result;
-            if (results.length > 0){
-                $("#resstatus").hide();
-                $("#resultinfo").show();
-                $("#resultrow").show();
-
-                vars = data.vars;
-
-                var theader = "<thead><tr>";
-                var tfooter = "<tfoot><tr>";
-                for (var i=0; i<vars.length;i++){
-                    theader =  theader + "<th>" + vars[i] + "</th> ";
-                    tfooter =  tfooter + "<th>" + vars[i] + "</th> ";
-                    queryvars.push(vars[i]);
-                }
-                $("#queryresultstable").append(theader + "</tr></thead> ");
-
-                $("#queryresultstable").append("<tbody></tbody>");
-                $("#queryresultstable").append(tfooter + "</tr></tfoot> ");
-
-                table =  $('#queryresultstable').DataTable({
-                    responsive: true,
-                    select: true,
-                    lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-                    dom: 'Blfrtip',
-                    buttons: [
-                         {
-                         text:'copy'
-                         },
-                         {
-                         text:'csv',
-                         extend: 'csvHtml5',
-                         title: 'sparql-results'
-                         },
-                         {
-                         text:'excel',
-                         extend: 'excelHtml5',
-                         title: 'sparql-results'
-                         },
-                         {
-                         text:'pdf',
-                         extend: 'pdfHtml5',
-                         title: 'sparql-results'
-                         },
-                         {
-                         text: 'TSV',
-                         extend: 'csvHtml5',
-                         fieldSeparator: '\t',
-                         extension: '.tsv',
-                         title: 'sparql-results'
-                         }
-                    ]
-                });
-                querytriples = data.querytriples;
-                var resmap = {}
-                for (var i=0; i<results.length; i++){
-                    var row=results[i];
-                    var rowml = [];
-                    for (var j=0; j <vars.length; j++){
-                        var val = row[vars[j]];
-                        if (val.indexOf("^^<") != -1){
-                            val = val.substring(0, val.indexOf("^^"));
-                        }
-                        if('http' == val.substring(0, 4) ){
-                            // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
-                            rowml.push(val);
-                        } else {
-                            rowml.push(val);
-                        }
-                        resmap[vars[j]] = val;
+            table =  $('#queryresultstable').DataTable({
+                responsive: true,
+                select: true,
+                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        text:'copy'
+                    },
+                    {
+                        text:'csv',
+                        extend: 'csvHtml5',
+                        title: 'sparql-results'
+                    },
+                    {
+                        text:'excel',
+                        extend: 'excelHtml5',
+                        title: 'sparql-results'
+                    },
+                    {
+                        text:'pdf',
+                        extend: 'pdfHtml5',
+                        title: 'sparql-results'
+                    },
+                    {
+                        text: 'TSV',
+                        extend: 'csvHtml5',
+                        fieldSeparator: '\t',
+                        extension: '.tsv',
+                        title: 'sparql-results'
                     }
-                    table.row.add(rowml).draw( false );
-                    // append_nodes_edges(resmap, querytriples);
-
+                ]
+            });
+            querytriples = data.querytriples;
+            var resmap = {}
+            for (var i=0; i<results.length; i++){
+                var row=results[i];
+                var rowml = [];
+                for (var j=0; j <vars.length; j++){
+                    var val = row[vars[j]];
+                    if (val.indexOf("^^<") != -1){
+                        val = val.substring(0, val.indexOf("^^"));
+                    }
+                    if('http' == val.substring(0, 4) ){
+                        // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
+                        rowml.push(val);
+                    } else {
+                        rowml.push(val);
+                    }
+                    resmap[vars[j]] = val;
                 }
-              table.columns().every( function () {
-                        var column = this;
-                        var select = $('<select><option value="">All</option></select>')
-                            .appendTo( $(column.footer()).empty() )
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+                table.row.add(rowml).draw( false );
+                // append_nodes_edges(resmap, querytriples);
 
-                                console.log(val);
+            }
+            table.columns().every( function () {
+                var column = this;
+                var select = $('<select><option value="">All</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        console.log(val);
 //
 //                                var ltix = val.indexOf('&lt;');
 //                                if (ltix > 0){
 //                                    val = val.substring(ltix+4, val.indexOf('&gt;'));
 //                                }
-                                column.search( val ? '^'+val+'$' : '', true, false ).draw();
-                            } );
-                            //console.log(column.data().unique());
-                        column.data().unique().sort().each( function ( d, j ) {
-                            var val = d;
+                        column.search( val ? '^'+val+'$' : '', true, false ).draw();
+                    } );
+                //console.log(column.data().unique());
+                column.data().unique().sort().each( function ( d, j ) {
+                    var val = d;
 
-                            var ltix = val.indexOf('&lt;');
-                            if (ltix > 0){
-                                val = val.substring(ltix+4, val.indexOf('&gt;'));
-                            }
-                            // console.log('data', d, val);
-                            select.append( '<option value='+ d +'>'+d+'</option>' );
-                        } );
+                    var ltix = val.indexOf('&lt;');
+                    if (ltix > 0){
+                        val = val.substring(ltix+4, val.indexOf('&gt;'));
+                    }
+                    // console.log('data', d, val);
+                    select.append( '<option value='+ d +'>'+d+'</option>' );
+                } );
             });
             table.on( 'select', function ( e, dt, type, indexes ) {
-                    selectedRow = table.rows( indexes ).data().toArray();
+                selectedRow = table.rows( indexes ).data().toArray();
 
-                    selectedRowData = [];
-                    for (i in selectedRow[0]){
-                        var ltix = selectedRow[0][i].indexOf('&lt;');
-                        if (ltix > 0){
-                            var value = selectedRow[0][i].substring(ltix+4, selectedRow[0][i].indexOf('&gt;'));
-                            selectedRowData.push(value)
-                        } else {
-                            selectedRowData.push(selectedRow[0][i])
-                        }
+                selectedRowData = [];
+                for (i in selectedRow[0]){
+                    var ltix = selectedRow[0][i].indexOf('&lt;');
+                    if (ltix > 0){
+                        var value = selectedRow[0][i].substring(ltix+4, selectedRow[0][i].indexOf('&gt;'));
+                        selectedRowData.push(value)
+                    } else {
+                        selectedRowData.push(selectedRow[0][i])
                     }
+                }
 
-                    //console.log("selected row:", selectedRowData, ltix);
+                //console.log("selected row:", selectedRowData, ltix);
 
-                    $( "#addfeedback" ).prop( "disabled", false );
-                }).on( 'deselect', function ( e, dt, type, indexes ) {
-                    var rowData = table.rows( indexes ).data().toArray();
-                    $( "#addfeedback" ).prop( "disabled", true );
-                    selectedRow = null;
-                });
+                $( "#addfeedback" ).prop( "disabled", false );
+            }).on( 'deselect', function ( e, dt, type, indexes ) {
+                var rowData = table.rows( indexes ).data().toArray();
+                $( "#addfeedback" ).prop( "disabled", true );
+                selectedRow = null;
+            });
 
-            } else {
-                $("#resstatus").html("No results found!");
-                $("#resstatus").show();
-                $("#resultinfo").show();
-                $("#resultrow").show();
-                response = false;
-                return true;
-            }
-            response = true;
-            $("#stopbutton").prop( "disabled", false );
-            show_incremental();
-        }; // end of sparql success callback function
-        var addfeedbackform=null;
+        } else {
+            $("#resstatus").html("No results found!");
+            $("#resstatus").show();
+            $("#resultinfo").show();
+            $("#resultrow").show();
+            response = false;
+            return true;
+        }
+        response = true;
+        $("#stopbutton").prop( "disabled", false );
+        show_incremental();
+    }; // end of sparql success callback function
+    var addfeedbackform=null;
     var addfeedbackdialog=null;
     var feedbackdesc =  $("#feedbackdesc" ),
         fedbackpreds = $("#fedbackpreds"),
         allfeedbackFields = $( [] ).add( feedbackdesc ).add( fedbackpreds ),
         tips = $( ".validateTips" );
     addfeedbackdialog = $("#feedback-form" ).dialog({
-              autoOpen: false,
-              height: 400,
-              width: 550,
-              modal: true,
-              classes: {
-                  "ui-dialog": "ui-corner-all"
-              },
-              buttons: [{
-                text: "Save",
-                    click:addFeedback,
-                    class: "btn btn-success"
-                },{
-                    text: "Cancel",
-                    click: function() {
-                        addfeedbackdialog.dialog( "close" );
-                        },
-                    class: "btn btn-danger"
-                }
-              ],
-              close: function() {
-                addfeedbackform[0].reset();
-                allfeedbackFields.removeClass("ui-state-error" );
-              }
-         });
+        autoOpen: false,
+        height: 400,
+        width: 550,
+        modal: true,
+        classes: {
+            "ui-dialog": "ui-corner-all"
+        },
+        buttons: [{
+            text: "Save",
+            click:addFeedback,
+            class: "btn btn-success"
+        },{
+            text: "Cancel",
+            click: function() {
+                addfeedbackdialog.dialog( "close" );
+            },
+            class: "btn btn-danger"
+        }
+        ],
+        close: function() {
+            addfeedbackform[0].reset();
+            allfeedbackFields.removeClass("ui-state-error" );
+        }
+    });
 
     addfeedbackform = addfeedbackdialog.find("form" ).on("submit", function( event ) {
-          event.preventDefault();
-          addFeedback(true);
-     });
+        event.preventDefault();
+        addFeedback(true);
+    });
 
     function addFeedback(close){
-      var valid = true;
-      allfeedbackFields.removeClass( "ui-state-error" );
-      valid = valid && checkLength( feedbackdesc, "name", 2, 500 );
-       data = { 'desc': feedbackdesc.val(),
-                        'pred': fedbackpreds.val(),
-                        'query': yasqe.getValue(),
-                        'row': selectedRowData,
-                        'columns': queryvars
-                };
+        var valid = true;
+        allfeedbackFields.removeClass( "ui-state-error" );
+        valid = valid && checkLength( feedbackdesc, "name", 2, 500 );
+        data = { 'desc': feedbackdesc.val(),
+            'pred': fedbackpreds.val(),
+            'query': yasqe.getValue(),
+            'row': selectedRowData,
+            'columns': queryvars
+        };
         console.log(data);
 
-      if(valid ) {
+        if(valid ) {
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -355,10 +355,10 @@ $(document).ready(function() {
                 },
                 url: '/query/feedback?fed=' + federation,
                 data: { 'desc': feedbackdesc.val(),
-                        'pred': fedbackpreds.val(),
-                        'query': yasqe.getValue(),
-                        'row': selectedRowData,
-                        'columns': queryvars
+                    'pred': fedbackpreds.val(),
+                    'query': yasqe.getValue(),
+                    'row': selectedRowData,
+                    'columns': queryvars
                 },
                 dataType: "json",
                 crossDomain: true,
@@ -377,14 +377,14 @@ $(document).ready(function() {
                     console.log(textStatus);
                 }
             });
-      } else {
-        feedbackdesc.addClass( "ui-state-error" )
-        console.log("Invalid data....");
-      }
-      if (close){
-        addfeedbackdialog.dialog( "close" );
-        return valid;
-      }
+        } else {
+            feedbackdesc.addClass( "ui-state-error" )
+            console.log("Invalid data....");
+        }
+        if (close){
+            addfeedbackdialog.dialog( "close" );
+            return valid;
+        }
     }
 
     $( "#addfeedback" ).click(function(){
@@ -399,70 +399,70 @@ $(document).ready(function() {
         addfeedbackdialog.dialog("open");
     });
 
-        function append_nodes_edges(rowmap, qtripl){
-            for (t in qtripl){
-                t = qtripl[t];
-                if (t.s.indexOf('?') == 0){
-                   variab = t.s.substring(1, t.s.length);
+    function append_nodes_edges(rowmap, qtripl){
+        for (t in qtripl){
+            t = qtripl[t];
+            if (t.s.indexOf('?') == 0){
+                variab = t.s.substring(1, t.s.length);
 
-                   s = rowmap[variab];
-                   setNodeData(s);
-                } else {
-                    s = t.s
-                    setNodeData(s);
-                }
-                if (t.p.indexOf('?') == 0){
-                   variab = t.p.substring(1, t.p.length);
-                   //setNodeData(rowmap, variab);
-                    p = rowmap[variab];
-                } else {
-                    p = t.p;
-                }
-                if (t.o.indexOf('?') == 0){
-                   variab = t.o.substring(1, t.o.length);
-                   // setNodeData(rowmap, variab);
-                   o = rowmap[variab];
-                   setNodeData(o);
-                } else {
-                    o = t.o
-                    setNodeData(o);
-                }
-                setEdgeData(s, p, o);
+                s = rowmap[variab];
+                setNodeData(s);
+            } else {
+                s = t.s
+                setNodeData(s);
             }
-
+            if (t.p.indexOf('?') == 0){
+                variab = t.p.substring(1, t.p.length);
+                //setNodeData(rowmap, variab);
+                p = rowmap[variab];
+            } else {
+                p = t.p;
+            }
+            if (t.o.indexOf('?') == 0){
+                variab = t.o.substring(1, t.o.length);
+                // setNodeData(rowmap, variab);
+                o = rowmap[variab];
+                setNodeData(o);
+            } else {
+                o = t.o
+                setNodeData(o);
+            }
+            setEdgeData(s, p, o);
         }
 
-        function setEdgeData(s, p, o){
-            // console.log(s, p, o);
-            link = {
-              "source": s,
-              "target": o,
-              "weight": -1,
-              'ltype': "link",
-              'type': "link",
-              "pred": p
-            } ;
-            vizdata.links.push(link);
-        }
+    }
 
-        function setNodeData(n){
-            node = {
-               "id": n,
-               "label": n,
-               "datasource": 1,
-               "weight": -1,
-               "type": "circle"
-            } ;
-            vizdata.nodes[n] = node;
-        }
+    function setEdgeData(s, p, o){
+        // console.log(s, p, o);
+        link = {
+            "source": s,
+            "target": o,
+            "weight": -1,
+            'ltype': "link",
+            'type': "link",
+            "pred": p
+        } ;
+        vizdata.links.push(link);
+    }
 
-        var response = false;
-        function show_incremental(){
-            if(response == true){
-                // This makes it unable to send a new request
-                // unless you get response from last request
-                response = false;
-                if (shouldstop == false){
+    function setNodeData(n){
+        node = {
+            "id": n,
+            "label": n,
+            "datasource": 1,
+            "weight": -1,
+            "type": "circle"
+        } ;
+        vizdata.nodes[n] = node;
+    }
+
+    var response = false;
+    function show_incremental(){
+        if(response == true){
+            // This makes it unable to send a new request
+            // unless you get response from last request
+            response = false;
+            if (shouldstop == false){
                 var req = $.ajax({
                     type:"get",
                     url: "/query/nextresult",
@@ -534,273 +534,273 @@ $(document).ready(function() {
                     // console.log("Request successful!");
                     // This makes it able to send new request on the next interval
                     if (response == true && shouldstop == false)
-                        {
+                    {
                         response = true;
-                         show_incremental()
-                        }
+                        show_incremental()
+                    }
                     else {
                         $("#stopbutton").prop( "disabled", true );
                     }
                 });
-                }
             }
-
-            // setTimeout(,1000);
         }
-        var shouldstop = false;
-        $("#stopbutton").click(function(){
-            console.log('stop pressed');
-            response = false;
-            shouldstop = true;
-            return;
-        });
-        /**
-         * We use most of the default settings for the property and class autocompletion types. This includes:
-         * -  the pre/post processing of tokens
-         * -  detecting whether we are in a valid autocompletion position
-         * -  caching of the suggestion list. These are cached for a period of a month on the client side.
-         */
 
-        var getAutocompletionsArrayFromJson = function(result) {
-            var completionsArray = [];
-            // console.log('parsing');
-            // console.log(result);
-            result.forEach(function(row) {//remove first line, as this one contains the projection variable
+        // setTimeout(,1000);
+    }
+    var shouldstop = false;
+    $("#stopbutton").click(function(){
+        console.log('stop pressed');
+        response = false;
+        shouldstop = true;
+        return;
+    });
+    /**
+     * We use most of the default settings for the property and class autocompletion types. This includes:
+     * -  the pre/post processing of tokens
+     * -  detecting whether we are in a valid autocompletion position
+     * -  caching of the suggestion list. These are cached for a period of a month on the client side.
+     */
+
+    var getAutocompletionsArrayFromJson = function(result) {
+        var completionsArray = [];
+        // console.log('parsing');
+        // console.log(result);
+        result.forEach(function(row) {//remove first line, as this one contains the projection variable
             // console.log(row);
-                if ('type' in row)
-                    completionsArray.push(row['type']);//remove quotes
-                else {
-                    completionsArray.push(row['property']);//remove quotes
+            if ('type' in row)
+                completionsArray.push(row['type']);//remove quotes
+            else {
+                completionsArray.push(row['property']);//remove quotes
+            }
+        });
+        return completionsArray;
+    }
+
+    var customPropertyCompleter = function(yasqe) {
+        //we use several functions from the regular property autocompleter (this way, we don't have to re-define code such as determining whether we are in a valid autocompletion position)
+        var returnObj = {
+            isValidCompletionPosition: function(){return YASQE.Autocompleters.properties.isValidCompletionPosition(yasqe)},
+            preProcessToken: function(token) {return YASQE.Autocompleters.properties.preProcessToken(yasqe, token)},
+            postProcessToken: function(token, suggestedString) {return YASQE.Autocompleters.properties.postProcessToken(yasqe, token, suggestedString)}
+        };
+
+        //In this case we assume the properties will fit in memory. So, turn on bulk loading, which will make autocompleting a lot faster
+        returnObj.bulk = true;
+        returnObj.async = true;
+
+        //and, as everything is in memory, enable autoShowing the completions
+        returnObj.autoShow = true;
+
+        returnObj.persistent = "customProperties";//this will store the sparql results in the client-cache for a month.
+        returnObj.get = function(token, callback) {
+            //all we need from these parameters is the last one: the callback to pass the array of completions to
+            var sparqlQuery = "SELECT DISTINCT ?property WHERE {?s ?property ?obj } limit 1000";
+            $.ajax({
+                data: {query: sparqlQuery},
+                url: YASQE.defaults.sparql.endpoint,
+                // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
+                success: function(data) {
+                    // console.log(sparqlQuery);
+                    // console.log(data);
+                    callback(getAutocompletionsArrayFromJson(data.result));
                 }
             });
-            return completionsArray;
-        }
-
-        var customPropertyCompleter = function(yasqe) {
-            //we use several functions from the regular property autocompleter (this way, we don't have to re-define code such as determining whether we are in a valid autocompletion position)
-            var returnObj = {
-                isValidCompletionPosition: function(){return YASQE.Autocompleters.properties.isValidCompletionPosition(yasqe)},
-                preProcessToken: function(token) {return YASQE.Autocompleters.properties.preProcessToken(yasqe, token)},
-                postProcessToken: function(token, suggestedString) {return YASQE.Autocompleters.properties.postProcessToken(yasqe, token, suggestedString)}
-            };
-
-            //In this case we assume the properties will fit in memory. So, turn on bulk loading, which will make autocompleting a lot faster
-            returnObj.bulk = true;
-            returnObj.async = true;
-
-            //and, as everything is in memory, enable autoShowing the completions
-            returnObj.autoShow = true;
-
-            returnObj.persistent = "customProperties";//this will store the sparql results in the client-cache for a month.
-            returnObj.get = function(token, callback) {
-                //all we need from these parameters is the last one: the callback to pass the array of completions to
-                var sparqlQuery = "SELECT DISTINCT ?property WHERE {?s ?property ?obj } limit 1000";
-                $.ajax({
-                    data: {query: sparqlQuery},
-                    url: YASQE.defaults.sparql.endpoint,
-                    // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
-                    success: function(data) {
-                        // console.log(sparqlQuery);
-                        // console.log(data);
-                        callback(getAutocompletionsArrayFromJson(data.result));
-                    }
-                });
-            };
-            return returnObj;
         };
-        //now register our new autocompleter
-        YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
+        return returnObj;
+    };
+    //now register our new autocompleter
+    YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
 
 
-        //excellent, now do the same for the classes
-        var customClassCompleter = function(yasqe) {
-            var returnObj = {
-                isValidCompletionPosition: function(){
-                    return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe)
-                },
-                preProcessToken: function(token) {
-                    return YASQE.Autocompleters.classes.preProcessToken(yasqe, token)
-                },
-                postProcessToken: function(token, suggestedString) {
-                    return YASQE.Autocompleters.classes.postProcessToken(yasqe, token, suggestedString)
+    //excellent, now do the same for the classes
+    var customClassCompleter = function(yasqe) {
+        var returnObj = {
+            isValidCompletionPosition: function(){
+                return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe)
+            },
+            preProcessToken: function(token) {
+                return YASQE.Autocompleters.classes.preProcessToken(yasqe, token)
+            },
+            postProcessToken: function(token, suggestedString) {
+                return YASQE.Autocompleters.classes.postProcessToken(yasqe, token, suggestedString)
+            }
+        };
+        returnObj.bulk = true;
+        returnObj.async = true;
+        returnObj.autoShow = true;
+        returnObj.get = function(token, callback) {
+            var filters ='filter (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
+                ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
+                ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
+                ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
+                ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
+                ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
+                ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
+                ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && '+
+                ' !regex(str(?type), "nodeID://", "i") ) '
+            var sparqlQuery = "SELECT DISTINCT ?type WHERE{ ?s a ?type. " + filters + " } Limit 1000";
+            $.ajax({
+                data: {query: sparqlQuery},
+                url: YASQE.defaults.sparql.endpoint,
+                // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
+                success: function(data) {
+                    // console.log(sparqlQuery);
+                    // console.log(data);
+                    callback(getAutocompletionsArrayFromJson(data.result));
                 }
-            };
-            returnObj.bulk = true;
-            returnObj.async = true;
-            returnObj.autoShow = true;
-            returnObj.get = function(token, callback) {
-                                var filters ='filter (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
-                                     ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
-                                     ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
-                                     ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
-                                     ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
-                                     ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
-                                     ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
-                                     ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && '+
-                                     ' !regex(str(?type), "nodeID://", "i") ) '
-                                var sparqlQuery = "SELECT DISTINCT ?type WHERE{ ?s a ?type. " + filters + " } Limit 1000";
-                                $.ajax({
-                                    data: {query: sparqlQuery},
-                                    url: YASQE.defaults.sparql.endpoint,
-                                    // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
-                                    success: function(data) {
-                                        // console.log(sparqlQuery);
-                                        // console.log(data);
-                                        callback(getAutocompletionsArrayFromJson(data.result));
-                                    }
-                                });
-                            };
-            return returnObj;
+            });
         };
+        return returnObj;
+    };
 
-        YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
-        //And, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
-        YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
+    YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
+    //And, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
+    YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
 
-        var query_classes = "SELECT DISTINCT ?c WHERE {\n" +
-                            "  ?s a ?c\n" +
-                            "}"
-        $("#classes").click(function(){
-            yasqe.setValue(query_classes);
-        });
+    var query_classes = "SELECT DISTINCT ?c WHERE {\n" +
+        "  ?s a ?c\n" +
+        "}"
+    $("#classes").click(function(){
+        yasqe.setValue(query_classes);
+    });
 
-        var analytics = "PREFIX schema: <http://schema.org/> \n" +
-                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                        "SELECT distinct * WHERE {\n" +
-                        "\t<http://av.tib.eu/resource/video/16439> ?p ?obj .\n" +
-                        "}  LIMIT 100"
-        $("#analyticalnumtheoryex").click(function(){
-            yasqe.setValue(analytics);
-        });
+    var analytics = "PREFIX schema: <http://schema.org/> \n" +
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        "SELECT distinct * WHERE {\n" +
+        "\t<http://av.tib.eu/resource/video/16439> ?p ?obj .\n" +
+        "}  LIMIT 100"
+    $("#analyticalnumtheoryex").click(function(){
+        yasqe.setValue(analytics);
+    });
 
-        // TODO: add more example queries here
+    // TODO: add more example queries here
 
     function nodeid(n) {
-      return n.size ? "_g_"+n.datasource : n.label;
+        return n.size ? "_g_"+n.datasource : n.label;
     }
 
     function linkid(l) {
-      var u = nodeid(l.source),
-          v = nodeid(l.target);
-      return u<v ? u+"|"+v : v+"|"+u;
+        var u = nodeid(l.source),
+            v = nodeid(l.target);
+        return u<v ? u+"|"+v : v+"|"+u;
     }
     function getGroup(n) { return n.datasource; }
     var off = 15,    // cluster hull offset
-    expand = {}, // expanded clusters
-    net, force, hullg, hull, linkg, nodeg;
+        expand = {}, // expanded clusters
+        net, force, hullg, hull, linkg, nodeg;
     // constructs the network to visualize
     function network(data, prev, index, expand) {
-          expand = expand || {};
-          var gm = {},    // group map
-              nm = {},    // node map
-              lm = {},    // link map
-              gn = {},    // previous group nodes
-              gc = {},    // previous group centroids
-              nodes = [], // output nodes
-              links = []; // output links
+        expand = expand || {};
+        var gm = {},    // group map
+            nm = {},    // node map
+            lm = {},    // link map
+            gn = {},    // previous group nodes
+            gc = {},    // previous group centroids
+            nodes = [], // output nodes
+            links = []; // output links
 
-          // process previous nodes for reuse or centroid calculation
-          if (prev) {
+        // process previous nodes for reuse or centroid calculation
+        if (prev) {
             prev.nodes.forEach(function(n) {
-              var i = index(n), o;
+                var i = index(n), o;
 
-              if (n.size > 0) {
-                gn[i] = n;
-                n.size = 0;
-              } else {
-                o = gc[i] || (gc[i] = {x:0,y:0,count:0});
-                o.x += n.x;
-                o.y += n.y;
-                o.count += 1;
-              }
+                if (n.size > 0) {
+                    gn[i] = n;
+                    n.size = 0;
+                } else {
+                    o = gc[i] || (gc[i] = {x:0,y:0,count:0});
+                    o.x += n.x;
+                    o.y += n.y;
+                    o.count += 1;
+                }
             });
-          }
+        }
 
-          // determine nodes
-          for (var k=0; k<data.nodes.length; ++k) {
+        // determine nodes
+        for (var k=0; k<data.nodes.length; ++k) {
             var n = data.nodes[k],
                 i = index(n),
                 l = gm[i] || (gm[i]=gn[i]) || (gm[i]={datasource:i, size:0, nodes:[]});
 
             if (expand[i]) {
-              // the node should be directly visible
-              nm[n.label] = nodes.length;
-              nodes.push(n);
-              if (gn[i]) {
-                // place new nodes at cluster location (plus jitter)
-                n.x = gn[i].x + Math.random();
-                n.y = gn[i].y + Math.random();
-              }
-            } else {
-              // the node is part of a collapsed cluster
-              if (l.size == 0) {
-                // if new cluster, add to set and position at centroid of leaf nodes
-                nm[i] = nodes.length;
-                nodes.push(l);
-                if (gc[i]) {
-                  l.x = gc[i].x / gc[i].count;
-                  l.y = gc[i].y / gc[i].count;
+                // the node should be directly visible
+                nm[n.label] = nodes.length;
+                nodes.push(n);
+                if (gn[i]) {
+                    // place new nodes at cluster location (plus jitter)
+                    n.x = gn[i].x + Math.random();
+                    n.y = gn[i].y + Math.random();
                 }
-              }
-              l.nodes.push(n);
+            } else {
+                // the node is part of a collapsed cluster
+                if (l.size == 0) {
+                    // if new cluster, add to set and position at centroid of leaf nodes
+                    nm[i] = nodes.length;
+                    nodes.push(l);
+                    if (gc[i]) {
+                        l.x = gc[i].x / gc[i].count;
+                        l.y = gc[i].y / gc[i].count;
+                    }
+                }
+                l.nodes.push(n);
             }
             // always count group size as we also use it to tweak the force graph strengths/distances
             l.size += 1;
             n.group_data = l;
-          }
+        }
 
-          for (i in gm) { gm[i].link_count = 0; }
+        for (i in gm) { gm[i].link_count = 0; }
 
-          // determine links
-          for (k=0; k<data.links.length; ++k) {
-              var e = data.links[k],
-                  u = index(e.source),
-                  v = index(e.target);
-              if (u != v) {
-                  gm[u].link_count++;
-                  gm[v].link_count++;
-              }
-              u = expand[u] ? nm[e.source.label] : nm[u];
-              v = expand[v] ? nm[e.target.label] : nm[v];
-              var i = (u<v ? u+"|"+v : v+"|"+u),
-                  l = lm[i] || (lm[i] = {source:u, target:v, size:0});
-              l.size += 1;
-          }
-          for (i in lm) { links.push(lm[i]); }
+        // determine links
+        for (k=0; k<data.links.length; ++k) {
+            var e = data.links[k],
+                u = index(e.source),
+                v = index(e.target);
+            if (u != v) {
+                gm[u].link_count++;
+                gm[v].link_count++;
+            }
+            u = expand[u] ? nm[e.source.label] : nm[u];
+            v = expand[v] ? nm[e.target.label] : nm[v];
+            var i = (u<v ? u+"|"+v : v+"|"+u),
+                l = lm[i] || (lm[i] = {source:u, target:v, size:0});
+            l.size += 1;
+        }
+        for (i in lm) { links.push(lm[i]); }
 
-          return {nodes: nodes, links: links};
+        return {nodes: nodes, links: links};
     }
 
     function convexHulls(nodes, index, offset) {
-      var hulls = {};
+        var hulls = {};
 
-      // create point sets
-      for (var k=0; k<nodes.length; ++k) {
-        var n = nodes[k];
+        // create point sets
+        for (var k=0; k<nodes.length; ++k) {
+            var n = nodes[k];
 
-        if (n.size) continue;
-        var i = index(n),
-            l = hulls[i] || (hulls[i] = []);
-        l.push([n.x-offset, n.y-offset]);
-        l.push([n.x-offset, n.y+offset]);
-        l.push([n.x+offset, n.y-offset]);
-        l.push([n.x+offset, n.y+offset]);
-      }
+            if (n.size) continue;
+            var i = index(n),
+                l = hulls[i] || (hulls[i] = []);
+            l.push([n.x-offset, n.y-offset]);
+            l.push([n.x-offset, n.y+offset]);
+            l.push([n.x+offset, n.y-offset]);
+            l.push([n.x+offset, n.y+offset]);
+        }
 
-      // create convex hulls
-      var hullset = [];
-      for (i in hulls) {
-        hullset.push({datasource: i, path: d3.geom.hull(hulls[i])});
-      }
+        // create convex hulls
+        var hullset = [];
+        for (i in hulls) {
+            hullset.push({datasource: i, path: d3.geom.hull(hulls[i])});
+        }
 
-      return hullset;
+        return hullset;
     }
     var curve = d3.svg.line()
         .interpolate("cardinal-closed")
         .tension(.85);
     function drawCluster(d) {
-      // console.log("drawcluster", d)
-      return curve(d.path); // 0.8
+        // console.log("drawcluster", d)
+        return curve(d.path); // 0.8
     }
     width = $("#graph").width();
     height = 980;
@@ -820,16 +820,16 @@ $(document).ready(function() {
         .on("dragend", dragended);
 
     function dragstarted(d) {
-      d3.event.sourceEvent.stopPropagation();
-      d3.select(this).classed("dragging", true);
+        d3.event.sourceEvent.stopPropagation();
+        d3.select(this).classed("dragging", true);
     }
 
     function dragged(d) {
-      d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+        d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
     }
 
     function dragended(d) {
-      d3.select(this).classed("dragging", false);
+        d3.select(this).classed("dragging", false);
     }
 
     var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
@@ -845,8 +845,8 @@ $(document).ready(function() {
     var highlight_trans = 0.1;
 
     var size = d3.scale.pow().exponent(1)
-      .domain([1,100])
-      .range([8,36]);
+        .domain([1,100])
+        .range([8,36]);
     // The largest node for each cluster.
     var colors = [
         "#9ACD32",
@@ -910,11 +910,11 @@ $(document).ready(function() {
 
     ];
     function color(ig){
-       ig = ig // 10 * 10;
-       if (ig > 50){
-        return  "#ccc";
-       }
-       return colors[ig];
+        ig = ig // 10 * 10;
+        if (ig > 50){
+            return  "#ccc";
+        }
+        return colors[ig];
     }
     var default_node_color = "#ccc";
     //var default_node_color = "rgb(3,190,100)";
@@ -977,8 +977,8 @@ $(document).ready(function() {
 
         svg.attr("opacity", 1e-6)
             .transition()
-              .duration(1000)
-              .attr("opacity", 1);
+            .duration(1000)
+            .attr("opacity", 1);
 
 
         var tocolor = "fill";
@@ -1006,26 +1006,26 @@ $(document).ready(function() {
         net = network(data, net, getGroup, expand);
         //console.log(net, expand)
         force = d3.layout.force()
-                  .nodes(net.nodes)
-                  .links(net.links)
-                  .linkDistance(function(l, i){
-                        var n1 = l.source, n2 = l.target;
-                        return divcanv?250:200 +
-                              Math.min(20 * Math.min((n1.size || (n1.datasource != n2.datasource ? n1.group_data.size : 0)),
-                                                     (n2.size || (n1.datasource != n2.datasource ? n2.group_data.size : 0))),
-                                   -30 +
-                                   30 * Math.min((n1.link_count || (n1.datasource != n2.datasource ? n1.group_data.link_count : 0)),
-                                                 (n2.link_count || (n1.datasource != n2.datasource ? n2.group_data.link_count : 0))),
-                                   300);
-                   })
-                  .linkStrength(function(l, i) {
-                        return  2;
-                        })
-                  .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue&orange, ...
-                  .charge(-600)    // ... charge is important to turn single-linked groups to the outside
-                  .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
-                  .size([width,height])
-                  .start(); //.chargeDistance(1000) .linkDistance(300)
+            .nodes(net.nodes)
+            .links(net.links)
+            .linkDistance(function(l, i){
+                var n1 = l.source, n2 = l.target;
+                return divcanv?250:200 +
+                    Math.min(20 * Math.min((n1.size || (n1.datasource != n2.datasource ? n1.group_data.size : 0)),
+                        (n2.size || (n1.datasource != n2.datasource ? n2.group_data.size : 0))),
+                        -30 +
+                        30 * Math.min((n1.link_count || (n1.datasource != n2.datasource ? n1.group_data.link_count : 0)),
+                            (n2.link_count || (n1.datasource != n2.datasource ? n2.group_data.link_count : 0))),
+                        300);
+            })
+            .linkStrength(function(l, i) {
+                return  2;
+            })
+            .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue&orange, ...
+            .charge(-600)    // ... charge is important to turn single-linked groups to the outside
+            .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
+            .size([width,height])
+            .start(); //.chargeDistance(1000) .linkDistance(300)
 
         link = g.selectAll(".link").data(net.links, linkid);
         link.exit().remove();
@@ -1037,7 +1037,7 @@ $(document).ready(function() {
             .attr("y2", function(d) { return d.target.y; })
             .style("stroke-width", nominal_stroke)
             .style("stroke", function(d) {
-                   return color(d.datasource);
+                return color(d.datasource);
             });
 
         var dr = 3;
@@ -1045,57 +1045,57 @@ $(document).ready(function() {
         node.exit().remove();
         node.enter().append("g")
             .attr("class", function(d) {
-                   return "node" + (d.size?"":" leaf"); })
+                return "node" + (d.size?"":" leaf"); })
             //.attr("r", function(d) {console.log(d.size, dr); return d.size ? d.size + dr : 3; })
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
             .on("dblclick", function(d) {
-                    //console.log(d, expand[d.datasource])
-                    expand[d.datasource] = !expand[d.datasource];
-                    drawRDFMTS(nodes, links, divcanv);
+                //console.log(d, expand[d.datasource])
+                expand[d.datasource] = !expand[d.datasource];
+                drawRDFMTS(nodes, links, divcanv);
             })
-//            .on("dblclick.zoom", function(d) {
-//                d3.event.stopPropagation();
-//                var dcx = ($("#graph").width()/2-d.x*zoom.scale());
-//                var dcy = (980/2-d.y*zoom.scale());
-//                zoom.translate([dcx,dcy]);
-//                 g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
-//
-//           })
-           .on("mouseover", function(d) {
+            //            .on("dblclick.zoom", function(d) {
+            //                d3.event.stopPropagation();
+            //                var dcx = ($("#graph").width()/2-d.x*zoom.scale());
+            //                var dcy = (980/2-d.y*zoom.scale());
+            //                zoom.translate([dcx,dcy]);
+            //                 g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+            //
+            //           })
+            .on("mouseover", function(d) {
                 set_highlight(d);
-                })
-           .on("mousedown", function(d) {
+            })
+            .on("mousedown", function(d) {
                 d3.event.stopPropagation();
                 focus_node = d;
                 set_focus(d)
                 if (highlight_node === null)
                     set_highlight(d)
-                })
-           .on("mouseout", function(d) {
+            })
+            .on("mouseout", function(d) {
                 exit_highlight(d);
-           });
+            });
 
-            node.call(force.drag);
+        node.call(force.drag);
 
         var ci = 0;
         var circle = node.append("path")
-              .attr("d", d3.svg.symbol()
-                        .size(function(d) {
-                            var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)||nominal_base_node_size,2):Math.PI*Math.pow(size(25)||nominal_base_node_size,2);
-                            return v;}) //size(d.weight)
-                        .type(function(d) { return d.size? 'circle': d.type; })
-                   )
-              .style(tocolor, function(d) {
-                    if (divcanv ==null){
-                        return color(d.datasource)
-                    } else {
-                        ci += 1
-                        return color(d.datasource + (ci-1));
-                    }
-              })
-              .style("stroke-width", nominal_stroke)
-              .style(towhite, "white");
+            .attr("d", d3.svg.symbol()
+                .size(function(d) {
+                    var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)||nominal_base_node_size,2):Math.PI*Math.pow(size(25)||nominal_base_node_size,2);
+                    return v;}) //size(d.weight)
+                .type(function(d) { return d.size? 'circle': d.type; })
+            )
+            .style(tocolor, function(d) {
+                if (divcanv ==null){
+                    return color(d.datasource)
+                } else {
+                    ci += 1
+                    return color(d.datasource + (ci-1));
+                }
+            })
+            .style("stroke-width", nominal_stroke)
+            .style(towhite, "white");
 
         var text = g.selectAll(".text")
             .data(net.nodes)
@@ -1105,25 +1105,25 @@ $(document).ready(function() {
 
         if (text_center)
             text.text(function(d) {
-             if (d.label) return d.label;
-             else {
-                return sourcesnames[d.datasource];
+                if (d.label) return d.label;
+                else {
+                    return sourcesnames[d.datasource];
                 }
             })
-            .style("text-anchor", "middle");
+                .style("text-anchor", "middle");
         else
             text.attr("dx", function(d) {return (size(65)-size(30)||nominal_base_node_size);}) //size(d.weight)
                 .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesnames[d.datasource]; });
 
         d3.select(window).on("mouseup", function() {
-                if (focus_node!==null){
-                    focus_node = null;
-                    if (highlight_trans<1){
-                        circle.style("opacity", 1);
-                        text.style("opacity", 1);
-                        link.style("opacity", 1);
-                    }
+            if (focus_node!==null){
+                focus_node = null;
+                if (highlight_trans<1){
+                    circle.style("opacity", 1);
+                    text.style("opacity", 1);
+                    link.style("opacity", 1);
                 }
+            }
             if (highlight_node === null)
                 exit_highlight();
         });
@@ -1139,15 +1139,15 @@ $(document).ready(function() {
             var base_radius = nominal_base_node_size;
             if (nominal_base_node_size*zoom.scale()>max_base_node_size)
                 base_radius = max_base_node_size/zoom.scale();
-                circle.attr("d", d3.svg.symbol()
-                        .size(function(d) {
-                            var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
-                            return v;}) //size(d.weight)
-                        .type(function(d) { return d.size? 'circle':  d.type; })
-                   );
+            circle.attr("d", d3.svg.symbol()
+                .size(function(d) {
+                    var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
+                    return v;}) //size(d.weight)
+                .type(function(d) { return d.size? 'circle':  d.type; })
+            );
             //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
             if (!text_center)
-                 text.attr("dx", function(d) {
+                text.attr("dx", function(d) {
                     return ((size(65)-size(30))*base_radius/nominal_base_node_size||base_radius);
                 }); //size(d.weight)
 
@@ -1160,7 +1160,7 @@ $(document).ready(function() {
                 if (nominal_text_size*zoom.scale()>max_text_size)
                     text_size = max_text_size/zoom.scale();
 
-            return text_size + "px"});
+                return text_size + "px"});
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         });
 
@@ -1181,21 +1181,21 @@ $(document).ready(function() {
             var k = .1 * e.alpha;
             // updateGroups();
 
-             // Push nodes toward their designated focus.
-              net.nodes.forEach(function(o, i) {
+            // Push nodes toward their designated focus.
+            net.nodes.forEach(function(o, i) {
                 if (centroids[o.datasource]){
                     o.y += (centroids[o.datasource].y - o.y) * k;
                     o.x += (centroids[o.datasource].x - o.x) * k;
                 }
-              });
+            });
 
-              text.forEach(function(o, i) {
+            text.forEach(function(o, i) {
                 if (centroids[o.datasource]){
                     o.y += (centroids[o.datasource].y - o.y) * k;
                     o.x += (centroids[o.datasource].x - o.x) * k;
                 }
-              });
-              link.attr("x1", function(d) { return d.source.x; })
+            });
+            link.attr("x1", function(d) { return d.source.x; })
                 .attr("y1", function(d) { return d.source.y; })
                 .attr("x2", function(d) { return d.target.x; })
                 .attr("y2", function(d) { return d.target.y; });
@@ -1230,13 +1230,13 @@ $(document).ready(function() {
 
         function vis_by_type(type) {
             switch (type) {
-              case "circle": return keyc;
-              case "square": return keys;
-              case "triangle-up": return keyt;
-              case "diamond": return keyr;
-              case "cross": return keyx;
-              case "triangle-down": return keyd;
-              default: return true;
+                case "circle": return keyc;
+                case "square": return keys;
+                case "triangle-up": return keyt;
+                case "diamond": return keyr;
+                case "cross": return keyx;
+                case "triangle-down": return keyd;
+                default: return true;
             }
         }
 
@@ -1306,17 +1306,17 @@ $(document).ready(function() {
                     return (key0||hasConnections(d))&&vis_by_type('circle')&&vis_by_node_score(d.datasource)?"inline":"none";
                 });
                 text.style("display", function(d) {
-                 return (key0||hasConnections(d))&&vis_by_type('circle')&&vis_by_node_score(d.datasource)?"inline":"none";
+                    return (key0||hasConnections(d))&&vis_by_type('circle')&&vis_by_node_score(d.datasource)?"inline":"none";
                 });
 
                 if (highlight_node !== null) {
-                  if ((key0||hasConnections(highlight_node))&&vis_by_type('circle')&&vis_by_node_score(highlight_node.datasource)) {
-                       if (focus_node!==null)
-                             set_focus(focus_node);
-                       set_highlight(highlight_node);
-                  } else {
+                    if ((key0||hasConnections(highlight_node))&&vis_by_type('circle')&&vis_by_node_score(highlight_node.datasource)) {
+                        if (focus_node!==null)
+                            set_focus(focus_node);
+                        set_highlight(highlight_node);
+                    } else {
                         exit_highlight();
-                  }
+                    }
                 }
             }
         }
@@ -1327,11 +1327,11 @@ $(document).ready(function() {
             {
                 svg.style("cursor","move");
                 if (highlight_color != "white") {
-                  circle.style(towhite, "white");
-                  text.style("font-weight", "normal");
-                  link.style("stroke", function(o) {
+                    circle.style(towhite, "white");
+                    text.style("font-weight", "normal");
+                    link.style("stroke", function(o) {
                         return (isNumber(o.datasource) && o.datasource >= 0)? color(o.datasource): default_link_color
-                      });
+                    });
                 }
             }
         }
@@ -1339,8 +1339,8 @@ $(document).ready(function() {
         function set_focus(d){
             if (highlight_trans<1)  {
                 circle.style("opacity", function(o) {
-                            return isConnected(d, o) ? 1 : highlight_trans;
-                        });
+                    return isConnected(d, o) ? 1 : highlight_trans;
+                });
 
                 text.style("opacity", function(o) {
                     return isConnected(d, o) ? 1 : highlight_trans;
@@ -1349,7 +1349,7 @@ $(document).ready(function() {
                 link.style("opacity", function(o) {
                     return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
                 });
-                }
+            }
         }
 
         function set_highlight(d) {
@@ -1360,44 +1360,44 @@ $(document).ready(function() {
             // added this to make highlight color same as the color of the node
             highlight_color = color(d.datasource);
             if (highlight_color != "white") {
-                  circle.style(towhite, function(o) {
-                        return isConnected(d, o) ? highlight_color : "white";
-                        });
-                  text.style("font-weight", function(o) {
-                        return isConnected(d, o) ? "bold" : "normal";
-                        });
-                  link.style("stroke", function(o) {
-                      return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource>=0)?color(o.datasource):default_link_color);
-                    });
+                circle.style(towhite, function(o) {
+                    return isConnected(d, o) ? highlight_color : "white";
+                });
+                text.style("font-weight", function(o) {
+                    return isConnected(d, o) ? "bold" : "normal";
+                });
+                link.style("stroke", function(o) {
+                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource>=0)?color(o.datasource):default_link_color);
+                });
             }
         }
     }
 
     function updateTips( t ) {
-          tips.text( t ).addClass( "ui-state-highlight" );
-          setTimeout(function() {
-                tips.removeClass( "ui-state-highlight", 1500 );
-          }, 500 );
-     }
+        tips.text( t ).addClass( "ui-state-highlight" );
+        setTimeout(function() {
+            tips.removeClass( "ui-state-highlight", 1500 );
+        }, 500 );
+    }
 
     function checkLength( o, n, min, max ) {
-          if ( o.val().length > max || o.val().length < min ) {
+        if ( o.val().length > max || o.val().length < min ) {
             o.addClass( "ui-state-error" );
             updateTips( "Length of " + n + " must be between " +
-              min + " and " + max + "." );
+                min + " and " + max + "." );
             return false;
-          } else {
+        } else {
             return true;
-          }
+        }
     }
 
     function checkRegexp( o, regexp, n ) {
-          if ( !( regexp.test( o.val() ) ) ) {
+        if ( !( regexp.test( o.val() ) ) ) {
             o.addClass( "ui-state-error" );
             updateTips( n );
             return false;
-          } else {
+        } else {
             return true;
-          }
+        }
     }
- });
+});
