@@ -133,6 +133,7 @@ def sparql():
         try:
             query = request.args.get("query", '')
             federation = request.args.get('federation', None)
+            session['fed'] = federation
 
             query = query.replace('\n', ' ').replace('\r', ' ')
             print("federation:", federation)
