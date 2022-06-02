@@ -134,7 +134,6 @@ $(document).ready(function() {
         setting.data ={"query": yasqe.getValue()};
         $("#resultinfo").hide();
         $('#queryresultstable').empty();
-
     }
 
     var start=false, end = true;
@@ -214,12 +213,12 @@ $(document).ready(function() {
             });
             querytriples = data.querytriples;
             var resmap = {}
-            for (var i=0; i<results.length; i++){
-                var row=results[i];
+            for (var i = 0; i < results.length; i++) {
+                var row = results[i];
                 var rowml = [];
-                for (var j=0; j <vars.length; j++){
+                for (var j = 0; j < vars.length; j++) {
                     var val = row[vars[j]];
-                    if (val.indexOf("^^<") != -1){
+                    if (val.indexOf("^^<") != -1) {
                         val = val.substring(0, val.indexOf("^^"));
                     }
                     if('http' == val.substring(0, 4) ){
@@ -234,11 +233,11 @@ $(document).ready(function() {
                 // append_nodes_edges(resmap, querytriples);
 
             }
-            table.columns().every( function () {
+            table.columns().every(function() {
                 var column = this;
                 var select = $('<select><option value="">All</option></select>')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
+                    .appendTo($(column.footer()).empty())
+                    .on('change', function() {
                         var val = $.fn.dataTable.util.escapeRegex(
                             $(this).val()
                         );
@@ -252,18 +251,18 @@ $(document).ready(function() {
                         column.search( val ? '^'+val+'$' : '', true, false ).draw();
                     } );
                 //console.log(column.data().unique());
-                column.data().unique().sort().each( function ( d, j ) {
+                column.data().unique().sort().each(function(d, j) {
                     var val = d;
 
                     var ltix = val.indexOf('&lt;');
-                    if (ltix > 0){
+                    if (ltix > 0) {
                         val = val.substring(ltix+4, val.indexOf('&gt;'));
                     }
                     // console.log('data', d, val);
                     select.append( '<option value='+ d +'>'+d+'</option>' );
                 } );
             });
-            table.on( 'select', function ( e, dt, type, indexes ) {
+            table.on('select', function(e, dt, type, indexes) {
                 selectedRow = table.rows( indexes ).data().toArray();
 
                 selectedRowData = [];
@@ -312,33 +311,34 @@ $(document).ready(function() {
         classes: {
             "ui-dialog": "ui-corner-all"
         },
-        buttons: [{
-            text: "Save",
-            click:addFeedback,
-            class: "btn btn-success"
-        },{
-            text: "Cancel",
-            click: function() {
-                addfeedbackdialog.dialog( "close" );
-            },
-            class: "btn btn-danger"
-        }
+        buttons: [
+            {
+                text: "Save",
+                click:addFeedback,
+                class: "btn btn-success"
+            }, {
+                text: "Cancel",
+                click: function() {
+                    addfeedbackdialog.dialog("close");
+                },
+                class: "btn btn-danger"
+            }
         ],
         close: function() {
             addfeedbackform[0].reset();
-            allfeedbackFields.removeClass("ui-state-error" );
+            allfeedbackFields.removeClass("ui-state-error");
         }
     });
 
-    addfeedbackform = addfeedbackdialog.find("form" ).on("submit", function( event ) {
+    addfeedbackform = addfeedbackdialog.find("form").on("submit", function(event) {
         event.preventDefault();
         addFeedback(true);
     });
 
-    function addFeedback(close){
+    function addFeedback(close) {
         var valid = true;
-        allfeedbackFields.removeClass( "ui-state-error" );
-        valid = valid && checkLength( feedbackdesc, "name", 2, 500 );
+        allfeedbackFields.removeClass("ui-state-error");
+        valid = valid && checkLength(feedbackdesc, "name", 2, 500);
         data = { 'desc': feedbackdesc.val(),
             'pred': fedbackpreds.val(),
             'query': yasqe.getValue(),
@@ -347,7 +347,7 @@ $(document).ready(function() {
         };
         console.log(data);
 
-        if(valid ) {
+        if(valid) {
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -387,22 +387,20 @@ $(document).ready(function() {
         }
     }
 
-    $( "#addfeedback" ).click(function(){
-
+    $("#addfeedback").click(function() {
         $("#fedbackpreds").empty();
         $("#fedbackpreds").append('<option value="-1">Select column</option>');
         for (d in queryvars){
             $("#fedbackpreds").append('<option value=' + queryvars[d] + '> '+ queryvars[d] + '</option>');
         }
         $("#fedbackpreds").append('<option value="All">All</option>');
-        //
         addfeedbackdialog.dialog("open");
     });
 
-    function append_nodes_edges(rowmap, qtripl){
-        for (t in qtripl){
+    function append_nodes_edges(rowmap, qtripl) {
+        for (t in qtripl) {
             t = qtripl[t];
-            if (t.s.indexOf('?') == 0){
+            if (t.s.indexOf('?') == 0) {
                 variab = t.s.substring(1, t.s.length);
 
                 s = rowmap[variab];
@@ -411,14 +409,14 @@ $(document).ready(function() {
                 s = t.s
                 setNodeData(s);
             }
-            if (t.p.indexOf('?') == 0){
+            if (t.p.indexOf('?') == 0) {
                 variab = t.p.substring(1, t.p.length);
                 //setNodeData(rowmap, variab);
                 p = rowmap[variab];
             } else {
                 p = t.p;
             }
-            if (t.o.indexOf('?') == 0){
+            if (t.o.indexOf('?') == 0) {
                 variab = t.o.substring(1, t.o.length);
                 // setNodeData(rowmap, variab);
                 o = rowmap[variab];
@@ -432,46 +430,44 @@ $(document).ready(function() {
 
     }
 
-    function setEdgeData(s, p, o){
+    function setEdgeData(s, p, o) {
         // console.log(s, p, o);
-        link = {
+        vizdata.links.push({
             "source": s,
             "target": o,
             "weight": -1,
             'ltype': "link",
             'type': "link",
             "pred": p
-        } ;
-        vizdata.links.push(link);
+        });
     }
 
-    function setNodeData(n){
-        node = {
+    function setNodeData(n) {
+        vizdata.nodes[n] = {
             "id": n,
             "label": n,
             "datasource": 1,
             "weight": -1,
             "type": "circle"
-        } ;
-        vizdata.nodes[n] = node;
+        };
     }
 
     var response = false;
-    function show_incremental(){
-        if(response == true){
+    function show_incremental() {
+        if (response === true) {
             // This makes it unable to send a new request
             // unless you get response from last request
             response = false;
-            if (shouldstop == false){
+            if (shouldstop === false) {
                 var req = $.ajax({
                     type:"get",
                     url: "/query/nextresult",
                     // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
                     success: function(data) {
-                        var row=data.result;
+                        var row = data.result;
 
                         // console.log('row', row);
-                        if (row.length == 0 || row == "EOF"){
+                        if (row.length === 0 || row === "EOF") {
                             // console.log("loop done");
                             resdrawn = 0;
                             $("#visualizebtn").show();
@@ -481,15 +477,15 @@ $(document).ready(function() {
                             return
                         }
                         $("#exetime").html(" " + data.execTime + " sec");
-                        var rowml = [];
-                        var resmap = {};
-                        for (var j=0; j <vars.length; j++){
+                        var rowml = [],
+                            resmap = {};
+                        for (var j = 0; j < vars.length; j++) {
                             var val = row[vars[j]];
-                            if (val.indexOf("^^<") != -1){
+                            if (val.indexOf("^^<") !== -1) {
                                 val = val.substring(0, val.indexOf("^^"));
                             }
-                            if('http' == val.substring(0, 4)){
-                                // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
+                            if('http' === val.substring(0, 4)) {
+                                // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");  TODO: check if this should be added again
                                 rowml.push(val);
                             } else {
                                 rowml.push(val);
@@ -497,30 +493,29 @@ $(document).ready(function() {
                             resmap[vars[j]] = val;
                         }
 
-                        table.row.add(rowml).draw( false );
+                        table.row.add(rowml).draw(false);
                         append_nodes_edges(resmap, querytriples);
 
-                        table.columns().every( function () {
+                        table.columns().every(function() {
                             var column = this;
                             var select = $('<select><option value="">All</option></select>')
-                                .appendTo( $(column.footer()).empty() )
-                                .on( 'change', function () {
+                                .appendTo($(column.footer()).empty())
+                                .on('change', function() {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                     );
-                                    column.search( val ? '^'+val+'$' : '', true, false ).draw();
+                                    column.search(val ? '^'+val+'$' : '', true, false).draw();
                                 });
-                            column.data().unique().sort().each( function ( d, j ) {
+                            column.data().unique().sort().each(function(d, j) {
                                 var val = d;
                                 var ltix = val.indexOf('&lt;');
-                                if (ltix > 0){
+                                if (ltix > 0) {
                                     val = val.substring(ltix+4, val.indexOf('&gt;'));
                                 }
                                 // console.log('data', d, val);
                                 select.append( '<option value='+ val +'>'+val+'</option>' )
                             });
                         });
-
                         response = true;
                     }
 //                    ,
@@ -530,16 +525,14 @@ $(document).ready(function() {
 //                            console.log(textStatus);
 //                        }
                 });
-                req.done(function(){
+                req.done(function() {
                     // console.log("Request successful!");
                     // This makes it able to send new request on the next interval
-                    if (response == true && shouldstop == false)
-                    {
+                    if (response === true && shouldstop === false) {
                         response = true;
                         show_incremental()
-                    }
-                    else {
-                        $("#stopbutton").prop( "disabled", true );
+                    } else {
+                        $("#stopbutton").prop("disabled", true);
                     }
                 });
             }
