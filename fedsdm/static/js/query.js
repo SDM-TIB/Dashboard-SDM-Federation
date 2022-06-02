@@ -532,6 +532,7 @@ $(document).ready(function() {
                         response = true;
                         show_incremental()
                     } else {
+                        shouldstop = false;
                         $("#stopbutton").prop("disabled", true);
                     }
                 });
