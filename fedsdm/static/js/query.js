@@ -1,23 +1,21 @@
 $(document).ready(function() {
-    var table = 0;
-    var nodes = [], selectedRow=null, selectedRowData = [],
-        links = [];
+    let table = null, selectedRow = null, selectedRowData = [],
+        nodes = [], links = [];
     $("#selectfederation").prop("disabled", true);
 
     var federation = $("#federationslist").val();
 
-    if (federation != null && federation != ""){
+    if (federation != null && federation != "") {
         $("#queryrow").show();
         $("#resultrow").hide();
-    }
-    else {
+    } else {
         $("#resultinfo").hide();
         $("#resstatus").hide();
         $("#queryrow").hide();
         $("#resultrow").hide();
     }
 
-    $("#federationslist").change(function(){
+    $("#federationslist").change(function() {
         fed = $(this).val();
         federation = fed;
         $("#queryrow").show();
@@ -27,7 +25,7 @@ $(document).ready(function() {
 
     $("#visualizebtn").hide();
 
-    $("#visualizebtn").click(function(){
+    $("#visualizebtn").click(function() {
         $("#resultgraphdiv").show();
         $("#resulttablediv").hide();
         $("#visualizebtn").hide();
@@ -35,7 +33,7 @@ $(document).ready(function() {
         drawresults();
         $("#resultgraphdiv").show();
     });
-    $("#showtablebtn").click(function(){
+    $("#showtablebtn").click(function() {
         $("#resultgraphdiv").hide();
         $("#resulttablediv").show();
         $("#visualizebtn").show();
@@ -48,9 +46,9 @@ $(document).ready(function() {
     var msourcenodes = [],
         msourcelinks = [];
     var mtcards = {"All":[]};
-    var resdrawn = 0;
-    function drawresults(){
-        if (resdrawn == 1){
+    var resdrawn = false;
+    function drawresults() {
+        if (resdrawn === true) {
             return
         }
         mlinks = vizdata.links;
@@ -62,7 +60,7 @@ $(document).ready(function() {
             o.source = mnodes[o.source];
             o.target = mnodes[o.target];
             //console.log(o);
-            if (o.source.datasource == o.target.datasource){
+            if (o.source.datasource == o.target.datasource) {
                 if (o.source.datasource in msourcelinks)
                     msourcelinks[o.source.datasource].push(o);
                 else
@@ -75,12 +73,12 @@ $(document).ready(function() {
         $.each(mnodes, function (key, val) {
             flatnodes.push(val);
             mtcards["All"].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
-            if (val.datasource in mtcards){
+            if (val.datasource in mtcards) {
                 mtcards[val.datasource].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
             } else {
                 mtcards[val.datasource] = [{"label":val.label, "value":val.weight}]; // , "color": color(val.datasource)
             }
-            if (val.datasource in msourcenodes){
+            if (val.datasource in msourcenodes) {
                 msourcenodes[val.datasource].push(val);
             } else {
                 msourcenodes[val.datasource] = [val]
@@ -92,10 +90,10 @@ $(document).ready(function() {
         data = {nodes: manodes, links: malinks};
         //console.log('nodes;', manodes)
         //console.log('links', malinks)
-        manodes.forEach(function(d){
+        manodes.forEach(function(d) {
             expand[d.datasource] = true;
         });
-        resdrawn = 1;
+        resdrawn = true;
         drawRDFMTS(manodes, malinks, "mtviz");
     }
     //finally, initialize YASQE
@@ -117,14 +115,12 @@ $(document).ready(function() {
             showQueryButton: true,
             endpoint: "/query/sparql"
         }
-
-
     });
 
     YASQE.defaults.sparql.showQueryButton = true;
     YASQE.defaults.value = "SELECT DISTINCT ?concept\nWHERE {\n\t?s a ?concept\n} LIMIT 10";
     YASQE.defaults.sparql.endpoint = "/query/sparql";
-    yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting){
+    yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting) {
         //console.log('federation to query from',federation);
         $("#resstatus").hide();
         $("#visualizebtn").hide();
@@ -136,30 +132,30 @@ $(document).ready(function() {
         $('#queryresultstable').empty();
     }
 
-    var start=false, end = true;
+    var start = false, end = true;
     var vars = [], query=encodeURIComponent(yasqe.getValue());
     var querytriples = [];
     var vizdata = {nodes: {}, links: []};
     var queryvars = []
-    yasqe.options.sparql.callbacks.success =  function(data){
+    yasqe.options.sparql.callbacks.success =  function(data) {
         $("#resulttablediv").empty();
         $("#resulttablediv").append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
-        if ('error' in data){
+        if ('error' in data) {
             $("#resstatus").html("Error:" + data.error);
             $("#resultrow").show();
             $("#resstatus").show();
             $("#resultinfo").show();
             return true
         }
-        resdrawn = 0;
+        resdrawn = false;
         $("#frestime").html(" " + data.firstResult + " sec");
         $("#exetime").html(" " + data.execTime + " sec");
 
-        query=encodeURIComponent(yasqe.getValue());
+        query = encodeURIComponent(yasqe.getValue());
 
         var results = data.result;
-        if (results.length > 0){
+        if (results.length > 0) {
             $("#resstatus").hide();
             $("#resultinfo").show();
             $("#resultrow").show();
@@ -168,7 +164,7 @@ $(document).ready(function() {
 
             var theader = "<thead><tr>";
             var tfooter = "<tfoot><tr>";
-            for (var i=0; i<vars.length;i++){
+            for (var i=0; i<vars.length;i++) {
                 theader =  theader + "<th>" + vars[i] + "</th> ";
                 tfooter =  tfooter + "<th>" + vars[i] + "</th> ";
                 queryvars.push(vars[i]);
@@ -178,7 +174,7 @@ $(document).ready(function() {
             $("#queryresultstable").append("<tbody></tbody>");
             $("#queryresultstable").append(tfooter + "</tr></tfoot> ");
 
-            table =  $('#queryresultstable').DataTable({
+            table = $('#queryresultstable').DataTable({
                 responsive: true,
                 select: true,
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
@@ -186,23 +182,19 @@ $(document).ready(function() {
                 buttons: [
                     {
                         text:'copy'
-                    },
-                    {
+                    }, {
                         text:'csv',
                         extend: 'csvHtml5',
                         title: 'sparql-results'
-                    },
-                    {
+                    }, {
                         text:'excel',
                         extend: 'excelHtml5',
                         title: 'sparql-results'
-                    },
-                    {
+                    }, {
                         text:'pdf',
                         extend: 'pdfHtml5',
                         title: 'sparql-results'
-                    },
-                    {
+                    }, {
                         text: 'TSV',
                         extend: 'csvHtml5',
                         fieldSeparator: '\t',
@@ -213,7 +205,7 @@ $(document).ready(function() {
             });
             querytriples = data.querytriples;
             var resmap = {}
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
                 var row = results[i];
                 var rowml = [];
                 for (var j = 0; j < vars.length; j++) {
@@ -221,7 +213,7 @@ $(document).ready(function() {
                     if (val.indexOf("^^<") != -1) {
                         val = val.substring(0, val.indexOf("^^"));
                     }
-                    if('http' == val.substring(0, 4) ){
+                    if('http' == val.substring(0, 4) ) {
                         // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
                         rowml.push(val);
                     } else {
@@ -231,7 +223,6 @@ $(document).ready(function() {
                 }
                 table.row.add(rowml).draw( false );
                 // append_nodes_edges(resmap, querytriples);
-
             }
             table.columns().every(function() {
                 var column = this;
@@ -266,9 +257,9 @@ $(document).ready(function() {
                 selectedRow = table.rows( indexes ).data().toArray();
 
                 selectedRowData = [];
-                for (i in selectedRow[0]){
+                for (i in selectedRow[0]) {
                     var ltix = selectedRow[0][i].indexOf('&lt;');
-                    if (ltix > 0){
+                    if (ltix > 0) {
                         var value = selectedRow[0][i].substring(ltix+4, selectedRow[0][i].indexOf('&gt;'));
                         selectedRowData.push(value)
                     } else {
@@ -278,13 +269,12 @@ $(document).ready(function() {
 
                 //console.log("selected row:", selectedRowData, ltix);
 
-                $( "#addfeedback" ).prop( "disabled", false );
-            }).on( 'deselect', function ( e, dt, type, indexes ) {
-                var rowData = table.rows( indexes ).data().toArray();
-                $( "#addfeedback" ).prop( "disabled", true );
+                $( "#addfeedback" ).prop("disabled", false);
+            }).on('deselect', function (e, dt, type, indexes) {
+                var rowData = table.rows(indexes).data().toArray();
+                $("#addfeedback").prop("disabled", true);
                 selectedRow = null;
             });
-
         } else {
             $("#resstatus").html("No results found!");
             $("#resstatus").show();
@@ -294,15 +284,16 @@ $(document).ready(function() {
             return true;
         }
         response = true;
-        $("#stopbutton").prop( "disabled", false );
+        $("#stopbutton").prop("disabled", false);
         show_incremental();
     }; // end of sparql success callback function
-    var addfeedbackform=null;
-    var addfeedbackdialog=null;
+
+    var addfeedbackform = null;
+    var addfeedbackdialog = null;
     var feedbackdesc =  $("#feedbackdesc" ),
         fedbackpreds = $("#fedbackpreds"),
-        allfeedbackFields = $( [] ).add( feedbackdesc ).add( fedbackpreds ),
-        tips = $( ".validateTips" );
+        allfeedbackFields = $([]).add(feedbackdesc).add(fedbackpreds),
+        tips = $(".validateTips");
     addfeedbackdialog = $("#feedback-form" ).dialog({
         autoOpen: false,
         height: 400,
@@ -362,27 +353,27 @@ $(document).ready(function() {
                 },
                 dataType: "json",
                 crossDomain: true,
-                success: function(data, textStatus, jqXHR){
+                success: function(data, textStatus, jqXHR) {
                     console.log(data);
-                    if (data != null && data.length > 0){
+                    if (data != null && data.length > 0) {
                         // load_query_table(data);
                     } else {
                         $('#validateTips').html("Error while adding data source to the federation!")
                     }
                     // showqueries(datasource);
                 },
-                error: function(jqXHR, textStatus, errorThrown){
+                error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR.status);
                     console.log(jqXHR.responseText);
                     console.log(textStatus);
                 }
             });
         } else {
-            feedbackdesc.addClass( "ui-state-error" )
+            feedbackdesc.addClass("ui-state-error")
             console.log("Invalid data....");
         }
-        if (close){
-            addfeedbackdialog.dialog( "close" );
+        if (close) {
+            addfeedbackdialog.dialog("close");
             return valid;
         }
     }
@@ -452,24 +443,24 @@ $(document).ready(function() {
         };
     }
 
-    var response = false;
+    let response = false;
     function show_incremental() {
         if (response === true) {
             // This makes it unable to send a new request
             // unless you get response from last request
             response = false;
             if (shouldstop === false) {
-                var req = $.ajax({
+                let req = $.ajax({
                     type:"get",
                     url: "/query/nextresult",
                     // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
                     success: function(data) {
-                        var row = data.result;
+                        let row = data.result;
 
                         // console.log('row', row);
                         if (row.length === 0 || row === "EOF") {
                             // console.log("loop done");
-                            resdrawn = 0;
+                            resdrawn = false;
                             $("#visualizebtn").show();
                             drawresults();
                             $("#exetime").html(" " + data.execTime + " sec");
@@ -477,10 +468,10 @@ $(document).ready(function() {
                             return
                         }
                         $("#exetime").html(" " + data.execTime + " sec");
-                        var rowml = [],
+                        const rowml = [],
                             resmap = {};
-                        for (var j = 0; j < vars.length; j++) {
-                            var val = row[vars[j]];
+                        for (let j = 0; j < vars.length; j++) {
+                            let val = row[vars[j]];
                             if (val.indexOf("^^<") !== -1) {
                                 val = val.substring(0, val.indexOf("^^"));
                             }
@@ -497,18 +488,18 @@ $(document).ready(function() {
                         append_nodes_edges(resmap, querytriples);
 
                         table.columns().every(function() {
-                            var column = this;
-                            var select = $('<select><option value="">All</option></select>')
+                            const column = this;
+                            const select = $('<select><option value="">All</option></select>')
                                 .appendTo($(column.footer()).empty())
                                 .on('change', function() {
-                                    var val = $.fn.dataTable.util.escapeRegex(
+                                    const val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                     );
                                     column.search(val ? '^'+val+'$' : '', true, false).draw();
                                 });
                             column.data().unique().sort().each(function(d, j) {
-                                var val = d;
-                                var ltix = val.indexOf('&lt;');
+                                let val = d;
+                                const ltix = val.indexOf('&lt;');
                                 if (ltix > 0) {
                                     val = val.substring(ltix+4, val.indexOf('&gt;'));
                                 }
@@ -538,7 +529,6 @@ $(document).ready(function() {
                 });
             }
         }
-
         // setTimeout(,1000);
     }
     var shouldstop = false;
@@ -546,48 +536,47 @@ $(document).ready(function() {
         console.log('stop pressed');
         response = false;
         shouldstop = true;
-        return;
     });
+
     /**
      * We use most of the default settings for the property and class autocompletion types. This includes:
-     * -  the pre/post processing of tokens
+     * -  the pre-/post-processing of tokens
      * -  detecting whether we are in a valid autocompletion position
      * -  caching of the suggestion list. These are cached for a period of a month on the client side.
      */
-
     var getAutocompletionsArrayFromJson = function(result) {
         var completionsArray = [];
         // console.log('parsing');
         // console.log(result);
-        result.forEach(function(row) {//remove first line, as this one contains the projection variable
+        result.forEach(function(row) {  // remove first line, as this one contains the projection variable
             // console.log(row);
-            if ('type' in row)
-                completionsArray.push(row['type']);//remove quotes
-            else {
-                completionsArray.push(row['property']);//remove quotes
+            if ('type' in row) {
+                completionsArray.push(row['type']);  // remove quotes
+            } else {
+                completionsArray.push(row['property']);  // remove quotes
             }
         });
         return completionsArray;
     }
 
     var customPropertyCompleter = function(yasqe) {
-        //we use several functions from the regular property autocompleter (this way, we don't have to re-define code such as determining whether we are in a valid autocompletion position)
+        // we use several functions from the regular property autocompleter (this way, we don't have to re-define code such as determining whether we are in a valid autocompletion position)
         var returnObj = {
-            isValidCompletionPosition: function(){return YASQE.Autocompleters.properties.isValidCompletionPosition(yasqe)},
-            preProcessToken: function(token) {return YASQE.Autocompleters.properties.preProcessToken(yasqe, token)},
-            postProcessToken: function(token, suggestedString) {return YASQE.Autocompleters.properties.postProcessToken(yasqe, token, suggestedString)}
+            isValidCompletionPosition: function() { return YASQE.Autocompleters.properties.isValidCompletionPosition(yasqe) },
+            preProcessToken: function(token) { return YASQE.Autocompleters.properties.preProcessToken(yasqe, token) },
+            postProcessToken: function(token, suggestedString) { return YASQE.Autocompleters.properties.postProcessToken(yasqe, token, suggestedString) }
         };
 
-        //In this case we assume the properties will fit in memory. So, turn on bulk loading, which will make autocompleting a lot faster
+        // in this case we assume the properties will fit in memory. So, turn on bulk loading, which will make autocompleting a lot faster
         returnObj.bulk = true;
         returnObj.async = true;
 
-        //and, as everything is in memory, enable autoShowing the completions
+        // and, as everything is in memory, enable autoShowing the completions
         returnObj.autoShow = true;
 
-        returnObj.persistent = "customProperties";//this will store the sparql results in the client-cache for a month.
+        returnObj.persistent = "customProperties";  // this will store the sparql results in the client-cache for a month.
         returnObj.get = function(token, callback) {
-            //all we need from these parameters is the last one: the callback to pass the array of completions to
+            // all we need from these parameters is the last one: the callback to pass the array of completions to
             var sparqlQuery = "SELECT DISTINCT ?property WHERE {?s ?property ?obj } limit 1000";
             $.ajax({
                 data: {query: sparqlQuery},
@@ -602,22 +591,15 @@ $(document).ready(function() {
         };
         return returnObj;
     };
-    //now register our new autocompleter
+    // now register our new autocompleter
     YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
 
-
-    //excellent, now do the same for the classes
+    // excellent, now do the same for the classes
     var customClassCompleter = function(yasqe) {
         var returnObj = {
-            isValidCompletionPosition: function(){
-                return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe)
-            },
-            preProcessToken: function(token) {
-                return YASQE.Autocompleters.classes.preProcessToken(yasqe, token)
-            },
-            postProcessToken: function(token, suggestedString) {
-                return YASQE.Autocompleters.classes.postProcessToken(yasqe, token, suggestedString)
-            }
+            isValidCompletionPosition: function() { return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe) },
+            preProcessToken: function(token) { return YASQE.Autocompleters.classes.preProcessToken(yasqe, token) },
+            postProcessToken: function(token, suggestedString) { return YASQE.Autocompleters.classes.postProcessToken(yasqe, token, suggestedString) }
         };
         returnObj.bulk = true;
         returnObj.async = true;
@@ -648,7 +630,7 @@ $(document).ready(function() {
     };
 
     YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
-    //And, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
+    // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
     YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
 
     var query_classes = "SELECT DISTINCT ?c WHERE {\n" +
@@ -678,10 +660,13 @@ $(document).ready(function() {
             v = nodeid(l.target);
         return u<v ? u+"|"+v : v+"|"+u;
     }
+
     function getGroup(n) { return n.datasource; }
+
     var off = 15,    // cluster hull offset
         expand = {}, // expanded clusters
         net, force, hullg, hull, linkg, nodeg;
+
     // constructs the network to visualize
     function network(data, prev, index, expand) {
         expand = expand || {};
@@ -727,7 +712,7 @@ $(document).ready(function() {
                 }
             } else {
                 // the node is part of a collapsed cluster
-                if (l.size == 0) {
+                if (l.size === 0) {
                     // if new cluster, add to set and position at centroid of leaf nodes
                     nm[i] = nodes.length;
                     nodes.push(l);
@@ -800,8 +785,6 @@ $(document).ready(function() {
     height = 980;
     var canv = "graph";
 
-
-
     var width,height;
     var h=960, w =760;
     var chartWidth, chartHeight;
@@ -842,6 +825,7 @@ $(document).ready(function() {
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
+
     var colors = [
         "#9ACD32",
         "#7B68EE",
@@ -901,8 +885,8 @@ $(document).ready(function() {
         "#D2691E",
         "#8B4513",
         "#A52A2A"
-
     ];
+
     function color(ig){
         ig = ig // 10 * 10;
         if (ig > 50){
@@ -910,6 +894,7 @@ $(document).ready(function() {
         }
         return colors[ig];
     }
+
     var default_node_color = "#ccc";
     //var default_node_color = "rgb(3,190,100)";
     var default_link_color = "#888";
@@ -943,10 +928,10 @@ $(document).ready(function() {
     var sourceids = {}, sourcesnames={};
 
     var link, circle, text;
-    function drawRDFMTS(nodes, links, divcanv){
+    function drawRDFMTS(nodes, links, divcanv) {
         // console.log(nodes, links);
         var svg;
-        if(divcanv == null){
+        if(divcanv == null) {
             $("#graph").empty();
             svg = d3.select("#graph").append("svg");
             width = $("#graph").width();
@@ -973,7 +958,6 @@ $(document).ready(function() {
             .transition()
             .duration(1000)
             .attr("opacity", 1);
-
 
         var tocolor = "fill";
         var towhite = "stroke";
@@ -1002,7 +986,7 @@ $(document).ready(function() {
         force = d3.layout.force()
             .nodes(net.nodes)
             .links(net.links)
-            .linkDistance(function(l, i){
+            .linkDistance(function(l, i) {
                 var n1 = l.source, n2 = l.target;
                 return divcanv?250:200 +
                     Math.min(20 * Math.min((n1.size || (n1.datasource != n2.datasource ? n1.group_data.size : 0)),
@@ -1012,9 +996,7 @@ $(document).ready(function() {
                             (n2.link_count || (n1.datasource != n2.datasource ? n2.group_data.link_count : 0))),
                         300);
             })
-            .linkStrength(function(l, i) {
-                return  2;
-            })
+            .linkStrength(function(l, i) { return  2; })
             .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue&orange, ...
             .charge(-600)    // ... charge is important to turn single-linked groups to the outside
             .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
@@ -1081,7 +1063,7 @@ $(document).ready(function() {
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(tocolor, function(d) {
-                if (divcanv ==null){
+                if (divcanv ==null) {
                     return color(d.datasource)
                 } else {
                     ci += 1
@@ -1097,22 +1079,24 @@ $(document).ready(function() {
             .attr("dy", ".35em")
             .style("font-size",function(d){return d.size? 16 + "px": nominal_text_size + "px"})
 
-        if (text_center)
-            text.text(function(d) {
-                if (d.label) return d.label;
-                else {
+        if (text_center) {
+            text.text(function (d) {
+                if (d.label) {
+                    return d.label;
+                } else {
                     return sourcesnames[d.datasource];
                 }
             })
                 .style("text-anchor", "middle");
-        else
-            text.attr("dx", function(d) {return (size(65)-size(30)||nominal_base_node_size);}) //size(d.weight)
-                .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesnames[d.datasource]; });
+        } else {
+            text.attr("dx", function (d) { return (size(65) - size(30) || nominal_base_node_size); })  // size(d.weight)
+                .text(function (d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
+        }
 
         d3.select(window).on("mouseup", function() {
-            if (focus_node!==null){
+            if (focus_node !== null) {
                 focus_node = null;
-                if (highlight_trans<1){
+                if (highlight_trans < 1) {
                     circle.style("opacity", 1);
                     text.style("opacity", 1);
                     link.style("opacity", 1);
@@ -1124,15 +1108,15 @@ $(document).ready(function() {
 
         zoom.on("zoom", function() {
             var stroke = nominal_stroke;
-            if (nominal_stroke*zoom.scale()>max_stroke)
-                stroke = max_stroke/zoom.scale();
+            if (nominal_stroke * zoom.scale() > max_stroke)
+                stroke = max_stroke / zoom.scale();
 
             link.style("stroke-width", stroke);
             circle.style("stroke-width",stroke);
 
             var base_radius = nominal_base_node_size;
-            if (nominal_base_node_size*zoom.scale()>max_base_node_size)
-                base_radius = max_base_node_size/zoom.scale();
+            if (nominal_base_node_size * zoom.scale() > max_base_node_size)
+                base_radius = max_base_node_size / zoom.scale();
             circle.attr("d", d3.svg.symbol()
                 .size(function(d) {
                     var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
@@ -1145,14 +1129,14 @@ $(document).ready(function() {
                     return ((size(65)-size(30))*base_radius/nominal_base_node_size||base_radius);
                 }); //size(d.weight)
 
-            text.style("font-size", function(d){
+            text.style("font-size", function(d) {
                 var text_size = nominal_text_size;
-                if (d.size){
+                if (d.size) {
                     text_size = 16;
                 }
 
-                if (nominal_text_size*zoom.scale()>max_text_size)
-                    text_size = max_text_size/zoom.scale();
+                if (nominal_text_size * zoom.scale() > max_text_size)
+                    text_size = max_text_size / zoom.scale();
 
                 return text_size + "px"});
             g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -1164,12 +1148,11 @@ $(document).ready(function() {
         //window.focus();
         d3.select(window).on("resize", resize).on("keydown", keydown);
         var centroids = {};
-        for (var i =0; i < max_score; i+=3){
+        for (var i = 0; i < max_score; i += 3) {
             centroids[i] = {x: 200 * (i/3 +1), y:200}
             centroids[i+1] = {x: 200 * (i/3+1), y:400}
             centroids[i+2] = {x: 200 * (i/3 +1), y:600}
         }
-
 
         force.on("tick", function(e) {
             var k = .1 * e.alpha;
@@ -1177,14 +1160,14 @@ $(document).ready(function() {
 
             // Push nodes toward their designated focus.
             net.nodes.forEach(function(o, i) {
-                if (centroids[o.datasource]){
+                if (centroids[o.datasource]) {
                     o.y += (centroids[o.datasource].y - o.y) * k;
                     o.x += (centroids[o.datasource].x - o.x) * k;
                 }
             });
 
             text.forEach(function(o, i) {
-                if (centroids[o.datasource]){
+                if (centroids[o.datasource]) {
                     o.y += (centroids[o.datasource].y - o.y) * k;
                     o.x += (centroids[o.datasource].x - o.x) * k;
                 }
@@ -1202,11 +1185,9 @@ $(document).ready(function() {
             text.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
         });
-        function printn(alpha){
+        function printn(alpha) {
             var quadtree = d3.geom.quadtree(nodes);
-
-            return function(d) {
-            };
+            return function(d) { };
         }
 
         function isConnected(a, b) {
@@ -1236,23 +1217,23 @@ $(document).ready(function() {
 
         function vis_by_node_score(score) {
             if (isNumber(score)) {
-                if (score>=0.666)
+                if (score >= 0.666)
                     return keyh;
-                else if (score>=0.333)
+                else if (score >= 0.333)
                     return keym;
-                else if (score>=0)
+                else if (score >= 0)
                     return keyl;
             }
             return true;
         }
 
         function vis_by_link_score(score){
-            if (isNumber(score))  {
-                if (score>=0.666)
+            if (isNumber(score)) {
+                if (score >= 0.666)
                     return key3;
-                else if (score>=0.333)
+                else if (score >= 0.333)
                     return key2;
-                else if (score>=0)
+                else if (score >= 0)
                     return key1;
             }
             return true;
@@ -1331,7 +1312,7 @@ $(document).ready(function() {
         }
 
         function set_focus(d){
-            if (highlight_trans<1)  {
+            if (highlight_trans < 1) {
                 circle.style("opacity", function(o) {
                     return isConnected(d, o) ? 1 : highlight_trans;
                 });
@@ -1367,28 +1348,27 @@ $(document).ready(function() {
         }
     }
 
-    function updateTips( t ) {
-        tips.text( t ).addClass( "ui-state-highlight" );
+    function updateTips(t) {
+        tips.text(t).addClass("ui-state-highlight");
         setTimeout(function() {
-            tips.removeClass( "ui-state-highlight", 1500 );
+            tips.removeClass("ui-state-highlight", 1500);
         }, 500 );
     }
 
-    function checkLength( o, n, min, max ) {
-        if ( o.val().length > max || o.val().length < min ) {
-            o.addClass( "ui-state-error" );
-            updateTips( "Length of " + n + " must be between " +
-                min + " and " + max + "." );
+    function checkLength(o, n, min, max) {
+        if (o.val().length > max || o.val().length < min) {
+            o.addClass("ui-state-error");
+            updateTips("Length of " + n + " must be between " + min + " and " + max + ".");
             return false;
         } else {
             return true;
         }
     }
 
-    function checkRegexp( o, regexp, n ) {
-        if ( !( regexp.test( o.val() ) ) ) {
-            o.addClass( "ui-state-error" );
-            updateTips( n );
+    function checkRegexp(o, regexp, n) {
+        if ( !regexp.test(o.val()) ) {
+            o.addClass("ui-state-error");
+            updateTips(n);
             return false;
         } else {
             return true;
