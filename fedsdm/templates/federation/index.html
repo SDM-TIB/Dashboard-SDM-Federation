@@ -5,21 +5,8 @@
 
 {% block content %}
 <div class="row row-header">
-    <div class="col-lg-4">
-        <div class="form-group form-control-lg">
-            <select class="form-control " id="federationslist">
-                <option value="">Please select federation</option>
-                {% for fed in federations %}
-                    {% if fed['uri'] == session['fed'] %}
-                        <option value="{{ fed['uri'] }}" selected> {{ fed['name'] }}</option>
-                    {% else %}
-                        <option value="{{ fed['uri'] }}"> {{ fed['name'] }}</option>
-                    {% endif %}
-                {% endfor %}
-                <option value="All">All</option>
-            </select>
-        </div>
-    </div>
+    {% set feds_all = true %}
+    {% include 'federationlist.html' %}
     <div class="pull-right" style="padding-right: 15px">
         <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed"> Create New Federation </button>
         <div id="my-form" title="Create New Federation" style="display:none">

@@ -5,20 +5,7 @@
 
 {% block content %}
 <div class="row row-header">
-    <div class="col-lg-4">
-        <div class="form-group form-control-lg">
-            <select class="form-control " id="federationslist">
-                <option value="">Please select federation</option>
-                {% for fed in federations %}
-                    {% if fed['uri'] == session['fed'] %}
-                        <option value="{{ fed['uri'] }}" selected> {{ fed['name'] }}</option>
-                    {% else %}
-                        <option value="{{ fed['uri'] }}"> {{ fed['name'] }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-    </div>
+    {% include 'federationlist.html' %}
 </div>
 
 <link href="{{ url_for('static', filename='css/yasqe.min.css') }}" rel='stylesheet' type='text/css'/>
