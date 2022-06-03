@@ -1,7 +1,8 @@
 <div class="col-lg-4">
     <div class="form-group form-control-lg">
-        <select class="form-control " id="federationslist">
-            <option value="">Please select federation</option>
+        <label for="federationslist" style="display: inline; vertical-align: middle; margin-right: 5px;">Federation:</label>
+        <select class="form-control" style="display: inline !important; width: 80% !important; height: unset !important;" id="federationslist">
+            <option value="">Please select a federation</option>
             {% for fed in federations %}
                 {% if fed['uri'] == session['fed'] %}
                     <option value="{{ fed['uri'] }}" selected> {{ fed['name'] }}</option>
