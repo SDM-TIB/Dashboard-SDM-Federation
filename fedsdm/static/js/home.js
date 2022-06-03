@@ -4,12 +4,12 @@ $(document).ready(function() {
     ******* Load statistics about data sources, RDF-MTs and links ***********
     *************************************************************************
     */
-    $("#datasummary").hide();
+    $("#data-summary").hide();
     $("#summaryrow").hide();
     $("#contentrow").hide();
     var datas = [];
-    var myBarChart = null;
-    var myBarChartn = null;
+    let dataSummaryChart = null,
+        federationSummaryChart = null;
     var nfeds = [];
     var nds = [];
     var ntpl = [];
@@ -55,8 +55,8 @@ $(document).ready(function() {
                     break;
                 }
             }
-            if (myBarChart == null) {
-                myBarChart = new Chart($("#rdfmt-dist-chart"), {
+            if (dataSummaryChart == null) {
+                dataSummaryChart = new Chart($("#data-summary-chart"), {
                     type: 'horizontalBar',
                     data: {
                         labels: barData.labels,
@@ -136,7 +136,7 @@ $(document).ready(function() {
                     let bb = parseInt(v);
                     nlnk[i] = Math.log10(bb);
                 }
-                myBarChartn = new Chart($("#rdfmt-dist-chart2"), {
+                federationSummaryChart = new Chart($("#federation-summary-chart"), {
                     type: 'horizontalBar',
                     data: {
                         labels: nfeds,
@@ -198,12 +198,12 @@ $(document).ready(function() {
                     }
                 });
             } else {
-                myBarChart.data.labels=[];
-                myBarChart.data.datasets=[];
-                myBarChart.update();
+                dataSummaryChart.data.labels = [];
+                dataSummaryChart.data.datasets = [];
+                dataSummaryChart.update();
 
-                myBarChart.data.labels = barData.labels;
-                myBarChart.data.datasets = [
+                dataSummaryChart.data.labels = barData.labels;
+                dataSummaryChart.data.datasets = [
                     {
                         id: 4,
                         label: "# of Triples (log)",
@@ -230,8 +230,8 @@ $(document).ready(function() {
                         backgroundColor:"#d64161"
                     }
                 ]
-                myBarChart.update();
-                myBarChartn.update();
+                dataSummaryChart.update();
+                federationSummaryChart.update();
             }
             Morris.Donut({
                 element: 'ds-dist-chart',
@@ -242,7 +242,7 @@ $(document).ready(function() {
                 resize: true
             });
         }
-        $("#datasummary").show();
+        $("#data-summary").show();
     }
 
     window.setStats = function(stats) {
