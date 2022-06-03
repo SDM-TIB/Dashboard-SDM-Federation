@@ -3,9 +3,9 @@ $(document).ready(function() {
         nodes = [], links = [];
     $("#selectfederation").prop("disabled", true);
 
-    var federation = $("#federations-list").val();
+    let federation = $("#federations-list").val();
 
-    if (federation != null && federation != "") {
+    if (federation != null && federation !== "") {
         $("#queryrow").show();
         $("#resultrow").hide();
     } else {
@@ -16,15 +16,13 @@ $(document).ready(function() {
     }
 
     $("#federations-list").change(function() {
-        fed = $(this).val();
-        federation = fed;
+        federation = $(this).val();
         $("#queryrow").show();
         $("#resultrow").hide();
         yasqe.setValue(yasqe.getValue());
     });
 
-    $("#visualizebtn").hide();
-
+    $("#visualizebtn").hide()
     $("#visualizebtn").click(function() {
         $("#resultgraphdiv").show();
         $("#resulttablediv").hide();
@@ -54,17 +52,18 @@ $(document).ready(function() {
         mlinks = vizdata.links;
         mnodes = vizdata.nodes;
 
-        for (var i=0; i<mlinks.length; ++i) {
+        for (var i = 0; i < mlinks.length; ++i) {
             o = mlinks[i];
 
             o.source = mnodes[o.source];
             o.target = mnodes[o.target];
             //console.log(o);
-            if (o.source.datasource == o.target.datasource) {
-                if (o.source.datasource in msourcelinks)
+            if (o.source.datasource === o.target.datasource) {
+                if (o.source.datasource in msourcelinks) {
                     msourcelinks[o.source.datasource].push(o);
-                else
-                    msourcelinks[o.source.datasource] =[o];
+                } else {
+                    msourcelinks[o.source.datasource] = [o];
+                }
             }
         }
         malinks = mlinks;
@@ -96,8 +95,9 @@ $(document).ready(function() {
         resdrawn = true;
         drawRDFMTS(manodes, malinks, "mtviz");
     }
-    //finally, initialize YASQE
-    var yasqe = YASQE(document.getElementById("yasqe"), {
+
+    // finally, initialize YASQE
+    let yasqe = YASQE(document.getElementById("yasqe"), {
         // display full query
         viewportMargin: Infinity,
         // grey edit window during query execution
@@ -106,9 +106,8 @@ $(document).ready(function() {
         tabSize: 2,
         indentUnit: 2,
         extraKeys: {
-            Tab: function (cm) {
-                var spaces = new Array(cm.getOption("indentUnit") + 1).join(" ");
-                cm.replaceSelection(spaces);
+            Tab: function(cm) {
+                cm.replaceSelection(new Array(cm.getOption("indentUnit") + 1).join(" "));
             }
         },
         sparql: {
@@ -125,7 +124,7 @@ $(document).ready(function() {
         $("#resstatus").hide();
         $("#visualizebtn").hide();
         $("#showtablebtn").hide();
-        setting.url = "/query/sparql?federation=" +federation + "&query=" + encodeURIComponent(yasqe.getValue());
+        setting.url = "/query/sparql?federation=" + federation + "&query=" + encodeURIComponent(yasqe.getValue());
         setting.crossDomain = true;
         setting.data ={"query": yasqe.getValue()};
         $("#resultinfo").hide();
@@ -133,13 +132,13 @@ $(document).ready(function() {
     }
 
     var start = false, end = true;
-    var vars = [], query=encodeURIComponent(yasqe.getValue());
-    var querytriples = [];
+    let query = encodeURIComponent(yasqe.getValue()),
+        querytriples = [];
     var vizdata = {nodes: {}, links: []};
     var queryvars = []
-    yasqe.options.sparql.callbacks.success =  function(data) {
-        $("#resulttablediv").empty();
-        $("#resulttablediv").append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
+    yasqe.options.sparql.callbacks.success = function(data) {
+        $("#resulttablediv").empty()
+                            .append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
         if ('error' in data) {
             $("#resstatus").html("Error:" + data.error);
@@ -154,7 +153,8 @@ $(document).ready(function() {
 
         query = encodeURIComponent(yasqe.getValue());
 
-        var results = data.result;
+        let results = data.result,
+            vars = []
         if (results.length > 0) {
             $("#resstatus").hide();
             $("#resultinfo").show();
@@ -164,15 +164,14 @@ $(document).ready(function() {
 
             var theader = "<thead><tr>";
             var tfooter = "<tfoot><tr>";
-            for (var i=0; i<vars.length;i++) {
+            for (var i = 0; i < vars.length; i++) {
                 theader =  theader + "<th>" + vars[i] + "</th> ";
                 tfooter =  tfooter + "<th>" + vars[i] + "</th> ";
                 queryvars.push(vars[i]);
             }
-            $("#queryresultstable").append(theader + "</tr></thead> ");
-
-            $("#queryresultstable").append("<tbody></tbody>");
-            $("#queryresultstable").append(tfooter + "</tr></tfoot> ");
+            $("#queryresultstable").append(theader + "</tr></thead>")
+                                   .append("<tbody></tbody>")
+                                   .append(tfooter + "</tr></tfoot>");
 
             table = $('#queryresultstable').DataTable({
                 responsive: true,
@@ -269,15 +268,15 @@ $(document).ready(function() {
 
                 //console.log("selected row:", selectedRowData, ltix);
 
-                $( "#addfeedback" ).prop("disabled", false);
-            }).on('deselect', function (e, dt, type, indexes) {
+                $("#addfeedback").prop("disabled", false);
+            }).on('deselect', function(e, dt, type, indexes) {
                 var rowData = table.rows(indexes).data().toArray();
                 $("#addfeedback").prop("disabled", true);
                 selectedRow = null;
             });
         } else {
-            $("#resstatus").html("No results found!");
-            $("#resstatus").show();
+            $("#resstatus").html("No results found!")
+                           .show();
             $("#resultinfo").show();
             $("#resultrow").show();
             response = false;
@@ -285,16 +284,16 @@ $(document).ready(function() {
         }
         response = true;
         $("#stopbutton").prop("disabled", false);
-        show_incremental();
+        show_incremental(vars);
     }; // end of sparql success callback function
 
     var addfeedbackform = null;
     var addfeedbackdialog = null;
-    var feedbackdesc =  $("#feedbackdesc" ),
+    var feedbackdesc =  $("#feedbackdesc"),
         fedbackpreds = $("#fedbackpreds"),
         allfeedbackFields = $([]).add(feedbackdesc).add(fedbackpreds),
         tips = $(".validateTips");
-    addfeedbackdialog = $("#feedback-form" ).dialog({
+    addfeedbackdialog = $("#feedback-form").dialog({
         autoOpen: false,
         height: 400,
         width: 550,
@@ -444,7 +443,7 @@ $(document).ready(function() {
     }
 
     let response = false;
-    function show_incremental() {
+    function show_incremental(vars) {
         if (response === true) {
             // This makes it unable to send a new request
             // unless you get response from last request
@@ -521,7 +520,7 @@ $(document).ready(function() {
                     // This makes it able to send new request on the next interval
                     if (response === true && shouldstop === false) {
                         response = true;
-                        show_incremental()
+                        show_incremental(vars)
                     } else {
                         shouldstop = false;
                         $("#stopbutton").prop("disabled", true);
@@ -531,8 +530,8 @@ $(document).ready(function() {
         }
         // setTimeout(,1000);
     }
-    var shouldstop = false;
-    $("#stopbutton").click(function(){
+    let shouldstop = false;
+    $("#stopbutton").click(function() {
         console.log('stop pressed');
         response = false;
         shouldstop = true;
@@ -577,7 +576,7 @@ $(document).ready(function() {
         returnObj.persistent = "customProperties";  // this will store the sparql results in the client-cache for a month.
         returnObj.get = function(token, callback) {
             // all we need from these parameters is the last one: the callback to pass the array of completions to
-            var sparqlQuery = "SELECT DISTINCT ?property WHERE {?s ?property ?obj } limit 1000";
+            var sparqlQuery = "SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000";
             $.ajax({
                 data: {query: sparqlQuery},
                 url: YASQE.defaults.sparql.endpoint,
@@ -605,7 +604,7 @@ $(document).ready(function() {
         returnObj.async = true;
         returnObj.autoShow = true;
         returnObj.get = function(token, callback) {
-            var filters ='filter (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
+            var filters ='FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
                 ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
                 ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
                 ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
@@ -614,7 +613,7 @@ $(document).ready(function() {
                 ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
                 ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && '+
                 ' !regex(str(?type), "nodeID://", "i") ) '
-            var sparqlQuery = "SELECT DISTINCT ?type WHERE{ ?s a ?type. " + filters + " } Limit 1000";
+            var sparqlQuery = "SELECT DISTINCT ?type WHERE{ ?s a ?type. " + filters + " } LIMIT 1000";
             $.ajax({
                 data: {query: sparqlQuery},
                 url: YASQE.defaults.sparql.endpoint,
@@ -633,20 +632,16 @@ $(document).ready(function() {
     // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
     YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
 
-    var query_classes = "SELECT DISTINCT ?c WHERE {\n" +
-        "  ?s a ?c\n" +
-        "}"
-    $("#classes").click(function(){
-        yasqe.setValue(query_classes);
+    $("#classes").click(function() {
+        yasqe.setValue("SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}");
     });
 
-    var analytics = "PREFIX schema: <http://schema.org/> \n" +
-        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-        "SELECT distinct * WHERE {\n" +
-        "\t<http://av.tib.eu/resource/video/16439> ?p ?obj .\n" +
-        "}  LIMIT 100"
-    $("#analyticalnumtheoryex").click(function(){
-        yasqe.setValue(analytics);
+    $("#analyticalnumtheoryex").click(function() {
+        yasqe.setValue("PREFIX schema: <http://schema.org/> \n" +
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+            "SELECT DISTINCT * WHERE {\n" +
+            "\t<http://av.tib.eu/resource/video/16439> ?p ?obj .\n" +
+            "}  LIMIT 100");
     });
 
     // TODO: add more example queries here
