@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 
-    var federation = $("#federationslist").val();
+    var federation = $("#federations-list").val();
     $("#selectfederation").prop("disabled", true);
     var loaded = 0;
 
@@ -9,7 +9,7 @@ $(document).ready(function() {
         load_table(federation);
     }
 
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         federation = $( this ).val();
         load_table(federation);
     });

@@ -165,11 +165,11 @@
 <script>
         let activeTab = window.location.hash;
         if (activeTab) {
-            let objSelect = document.getElementById("federationslist");
+            let objSelect = document.getElementById("federations-list");
             for (let i = 0; i < objSelect.options.length; i++) {
-                if (objSelect.options[i].text== "All") {
+                if (objSelect.options[i].text === "All") {
                     fn();
-                    document.getElementById("federationslist").selectedIndex = i;
+                    document.getElementById("federations-list").selectedIndex = i;
                 }
             }
         }

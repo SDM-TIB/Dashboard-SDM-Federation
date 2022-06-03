@@ -15,7 +15,7 @@ $(document).ready(function() {
     var selectedDatabase=null, selectedDatabaseName=null;
     var selectedCollection=null, selectedCollectionName=null;
     var collectionstable = null;
-    var federation = $("#federationslist").val(),
+    var federation = $("#federations-list").val(),
         datasource = null;
 
     if (federation != null && federation != ""){
@@ -23,7 +23,7 @@ $(document).ready(function() {
         show_datasource(federation);
     }
 
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         fed = $( this ).val();
         if (fed == null || fed == ""){
             return false;

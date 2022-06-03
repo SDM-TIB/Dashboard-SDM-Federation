@@ -6,7 +6,7 @@ $(document).ready(function() {
     **********************************************************
     */
 
-    let federation = $("#federationslist").val();
+    let federation = $("#federations-list").val();
 
     let statsTable = null;
     let ctx = $("#myChart");
@@ -18,7 +18,7 @@ $(document).ready(function() {
     showFederations(federation);
 
     // Federation list dropdown change event, triggers visualization of statistics and management data
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         federation = $( this ).val();
         showFederations(federation);
     });
@@ -702,7 +702,7 @@ $(document).ready(function() {
                         crnfdialog.dialog( "close" );
                         // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name;
-                        $("#federationslist").append('<option value=' + federation + ' selected>' + name + '</option>');
+                        $("#federations-list").append('<option value=' + federation + ' selected>' + name + '</option>');
                         showFederations(federation);
                         let aTab = '#manage';
                         if(aTab){

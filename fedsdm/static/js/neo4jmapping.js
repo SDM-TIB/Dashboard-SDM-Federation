@@ -35,8 +35,8 @@ $(document).ready(function() {
                     html += '<option value="'+data[f]+'">'+data[f]+'</option>'
                 }
                 html += '<option value="All">All</option> '
-                $("#federationslist").html(html);
-                $("#federationslist").prop("disabled", false);
+                $("#federations-list").html(html);
+                $("#federations-list").prop("disabled", false);
 
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -47,7 +47,7 @@ $(document).ready(function() {
             }
         });
 
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         fed = $( this ).val()
         $("#mfedName").html(fed);
         basic_stat(fed);

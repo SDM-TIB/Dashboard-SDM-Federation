@@ -295,7 +295,7 @@
                 nlinks[nfd[i]['name']] = 0;
             }
             for (let j = 0; j < federations.length; j++) {
-                if(federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase()) > 0) {
+                if (federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase()) > 0) {
                     ndict[nfd[i]['name']]++;
                     ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(federations[j]['triples']);
                     nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(federations[j]['rdfmts']);
@@ -335,8 +335,8 @@
         if (activeTab) {
             if (activeTab === "#home") {
                 $('#maincontent a[href="#home"]').click();
-                $('#federationslist').val('All')
-                                     .change();
+                $('#federations-list').val('All')
+                    .change();
             }
             else if (activeTab === "#All") {
                 $('#maincontent a[href="#feder"]').click();

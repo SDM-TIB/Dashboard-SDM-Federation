@@ -1,7 +1,7 @@
 <div class="col-lg-4">
     <div class="form-group form-control-lg">
-        <label for="federationslist" style="display: inline; vertical-align: middle; margin-right: 5px;">Federation:</label>
-        <select class="form-control" style="display: inline !important; width: 80% !important; height: unset !important;" id="federationslist">
+        <label for="federations-list" style="display: inline; vertical-align: middle; margin-right: 5px;">Federation:</label>
+        <select class="form-control" style="display: inline !important; width: 80% !important; height: unset !important;" id="federations-list">
             <option value="">Please select a federation</option>
             {% for fed in federations %}
                 {% if fed['uri'] == session['fed'] %}

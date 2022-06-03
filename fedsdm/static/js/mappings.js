@@ -19,7 +19,7 @@ $(document).ready(function() {
     $("#collsinfotablediv").hide();
     $("#sampledoctablediv").hide();
 
-    var federation = $("#federationslist").val(),
+    var federation = $("#federations-list").val(),
         datasource = null;
 
     if (federation != null && federation != ""){
@@ -27,7 +27,7 @@ $(document).ready(function() {
         basic_stat(fed);
     }
 
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         fed = $( this ).val()
         $("#mfedName").html(fed);
         basic_stat(fed);
@@ -551,4 +551,4 @@ $(document).ready(function() {
                   " PREFIX iasis: <http://project-iasis.eu/vocab/>  \n" +
                   " PREFIX hydra: <http://www.w3.org/ns/hydra/core#>  \n"
 
-}); // Document.ready()
+}}); // Document.ready()

@@ -25,7 +25,7 @@ $(document).ready(function() {
                 html += '<li class="fed"><a href="#" class="fed"  id="fed-'+f+'">'+ data[f]+'</a></li>'
             }
             html += '<li class="divider"></li><li class="fed"><a href="#" class="fed" id="fed-'+(f+1)+'">All</a></li>'
-            $("#federationslist").html(html);
+            $("#federations-list").html(html);
             $("a[class=fed]").click(function(){
                 fed = $(this).text()
                 $("#fedName").html(fed);

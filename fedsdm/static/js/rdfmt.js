@@ -1,15 +1,15 @@
 $(document).ready(function() {
 
-//    $("#federationslist").prop("disabled", true);
+//    $("#federations-list").prop("disabled", true);
     $("#datasources").prop("disabled", true);
-    var federation =  $("#federationslist").val();
+    var federation =  $("#federations-list").val();
 
     var tabvisible = '#home';
     if (federation != null && federation != ""){
         load_data(federation);
     }
 
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         fed = $( this ).val()
         load_data(fed);
     });

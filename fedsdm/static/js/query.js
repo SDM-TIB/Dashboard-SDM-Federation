@@ -3,7 +3,7 @@ $(document).ready(function() {
         nodes = [], links = [];
     $("#selectfederation").prop("disabled", true);
 
-    var federation = $("#federationslist").val();
+    var federation = $("#federations-list").val();
 
     if (federation != null && federation != "") {
         $("#queryrow").show();
@@ -15,7 +15,7 @@ $(document).ready(function() {
         $("#resultrow").hide();
     }
 
-    $("#federationslist").change(function() {
+    $("#federations-list").change(function() {
         fed = $(this).val();
         federation = fed;
         $("#queryrow").show();

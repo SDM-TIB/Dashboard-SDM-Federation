@@ -4,12 +4,12 @@ function fn() {
 }
 
 $(document).ready(function() {
-    //$("#federationslist").prop("disabled", true);
+    //$("#federations-list").prop("disabled", true);
     $("#datasources").prop("disabled", true);
     $("#mtdetails").prop('disabled', true);
     $("#mtviz").hide();
 
-    var federation =  $("#federationslist").val();
+    var federation =  $("#federations-list").val();
     window.jsdata = new Array();
 
     var tabvisible = '#visualize';
@@ -22,7 +22,7 @@ $(document).ready(function() {
     }
 
 
-    $("#federationslist").change(function(){
+    $("#federations-list").change(function(){
         fed = $( this ).val()
         load_data(fed);
     });
