@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-    // get total number of datasets
     /*
     *************************************************************************
     ******* Load statistics about data sources, RDF-MTs and links ***********
@@ -8,7 +6,7 @@ $(document).ready(function() {
     */
     $("#datasummary").hide();
     $("#summaryrow").hide();
-    $('#contentrow').hide();
+    $("#contentrow").hide();
     var federations = null;
     var stats = null;
     var datas = [];
@@ -24,9 +22,9 @@ $(document).ready(function() {
     var nprp = [];
     var nlnk = [];
 
-    window.setFederation = function(feds, nf, nd, nl, nm, np, nk){
+    window.setFederation = function(feds, nf, nd, nl, nm, np, nk) {
         federations = feds
-        if (federations != null){
+        if (federations != null) {
             var data = federations;
             $("#summaryrow").show();
             $('#contentrow').show();
@@ -34,7 +32,7 @@ $(document).ready(function() {
             var bardata = {labels:[], rdfmts:[], links:[], properties:[], triples:[]};
             var i = 0;
             var addedlabels = [];
-            for (d in data){
+            for (d in data) {
                 var r = data[d];
                 bardata.labels.push(r.source);
                 var rdfmts = Math.log10(r.rdfmts);
@@ -46,75 +44,70 @@ $(document).ready(function() {
                 var links = Math.log10(r.links);
                 bardata.links.push(links)
                 i += 1;
-                if (r.source in addedlabels){
+                if (r.source in addedlabels) {
                     console.log(r.source  + "was added already" + r.rdfmts);
-                }else{
+                } else {
                     datas.push({label:r.source, value:r.rdfmts});
                     addedlabels.push(r.source);
                 }
-                if (i>9){
+                if (i > 9) {
                     break;
                 }
             }
-            if (myBarChart == null){
+            if (myBarChart == null) {
                 myBarChart = new Chart(ctx, {
-                type: 'horizontalBar',
-
-                data: {
-                    labels: bardata.labels,
-                    datasets : [
+                    type: 'horizontalBar',
+                    data: {
+                        labels: bardata.labels,
+                        datasets : [
                             {
                                 id: 4,
                                 label: "# of Triples (log)",
                                 data: bardata.triples,
                                 borderWidth: 1,
                                 backgroundColor: "#b2ad7f"
-                            },
-                            {
+                            }, {
                                 id: 1,
                                 label: "# of RDF-MTs (log)",
                                 data: bardata.rdfmts,
                                 borderWidth: 1,
                                 backgroundColor: "#6b5b95"
-                            },
-                            {
+                            }, {
                                 id: 2,
                                 label: "# of Properties (log)",
                                 data: bardata.properties,
                                 borderWidth: 1,
                                 backgroundColor: "#feb236"
-                            },
-                            {
+                            }, {
                                 id: 3,
                                 label: "# of Links (log)",
                                 data: bardata.links,
                                 borderWidth: 1,
                                 backgroundColor:"#d64161"
                             }
-                            ]
+                        ]
                     },
                     options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true
-                                    },
-                                    gridLines: {
-                                        offsetGridLines: true
-                                    }
-                                }]
-                         },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                },
+                                gridLines: {
+                                    offsetGridLines: true
+                                }
+                            }]
+                        },
                         legend: {
                             display: true,
                             title: "Summary of sample data sources",
                             labels: {
-                                fontColor: 'rgb(25, 99, 132)',
+                                fontColor: "rgb(25, 99, 132)",
                                 boxWidth: 8
-
                             }
                         },
                         tooltips: {
-                          callbacks: {
+                            callbacks: {
                                 label: function(tooltipItem, data) {
                                     var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
@@ -132,32 +125,27 @@ $(document).ready(function() {
                 });
                 nfeds = nf;
                 nds = nd;
-                for(let [i, v] of nds.entries())
-                {
+                for(let [i, v] of nds.entries()) {
                     let bb = parseInt(v);
                     nds[i] = Math.log10(bb);
                 }
                 ntpl = nl;
-                for(let [i, v] of ntpl.entries())
-                {
+                for(let [i, v] of ntpl.entries()) {
                     let bb = parseInt(v);
                     ntpl[i] = Math.log10(bb);
                 }
                 nftm = nm;
-                for(let [i, v] of nftm.entries())
-                {
+                for(let [i, v] of nftm.entries()) {
                     let bb = parseInt(v);
                     nftm[i] = Math.log10(bb);
                 }
                 nprp = np;
-                for(let [i, v] of nprp.entries())
-                {
+                for(let [i, v] of nprp.entries()) {
                     let bb = parseInt(v);
                     nprp[i] = Math.log10(bb);
                 }
                 nlnk = nk;
-                for(let [i, v] of nlnk.entries())
-                {
+                for(let [i, v] of nlnk.entries()) {
                     let bb = parseInt(v);
                     nlnk[i] = Math.log10(bb);
                 }
@@ -172,29 +160,25 @@ $(document).ready(function() {
                                 data: nds,
                                 borderWidth: 1,
                                 backgroundColor: "#169649"
-                            },
-                            {
+                            }, {
                                 id: 2,
                                 label: "# of Triples (log)",
                                 data: ntpl,
                                 borderWidth: 1,
                                 backgroundColor: "#b2ad7f"
-                            },
-                            {
+                            }, {
                                 id: 3,
                                 label: "# of RDF-MTs (log)",
                                 data: nftm,
                                 borderWidth: 1,
                                 backgroundColor: "#6b5b95"
-                            },
-                            {
+                            }, {
                                 id: 4,
                                 label: "# of Properties (log)",
                                 data: nprp,
                                 borderWidth: 1,
                                 backgroundColor: "#feb236"
-                            },
-                            {
+                            }, {
                                 id: 5,
                                 label: "# of Links (log)",
                                 data: nlnk,
@@ -218,7 +202,7 @@ $(document).ready(function() {
                             display: true,
                             title: "Summary of sample data sources",
                             labels: {
-                                fontColor: 'rgb(25, 99, 132)',
+                                fontColor: "rgb(25, 99, 132)",
                                 boxWidth: 8
 
                             }
@@ -240,63 +224,59 @@ $(document).ready(function() {
                         }
                     }
                 });
-            }
-            else{
-            myBarChart.data.labels=[];
-            myBarChart.data.datasets=[];
-            myBarChart.update();
+            } else {
+                myBarChart.data.labels=[];
+                myBarChart.data.datasets=[];
+                myBarChart.update();
 
-            myBarChart.data.labels = bardata.labels;
-            myBarChart.data.datasets = [
-                            {
-                                id: 4,
-                                label: "# of Triples (log)",
-                                data: bardata.triples,
-                                borderWidth: 1,
-                                backgroundColor: "#b2ad7f"
-                            },
-                            {
-                                id: 1,
-                                label: "# of RDF-MTs (log)",
-                                data: bardata.rdfmts,
-                                borderWidth: 1,
-                                backgroundColor: "#6b5b95"
-                            },
-                            {
-                                id: 2,
-                                label: "# of Properties (log)",
-                                data: bardata.properties,
-                                borderWidth: 1,
-                                backgroundColor: "#feb236"
-                            },
-                            {
-                                id: 3,
-                                label: "# of Links (log)",
-                                data: bardata.links,
-                                borderWidth: 1,
-                                backgroundColor:"#d64161"
-                            }
-                            ]
-            myBarChart.update();
-            myBarChartn.update();
-        }
+                myBarChart.data.labels = bardata.labels;
+                myBarChart.data.datasets = [
+                    {
+                        id: 4,
+                        label: "# of Triples (log)",
+                        data: bardata.triples,
+                        borderWidth: 1,
+                        backgroundColor: "#b2ad7f"
+                    }, {
+                        id: 1,
+                        label: "# of RDF-MTs (log)",
+                        data: bardata.rdfmts,
+                        borderWidth: 1,
+                        backgroundColor: "#6b5b95"
+                    }, {
+                        id: 2,
+                        label: "# of Properties (log)",
+                        data: bardata.properties,
+                        borderWidth: 1,
+                        backgroundColor: "#feb236"
+                    }, {
+                        id: 3,
+                        label: "# of Links (log)",
+                        data: bardata.links,
+                        borderWidth: 1,
+                        backgroundColor:"#d64161"
+                    }
+                ]
+                myBarChart.update();
+                myBarChartn.update();
+            }
             Morris.Donut({
                 element: 'ds-dist-chart',
                 data: datas,
-                backgroundColor: '#ccc',
-                labelColor: '#060',
+                backgroundColor: "#ccc",
+                labelColor: "#060",
                 colors: colors,
                 resize: true
             });
         }
-    $("#datasummary").show();
+        $("#datasummary").show();
     }
 
-    window.setstats = function(stat){
+    window.setstats = function(stat) {
         stats = stat
     }
-    var colors = [
 
+    var colors = [
         "#622569",
         "#CD5C5C",
         "#800008",
@@ -363,6 +343,5 @@ $(document).ready(function() {
         "#D2691E",
         "#8B4513",
         "#A52A2A"
-
     ];
 });
