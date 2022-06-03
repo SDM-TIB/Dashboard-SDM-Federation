@@ -8,10 +8,7 @@ $(document).ready(function() {
     $("#summaryrow").hide();
     $("#contentrow").hide();
     var datas = [];
-    var ctx = $("#rdfmt-dist-chart");
     var myBarChart = null;
-    var bardata = {labels:[], rdfmts:[], links:[], properties:[], triples:[]};
-    var nctx = $("#rdfmt-dist-chart2");
     var myBarChartn = null;
     var nfeds = [];
     var nds = [];
@@ -39,59 +36,53 @@ $(document).ready(function() {
             $("#summaryrow").show();
             $('#contentrow').show();
 
-            var bardata = {labels:[], rdfmts:[], links:[], properties:[], triples:[]};
-            var i = 0;
-            var addedlabels = [];
-            for (let fed in federations) {
-                var r = federations[fed];
-                bardata.labels.push(r.source);
-                var rdfmts = Math.log10(r.rdfmts);
-                bardata.rdfmts.push(rdfmts);
-                var triples = Math.log10(r.triples);
-                bardata.triples.push(triples);
-                var properties = Math.log10(r.properties);
-                bardata.properties.push(properties);
-                var links = Math.log10(r.links);
-                bardata.links.push(links)
-                i += 1;
-                if (r.source in addedlabels) {
+            let barData = {labels: [], rdfmts: [], links: [], properties: [], triples: []},
+                addedLabels = [];
+            for (let i in federations) {
+                let r = federations[i];
+                barData.labels.push(r.source);
+                barData.rdfmts.push(Math.log10(r.rdfmts));
+                barData.triples.push(Math.log10(r.triples));
+                barData.properties.push(Math.log10(r.properties));
+                barData.links.push(Math.log10(r.links))
+                if (r.source in addedLabels) {
                     console.log(r.source  + "was added already" + r.rdfmts);
                 } else {
-                    datas.push({label:r.source, value:r.rdfmts});
-                    addedlabels.push(r.source);
+                    datas.push({label: r.source, value: r.rdfmts});
+                    addedLabels.push(r.source);
                 }
                 if (i > 9) {
                     break;
                 }
             }
             if (myBarChart == null) {
-                myBarChart = new Chart(ctx, {
+                myBarChart = new Chart($("#rdfmt-dist-chart"), {
                     type: 'horizontalBar',
                     data: {
-                        labels: bardata.labels,
+                        labels: barData.labels,
                         datasets : [
                             {
                                 id: 4,
                                 label: "# of Triples (log)",
-                                data: bardata.triples,
+                                data: barData.triples,
                                 borderWidth: 1,
                                 backgroundColor: "#b2ad7f"
                             }, {
                                 id: 1,
                                 label: "# of RDF-MTs (log)",
-                                data: bardata.rdfmts,
+                                data: barData.rdfmts,
                                 borderWidth: 1,
                                 backgroundColor: "#6b5b95"
                             }, {
                                 id: 2,
                                 label: "# of Properties (log)",
-                                data: bardata.properties,
+                                data: barData.properties,
                                 borderWidth: 1,
                                 backgroundColor: "#feb236"
                             }, {
                                 id: 3,
                                 label: "# of Links (log)",
-                                data: bardata.links,
+                                data: barData.links,
                                 borderWidth: 1,
                                 backgroundColor:"#d64161"
                             }
@@ -145,7 +136,7 @@ $(document).ready(function() {
                     let bb = parseInt(v);
                     nlnk[i] = Math.log10(bb);
                 }
-                myBarChartn = new Chart(nctx, {
+                myBarChartn = new Chart($("#rdfmt-dist-chart2"), {
                     type: 'horizontalBar',
                     data: {
                         labels: nfeds,
@@ -211,30 +202,30 @@ $(document).ready(function() {
                 myBarChart.data.datasets=[];
                 myBarChart.update();
 
-                myBarChart.data.labels = bardata.labels;
+                myBarChart.data.labels = barData.labels;
                 myBarChart.data.datasets = [
                     {
                         id: 4,
                         label: "# of Triples (log)",
-                        data: bardata.triples,
+                        data: barData.triples,
                         borderWidth: 1,
                         backgroundColor: "#b2ad7f"
                     }, {
                         id: 1,
                         label: "# of RDF-MTs (log)",
-                        data: bardata.rdfmts,
+                        data: barData.rdfmts,
                         borderWidth: 1,
                         backgroundColor: "#6b5b95"
                     }, {
                         id: 2,
                         label: "# of Properties (log)",
-                        data: bardata.properties,
+                        data: barData.properties,
                         borderWidth: 1,
                         backgroundColor: "#feb236"
                     }, {
                         id: 3,
                         label: "# of Links (log)",
-                        data: bardata.links,
+                        data: barData.links,
                         borderWidth: 1,
                         backgroundColor:"#d64161"
                     }
