@@ -17,7 +17,7 @@ $(document).ready(function() {
     var nprp = [];
     var nlnk = [];
 
-    let tooltip = {
+    const tooltip = {
         callbacks: {
             label: function(tooltipItem, data) {
                 let label = data.datasets[tooltipItem.datasetIndex].label || "";
