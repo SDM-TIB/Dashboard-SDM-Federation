@@ -101,7 +101,7 @@
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Data Summary
                 <div class="pull-right">
-                        <a href="{{ url_for('federation.index') }}#home" class="btn btn-default btn-block" style="padding: 5px; margin-top: -5px;">Details</a>
+                        <a href="{{ url_for('federation.index') }}#home" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
             <!-- /.panel-heading -->
@@ -115,7 +115,7 @@
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Federations Summary
                 <div class="pull-right">
-                    <a href="{{ url_for('federation.index') }}#All" class="btn btn-default btn-block" style="padding: 5px; margin-top: -5px;">Details</a>
+                    <a href="{{ url_for('federation.index') }}#All" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
             <!-- /.panel-heading -->
@@ -144,10 +144,13 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> RDF-MT Distribution
+                <div class="pull-right">
+                    <a href="{{ url_for('rdfmts.rdfmt') }}#All" class="btn btn-default" style="display: inline;">Details</a>
+                </div>
             </div>
+            <!-- /.panel-heading -->
             <div class="panel-body">
                 <div id="ds-dist-chart"></div>
-                <a href="{{ url_for('rdfmts.rdfmt') }}#All" class="btn btn-default btn-block">View Details</a>
             </div>
             <!-- /.panel-body -->
         </div>
