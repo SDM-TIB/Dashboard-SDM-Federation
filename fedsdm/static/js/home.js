@@ -20,17 +20,30 @@ $(document).ready(function() {
     var nprp = [];
     var nlnk = [];
 
+    let tooltip = {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                let label = data.datasets[tooltipItem.datasetIndex].label || "";
+                if (label) {
+                    label = label.substring(0, label.indexOf("(") - 1);
+                    label += ': ';
+                }
+                label += Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100 ;
+                return label;
+            }
+        }
+    }
+
     window.setFederation = function(federations, nf, nd, nl, nm, np, nk) {
         if (federations != null) {
-            var data = federations;
             $("#summaryrow").show();
             $('#contentrow').show();
 
             var bardata = {labels:[], rdfmts:[], links:[], properties:[], triples:[]};
             var i = 0;
             var addedlabels = [];
-            for (d in data) {
-                var r = data[d];
+            for (let fed in federations) {
+                var r = federations[fed];
                 bardata.labels.push(r.source);
                 var rdfmts = Math.log10(r.rdfmts);
                 bardata.rdfmts.push(rdfmts);
@@ -103,21 +116,7 @@ $(document).ready(function() {
                                 boxWidth: 8
                             }
                         },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                                    if (label) {
-                                        label = label.substring(0, label.indexOf("("));
-                                        label += ': ';
-                                    }
-                                    var xv = Math.pow(10, tooltipItem.xLabel);
-                                    label += Math.round(xv * 100) / 100 ;
-                                    return label;
-                                }
-                            }
-                        }
+                        tooltips: tooltip
                     }
                 });
                 nfeds = nf;
@@ -204,21 +203,7 @@ $(document).ready(function() {
 
                             }
                         },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItem, data) {
-                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                                    if (label) {
-                                        label = label.substring(0, label.indexOf("("));
-                                        label += ': ';
-                                    }
-                                    var xv = Math.pow(10, tooltipItem.xLabel);
-                                    label += Math.round(xv * 100) / 100 ;
-                                    return label;
-                                }
-                            }
-                        }
+                        tooltips: tooltip
                     }
                 });
             } else {
