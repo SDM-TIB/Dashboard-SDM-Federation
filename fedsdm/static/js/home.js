@@ -7,8 +7,6 @@ $(document).ready(function() {
     $("#datasummary").hide();
     $("#summaryrow").hide();
     $("#contentrow").hide();
-    var federations = null;
-    var stats = null;
     var datas = [];
     var ctx = $("#rdfmt-dist-chart");
     var myBarChart = null;
@@ -22,8 +20,7 @@ $(document).ready(function() {
     var nprp = [];
     var nlnk = [];
 
-    window.setFederation = function(feds, nf, nd, nl, nm, np, nk) {
-        federations = feds
+    window.setFederation = function(federations, nf, nd, nl, nm, np, nk) {
         if (federations != null) {
             var data = federations;
             $("#summaryrow").show();
@@ -272,8 +269,11 @@ $(document).ready(function() {
         $("#datasummary").show();
     }
 
-    window.setstats = function(stat) {
-        stats = stat
+    window.setStats = function(stats) {
+        $("#totaldatasources").html(stats.sources);
+        $("#totalrdfmts").html(stats.rdfmts);
+        $("#totallinksbnrdfmts").html(stats.links);
+        $("#totalfederations").html(stats.federations);
     }
 
     var colors = [

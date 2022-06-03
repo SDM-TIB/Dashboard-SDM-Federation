@@ -218,12 +218,7 @@ $(document).ready(function(){
         }
     }
     setFederation(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
-    var mts = JSON.parse('{{ fedstats | tojson | safe}}');
-    setstats(mts);
-    $("#totaldatasources").html(mts.sources);
-    $("#totalrdfmts").html(mts.rdfmts);
-    $("#totallinksbnrdfmts").html(mts.links);
-    $("#totalfederations").html(mts.federations);
+    setStats(JSON.parse('{{ fedstats | tojson | safe}}'));
     $("#summaryrow").show();
     $('#contentrow').show();
 });
