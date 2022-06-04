@@ -31,25 +31,25 @@ $(document).ready(function() {
         }
     }
 
-    window.setFederation = function(federations, nf, nd, nl, nm, np, nk) {
-        if (federations != null) {
+    window.setFederation = function(dataSources, nf, nd, nl, nm, np, nk) {
+        if (dataSources != null) {
             $("#summaryrow").show();
             $('#contentrow').show();
 
             let barData = {labels: [], rdfmts: [], links: [], properties: [], triples: []},
                 addedLabels = [];
-            for (let i in federations) {
-                let r = federations[i];
-                barData.labels.push(r.source);
-                barData.rdfmts.push(Math.log10(r.rdfmts));
-                barData.triples.push(Math.log10(r.triples));
-                barData.properties.push(Math.log10(r.properties));
-                barData.links.push(Math.log10(r.links))
-                if (r.source in addedLabels) {
-                    console.log(r.source  + "was added already" + r.rdfmts);
+            for (let i in dataSources) {  // in JavaScript this will return the index and not the element
+                let ds = dataSources[i];
+                barData.labels.push(ds.source);
+                barData.rdfmts.push(Math.log10(ds.rdfmts));
+                barData.triples.push(Math.log10(ds.triples));
+                barData.properties.push(Math.log10(ds.properties));
+                barData.links.push(Math.log10(ds.links))
+                if (ds.source in addedLabels) {
+                    console.log(ds.source  + "was added already" + ds.rdfmts);
                 } else {
-                    datas.push({label: r.source, value: r.rdfmts});
-                    addedLabels.push(r.source);
+                    datas.push({label: ds.source, value: ds.rdfmts});
+                    addedLabels.push(ds.source);
                 }
                 if (i > 9) {
                     break;

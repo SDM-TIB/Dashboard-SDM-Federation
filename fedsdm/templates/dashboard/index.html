@@ -161,8 +161,8 @@ $(document).ready(function(){
     var nrdftms = {};
     var nproperties = {};
     var nlinks = {};
-    var federations = JSON.parse('{{ dsstats | tojson | safe}}');
-    var nfd = JSON.parse('{{ federations | tojson | safe}}');
+    let dsStats = JSON.parse('{{ dsstats | tojson | safe }}');
+    var nfd = JSON.parse('{{ federations | tojson | safe }}');
     for (let i = 0; i < nfd.length; i++) {
         if(ndict[nfd[i]['name']] == undefined){
             ndict[nfd[i]['name']] = 0;
@@ -171,14 +171,13 @@ $(document).ready(function(){
             nproperties[nfd[i]['name']] = 0;
             nlinks[nfd[i]['name']] = 0;
         }
-        for (let j = 0; j < federations.length; j++) {
-            if(federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase())>0)
-            {
-                ndict[nfd[i]['name']] ++;
-                ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(federations[j]['triples']);
-                nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(federations[j]['rdfmts']);
-                nproperties[nfd[i]['name']] = parseFloat(nproperties[nfd[i]['name']]) + parseFloat(federations[j]['properties']);
-                nlinks[nfd[i]['name']] = parseFloat(nlinks[nfd[i]['name']]) + parseFloat(federations[j]['links']);
+        for (let j = 0; j < dsStats.length; j++) {
+            if(dsStats[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase()) > 0) {
+                ndict[nfd[i]['name']]++;
+                ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(dsStats[j]['triples']);
+                nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(dsStats[j]['rdfmts']);
+                nproperties[nfd[i]['name']] = parseFloat(nproperties[nfd[i]['name']]) + parseFloat(dsStats[j]['properties']);
+                nlinks[nfd[i]['name']] = parseFloat(nlinks[nfd[i]['name']]) + parseFloat(dsStats[j]['links']);
             }
         }
     }
@@ -208,7 +207,7 @@ $(document).ready(function(){
             nlnk.push(nlinks[key]);
         }
     }
-    setFederation(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
+    setFederation(dsStats, nfeds, nds, ntpl, nftm, nprp, nlnk);
     setStats(JSON.parse('{{ fedstats | tojson | safe}}'));
     $("#summaryrow").show();
     $('#contentrow').show();
