@@ -59,9 +59,17 @@ const colors = [
     "#A52A2A"
 ];
 
+const colorChartLabels = "#196384";
+
+const colorNumberTriples = "#B2AD7F",
+      colorNumberMolecules = "#6B5B95",
+      colorNumberProperties = "#FEB236",
+      colorNumberLinks = "#D64161",
+      colorNumberSources = "#169649";
+
 function color(idx) {
     if (idx > colors.length - 1) {
-        return  "#ccc";
+        return  "#CCC";
     }
     return colors[idx];
 }
