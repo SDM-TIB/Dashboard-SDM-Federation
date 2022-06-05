@@ -17,16 +17,35 @@ $(document).ready(function() {
     var nprp = [];
     var nlnk = [];
 
-    const tooltip = {
-        callbacks: {
-            label: function(tooltipItem, data) {
-                let label = data.datasets[tooltipItem.datasetIndex].label || "";
-                if (label) {
-                    label = label.substring(0, label.indexOf("(") - 1);
-                    label += ': ';
+    const chartOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                },
+                gridLines: {
+                    offsetGridLines: true
                 }
-                label += Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100 ;
-                return label;
+            }]
+        },
+        legend: {
+            display: true,
+            labels: {
+                fontColor: colorChartLabels,
+                boxWidth: 8
+            }
+        },
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    let label = data.datasets[tooltipItem.datasetIndex].label || "";
+                    if (label) {
+                        label = label.substring(0, label.indexOf("(") - 1);
+                        label += ': ';
+                    }
+                    label += Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100 ;
+                    return label;
+                }
             }
         }
     }
@@ -36,15 +55,15 @@ $(document).ready(function() {
             $("#summaryrow").show();
             $('#contentrow').show();
 
-            let barData = {labels: [], rdfmts: [], links: [], properties: [], triples: []},
+            let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []},
                 addedLabels = [];
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
                 let ds = dataSources[i];
-                barData.labels.push(ds.source);
-                barData.rdfmts.push(Math.log10(ds.rdfmts));
-                barData.triples.push(Math.log10(ds.triples));
-                barData.properties.push(Math.log10(ds.properties));
-                barData.links.push(Math.log10(ds.links))
+                dsData.labels.push(ds.source);
+                dsData.rdfmts.push(Math.log10(ds.rdfmts));
+                dsData.triples.push(Math.log10(ds.triples));
+                dsData.properties.push(Math.log10(ds.properties));
+                dsData.links.push(Math.log10(ds.links))
                 if (ds.source in addedLabels) {
                     console.log(ds.source  + "was added already" + ds.rdfmts);
                 } else {
@@ -59,56 +78,36 @@ $(document).ready(function() {
                 dataSummaryChart = new Chart($("#data-summary-chart"), {
                     type: 'horizontalBar',
                     data: {
-                        labels: barData.labels,
+                        labels: dsData.labels,
                         datasets : [
                             {
-                                id: 4,
-                                label: "# of Triples (log)",
-                                data: barData.triples,
-                                borderWidth: 1,
-                                backgroundColor: "#b2ad7f"
-                            }, {
                                 id: 1,
-                                label: "# of RDF-MTs (log)",
-                                data: barData.rdfmts,
+                                label: "# of Triples (log)",
+                                data: dsData.triples,
                                 borderWidth: 1,
-                                backgroundColor: "#6b5b95"
+                                backgroundColor: colorNumberTriples
                             }, {
                                 id: 2,
-                                label: "# of Properties (log)",
-                                data: barData.properties,
+                                label: "# of RDF-MTs (log)",
+                                data: dsData.rdfmts,
                                 borderWidth: 1,
-                                backgroundColor: "#feb236"
+                                backgroundColor: colorNumberMolecules
                             }, {
                                 id: 3,
-                                label: "# of Links (log)",
-                                data: barData.links,
+                                label: "# of Properties (log)",
+                                data: dsData.properties,
                                 borderWidth: 1,
-                                backgroundColor:"#d64161"
+                                backgroundColor: colorNumberProperties
+                            }, {
+                                id: 4,
+                                label: "# of Links (log)",
+                                data: dsData.links,
+                                borderWidth: 1,
+                                backgroundColor: colorNumberLinks
                             }
                         ]
                     },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                },
-                                gridLines: {
-                                    offsetGridLines: true
-                                }
-                            }]
-                        },
-                        legend: {
-                            display: true,
-                            title: "Summary of sample data sources",
-                            labels: {
-                                fontColor: "rgb(25, 99, 132)",
-                                boxWidth: 8
-                            }
-                        },
-                        tooltips: tooltip
-                    }
+                    options: chartOptions
                 });
                 nfeds = nf;
                 nds = nd;
@@ -143,91 +142,70 @@ $(document).ready(function() {
                         datasets : [
                             {
                                 id: 1,
-                                label: "# of data sources (log)",
+                                label: "# of Data Sources (log)",
                                 data: nds,
                                 borderWidth: 1,
-                                backgroundColor: "#169649"
+                                backgroundColor: colorNumberSources
                             }, {
                                 id: 2,
                                 label: "# of Triples (log)",
                                 data: ntpl,
                                 borderWidth: 1,
-                                backgroundColor: "#b2ad7f"
+                                backgroundColor: colorNumberTriples
                             }, {
                                 id: 3,
                                 label: "# of RDF-MTs (log)",
                                 data: nftm,
                                 borderWidth: 1,
-                                backgroundColor: "#6b5b95"
+                                backgroundColor: colorNumberMolecules
                             }, {
                                 id: 4,
                                 label: "# of Properties (log)",
                                 data: nprp,
                                 borderWidth: 1,
-                                backgroundColor: "#feb236"
+                                backgroundColor: colorNumberProperties
                             }, {
                                 id: 5,
                                 label: "# of Links (log)",
                                 data: nlnk,
                                 borderWidth: 1,
-                                backgroundColor:"#d64161"
+                                backgroundColor: colorNumberLinks
                             }
                         ]
                     },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                },
-                                gridLines: {
-                                    offsetGridLines: true
-                                }
-                            }],
-                        },
-                        legend: {
-                            display: true,
-                            title: "Summary of sample data sources",
-                            labels: {
-                                fontColor: "rgb(25, 99, 132)",
-                                boxWidth: 8
-
-                            }
-                        },
-                        tooltips: tooltip
-                    }
+                    options: chartOptions
                 });
             } else {
                 dataSummaryChart.data.labels = [];
                 dataSummaryChart.data.datasets = [];
                 dataSummaryChart.update();
 
-                dataSummaryChart.data.labels = barData.labels;
+                dataSummaryChart.data.labels = dsData.labels;
                 dataSummaryChart.data.datasets = [
                     {
-                        id: 4,
-                        label: "# of Triples (log)",
-                        data: barData.triples,
-                        borderWidth: 1,
-                        backgroundColor: "#b2ad7f"
-                    }, {
                         id: 1,
-                        label: "# of RDF-MTs (log)",
-                        data: barData.rdfmts,
+                        label: "# of Triples (log)",
+                        data: dsData.triples,
                         borderWidth: 1,
-                        backgroundColor: "#6b5b95"
+                        backgroundColor: colorNumberTriples
                     }, {
                         id: 2,
-                        label: "# of Properties (log)",
-                        data: barData.properties,
+                        label: "# of RDF-MTs (log)",
+                        data: dsData.rdfmts,
                         borderWidth: 1,
-                        backgroundColor: "#feb236"
+                        backgroundColor: colorNumberMolecules
                     }, {
                         id: 3,
-                        label: "# of Links (log)",
-                        data: barData.links,
+                        label: "# of Properties (log)",
+                        data: dsData.properties,
                         borderWidth: 1,
-                        backgroundColor:"#d64161"
+                        backgroundColor: colorNumberProperties
+                    }, {
+                        id: 4,
+                        label: "# of Links (log)",
+                        data: dsData.links,
+                        borderWidth: 1,
+                        backgroundColor: colorNumberLinks
                     }
                 ]
                 dataSummaryChart.update();
