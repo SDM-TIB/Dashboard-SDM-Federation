@@ -96,7 +96,7 @@
 </div>
 <!-- /.row -->
 <div class="row" id="contentrow">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Data Summary
@@ -111,6 +111,9 @@
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-6 -->
+    <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="far fa-chart-bar fa-fw"></i> Federations Summary
@@ -126,24 +129,7 @@
         </div>
         <!-- /.panel -->
     </div>
-    <!-- /.col-lg-8 -->
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="far fa-chart-bar fa-fw"></i> RDF-MT Distribution
-                <div class="pull-right">
-                    <a href="{{ url_for('rdfmts.rdfmt') }}#All" class="btn btn-default" style="display: inline;">Details</a>
-                </div>
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <div id="ds-dist-chart"></div>
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
-    </div>
-    <!-- /.col-lg-4 -->
+    <!-- /.col-lg-6 -->
 </div>
 <!-- /.row -->
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>

@@ -7,7 +7,6 @@ $(document).ready(function() {
     $("#data-summary").hide();
     $("#summaryrow").hide();
     $("#contentrow").hide();
-    var datas = [];
     let dataSummaryChart = null,
         federationSummaryChart = null;
     var nfeds = [];
@@ -55,8 +54,7 @@ $(document).ready(function() {
             $("#summaryrow").show();
             $('#contentrow').show();
 
-            let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []},
-                addedLabels = [];
+            let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []};
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
                 let ds = dataSources[i];
                 dsData.labels.push(ds.source);
@@ -64,12 +62,6 @@ $(document).ready(function() {
                 dsData.triples.push(Math.log10(ds.triples));
                 dsData.properties.push(Math.log10(ds.properties));
                 dsData.links.push(Math.log10(ds.links))
-                if (ds.source in addedLabels) {
-                    console.log(ds.source  + "was added already" + ds.rdfmts);
-                } else {
-                    datas.push({label: ds.source, value: ds.rdfmts});
-                    addedLabels.push(ds.source);
-                }
                 if (i > 9) {
                     break;
                 }
@@ -211,14 +203,6 @@ $(document).ready(function() {
                 dataSummaryChart.update();
                 federationSummaryChart.update();
             }
-            Morris.Donut({
-                element: 'ds-dist-chart',
-                data: datas,
-                backgroundColor: "#ccc",
-                labelColor: "#060",
-                colors: colors,
-                resize: true
-            });
         }
         $("#data-summary").show();
     }
