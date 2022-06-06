@@ -5,8 +5,8 @@ $(document).ready(function() {
     *************************************************************************
     */
     $("#data-summary").hide();
-    $("#summaryrow").hide();
-    $("#contentrow").hide();
+    $("#summary-row").hide();
+    $("#content-row").hide();
     let dataSummaryChart = null,
         federationSummaryChart = null;
     var nfeds = [];
@@ -51,8 +51,8 @@ $(document).ready(function() {
 
     window.setFederation = function(dataSources, nf, nd, nl, nm, np, nk) {
         if (dataSources != null) {
-            $("#summaryrow").show();
-            $('#contentrow').show();
+            $("#summary-row").show();
+            $('#content-row').show();
 
             let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []};
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
