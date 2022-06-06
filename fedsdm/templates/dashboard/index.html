@@ -99,14 +99,14 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="far fa-chart-bar fa-fw"></i> Data Summary
+                <i class="far fa-chart-bar fa-fw"></i> Federations Summary
                 <div class="pull-right">
-                        <a href="{{ url_for('federation.index') }}#home" class="btn btn-default" style="display: inline;">Details</a>
+                    <a href="{{ url_for('federation.index') }}#All" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body" id="data-summary">
-                <canvas id="data-summary-chart"></canvas>
+            <div class="panel-body" id="federation-summary">
+                <canvas id="federation-summary-chart"></canvas>
             </div>
             <!-- /.panel-body -->
         </div>
@@ -116,14 +116,14 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="far fa-chart-bar fa-fw"></i> Federations Summary
+                <i class="far fa-chart-bar fa-fw"></i> Data Summary
                 <div class="pull-right">
-                    <a href="{{ url_for('federation.index') }}#All" class="btn btn-default" style="display: inline;">Details</a>
+                        <a href="{{ url_for('federation.index') }}#home" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body" id="federation-summary">
-                <canvas id="federation-summary-chart"></canvas>
+            <div class="panel-body" id="data-summary">
+                <canvas id="data-summary-chart"></canvas>
             </div>
             <!-- /.panel-body -->
         </div>
