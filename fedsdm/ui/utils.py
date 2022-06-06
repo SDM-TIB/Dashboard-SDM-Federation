@@ -2,12 +2,23 @@ from flask import g
 from fedsdm.db import get_mdb
 
 
+def _process_numeric_result(mdb, query):
+    res, card = mdb.query(query)
+    if card > 0:
+        card = res[0]['count']
+        if '^^' in card:
+            card = int(card[:card.find("^^")])
+        return int(card)
+    else:
+        return 0
+
+
 def get_federations():
     mdb = get_mdb()
 
     query = "SELECT DISTINCT ?uri ?name WHERE {" \
-            " GRAPH <" + g.default_graph + "> {?uri a <http://tib.eu/dsdl/ontario/ontology/Federation>. "\
-                                           " ?uri <http://tib.eu/dsdl/ontario/ontology/name> ?name } }"
+            " GRAPH <" + g.default_graph + "> { ?uri a <" + mdb.mtonto + "Federation>. " \
+                                           " ?uri <" + mdb.mtonto + "name> ?name } }"
     res, card = mdb.query(query)
     if card > 0:
         return res
@@ -49,18 +60,7 @@ def get_num_rdfmts(graph, datasource=None):
                "           ?mt  <" + mdb.mtonto + "source>  ?mtsource. " \
                "           ?mtsource <" + mdb.mtonto + "datasource> ?ds . } }"
 
-    res, card = mdb.query(query)
-
-    if card > 0:
-        card = res[0]['count']
-
-        if '^^' in card:
-            card = int(card[:card.find("^^")])
-
-        return int(card)
-    else:
-
-        return 0
+    return _process_numeric_result(mdb, query)
 
 
 def get_mtconns(graph, datasource=None):
@@ -77,14 +77,8 @@ def get_mtconns(graph, datasource=None):
                   "?d <" + mdb.mtonto + "name> ?mt ." \
                   "?d <" + mdb.mtonto + "datasource> ?ds ." \
                 "}}"
-    res, card = mdb.query(query)
-    if card > 0:
-        card = res[0]['count']
-        if '^^' in card:
-            card = int(card[:card.find("^^")])
-        return int(card)
-    else:
-        return 0
+
+    return _process_numeric_result(mdb, query)
 
 
 def get_num_properties(graph, datasource=None):
@@ -103,14 +97,7 @@ def get_num_properties(graph, datasource=None):
                   "           ?mt <" + mdb.mtonto + "hasProperty> ?mtp . " \
                   "           ?mtsource <" + mdb.mtonto + "datasource> ?ds . } }"
 
-    res, card = mdb.query(query)
-    if card > 0:
-        card = res[0]['count']
-        if '^^' in card:
-            card = int(card[:card.find("^^")])
-        return int(card)
-    else:
-        return 0
+    return _process_numeric_result(mdb, query)
 
 
 def get_federation_stats():
@@ -138,10 +125,4 @@ def get_federation_stats():
             "  }}" \
             "} GROUP BY ?fed ?name"
     res, _ = mdb.query(query)
-
-    from fedsdm import get_logger
-    logger = get_logger(__name__)
-    logger.info("Federations Stats")
-    logger.info("res: " + str(res))
-
     return res
