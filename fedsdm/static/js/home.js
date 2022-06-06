@@ -152,9 +152,9 @@ $(document).ready(function() {
     }
 
     window.setStats = function(stats) {
-        $("#totaldatasources").html(stats.sources);
-        $("#totalrdfmts").html(stats.rdfmts);
-        $("#totallinksbnrdfmts").html(stats.links);
-        $("#totalfederations").html(stats.federations);
+        $("#total-data-sources").html(stats.sources);
+        $("#total-rdfmts").html(stats.rdfmts);
+        $("#total-links-rdfmts").html(stats.links);
+        $("#total-federations").html(stats.federations);
     }
 });
