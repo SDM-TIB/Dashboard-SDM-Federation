@@ -45,10 +45,8 @@ class MetadataDB:
         self.mtresource = "http://tib.eu/dsdl/ontario/resource/"
 
     def query(self, query, outputqueue=Queue(), format="application/sparql-results+json"):
-        # Formats of the response.
-        json = format
         # Build the query and header.
-        params = urlparse.urlencode({'query': query, 'format': json, 'timeout': 10000000})
+        params = urlparse.urlencode({'query': query, 'format': format, 'timeout': 10000000})
         headers = {"Accept": "*/*", "Referer": self.query_endpoint, "Host": self.query_server}
 
         try:
@@ -102,7 +100,7 @@ class MetadataDB:
                 print("Endpoint->", self.query_endpoint, resp.reason, resp.status_code, query)
 
         except Exception as e:
-            print("Exception during query execution to", self.query_endpoint, ': ', e)
+            print("Exception during query execution to", self.query_endpoint, ":", e)
 
         return None, -2
 
@@ -124,7 +122,7 @@ class MetadataDB:
                 logger.error("ERROR ON: " + insertquery)
                 logger.error("________________________________________________")
         except Exception as e:
-            print("Exception during update query execution to", self.update_endpoint, ': ', e, insertquery)
+            print("Exception during update query execution to", self.update_endpoint, ":", e, insertquery)
             logger.error("______/_________/________/________/______________")
             logger.error("Exception on update: " + self.update_endpoint + " " + str(e))
             logger.error("EXCEPTION ON: " + insertquery)
@@ -146,15 +144,15 @@ def get_db():
 
 def get_mdb():
     import os
-    if 'METADATA_ENDPOINT' in os.environ:
-        metaendpoint = os.environ['METADATA_ENDPOINT']
+    if 'METADATA_ENDPOINT' in os.environ and \
+            os.environ['METADATA_ENDPOINT'] is not None and \
+            os.environ['METADATA_ENDPOINT'] != "":
+        meta_endpoint = os.environ['METADATA_ENDPOINT']
     else:
-        metaendpoint = "http://localhost:1300/sparql"
+        meta_endpoint = "http://localhost:9000/sparql"
 
-    if metaendpoint is None or metaendpoint == "":
-        metaendpoint = "http://localhost:1300/sparql"
     if 'mdb' not in g:
-        g.mdb = MetadataDB(metaendpoint)
+        g.mdb = MetadataDB(meta_endpoint)
 
         if 'DEFAULT_GRAPH' in os.environ:
             g.default_graph = os.environ['DEFAULT_GRAPH']
