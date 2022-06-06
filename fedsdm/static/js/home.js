@@ -10,12 +10,6 @@ $(document).ready(function() {
     $("#content-row").hide();
     let dataSummaryChart = null,
         federationSummaryChart = null;
-    var nfeds = [];
-    var nds = [];
-    var ntpl = [];
-    var nftm = [];
-    var nprp = [];
-    var nlnk = [];
 
     const chartOptions = {
         scales: {
@@ -50,7 +44,7 @@ $(document).ready(function() {
         }
     }
 
-    window.setFederation = function(dataSources, nf, nd, nl, nm, np, nk) {
+    window.setFederation = function(dataSources, federations) {
         if (dataSources != null) {
             $("#summary-row").show();
             $('#content-row').show();
@@ -102,65 +96,49 @@ $(document).ready(function() {
                 options: chartOptions
             });
 
-            nfeds = nf;
-            nds = nd;
-            for(let [i, v] of nds.entries()) {
-                let bb = parseInt(v);
-                nds[i] = Math.log10(bb);
-            }
-            ntpl = nl;
-            for(let [i, v] of ntpl.entries()) {
-                let bb = parseInt(v);
-                ntpl[i] = Math.log10(bb);
-            }
-            nftm = nm;
-            for(let [i, v] of nftm.entries()) {
-                let bb = parseInt(v);
-                nftm[i] = Math.log10(bb);
-            }
-            nprp = np;
-            for(let [i, v] of nprp.entries()) {
-                let bb = parseInt(v);
-                nprp[i] = Math.log10(bb);
-            }
-            nlnk = nk;
-            for(let [i, v] of nlnk.entries()) {
-                let bb = parseInt(v);
-                nlnk[i] = Math.log10(bb);
+            let fedData = {labels: [], sources: [], rdfmts: [], links: [], properties: [], triples: []};
+            for (let i in federations) {  // in JavaScript this will return the index and not the element
+                let fed = federations[i];
+                fedData.labels.push(fed.name);
+                fedData.sources.push(Math.log10(fed.sources));
+                fedData.rdfmts.push(Math.log10(fed.rdfmts));
+                fedData.links.push(Math.log10(fed.links));
+                fedData.links.push(Math.log10(fed.properties));
+                fedData.triples.push(Math.log10(fed.triples))
             }
             federationSummaryChart = new Chart($("#federation-summary-chart"), {
                 type: 'horizontalBar',
                 data: {
-                    labels: nfeds,
+                    labels: fedData.labels,
                     datasets : [
                         {
                             id: 1,
                             label: "# of Data Sources (log)",
-                            data: nds,
+                            data: fedData.sources,
                             borderWidth: 1,
                             backgroundColor: colorNumberSources
                         }, {
                             id: 2,
                             label: "# of Triples (log)",
-                            data: ntpl,
+                            data: fedData.triples,
                             borderWidth: 1,
                             backgroundColor: colorNumberTriples
                         }, {
                             id: 3,
                             label: "# of RDF-MTs (log)",
-                            data: nftm,
+                            data: fedData.rdfmts,
                             borderWidth: 1,
                             backgroundColor: colorNumberMolecules
                         }, {
                             id: 4,
                             label: "# of Properties (log)",
-                            data: nprp,
+                            data: fedData.properties,
                             borderWidth: 1,
                             backgroundColor: colorNumberProperties
                         }, {
                             id: 5,
                             label: "# of Links (log)",
-                            data: nlnk,
+                            data: fedData.links,
                             borderWidth: 1,
                             backgroundColor: colorNumberLinks
                         }

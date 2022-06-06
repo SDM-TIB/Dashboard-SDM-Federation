@@ -2,7 +2,9 @@ from flask import (
     Blueprint, g, session, render_template
 )
 
-from fedsdm.ui.utils import get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations
+from fedsdm.ui.utils import (
+    get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
+)
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
@@ -51,7 +53,8 @@ def stats():
         "links": links}
 
     datasourcesstat = list(datasources.values())
+    federation_stats = get_federation_stats()
 
     g.stats = stats
 
-    return render_template('dashboard/index.html', dsstats=datasourcesstat,  fedstats=stat, federations=g.federations)
+    return render_template('dashboard/index.html', dsStats=datasourcesstat, fedStats=federation_stats, stats=stat)
