@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Federations{% endblock %}
 
-{% block header %}Federations{% endblock %}
-
 {% block content %}
 <div class="row row-header">
     {% set feds_all = true %}
@@ -19,11 +17,11 @@
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea class="text ui-widget-content ui-corner-all"  name="description" style="resize: none; width: 100%" id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
+                        <textarea class="text ui-widget-content ui-corner-all" name="description" style="resize: none; width: 100%" id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="public">Public</label>
-                        <input type="checkbox" value="1" name="public" id="public" checked=checked>
+                        <input type="checkbox" value="1" name="public" id="public" checked>
                     </div>
                     <span id="errormsg" style="color:red"></span>
                 </fieldset>
@@ -58,9 +56,9 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="form-group" style="text-align: right">
-                            <button type="button" class="btn btn-success" name="AddFed" id="AddFed"> Add </button>
-                            <button class="btn btn-warning" name="editfd" id="editfd" disabled="disabled" > Edit </button>
-                            <button class="btn btn-danger" name="removefd" id="removefd" disabled="disabled" > Remove </button>
+                            <button type="button" class="btn btn-success" name="AddFed" id="AddFed">Add</button>
+                            <button class="btn btn-warning" name="editfd" id="editfd" disabled>Edit</button>
+                            <button class="btn btn-danger" name="removefd" id="removefd" disabled>Remove</button>
                         </div>
                         <div class="row">
                             <!-- /.col-lg-8 (nested) -->
@@ -137,13 +135,12 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="form-group" style="text-align: right">
-                            <button type="button" class="btn btn-success"
-                                    name="add" id="addds" > Add </button>
-                            <button class="btn btn-warning" name="edit" id="editds" disabled="disabled" > Edit </button>
-                            <button class="btn btn-danger" name="remove" id="removeds" disabled="disabled" > Remove </button>
-                            <button class="btn btn-primary" name="mapping" id="recomputemts" disabled="disabled" > Re-create MTs </button>
-                            <button class="btn btn-primary" name="findlinks" id="findlinks" disabled="disabled" > Find Connection </button>
-                            <button class="btn btn-primary" name="findalllinks" id="findalllinks"> Find All Connections </button>
+                            <button type="button" class="btn btn-success" name="add" id="addds">Add</button>
+                            <button class="btn btn-warning" name="edit" id="editds" disabled>Edit</button>
+                            <button class="btn btn-danger" name="remove" id="removeds" disabled>Remove</button>
+                            <button class="btn btn-primary" name="mapping" id="recomputemts" disabled>Re-create MTs</button>
+                            <button class="btn btn-primary" name="findlinks" id="findlinks" disabled>Find Connection</button>
+                            <button class="btn btn-primary" name="findalllinks" id="findalllinks">Find All Connections</button>
                         </div>
                         <table style="width: 100%" class="table table-striped table-bordered table-hover display" id="datasources">
                             <thead>
