@@ -1,31 +1,31 @@
 $(document).ready(function() {
-    var federation = null,
-        datasource = null;
+    let federation = null,
+        table = null,
+        selectedRow = null;
 
     $("#createnewfederation").click(function() {
-        var name = $('#name').val();
-        var desc = $('#description').val();
+        let name = $("#name").val(),
+            desc = $("#description").val();
         console.log(name + " " + desc);
-        if (name != null && name !== '' && name.length > 0) {
+        if (name != null && name !== "" && name.length > 0) {
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 headers: {
                     Accept : "application/json"
                 },
-                url: '/federation/create',
-                data: {'name':name, 'description':desc},
-
+                url: "/federation/create",
+                data: {"name": name, "description": desc},
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR) {
                     console.log(data);
                     if (data != null && data.length > 0) {
-                        alert('The new data federation was successfully created!');
+                        alert("The new data federation was successfully created!");
                         federation = data;
                         $("#fedName").html(name);
                         $('#newfedform').hide();
                         manage(federation);
-                    }else{
-                        $('#errormsg').html("Error while creating the new federation! Please enter a valid name (var name).")
+                    } else {
+                        $("#errormsg").html("Error while creating the new federation! Please enter a valid name (var name).")
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -35,17 +35,14 @@ $(document).ready(function() {
                 }
             });
         }
-        if (name == null || name === '' || name.length <= 0) {
-            alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
+        if (name == null || name === "" || name.length <= 0) {
+            alert("The Name field should not be empty.\nPlease insert a name in the Name field.");
         }
         return false
     });
 
-    var table = null;
-    var selectedRow = null;
-
     function manage(fed) {
-        $('#datasourcestable').show();
+        $("#datasourcestable").show();
 
         //Disable buttons before selecting item on the table
         $("#editds").prop("disabled", true);
@@ -54,8 +51,8 @@ $(document).ready(function() {
 
         //Construct data source management data table
         if (table == null) {
-            table = $('#datasources').DataTable({
-                order: [[ 1, 'desc' ]],
+            table = $("#datasources").DataTable({
+                order: [[ 1, "desc" ]],
                 responsive: true,
                 select: true,
                 defaultContent: "<i>Not set</i>",
@@ -63,18 +60,17 @@ $(document).ready(function() {
             });
 
             // Data source table select action
-            table.on('select', function(e, dt, type, indexes) {
+            table.on("select", function(e, dt, type, indexes) {
                 selectedRow = table.rows(indexes).data().toArray();
                 $("#editds").prop("disabled", false);
                 $("#removeds").prop("disabled", false);
                 $("#createmapping").prop("disabled", false);
-            }).on('deselect', function(e, dt, type, indexes) {
+            }).on("deselect", function(e, dt, type, indexes) {
+                selectedRow = null;
                 var rowData = table.rows(indexes).data().toArray();
                 $("#editds").prop("disabled", true);
                 $("#removeds").prop("disabled", true);
                 $("#createmapping").prop("disabled", true);
-
-                selectedRow = null
             });
         } else {
             table.clear().draw();
@@ -83,7 +79,7 @@ $(document).ready(function() {
     }
 
     // Add data source click action
-    $( "#addds" ).click(function() {
+    $("#addds").click(function() {
         dialog.dialog("open");
     });
 
@@ -95,19 +91,19 @@ $(document).ready(function() {
         $("#edstype").val(selectedRow[0][3]);
         $("#elabel").val(selectedRow[0][7]);
         $("#eparams").val(selectedRow[0][9]);
-        edialog.dialog('open');
+        edialog.dialog("open");
     });
 
     //Remove data source click action
-    $('#removeds').click(function () {
-        table.row('.selected').remove().draw(false);
+    $("#removeds").click(function () {
+        table.row(".selected").remove().draw(false);
         $("#editds").prop("disabled", true);
         $("#removeds").prop("disabled", true);
         $("#createmapping").prop("disabled", true);
     });
 
     // Create Mappings click action
-    $('#createmapping').click(function() {
+    $("#createmapping").click(function() {
         window.location = "/federation/api/mappings"
     });
 
@@ -151,7 +147,7 @@ $(document).ready(function() {
         }
     });
 
-    form = dialog.find("form" ).on("submit", function(event) {
+    form = dialog.find("form").on("submit", function(event) {
         event.preventDefault();
         addDataSource(true);
     });
@@ -168,21 +164,21 @@ $(document).ready(function() {
 
         if (valid) {
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 headers: {
                     Accept : "application/json"
                 },
                 url: '/federation/api/addsource?fed=' + federation,
                 data: {
-                    'name': name.val(),
-                    'url': URL.val(),
-                    'dstype': dstype.val(),
-                    'keywords': keywords.val(),
-                    'params': params.val(),
-                    'desc': desc.val(),
-                    'version': version.val(),
-                    'homepage': homepage.val(),
-                    'organization': organization.val()
+                    "name": name.val(),
+                    "url": URL.val(),
+                    "dstype": dstype.val(),
+                    "keywords": keywords.val(),
+                    "params": params.val(),
+                    "desc": desc.val(),
+                    "version": version.val(),
+                    "homepage": homepage.val(),
+                    "organization": organization.val()
                 },
                 dataType: "json",
                 crossDomain: true,
@@ -191,7 +187,7 @@ $(document).ready(function() {
                     if (data != null && data.length > 0) {
                         manage(federation);
                     } else {
-                        $('#validateTips').html("Error while adding data source to the federation!")
+                        $("#validateTips").html("Error while adding data source to the federation!")
                     }
                     table.clear().draw();
                     table.ajax.url("/federation/api/datasources?graph=" + federation).load()
@@ -255,7 +251,7 @@ $(document).ready(function() {
         var valid = true;
         allFields.removeClass("ui-state-error");
         if (valid) {
-            table.row('.selected').remove().draw( false );
+            table.row(".selected").remove().draw( false );
             table.row.add([ name.val(), desc.val(), dstype.val(), URL.val(), params.val(),,,,,]).draw( false );
             $("#editds").prop("disabled", true);
             $("#removeds").prop("disabled", true);
