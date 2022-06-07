@@ -1,7 +1,7 @@
 $(document).ready(function() {
     let federation = null;
 
-    $("#createnewfederation").click(function() {
+    $("#create-new-federation").click(function() {
         let name = $("#name").val(),
             desc = $("#description").val();
         console.log(name + " " + desc);
@@ -19,7 +19,7 @@ $(document).ready(function() {
                     if (data != null && data.length > 0) {
                         alert("The new data federation was successfully created!");
                         federation = data;
-                        $('#newfedform').hide();
+                        $('#new-fed-form').hide();
                     } else {
                         $("#errormsg").html("Error while creating the new federation! Please enter a valid name (var name).")
                     }
