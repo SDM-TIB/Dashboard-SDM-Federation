@@ -1,40 +1,30 @@
 {% extends 'base.html' %}
 
-{% block header %}
-  <h1>{% block title %}New Data Federation{% endblock %}</h1>
-{% endblock %}
-
 {% block content %}
-
-<!-- Form data -->
 <div class="row" id="newfedform">
     <div class="col-lg-4">
-
         <div class="form-group form-control-lg">
-          <form method="post">
-              <div class="form-group">
-                  <label for="name">Name</label>
-                  <input class="form-control" name="name" id="name" placeholder="Enter name of the new federation"
-                         value="{{ request.form['name'] }}" required>
-              </div>
-              <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea class="form-control"  name="description"
-                            id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="public">Public</label>
-                <input type="checkbox" value="1" name="public" id="public"  checked=checked>
-              </div>
-              <span id="errormsg" style="color:red"></span>
-              <div class="pull-right">
-                  <input type="submit"  id="createnewfederation"  class="btn btn-success" value="Create">
-              </div>
-          </form>
+            <form method="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" name="name" id="name" placeholder="Enter name of the new federation" value="{{ request.form['name'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control"  name="description" id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="public">Public</label>
+                    <input type="checkbox" value="1" name="public" id="public"  checked=checked>
+                </div>
+                <span id="errormsg" style="color:red"></span>
+                <div class="pull-right">
+                    <input type="submit"  id="createnewfederation"  class="btn btn-success" value="Create">
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/createfed.js') }}"></script>
-
 {% endblock %}
