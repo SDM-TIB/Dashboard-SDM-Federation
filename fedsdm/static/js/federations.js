@@ -150,16 +150,16 @@ $(document).ready(function() {
                             datasets :[
                                 {
                                     id: 1,
-                                    label: "# of RDF-MTs (log)",
-                                    data: bardata.rdfmts,
-                                    borderWidth: 1,
-                                    backgroundColor: colorNumberMolecules,
-                                }, {
-                                    id: 2,
                                     label: "# of Triples(log)",
                                     data: bardata.triples,
                                     borderWidth: 1,
                                     backgroundColor: colorNumberTriples,
+                                }, {
+                                    id: 2,
+                                    label: "# of RDF-MTs (log)",
+                                    data: bardata.rdfmts,
+                                    borderWidth: 1,
+                                    backgroundColor: colorNumberMolecules,
                                 }]
                         },
                         options: chartOptions
@@ -173,16 +173,16 @@ $(document).ready(function() {
                     myBarChart.data.datasets = [
                         {
                             id: 1,
-                            label: "# of RDF-MTs (log)",
-                            data: bardata.rdfmts,
-                            borderWidth: 1,
-                            backgroundColor: colorNumberMolecules,
-                        }, {
-                            id: 2,
                             label: "# of Triples(log)",
                             data: bardata.triples,
                             borderWidth: 1,
                             backgroundColor: colorNumberTriples,
+                        }, {
+                            id: 2,
+                            label: "# of RDF-MTs (log)",
+                            data: bardata.rdfmts,
+                            borderWidth: 1,
+                            backgroundColor: colorNumberMolecules,
                         }]
 
                     myBarChart.update();
