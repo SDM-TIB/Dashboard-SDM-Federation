@@ -76,12 +76,12 @@
                             <li><a href="#"><i class="fas fa-user-cog fa-fw"></i> Settings</a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt fa-fw"></i> Logout</a>
+                            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-right-from-bracket fa-fw"></i> Logout</a>
                             </li>
 
                         {% else %}
-                            <li><a href="{{ url_for('auth.register') }}">Register</a> </li>
-                            <li><a href="{{ url_for('auth.login') }}">Log In</a> </li>
+                            <li><a href="{{ url_for('auth.register') }}"><i class="fas fa-user-plus fa-fw"></i> Register</a> </li>
+                            <li><a href="{{ url_for('auth.login') }}"><i class="fas fa-right-to-bracket fa-fw"></i> Log In</a> </li>
                         {% endif %}
 
                     </ul>
