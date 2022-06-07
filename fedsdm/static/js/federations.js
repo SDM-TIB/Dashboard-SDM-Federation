@@ -426,7 +426,6 @@ $(document).ready(function() {
         homepage = $("#homepage"),
         version = $("#version"),
         allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
-        tips = $(".validateTips"),
         crnfdialog;
 
     dialog = $("#add-form").dialog({
@@ -643,33 +642,6 @@ $(document).ready(function() {
             edialog.dialog("close");
         }
         return valid;
-    }
-
-    function updateTips(t) {
-        tips.text(t).addClass("ui-state-highlight");
-        setTimeout(function() {
-            tips.removeClass("ui-state-highlight", 1500);
-        }, 500 );
-    }
-
-    function checkLength(o, n, min, max) {
-        if (o.val().length > max || o.val().length < min) {
-            o.addClass("ui-state-error");
-            updateTips("Length of " + n + " must be between " + min + " and " + max + "." );
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    function checkRegexp(o, regexp, n) {
-        if (!regexp.test(o.val())) {
-            o.addClass("ui-state-error");
-            updateTips(n);
-            return false;
-        } else {
-            return true;
-        }
     }
 
     function createnewfederation() {
