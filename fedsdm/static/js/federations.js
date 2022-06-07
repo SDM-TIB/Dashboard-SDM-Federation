@@ -10,7 +10,7 @@ $(document).ready(function() {
     let ctx = $("#myChart");
     let myBarChart = null;
     let bsloaded = 0;
-    let prefix = 'http://ontario.tib.eu/federation/g/';
+    let prefix = "http://ontario.tib.eu/federation/g/";
 
     // if federation is set from session, then trigger visualization and management data
     showFederations(federation);
@@ -25,7 +25,7 @@ $(document).ready(function() {
     window.federationOverview = function(feds, nf, nd, nl, nm, np, nk) {
         if (statsTablefed == null) {
             statsTablefed = $("#federations-statistics").DataTable({
-                order: [[ 1, 'desc' ]],
+                order: [[ 1, "desc" ]],
                 responsive: false,
                 defaultContent: "-1",
                 select: true
@@ -35,11 +35,11 @@ $(document).ready(function() {
         }
         var datas = [];
         $.ajax({
-            type: 'GET',
+            type: "GET",
             headers: {
                 Accept : "application/json"
             },
-            url: '/federation/stats',
+            url: "/federation/stats",
             data: {"graph": federation},
             dataType: "json",
             crossDomain: true,
@@ -98,7 +98,7 @@ $(document).ready(function() {
         if (statsTable == null) {
             // Construct basic statistics table
             statsTable = $("#basic-statistics").DataTable({
-                order: [[ 1, 'desc' ]],
+                order: [[ 1, "desc" ]],
                 responsive: false,
                 defaultContent: "-1",
                 select: true
@@ -108,11 +108,11 @@ $(document).ready(function() {
         }
         let datas = [];
         $.ajax({
-            type: 'GET',
+            type: "GET",
             headers: {
                 Accept : "application/json"
             },
-            url: '/federation/stats',
+            url: "/federation/stats",
             data: {"graph": fed},
             dataType: "json",
             crossDomain: true,
@@ -144,7 +144,7 @@ $(document).ready(function() {
 
                 if (myBarChart == null) {
                     myBarChart = new Chart(ctx, {
-                        type: 'horizontalBar',
+                        type: "horizontalBar",
                         data: {
                             labels: bardata.labels,
                             datasets :[
@@ -153,13 +153,13 @@ $(document).ready(function() {
                                     label: "# of RDF-MTs (log)",
                                     data: bardata.rdfmts,
                                     borderWidth: 1,
-                                    backgroundColor: '#6b5b95',
+                                    backgroundColor: colorNumberMolecules,
                                 }, {
                                     id: 2,
                                     label: "# of Triples(log)",
                                     data: bardata.triples,
                                     borderWidth: 1,
-                                    backgroundColor: '#d64161',
+                                    backgroundColor: colorNumberTriples,
                                 }]
                         },
                         options: {
@@ -181,7 +181,7 @@ $(document).ready(function() {
                             legend: {
                                 display: true,
                                 labels: {
-                                    fontColor: 'rgb(25, 99, 132)',
+                                    fontColor: "rgb(25, 99, 132)",
                                     boxWidth: 8
 
                                 }
@@ -189,10 +189,10 @@ $(document).ready(function() {
                             tooltips: {
                                 callbacks: {
                                     label: function(tooltipItem, data) {
-                                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                        let label = data.datasets[tooltipItem.datasetIndex].label || "";
                                         if (label) {
                                             label = label.substring(0, label.indexOf("("));
-                                            label += ': ';
+                                            label += ": ";
                                         }
                                         let xv = Math.pow(10, tooltipItem.xLabel);
                                         label += Math.round(xv * 100) / 100 ;
@@ -214,13 +214,13 @@ $(document).ready(function() {
                             label: "# of RDF-MTs (log)",
                             data: bardata.rdfmts,
                             borderWidth: 1,
-                            backgroundColor: '#6b5b95',
+                            backgroundColor: colorNumberMolecules,
                         }, {
                             id: 2,
                             label: "# of Triples(log)",
                             data: bardata.triples,
                             borderWidth: 1,
-                            backgroundColor: '#d64161',
+                            backgroundColor: colorNumberTriples,
                         }]
 
                     myBarChart.update();
@@ -249,20 +249,20 @@ $(document).ready(function() {
         //Construct data source management data table
         if (table == null) {
             mngloaded = 1;
-            table = $('#datasources').DataTable({
-                order: [[ 1, 'desc' ]],
+            table = $("#datasources").DataTable({
+                order: [[ 1, "desc" ]],
                 responsive: true,
                 select: true,
                 defaultContent: "<i>Not set</i>",
                 ajax: "/federation/datasources?graph=" + federation + "&dstype=All"
             });
             // Dat source table select action
-            table.on('select', function(e, dt, type, indexes) {
+            table.on("select", function(e, dt, type, indexes) {
                 selectedSource = table.rows(indexes).data().toArray();
                 $("#editds").prop("disabled", false);
                 $("#removeds").prop("disabled", false);
                 $("#recomputemts").prop("disabled", false);
-            }).on('deselect', function(e, dt, type, indexes) {
+            }).on("deselect", function(e, dt, type, indexes) {
                 let rowData = table.rows(indexes).data().toArray();
                 $("#editds" ).prop("disabled", true);
                 $("#removeds" ).prop("disabled", true);
@@ -276,7 +276,7 @@ $(document).ready(function() {
             $("#recomputemts").prop("disabled", true);
             table.ajax.url("/federation/datasources?graph=" + fed).load();
         }
-        table.on('draw', function() {
+        table.on("draw", function() {
             if (table.column(0).data().length > 0) {
                 $("#findlinks").prop("disabled", false);
             } else {
@@ -301,24 +301,24 @@ $(document).ready(function() {
         $("#elabel").val(selectedSource[0][7].trim());
         $("#eversion").val(selectedSource[0][8].trim());
         $("#eparams").val(selectedSource[0][9].trim());
-        edialog.dialog('open');
+        edialog.dialog("open");
     });
 
     //Remove data source click action
-    $('#removeds').click(function() {
+    $("#removeds").click(function() {
         // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
-            type: 'GET',
+            type: "GET",
             headers: {
                 Accept : "application/json"
             },
-            url: '/federation/api/removeds',
-            data: {'ds':selectedSource[0][0], 'fed': fed},
+            url: "/federation/api/removeds",
+            data: {"ds":selectedSource[0][0], "fed": fed},
             dataType: "json",
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
                 if (data == true)
-                    table.row('.selected').remove().draw(false);
+                    table.row(".selected").remove().draw(false);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.status);
@@ -333,15 +333,15 @@ $(document).ready(function() {
     });
 
     // Create Mappings click action
-    $('#recomputemts').click(function() {
+    $("#recomputemts").click(function() {
         console.log(selectedSource[0][0]);
         $.ajax({
-            type: 'GET',
+            type: "GET",
             headers: {
                 Accept : "application/json"
             },
-            url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) +"&datasource=" + encodeURIComponent(selectedSource[0][0]),
-            data: {'query':'all'},
+            url: "/federation/api/recreatemts?fed=" + encodeURIComponent(federation) + "&datasource=" + encodeURIComponent(selectedSource[0][0]),
+            data: {"query": "all"},
             dataType: "json",
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
@@ -359,15 +359,15 @@ $(document).ready(function() {
         });
     });
 
-    $('#findlinks').click(function() {
+    $("#findlinks").click(function() {
         console.log(selectedSource[0][0]);
         $.ajax({
-            type: 'GET',
+            type: "GET",
             headers: {
                 Accept : "application/json"
             },
-            url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) +"&datasource=" + encodeURIComponent(selectedSource[0][0]),
-            data: {'query':'all'},
+            url: "/federation/api/findlinks?fed=" + encodeURIComponent(federation) + "&datasource=" + encodeURIComponent(selectedSource[0][0]),
+            data: {"query": "all"},
             dataType: "json",
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
@@ -385,13 +385,13 @@ $(document).ready(function() {
         });
     });
 
-    $('#findalllinks').click(function() {
+    $("#findalllinks").click(function() {
         $.ajax({
-            type: 'GET',
+            type: "GET",
             headers: {
                 Accept : "application/json"
             },
-            url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
+            url: "/federation/api/findlinks?fed=" + encodeURIComponent(federation),
             dataType: "json",
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
@@ -451,7 +451,7 @@ $(document).ready(function() {
         }],
         close: function() {
             form[0].reset();
-            allFields.removeClass("ui-state-error" );
+            allFields.removeClass("ui-state-error");
         }
     });
 
@@ -499,21 +499,21 @@ $(document).ready(function() {
         //valid = valid && checkRegexp( URL, emailRegex, "eg. ui@jquery.com" );
         if (valid) {
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 headers: {
                     Accept : "application/json"
                 },
-                url: '/federation/addsource?fed=' + federation,
+                url: "/federation/addsource?fed=" + federation,
                 data: {
-                    'name': name.val(),
-                    'url': URL.val(),
-                    'dstype': dstype.val(),
-                    'keywords': keywords.val(),
-                    'params': params.val(),
-                    'desc': desc.val(),
-                    'version': version.val(),
-                    'homepage': homepage.val(),
-                    'organization': organization.val()
+                    "name": name.val(),
+                    "url": URL.val(),
+                    "dstype": dstype.val(),
+                    "keywords": keywords.val(),
+                    "params": params.val(),
+                    "desc": desc.val(),
+                    "version": version.val(),
+                    "homepage": homepage.val(),
+                    "organization": organization.val()
                 },
                 dataType: "json",
                 crossDomain: true,
@@ -521,7 +521,7 @@ $(document).ready(function() {
                     if (data != null && data.length > 0) {
                         manage(federation);
                     } else {
-                        $('#validateTips').html("Error while adding data source to the federation!")
+                        $("#validateTips").html("Error while adding data source to the federation!")
                     }
                     table.clear().draw();
                     table.ajax.url("/federation/datasources?graph=" + federation).load();
@@ -598,28 +598,28 @@ $(document).ready(function() {
         valid = valid && checkLength(ename, "name", 2, 169);
         valid = valid && checkLength(eURL, "url", 6, 100);
         if (valid) {
-            table.row('.selected').remove().draw(false);
+            table.row(".selected").remove().draw(false);
             table.row.add([eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw(false);
             $("#editds").prop("disabled", true);
             $("#removeds").prop("disabled", true);
             $("#createmapping").prop("disabled", true);
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 headers: {
                     Accept : "application/json"
                 },
-                url: '/federation/editsource?fed=' + federation,
+                url: "/federation/editsource?fed=" + federation,
                 data: {
-                    'id': eid,
-                    'name': ename.val().trim(),
-                    'url': eURL.val().trim(),
-                    'dstype': edstype.val().trim(),
-                    'keywords': ekeywords.val().trim(),
-                    'params': eparams.val().trim(),
-                    'desc': edesc.val().trim(),
-                    'version': eversion.val().trim(),
-                    'homepage': ehomepage.val().trim(),
-                    'organization': eorganization.val().trim()
+                    "id": eid,
+                    "name": ename.val().trim(),
+                    "url": eURL.val().trim(),
+                    "dstype": edstype.val().trim(),
+                    "keywords": ekeywords.val().trim(),
+                    "params": eparams.val().trim(),
+                    "desc": edesc.val().trim(),
+                    "version": eversion.val().trim(),
+                    "homepage": ehomepage.val().trim(),
+                    "organization": eorganization.val().trim()
                 },
                 dataType: "json",
                 crossDomain: true,
@@ -628,7 +628,7 @@ $(document).ready(function() {
                         manage(federation);
                         console.log(data);
                     } else {
-                        $('#validateTips').html("Error while editing data source!")
+                        $("#validateTips").html("Error while editing data source!")
                     }
                     table.clear().draw();
                     table.ajax.url("/federation/datasources?graph=" + federation).load();
@@ -645,35 +645,35 @@ $(document).ready(function() {
     }
 
     function createnewfederation() {
-        let name = $('#namecf').val();
-        let desc = $('#description').val();
+        let name = $("#namecf").val();
+        let desc = $("#description").val();
         console.log(name + " " + desc);
-        if (name != null && name !== '' && name.length > 0) {
+        if (name != null && name !== "" && name.length > 0) {
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 headers: {
                     Accept : "application/json"
                 },
-                url: '/federation/create',
-                data: {'name': name, 'description': desc},
+                url: "/federation/create",
+                data: {"name": name, "description": desc},
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR) {
                     console.log(data);
                     if (data != null && data.length > 0) {
                         federation = data;
                         $("#fedName").html(name);
-                        $('#newfedform').hide();
-                        crnfdialog.dialog( "close" );
+                        $("#newfedform").hide();
+                        crnfdialog.dialog("close");
                         // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name;
-                        $("#federations-list").append('<option value=' + federation + ' selected>' + name + '</option>');
+                        $("#federations-list").append("<option value=" + federation + " selected>" + name + "</option>");
                         showFederations(federation);
-                        let aTab = '#manage';
+                        let aTab = "#manage";
                         if (aTab) {
-                            $('#maincontent a[href="' + aTab + '"]').tab('show');
+                            $('#maincontent a[href="' + aTab + '"]').tab("show");
                         }
                     } else {
-                        $('#errormsg').html("Error while creating the new federation! Please enter a valid name (var name).")
+                        $("#errormsg").html("Error while creating the new federation! Please enter a valid name (var name).")
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -683,8 +683,8 @@ $(document).ready(function() {
                 }
             });
         }
-        if (name == null || name === '' || name.length <= 0) {
-            alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
+        if (name == null || name === "" || name.length <= 0) {
+            alert("The Name field should not be empty.\nPlease insert a name in the Name field.");
         }
         return false
     }
