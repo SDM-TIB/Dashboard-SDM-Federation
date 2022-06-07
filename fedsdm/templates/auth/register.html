@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<title>Register - FedSDM</title>
-<!-- Bootstrap Core CSS -->
-<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-<!-- Custom CSS -->
-<link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
-<!-- Custom Fonts -->
-<link href="{{ url_for('static', filename='css/fontawesome.min.css') }}" type="text/css">
-<link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" >
-
-  <div class="container">
+<head>
+    <title>Register - FedSDM</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="{{ url_for('static', filename='css/fontawesome.min.css') }}" type="text/css">
+    <link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" >
+</head>
+<body>
+<div id="wrapper">
+    {% set sidebar = false %}
+    {% include 'navbar.html' %}
+    <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
@@ -16,7 +21,7 @@
                         <h3 class="panel-title">Please Register</h3>
                     </div>
                     <div class="panel-body">
-                         {% for message in get_flashed_messages() %}
+                        {% for message in get_flashed_messages() %}
                             <div class="flash"> {{ message }}</div>
                         {% endfor %}
                         <form role="form" method="post">
@@ -36,9 +41,10 @@
             </div>
         </div>
     </div>
-
+</div>
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/jquery-ui.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+</body>

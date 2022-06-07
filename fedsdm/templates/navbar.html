@@ -1,0 +1,73 @@
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
+    <!--**********************************************-->
+    <!--************** TOP BAR *******************  -->
+    <!--*********************************************-->
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Dashboard SDM Federation</a>
+    </div>
+    <!-- /.navbar-header -->
+    <ul class="nav navbar-top-links navbar-right">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                {% if g.user %}
+                    {{ g.user['username'] }}
+                {% endif %}
+            </a>
+            <ul class="dropdown-menu dropdown-user" id="'userdropdown">
+                {% if g.user %}
+                    <li><a href="#"><i class="fas fa-user fa-fw"></i> User Profile</a></li>
+                    <li><a href="#"><i class="fas fa-user-cog fa-fw"></i> Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-right-from-bracket fa-fw"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.register') }}"><i class="fas fa-user-plus fa-fw"></i> Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}"><i class="fas fa-right-to-bracket fa-fw"></i> Log In</a></li>
+                {% endif %}
+
+            </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+    <!--**********************************************-->
+    <!--************** SIDE BAR *******************  -->
+    <!--*********************************************-->
+    {% if sidebar %}
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <!--<li class="sidebar-search">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </li>-->
+                <li><a href="{{ url_for('index') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <!--<li><a href="datasources.html"><i class="fa fa-database  fa-fw"></i> Data Sources</a></li>-->
+                <li>
+                    <a href="{{ url_for('federation.index') }}"><i class="fas fa-sitemap fa-fw"></i> Federations</a>
+                    <!--<ul class="nav nav-second-level">
+                            <li><a href="{{ url_for('federation.create') }}"><i class="fal fa-gear"></i> Create New Federation</a></li>
+                            <li><a href=""><i class="fas fa-database"></i> Manage Federations</a></li>
+                        </ul>-->
+                    <!-- /.nav-second-level -->
+                </li>
+                <li><a href="{{ url_for('rdfmts.rdfmt') }}"><i class="fa fa-cogs fa-fw"></i> RDF Molecule Templates</a></li>
+                <li><a href="{{ url_for('query.query') }}"><i class="fa fa-search fa-fw"></i> Query</a></li>
+                {# <a href="{{ url_for('mapping.mapping') }}"><i class="fa fa-table fa-fw"></i> RML Mapping</a></li>
+                    <li><a href="ontologies.html"><i class="fab fa-connectdevelop"></i> Ontologies</a></li>
+                    <li><a href="analysis.html"><i class="far fa-analytics  fa-fw"></i> Advanced Analysis</a></li>
+                    <li><a href="blank.html"><i class="fas fa-cogs"></i> Settings</a></li> #}
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+    {% endif %}
+</nav>
