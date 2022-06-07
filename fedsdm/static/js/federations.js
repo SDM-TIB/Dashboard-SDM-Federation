@@ -1,11 +1,9 @@
 $(document).ready(function() {
-
     /*
     **********************************************************
     ************ Manage data source Data Table ***************
     **********************************************************
     */
-
     let federation = $("#federations-list").val();
 
     let statsTable = null;
@@ -88,11 +86,12 @@ $(document).ready(function() {
 
     // if no federation is selected, then all action buttons will be disabled
     function disableButtons(){
-        $("#addds").prop( "disabled", true );
-        $( "#editds" ).prop( "disabled", true );
-        $( "#removeds" ).prop( "disabled", true );
-        $( "#recomputemts" ).prop( "disabled", true );
-        $( "#findalllinks" ).prop( "disabled", true );
+        $("#addds").prop("disabled", true);
+        $("#editds").prop("disabled", true);
+        $("#removeds").prop("disabled", true);
+        $("#recomputemts").prop("disabled", true);
+        $("#findlinks").prop("disabled", true)
+        $("#findalllinks").prop("disabled", true);
     }
 
     // basic statistics and bar chart data
@@ -280,11 +279,11 @@ $(document).ready(function() {
             $( "#recomputemts" ).prop( "disabled", true );
             table.ajax.url("/federation/datasources?graph=" + fed).load();
         }
-        table.on('draw', function(){
-            if (table.column(0).data().length > 0){
-                $( "#findlinks" ).prop( "disabled", false );
-            }else{
-                $( "#findlinks" ).prop( "disabled", true);
+        table.on('draw', function() {
+            if (table.column(0).data().length > 0) {
+                $("#findlinks").prop("disabled", false);
+            } else {
+                $("#findlinks").prop("disabled", true);
             }
         });
     }
@@ -370,13 +369,12 @@ $(document).ready(function() {
                 headers: {
                     Accept : "application/json"
                 },
-
                 url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) +"&datasource=" + encodeURIComponent(selectedSource[0][0]),
                 data: {'query':'all'},
                 dataType: "json",
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR){
-                    if (data != null && data.status == 1){
+                    if (data != null && data.status === 1){
                         alert("Finding links in progress ...");
                     }else{
                         alert("Cannot start the process. Please check if there are data sources in this federation.");
