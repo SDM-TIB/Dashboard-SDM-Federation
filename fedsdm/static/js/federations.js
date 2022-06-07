@@ -162,45 +162,7 @@ $(document).ready(function() {
                                     backgroundColor: colorNumberTriples,
                                 }]
                         },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true
-                                    },
-                                    gridLines: {
-                                        offsetGridLines: true
-                                    }
-                                }],
-                                xAxes: [{
-                                    gridLines: {
-                                        offsetGridLines: true
-                                    }
-                                }]
-                            },
-                            legend: {
-                                display: true,
-                                labels: {
-                                    fontColor: "rgb(25, 99, 132)",
-                                    boxWidth: 8
-
-                                }
-                            },
-                            tooltips: {
-                                callbacks: {
-                                    label: function(tooltipItem, data) {
-                                        let label = data.datasets[tooltipItem.datasetIndex].label || "";
-                                        if (label) {
-                                            label = label.substring(0, label.indexOf("("));
-                                            label += ": ";
-                                        }
-                                        let xv = Math.pow(10, tooltipItem.xLabel);
-                                        label += Math.round(xv * 100) / 100 ;
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
+                        options: chartOptions
                     });
                 } else {
                     myBarChart.data.labels = [];

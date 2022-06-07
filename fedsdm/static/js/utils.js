@@ -1,3 +1,36 @@
+const chartOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                },
+                gridLines: {
+                    offsetGridLines: true
+                }
+            }]
+        },
+        legend: {
+            display: true,
+            labels: {
+                fontColor: colorChartLabels,
+                boxWidth: 8
+            }
+        },
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    let label = data.datasets[tooltipItem.datasetIndex].label || "";
+                    if (label) {
+                        label = label.substring(0, label.indexOf("(") - 1);
+                        label += ': ';
+                    }
+                    label += Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100 ;
+                    return label;
+                }
+            }
+        }
+    }
+
 let tips = $(".validateTips");
 
 function updateTips(t) {
