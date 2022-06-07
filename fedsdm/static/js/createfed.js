@@ -1,8 +1,6 @@
 $(document).ready(function() {
-
     var federation = null,
         datasource = null;
-
 
     $("#createnewfederation").click(function(){
         var name = $('#name').val();
@@ -79,7 +77,6 @@ $(document).ready(function() {
 
                     selectedRow = null
                 });
-
         }else{
             table.clear().draw();
             table.ajax.url("/federation/api/datasources?graph=" + fed).load()
@@ -89,7 +86,6 @@ $(document).ready(function() {
     // Add data source click action
      $( "#addds" ).click(function() {
       dialog.dialog("open");
-
     });
 
     // Edit data source click action
@@ -101,7 +97,6 @@ $(document).ready(function() {
       $( "#elabel" ).val(selectedRow[0][7]);
       $( "#eparams" ).val(selectedRow[0][9]);
       edialog.dialog('open');
-
     });
 
     //Remove data source click action
@@ -297,5 +292,4 @@ $(document).ready(function() {
             return true;
           }
     }
-
 });
