@@ -20,10 +20,10 @@ $(document).ready(function() {
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
                 let ds = dataSources[i];
                 dsData.labels.push(ds.source);
-                dsData.rdfmts.push(Math.log10(ds.rdfmts));
-                dsData.triples.push(Math.log10(ds.triples));
-                dsData.properties.push(Math.log10(ds.properties));
-                dsData.links.push(Math.log10(ds.links))
+                dsData.rdfmts.push(log10(ds.rdfmts));
+                dsData.triples.push(log10(ds.triples));
+                dsData.properties.push(log10(ds.properties));
+                dsData.links.push(log10(ds.links))
                 if (i > 9) {
                     break;
                 }
@@ -67,11 +67,11 @@ $(document).ready(function() {
             for (let i in federations) {  // in JavaScript this will return the index and not the element
                 let fed = federations[i];
                 fedData.labels.push(fed.name);
-                fedData.sources.push(Math.log10(fed.sources));
-                fedData.rdfmts.push(Math.log10(fed.rdfmts));
-                fedData.links.push(Math.log10(fed.links));
-                fedData.links.push(Math.log10(fed.properties));
-                fedData.triples.push(Math.log10(fed.triples))
+                fedData.sources.push(log10(fed.sources));
+                fedData.rdfmts.push(log10(fed.rdfmts));
+                fedData.links.push(log10(fed.links));
+                fedData.links.push(log10(fed.properties));
+                fedData.triples.push(log10(fed.triples))
             }
             federationSummaryChart = new Chart($("#federation-summary-chart"), {
                 type: 'horizontalBar',

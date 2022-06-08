@@ -1,37 +1,42 @@
 const chartOptions = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                },
-                gridLines: {
-                    offsetGridLines: true
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: colorChartLabels,
-                boxWidth: 8
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            },
+            gridLines: {
+                offsetGridLines: true
             }
-        },
-        tooltips: {
-            callbacks: {
-                label: function(tooltipItem, data) {
-                    let label = data.datasets[tooltipItem.datasetIndex].label || "";
-                    if (label) {
-                        label = label.substring(0, label.indexOf("(") - 1);
-                        label += ': ';
-                    }
-                    label += Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100 ;
-                    return label;
+        }]
+    },
+    legend: {
+        display: true,
+        labels: {
+            fontColor: colorChartLabels,
+            boxWidth: 8
+        }
+    },
+    tooltips: {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                let label = data.datasets[tooltipItem.datasetIndex].label || "";
+                if (label) {
+                    label = label.substring(0, label.indexOf("(") - 1);
+                    label += ': ';
                 }
+                const value = Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100
+                label += parseInt(value, 10);
+                return label;
             }
         }
     }
+}
 
 let tips = $(".validateTips");
+
+function log10(value) {
+    return parseInt(value) === 1 ? 0.1 : Math.log10(value)
+}
 
 function updateTips(t) {
     tips.text(t).addClass("ui-state-highlight");

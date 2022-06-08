@@ -136,9 +136,9 @@ $(document).ready(function() {
                     statsTable.row.add(rem).draw( false );
 
                     bardata.labels.push(datas[d].ds);
-                    rdfmts = Math.log10(rdfmts);
+                    rdfmts = log10(rdfmts);
                     bardata.rdfmts.push(rdfmts);
-                    triples = Math.log10(triples);
+                    triples = log10(triples);
                     bardata.triples.push(triples);
                 }
 
