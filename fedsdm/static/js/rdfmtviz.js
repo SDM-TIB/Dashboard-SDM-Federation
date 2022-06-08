@@ -9,20 +9,19 @@ $(document).ready(function() {
     $("#mtdetails").prop('disabled', true);
     $("#mtviz").hide();
 
+    let stats = null;
     var federation =  $("#federations-list").val();
-    window.jsdata = new Array();
+    window.jsdata = [];
 
     var tabvisible = '#visualize';
-    if (federation != null && federation != "") {
+    if (federation != null && federation !== "") {
         load_data(federation);
     } else if (federationAll != null) {
         load_data(federationAll);
     }
 
-
     $("#federations-list").change(function() {
-        fed = $(this).val()
-        load_data(fed);
+        load_data($(this).val());
     });
 
     function load_data(fed) {
@@ -32,7 +31,7 @@ $(document).ready(function() {
         $("#datasources").empty();
         $("#graph").empty();
         $("#datasources").empty();
-        $("#legend").empty(); // load_data
+        $("#legend").empty();
         $("#vdsname").html("");
         loaded = 0;
         vized = 0;
@@ -97,7 +96,6 @@ $(document).ready(function() {
 
     var loaded = 0;
     var vized = 0;
-    var stats = null;
     var galoaded = 0;
     var gtable = null;
     var force = null;
@@ -226,7 +224,6 @@ $(document).ready(function() {
         if (stats == null || stats == "undefined") {
             $('#rdfmtsdataTables').empty();
             $('#rdfmtsdataTables').append("<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>");
-            stats = null;
             stats = $('#rdfmtsdataTables').DataTable({
                 order: [[ 1, 'desc' ]],
                 responsive: true,
@@ -234,10 +231,6 @@ $(document).ready(function() {
                 defaultContent: "<i>Not set</i>",
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                 dom: 'Blfrtip',
-                stateSave: true,
-                "bDestroy": true,
-                //"processing": true,
-                //"serverSide": true,
                 buttons: [
                     {
                         text:'copy'
@@ -264,7 +257,7 @@ $(document).ready(function() {
                 ajax: '/rdfmts/api/rdfmtstats?graph=' + fed
             });
             loaded = 1;
-            statstable = stats;
+            let statstable = stats;
             stats.on('select', function(e, dt, type, indexes) {
                 selectedRow = statstable.rows(indexes).data().toArray();
                 console.log("selected row:", selectedRow)
