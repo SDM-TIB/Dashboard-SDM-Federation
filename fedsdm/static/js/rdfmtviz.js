@@ -1,8 +1,3 @@
-let federationAll = null;
-function fn() {
-    federationAll = "All";
-}
-
 $(document).ready(function() {
     //$("#federations-list").prop("disabled", true);
     $("#datasources").prop("disabled", true);
