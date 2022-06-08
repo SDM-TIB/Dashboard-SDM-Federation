@@ -1,18 +1,16 @@
 $(document).ready(function() {
-    //$("#federations-list").prop("disabled", true);
     $("#datasources").prop("disabled", true);
-    $("#mtdetails").prop('disabled', true);
+    $("#mtdetails").prop("disabled", true);
     $("#mtviz").hide();
 
-    let stats = null;
-    var federation =  $("#federations-list").val();
+    let stats = null,
+        federation =  $("#federations-list").val(),
+        tabvisible = "#home",
+        width, height, h = 960, w = 760, chartWidth, chartHeight;
     window.jsdata = [];
 
-    var tabvisible = '#visualize';
     if (federation != null && federation !== "") {
         load_data(federation);
-    } else if (federationAll != null) {
-        load_data(federationAll);
     }
 
     $("#federations-list").change(function() {
@@ -24,23 +22,19 @@ $(document).ready(function() {
         $("#vfedName").html(fed);
         $("#afedName").html(fed);
         $("#datasources").empty();
-        $("#graph").empty();
-        $("#datasources").empty();
+        $("#graph").empty()
+                   .html("<h1> Loading ... !</h1>");
         $("#legend").empty();
         $("#vdsname").html("");
         loaded = 0;
         vized = 0;
         galoaded = 0;
         get_rdfmts_stats(fed);
-        $("#graph").html("<h1> Loading ... !</h1>");
         get_rdfmts(fed);
         get_rdfmts_graph_analys(fed);
         federation = fed;
     }
-    var width, height;
-    var h=960, w =760;
-    var chartWidth, chartHeight;
-    var margin;
+
     var drag = d3.behavior.drag()
         .origin(function(d) { return d; })
         .on("dragstart", dragstarted)
