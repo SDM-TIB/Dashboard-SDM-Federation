@@ -350,6 +350,7 @@ $(document).ready(function() {
                 }
             });
 
+            sourcelinks = [];
             for (var i = 0; i < links.length; ++i) {
                 o = links[i];
 
@@ -396,6 +397,7 @@ $(document).ready(function() {
             alinks = links;
 
             flatnodes = [];
+            sourcenodes = [];
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
                 mtcards["All"].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
@@ -593,7 +595,7 @@ $(document).ready(function() {
     });
 
     function drawSingleSourceRDFMTS(source, gt) {
-        console.log(source);
+        console.log("source: " + source);
         if (source == "All") {
             if (alinks.length < 1)
                 alinks=[]
@@ -812,7 +814,7 @@ $(document).ready(function() {
         if (force) force.stop()
         //data = {nodes:nodes, links:links}
         net = network(data, net, getGroup, expand);
-        console.log(net, expand)
+        console.log("network:", net, expand)
         force = d3.layout.force()
             .nodes(net.nodes)
             .links(net.links)
