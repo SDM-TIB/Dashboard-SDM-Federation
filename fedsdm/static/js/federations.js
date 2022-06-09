@@ -159,7 +159,7 @@ $(document).ready(function() {
                 }
 
                 if (sourceStatsChart == null) {
-                    sourceStatsChart = new Chart($("#myChart"), {
+                    sourceStatsChart = new Chart($("#sourceStatsChart"), {
                         type: "horizontalBar",
                         data: {
                             labels: bardata.labels,
