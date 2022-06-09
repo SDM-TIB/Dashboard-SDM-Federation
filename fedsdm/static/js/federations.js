@@ -4,13 +4,11 @@ $(document).ready(function() {
     ************ Manage data source Data Table ***************
     **********************************************************
     */
-    let federation = $("#federations-list").val();
-
-    let statsTable = null;
-    let ctx = $("#myChart");
-    let myBarChart = null;
-    let bsloaded = 0;
-    let prefix = "http://ontario.tib.eu/federation/g/";
+    let federation = $("#federations-list").val(),
+        statsTable = null,
+        sourceStatsChart = null,
+        bsloaded = 0;
+    const prefix = "http://ontario.tib.eu/federation/g/";
 
     // if federation is set from session, then trigger visualization and management data
     showFederations(federation);
@@ -93,6 +91,24 @@ $(document).ready(function() {
         $("#findalllinks").prop("disabled", true);
     }
 
+    function sourceStatsToBarChart(data) {
+        return [
+            {
+                id: 1,
+                label: "# of Triples(log)",
+                data: data.triples,
+                borderWidth: 1,
+                backgroundColor: colorNumberTriples,
+            }, {
+                id: 2,
+                label: "# of RDF-MTs (log)",
+                data: data.rdfmts,
+                borderWidth: 1,
+                backgroundColor: colorNumberMolecules,
+            }
+        ]
+    }
+
     // basic statistics and bar chart data
     function basic_stat(fed) {
         if (statsTable == null) {
@@ -142,50 +158,22 @@ $(document).ready(function() {
                     bardata.triples.push(triples);
                 }
 
-                if (myBarChart == null) {
-                    myBarChart = new Chart(ctx, {
+                if (sourceStatsChart == null) {
+                    sourceStatsChart = new Chart($("#myChart"), {
                         type: "horizontalBar",
                         data: {
                             labels: bardata.labels,
-                            datasets :[
-                                {
-                                    id: 1,
-                                    label: "# of Triples(log)",
-                                    data: bardata.triples,
-                                    borderWidth: 1,
-                                    backgroundColor: colorNumberTriples,
-                                }, {
-                                    id: 2,
-                                    label: "# of RDF-MTs (log)",
-                                    data: bardata.rdfmts,
-                                    borderWidth: 1,
-                                    backgroundColor: colorNumberMolecules,
-                                }]
+                            datasets: sourceStatsToBarChart(bardata)
                         },
                         options: chartOptions
                     });
                 } else {
-                    myBarChart.data.labels = [];
-                    myBarChart.data.datasets = [];
-                    myBarChart.update();
-
-                    myBarChart.data.labels = bardata.labels;
-                    myBarChart.data.datasets = [
-                        {
-                            id: 1,
-                            label: "# of Triples(log)",
-                            data: bardata.triples,
-                            borderWidth: 1,
-                            backgroundColor: colorNumberTriples,
-                        }, {
-                            id: 2,
-                            label: "# of RDF-MTs (log)",
-                            data: bardata.rdfmts,
-                            borderWidth: 1,
-                            backgroundColor: colorNumberMolecules,
-                        }]
-
-                    myBarChart.update();
+                    sourceStatsChart.data.labels = [];
+                    sourceStatsChart.data.datasets = [];
+                    sourceStatsChart.update();
+                    sourceStatsChart.data.labels = bardata.labels;
+                    sourceStatsChart.data.datasets = sourceStatsToBarChart(bardata)
+                    sourceStatsChart.update();
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
