@@ -108,14 +108,6 @@ def create_app(test_config=None):
     def send_css(path):
         return send_from_directory('static/css', path)
 
-    @app.route('/scss/<path:path>')
-    def send_scss(path):
-        return send_from_directory('static/scss', path)
-
-    @app.route('/fonts/<path:path>')
-    def send_fonts(path):
-        return send_from_directory('static/css/fonts', path)
-
     @app.route('/webfonts/<path:path>')
     def send_webfonts(path):
         return send_from_directory('static/webfonts', path)
