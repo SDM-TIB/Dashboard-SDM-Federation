@@ -4,19 +4,19 @@ from flask import Flask, send_from_directory, redirect
 
 
 def get_logger(name, file=None):
-    logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
     if file is not None:
-        fileHandler = logging.FileHandler(file)
-        fileHandler.setLevel(logging.INFO)
-        fileHandler.setFormatter(logFormatter)
-        logger.addHandler(fileHandler)
+        file_handler = logging.FileHandler(file)
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(log_formatter)
+        logger.addHandler(file_handler)
     else:
-        consoleHandler = logging.StreamHandler()
-        consoleHandler.setLevel(logging.INFO)
-        consoleHandler.setFormatter(logFormatter)
-        logger.addHandler(consoleHandler)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+        console_handler.setFormatter(log_formatter)
+        logger.addHandler(console_handler)
     return logger
 
 
@@ -75,24 +75,28 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    # Register the federations manager blueprint
+    # Register the dashboard blueprint
     from . import dashboard
     app.register_blueprint(dashboard.bp)
     app.add_url_rule('/', endpoint='index')
 
-    # Register the federations manager blueprint
+    # Register the federation manager blueprint
     from . import federation
     app.register_blueprint(federation.bp)
 
+    # Register the RDF Molecule Template blueprint
     from . import rdfmtmgt
     app.register_blueprint(rdfmtmgt.bp)
 
+    # Register the query blueprint
     from . import query
     app.register_blueprint(query.bp)
 
+    # Register the mappings blueprint
     # from . import mapping
     # app.register_blueprint(mapping.bp)
 
+    # Register the feedback blueprint
     from . import feedback
     app.register_blueprint(feedback.bp)
 
