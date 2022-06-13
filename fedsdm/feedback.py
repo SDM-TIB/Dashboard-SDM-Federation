@@ -4,6 +4,7 @@ from flask import (
 
 import json
 
+from fedsdm.auth import login_required
 from fedsdm.db import get_db
 from fedsdm.ui.utils import get_federations
 
@@ -11,6 +12,7 @@ bp = Blueprint('feedback', __name__, url_prefix='/feedback')
 
 
 @bp.route('/')
+@login_required
 def rdfmt():
     federations = get_federations()
     g.federations = federations
@@ -21,6 +23,7 @@ def rdfmt():
 
 
 @bp.route('/issues')
+@login_required
 def feedback_list():
     try:
         fed = request.args["fed"]
@@ -55,6 +58,7 @@ def feedback_list():
 
 
 @bp.route('/details')
+@login_required
 def feedback_details():
     try:
         iid = request.args['id']
