@@ -87,8 +87,8 @@ $(document).ready(function() {
         manodes = mnodes ;
 
         data = {nodes: manodes, links: malinks};
-        //console.log('nodes;', manodes)
-        //console.log('links', malinks)
+        //console.log("nodes:", manodes)
+        //console.log("links:", malinks)
         manodes.forEach(function(d) {
             expand[d.datasource] = true;
         });
@@ -120,7 +120,7 @@ $(document).ready(function() {
     YASQE.defaults.value = "SELECT DISTINCT ?concept\nWHERE {\n\t?s a ?concept\n} LIMIT 10";
     YASQE.defaults.sparql.endpoint = "/query/sparql";
     yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting) {
-        //console.log('federation to query from',federation);
+        //console.log("federation to query from",federation);
         $("#resstatus").hide();
         $("#visualizebtn").hide();
         $("#showtablebtn").hide();
@@ -128,7 +128,7 @@ $(document).ready(function() {
         setting.crossDomain = true;
         setting.data ={"query": yasqe.getValue()};
         $("#resultinfo").hide();
-        $('#queryresultstable').empty();
+        $("#queryresultstable").empty();
     }
 
     var start = false, end = true;
@@ -138,9 +138,9 @@ $(document).ready(function() {
     var queryvars = []
     yasqe.options.sparql.callbacks.success = function(data) {
         $("#resulttablediv").empty()
-                            .append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
+                                 .append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
-        if ('error' in data) {
+        if ("error" in data) {
             $("#resstatus").html("Error:" + data.error);
             $("#resultrow").show();
             $("#resstatus").show();
@@ -170,35 +170,35 @@ $(document).ready(function() {
                 queryvars.push(vars[i]);
             }
             $("#queryresultstable").append(theader + "</tr></thead>")
-                                   .append("<tbody></tbody>")
-                                   .append(tfooter + "</tr></tfoot>");
+                                        .append("<tbody></tbody>")
+                                        .append(tfooter + "</tr></tfoot>");
 
-            table = $('#queryresultstable').DataTable({
+            table = $("#queryresultstable").DataTable({
                 responsive: true,
                 select: true,
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-                dom: 'Blfrtip',
+                dom: "Blfrtip",
                 buttons: [
                     {
-                        text:'copy'
+                        text: "copy"
                     }, {
-                        text:'csv',
-                        extend: 'csvHtml5',
-                        title: 'sparql-results'
+                        text: "csv",
+                        extend: "csvHtml5",
+                        title: "sparql-results"
                     }, {
-                        text:'excel',
-                        extend: 'excelHtml5',
-                        title: 'sparql-results'
+                        text: "excel",
+                        extend: "excelHtml5",
+                        title: "sparql-results"
                     }, {
-                        text:'pdf',
-                        extend: 'pdfHtml5',
-                        title: 'sparql-results'
+                        text: "pdf",
+                        extend: "pdfHtml5",
+                        title: "sparql-results"
                     }, {
-                        text: 'TSV',
-                        extend: 'csvHtml5',
-                        fieldSeparator: '\t',
-                        extension: '.tsv',
-                        title: 'sparql-results'
+                        text: "TSV",
+                        extend: "csvHtml5",
+                        fieldSeparator: "\t",
+                        extension: ".tsv",
+                        title: "sparql-results"
                     }
                 ]
             });
@@ -209,10 +209,10 @@ $(document).ready(function() {
                 var rowml = [];
                 for (var j = 0; j < vars.length; j++) {
                     var val = row[vars[j]];
-                    if (val.indexOf("^^<") != -1) {
+                    if (val.indexOf("^^<") !== -1) {
                         val = val.substring(0, val.indexOf("^^"));
                     }
-                    if('http' == val.substring(0, 4) ) {
+                    if ("http" === val.substring(0, 4)) {
                         // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
                         rowml.push(val);
                     } else {
@@ -220,46 +220,43 @@ $(document).ready(function() {
                     }
                     resmap[vars[j]] = val;
                 }
-                table.row.add(rowml).draw( false );
+                table.row.add(rowml).draw(false);
                 // append_nodes_edges(resmap, querytriples);
             }
             table.columns().every(function() {
                 var column = this;
                 var select = $('<select><option value="">All</option></select>')
                     .appendTo($(column.footer()).empty())
-                    .on('change', function() {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
+                    .on("change", function() {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
                         console.log(val);
 //
-//                                var ltix = val.indexOf('&lt;');
-//                                if (ltix > 0){
-//                                    val = val.substring(ltix+4, val.indexOf('&gt;'));
+//                                var ltix = val.indexOf("&lt;");
+//                                if (ltix > 0) {
+//                                    val = val.substring(ltix + 4, val.indexOf("&gt;"));
 //                                }
-                        column.search( val ? '^'+val+'$' : '', true, false ).draw();
+                        column.search(val ? "^" + val + "$" : "", true, false).draw();
                     } );
                 //console.log(column.data().unique());
                 column.data().unique().sort().each(function(d, j) {
                     var val = d;
-
-                    var ltix = val.indexOf('&lt;');
+                    var ltix = val.indexOf("&lt;");
                     if (ltix > 0) {
-                        val = val.substring(ltix+4, val.indexOf('&gt;'));
+                        val = val.substring(ltix+4, val.indexOf("&gt;"));
                     }
-                    // console.log('data', d, val);
-                    select.append( '<option value='+ d +'>'+d+'</option>' );
+                    // console.log("data", d, val);
+                    select.append("<option value=" + d + ">" + d + "</option>");
                 } );
             });
-            table.on('select', function(e, dt, type, indexes) {
+            table.on("select", function(e, dt, type, indexes) {
                 selectedRow = table.rows( indexes ).data().toArray();
 
                 selectedRowData = [];
                 for (i in selectedRow[0]) {
-                    var ltix = selectedRow[0][i].indexOf('&lt;');
+                    var ltix = selectedRow[0][i].indexOf("&lt;");
                     if (ltix > 0) {
-                        var value = selectedRow[0][i].substring(ltix+4, selectedRow[0][i].indexOf('&gt;'));
+                        var value = selectedRow[0][i].substring(ltix + 4, selectedRow[0][i].indexOf("&gt;"));
                         selectedRowData.push(value)
                     } else {
                         selectedRowData.push(selectedRow[0][i])
@@ -269,14 +266,14 @@ $(document).ready(function() {
                 //console.log("selected row:", selectedRowData, ltix);
 
                 $("#addfeedback").prop("disabled", false);
-            }).on('deselect', function(e, dt, type, indexes) {
+            }).on("deselect", function(e, dt, type, indexes) {
                 var rowData = table.rows(indexes).data().toArray();
                 $("#addfeedback").prop("disabled", true);
                 selectedRow = null;
             });
         } else {
             $("#resstatus").html("No results found!")
-                           .show();
+                                .show();
             $("#resultinfo").show();
             $("#resultrow").show();
             response = false;
@@ -303,7 +300,7 @@ $(document).ready(function() {
         buttons: [
             {
                 text: "Save",
-                click:addFeedback,
+                click: addFeedback,
                 class: "btn btn-success"
             }, {
                 text: "Cancel",
@@ -328,26 +325,28 @@ $(document).ready(function() {
         var valid = true;
         allfeedbackFields.removeClass("ui-state-error");
         valid = valid && checkLength(feedbackdesc, "name", 2, 500);
-        data = { 'desc': feedbackdesc.val(),
-            'pred': fedbackpreds.val(),
-            'query': yasqe.getValue(),
-            'row': selectedRowData,
-            'columns': queryvars
+        data = {
+            "desc": feedbackdesc.val(),
+            "pred": fedbackpreds.val(),
+            "query": yasqe.getValue(),
+            "row": selectedRowData,
+            "columns": queryvars
         };
         console.log(data);
 
-        if(valid) {
+        if (valid) {
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 headers: {
                     Accept : "application/json"
                 },
-                url: '/query/feedback?fed=' + federation,
-                data: { 'desc': feedbackdesc.val(),
-                    'pred': fedbackpreds.val(),
-                    'query': yasqe.getValue(),
-                    'row': selectedRowData,
-                    'columns': queryvars
+                url: "/query/feedback?fed=" + federation,
+                data: {
+                    "desc": feedbackdesc.val(),
+                    "pred": fedbackpreds.val(),
+                    "query": yasqe.getValue(),
+                    "row": selectedRowData,
+                    "columns": queryvars
                 },
                 dataType: "json",
                 crossDomain: true,
@@ -356,7 +355,7 @@ $(document).ready(function() {
                     if (data != null && data.length > 0) {
                         // load_query_table(data);
                     } else {
-                        $('#validateTips').html("Error while adding data source to the federation!")
+                        $("#validateTips").html("Error while adding data source to the federation!")
                     }
                     // showqueries(datasource);
                 },
@@ -377,10 +376,10 @@ $(document).ready(function() {
     }
 
     $("#addfeedback").click(function() {
-        $("#fedbackpreds").empty();
-        $("#fedbackpreds").append('<option value="-1">Select column</option>');
-        for (d in queryvars){
-            $("#fedbackpreds").append('<option value=' + queryvars[d] + '> '+ queryvars[d] + '</option>');
+        $("#fedbackpreds").empty()
+                               .append('<option value="-1">Select column</option>');
+        for (d in queryvars) {
+            $("#fedbackpreds").append("<option value=" + queryvars[d] + "> " + queryvars[d] + "</option>");
         }
         $("#fedbackpreds").append('<option value="All">All</option>');
         addfeedbackdialog.dialog("open");
@@ -389,23 +388,22 @@ $(document).ready(function() {
     function append_nodes_edges(rowmap, qtripl) {
         for (t in qtripl) {
             t = qtripl[t];
-            if (t.s.indexOf('?') == 0) {
+            if (t.s.indexOf("?") === 0) {
                 variab = t.s.substring(1, t.s.length);
-
                 s = rowmap[variab];
                 setNodeData(s);
             } else {
                 s = t.s
                 setNodeData(s);
             }
-            if (t.p.indexOf('?') == 0) {
+            if (t.p.indexOf("?") === 0) {
                 variab = t.p.substring(1, t.p.length);
                 //setNodeData(rowmap, variab);
                 p = rowmap[variab];
             } else {
                 p = t.p;
             }
-            if (t.o.indexOf('?') == 0) {
+            if (t.o.indexOf("?") === 0) {
                 variab = t.o.substring(1, t.o.length);
                 // setNodeData(rowmap, variab);
                 o = rowmap[variab];
@@ -416,7 +414,6 @@ $(document).ready(function() {
             }
             setEdgeData(s, p, o);
         }
-
     }
 
     function setEdgeData(s, p, o) {
@@ -425,8 +422,8 @@ $(document).ready(function() {
             "source": s,
             "target": o,
             "weight": -1,
-            'ltype': "link",
-            'type': "link",
+            "ltype": "link",
+            "type": "link",
             "pred": p
         });
     }
@@ -449,13 +446,12 @@ $(document).ready(function() {
             response = false;
             if (shouldstop === false) {
                 let req = $.ajax({
-                    type:"get",
+                    type: "GET",
                     url: "/query/nextresult",
                     // headers: {Accept: "text/csv"},//ask for csv. Simple, and uses less bandwidth
                     success: function(data) {
                         let row = data.result;
-
-                        // console.log('row', row);
+                        // console.log("row", row);
                         if (row.length === 0 || row === "EOF") {
                             // console.log("loop done");
                             resdrawn = false;
@@ -473,7 +469,7 @@ $(document).ready(function() {
                             if (val.indexOf("^^<") !== -1) {
                                 val = val.substring(0, val.indexOf("^^"));
                             }
-                            if('http' === val.substring(0, 4)) {
+                            if("http" === val.substring(0, 4)) {
                                 // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");  TODO: check if this should be added again
                                 rowml.push(val);
                             } else {
@@ -489,20 +485,20 @@ $(document).ready(function() {
                             const column = this;
                             const select = $('<select><option value="">All</option></select>')
                                 .appendTo($(column.footer()).empty())
-                                .on('change', function() {
+                                .on("change", function() {
                                     const val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                     );
-                                    column.search(val ? '^'+val+'$' : '', true, false).draw();
+                                    column.search(val ? "^" + val + "$" : "", true, false).draw();
                                 });
                             column.data().unique().sort().each(function(d, j) {
                                 let val = d;
-                                const ltix = val.indexOf('&lt;');
+                                const ltix = val.indexOf("&lt;");
                                 if (ltix > 0) {
-                                    val = val.substring(ltix+4, val.indexOf('&gt;'));
+                                    val = val.substring(ltix+4, val.indexOf("&gt;"));
                                 }
-                                // console.log('data', d, val);
-                                select.append( '<option value='+ val +'>'+val+'</option>' )
+                                // console.log("data", d, val);
+                                select.append("<option value=" + val + ">" + val + "</option>")
                             });
                         });
                         response = true;
@@ -531,7 +527,7 @@ $(document).ready(function() {
     }
     let shouldstop = false;
     $("#stopbutton").click(function() {
-        console.log('stop pressed');
+        console.log("stop pressed");
         response = false;
         shouldstop = true;
     });
@@ -544,14 +540,14 @@ $(document).ready(function() {
      */
     var getAutocompletionsArrayFromJson = function(result) {
         var completionsArray = [];
-        // console.log('parsing');
+        // console.log("parsing");
         // console.log(result);
         result.forEach(function(row) {  // remove first line, as this one contains the projection variable
             // console.log(row);
-            if ('type' in row) {
-                completionsArray.push(row['type']);  // remove quotes
+            if ("type" in row) {
+                completionsArray.push(row["type"]);  // remove quotes
             } else {
-                completionsArray.push(row['property']);  // remove quotes
+                completionsArray.push(row["property"]);  // remove quotes
             }
         });
         return completionsArray;
@@ -590,7 +586,7 @@ $(document).ready(function() {
         return returnObj;
     };
     // now register our new autocompleter
-    YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
+    YASQE.registerAutocompleter("customPropertyCompleter", customPropertyCompleter);
 
     // excellent, now do the same for the classes
     var customClassCompleter = function(yasqe) {
@@ -603,7 +599,7 @@ $(document).ready(function() {
         returnObj.async = true;
         returnObj.autoShow = true;
         returnObj.get = function(token, callback) {
-            var filters ='FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
+            var filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
                 ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
                 ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
                 ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
@@ -627,9 +623,9 @@ $(document).ready(function() {
         return returnObj;
     };
 
-    YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
+    YASQE.registerAutocompleter("customClassCompleter", customClassCompleter);
     // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
-    YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
+    YASQE.defaults.autocompleters = ["customClassCompleter", "customPropertyCompleter"];
 
     $("#classes").click(function() {
         yasqe.setValue("SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}");
@@ -646,13 +642,13 @@ $(document).ready(function() {
     // TODO: add more example queries here
 
     function nodeid(n) {
-        return n.size ? "_g_"+n.datasource : n.label;
+        return n.size ? "_g_" + n.datasource : n.label;
     }
 
     function linkid(l) {
         var u = nodeid(l.source),
             v = nodeid(l.target);
-        return u<v ? u+"|"+v : v+"|"+u;
+        return u < v ? u + "|" + v : v + "|" + u;
     }
 
     function getGroup(n) { return n.datasource; }
@@ -681,7 +677,7 @@ $(document).ready(function() {
                     gn[i] = n;
                     n.size = 0;
                 } else {
-                    o = gc[i] || (gc[i] = {x:0,y:0,count:0});
+                    o = gc[i] || (gc[i] = {x: 0, y: 0, count: 0});
                     o.x += n.x;
                     o.y += n.y;
                     o.count += 1;
@@ -690,10 +686,10 @@ $(document).ready(function() {
         }
 
         // determine nodes
-        for (var k=0; k<data.nodes.length; ++k) {
+        for (var k = 0; k < data.nodes.length; ++k) {
             var n = data.nodes[k],
                 i = index(n),
-                l = gm[i] || (gm[i]=gn[i]) || (gm[i]={datasource:i, size:0, nodes:[]});
+                l = gm[i] || (gm[i] = gn[i]) || (gm[i]={datasource: i, size: 0, nodes: []});
 
             if (expand[i]) {
                 // the node should be directly visible
@@ -725,7 +721,7 @@ $(document).ready(function() {
         for (i in gm) { gm[i].link_count = 0; }
 
         // determine links
-        for (k=0; k<data.links.length; ++k) {
+        for (k = 0; k < data.links.length; ++k) {
             var e = data.links[k],
                 u = index(e.source),
                 v = index(e.target);
@@ -735,8 +731,8 @@ $(document).ready(function() {
             }
             u = expand[u] ? nm[e.source.label] : nm[u];
             v = expand[v] ? nm[e.target.label] : nm[v];
-            var i = (u<v ? u+"|"+v : v+"|"+u),
-                l = lm[i] || (lm[i] = {source:u, target:v, size:0});
+            var i = (u < v ? u + "|" + v : v + "|" + u),
+                l = lm[i] || (lm[i] = {source: u, target: v, size: 0});
             l.size += 1;
         }
         for (i in lm) { links.push(lm[i]); }
@@ -748,7 +744,7 @@ $(document).ready(function() {
         var hulls = {};
 
         // create point sets
-        for (var k=0; k<nodes.length; ++k) {
+        for (var k = 0; k < nodes.length; ++k) {
             var n = nodes[k];
 
             if (n.size) continue;
@@ -779,8 +775,8 @@ $(document).ready(function() {
     height = 980;
     var canv = "graph";
 
-    var width,height;
-    var h=960, w =760;
+    var width, height;
+    var h = 960, w = 760;
     var chartWidth, chartHeight;
     var margin;
 
@@ -850,7 +846,7 @@ $(document).ready(function() {
     var sourcenodes = [];
     //connection link between subject and object ->predicates
     var sourcelinks = [];
-    var sourceids = {}, sourcesnames={};
+    var sourceids = {}, sourcesnames = {};
 
     var link, circle, text;
     function drawRDFMTS(nodes, links, divcanv) {
@@ -891,7 +887,7 @@ $(document).ready(function() {
             towhite = "fill"
         }
 
-        svg.style("cursor","move");
+        svg.style("cursor", "move");
         // d3.json("graph.json", function(error, graph) {
         var linkedByIndex = {};
         links.forEach(function(d) {
@@ -925,7 +921,7 @@ $(document).ready(function() {
             .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue&orange, ...
             .charge(-600)    // ... charge is important to turn single-linked groups to the outside
             .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
-            .size([width,height])
+            .size([width, height])
             .start(); //.chargeDistance(1000) .linkDistance(300)
 
         link = g.selectAll(".link").data(net.links, linkid);
@@ -945,8 +941,7 @@ $(document).ready(function() {
         node = g.selectAll(".node").data(net.nodes, nodeid);
         node.exit().remove();
         node.enter().append("g")
-            .attr("class", function(d) {
-                return "node" + (d.size?"":" leaf"); })
+            .attr("class", function(d) { return "node" + (d.size?"":" leaf"); })
             //.attr("r", function(d) {console.log(d.size, dr); return d.size ? d.size + dr : 3; })
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
@@ -963,9 +958,7 @@ $(document).ready(function() {
             //                 g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
             //
             //           })
-            .on("mouseover", function(d) {
-                set_highlight(d);
-            })
+            .on("mouseover", function(d) { set_highlight(d); })
             .on("mousedown", function(d) {
                 d3.event.stopPropagation();
                 focus_node = d;
@@ -973,9 +966,7 @@ $(document).ready(function() {
                 if (highlight_node === null)
                     set_highlight(d)
             })
-            .on("mouseout", function(d) {
-                exit_highlight(d);
-            });
+            .on("mouseout", function(d) { exit_highlight(d); });
 
         node.call(force.drag);
 
@@ -985,14 +976,14 @@ $(document).ready(function() {
                 .size(function(d) {
                     var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)||nominal_base_node_size,2):Math.PI*Math.pow(size(25)||nominal_base_node_size,2);
                     return v;}) //size(d.weight)
-                .type(function(d) { return d.size? 'circle': d.type; })
+                .type(function(d) { return d.size? "circle": d.type; })
             )
             .style(tocolor, function(d) {
                 if (divcanv ==null) {
                     return color(d.datasource)
                 } else {
                     ci += 1
-                    return color(d.datasource + (ci-1));
+                    return color(d.datasource + (ci - 1));
                 }
             })
             .style("stroke-width", nominal_stroke)
@@ -1002,7 +993,7 @@ $(document).ready(function() {
             .data(net.nodes)
             .enter().append("text")
             .attr("dy", ".35em")
-            .style("font-size",function(d){return d.size? 16 + "px": nominal_text_size + "px"})
+            .style("font-size", function(d){ return d.size ? 16 + "px" : nominal_text_size + "px" })
 
         if (text_center) {
             text.text(function (d) {
@@ -1015,7 +1006,7 @@ $(document).ready(function() {
                 .style("text-anchor", "middle");
         } else {
             text.attr("dx", function (d) { return (size(65) - size(30) || nominal_base_node_size); })  // size(d.weight)
-                .text(function (d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
+                .text(function (d) { if (d.label) return "\u2002" + d.label; else return "\u2002" + sourcesnames[d.datasource]; });
         }
 
         d3.select(window).on("mouseup", function() {
@@ -1046,7 +1037,7 @@ $(document).ready(function() {
                 .size(function(d) {
                     var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
                     return v;}) //size(d.weight)
-                .type(function(d) { return d.size? 'circle':  d.type; })
+                .type(function(d) { return d.size? "circle":  d.type; })
             );
             //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
             if (!text_center)
@@ -1152,7 +1143,7 @@ $(document).ready(function() {
             return true;
         }
 
-        function vis_by_link_score(score){
+        function vis_by_link_score(score) {
             if (isNumber(score)) {
                 if (score >= 0.666)
                     return key3;
@@ -1198,20 +1189,20 @@ $(document).ready(function() {
                 }
 
                 link.style("display", function(d) {
-                    var flag  = vis_by_type('circle')&&vis_by_type('circle')&&vis_by_node_score(d.source.datasource)&&vis_by_node_score(d.target.datasource)&&vis_by_link_score(d.datasource);
+                    var flag  = vis_by_type("circle") && vis_by_type("circle") && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
                     linkedByIndex[d.source.index + "," + d.target.index] = flag;
-                    return flag?"inline":"none";
+                    return flag ? "inline" : "none";
                 });
                 node.style("display", function(d) {
-                    return (key0||hasConnections(d))&&vis_by_type('circle')&&vis_by_node_score(d.datasource)?"inline":"none";
+                    return (key0 || hasConnections(d)) && vis_by_type("circle") && vis_by_node_score(d.datasource) ? "inline" : "none";
                 });
                 text.style("display", function(d) {
-                    return (key0||hasConnections(d))&&vis_by_type('circle')&&vis_by_node_score(d.datasource)?"inline":"none";
+                    return (key0 || hasConnections(d)) && vis_by_type("circle") && vis_by_node_score(d.datasource) ? "inline" : "none";
                 });
 
                 if (highlight_node !== null) {
-                    if ((key0||hasConnections(highlight_node))&&vis_by_type('circle')&&vis_by_node_score(highlight_node.datasource)) {
-                        if (focus_node!==null)
+                    if ((key0 || hasConnections(highlight_node)) && vis_by_type("circle") && vis_by_node_score(highlight_node.datasource)) {
+                        if (focus_node !== null)
                             set_focus(focus_node);
                         set_highlight(highlight_node);
                     } else {
@@ -1223,14 +1214,14 @@ $(document).ready(function() {
 
         function exit_highlight() {
             highlight_node = null;
-            if (focus_node===null)
+            if (focus_node === null)
             {
-                svg.style("cursor","move");
+                svg.style("cursor", "move");
                 if (highlight_color != "white") {
                     circle.style(towhite, "white");
                     text.style("font-weight", "normal");
                     link.style("stroke", function(o) {
-                        return (isNumber(o.datasource) && o.datasource >= 0)? color(o.datasource): default_link_color
+                        return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color
                     });
                 }
             }
@@ -1253,7 +1244,7 @@ $(document).ready(function() {
         }
 
         function set_highlight(d) {
-            svg.style("cursor","pointer");
+            svg.style("cursor", "pointer");
             if (focus_node !== null)
                 d = focus_node;
             highlight_node = d;
@@ -1267,7 +1258,7 @@ $(document).ready(function() {
                     return isConnected(d, o) ? "bold" : "normal";
                 });
                 link.style("stroke", function(o) {
-                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource>=0)?color(o.datasource):default_link_color);
+                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
                 });
             }
         }
