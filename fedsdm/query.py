@@ -74,7 +74,7 @@ def feedback():
     dsid = fdb['id']
     print("Last inserted row selected: ", dsid)
     db.execute(
-        'INSERT INTO feedbackdata (reportID, projvar, projpred, rowData)'
+        'INSERT INTO feedbackdata (reportID, projVar, projPred, rowData)'
         ' VALUES (?, ?, ?, ?)',
         (dsid, ",".join(list(selectedrow.keys())), pred, str(json.dumps(selectedrow)))
     )

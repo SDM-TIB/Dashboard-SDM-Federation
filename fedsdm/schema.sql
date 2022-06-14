@@ -27,8 +27,8 @@ CREATE TABLE feedbackreport (
 CREATE TABLE feedbackdata (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     reportID INTEGER NOT NULL,
-    projvar TEXT,
-    projpred TEXT,
+    projVar TEXT,
+    projPred TEXT,
     rowData TEXT,
     FOREIGN KEY (reportID) REFERENCES feedbackreport(id)
 );

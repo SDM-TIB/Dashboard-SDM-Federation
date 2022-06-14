@@ -73,7 +73,7 @@ def feedback_details():
         return Response(json.dumps({}), mimetype="application/json")
     else:
         feedback_data = db.execute(
-            "SELECT distinct projvar, projpred, rowData "
+            "SELECT distinct projVar, projPred, rowData "
             " FROM feedbackdata WHERE reportID=\"" + iid + "\" "
         ).fetchone()
 
@@ -81,7 +81,7 @@ def feedback_details():
             return Response(json.dumps({}), mimetype="application/json")
 
         data = {
-            "var": feedback_data["projvar"],
-            "pred": feedback_data["projpred"],
+            "var": feedback_data["projVar"],
+            "pred": feedback_data["projPred"],
             "row": json.loads(feedback_data["rowData"])}
         return Response(json.dumps(data), mimetype="application/json")
