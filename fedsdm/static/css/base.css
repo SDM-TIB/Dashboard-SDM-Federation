@@ -160,3 +160,17 @@ table.dataTable thead .sorting:after {
   margin-left: 0;
   margin-right: 0;
 }
+.ui-dialog-titlebar-close {
+    padding:0 !important;
+}
+.ui-dialog-titlebar-close:after {
+    content: '';
+    text-align: center;
+    width: 19px;
+    height: 20px;
+    display: inline-block;
+    /* Change path to image*/
+    background-image: url(/images/ui-icons_454545_256x240.png);
+    background-position: -96px -128px;
+    background-repeat: no-repeat;
+}
