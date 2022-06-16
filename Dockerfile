@@ -12,7 +12,12 @@ ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
 
 # Install Python3 and SQLite
 RUN apt-get update &&\
-    apt-get install -y python3 python3-pip python3-setuptools curl &&\
+    apt-get install -y --no-install-recommends software-properties-common &&\
+    add-apt-repository -y ppa:deadsnakes/ppa &&\
+    apt-get autoremove -y software-properties-common  &&\
+    apt-get install -y --no-install-recommends python3.9 python3.9-venv curl &&\
+    link /usr/bin/python3.9 /usr/bin/python3  &&\
+    python3 -m ensurepip &&\
     apt-get clean
 
 # Set the working directory to /FedSDM
