@@ -7,9 +7,9 @@ echo -e "GRANT SPARQL_UPDATE to \x22SPARQL\x22;" >> /opt/virtuoso-opensource/ini
 cd /FedSDM
 
 # wait for Virtuoso to be available
-printf 'Waiting for Virtuoso'
+echo 'Waiting for Virtuoso'
 until $(curl --output /dev/null --silent --head --fail http://localhost:$VIRT_HTTPSERVER_SERVERPORT); do
-    printf '.'
+    echo -n '.'
     sleep 1s
 done
 echo -e '\nVirtuoso is up and running'
