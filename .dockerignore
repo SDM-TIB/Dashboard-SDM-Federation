@@ -2,4 +2,12 @@ venv/
 example/
 Dockerfile
 Dockerfile.alpine
-
+.git/
+.idea/
+node_modules
+Makefile
+package.json
+.gitignore
+.dockerignore
+bundle-assets.py
+requirements-dev.txt

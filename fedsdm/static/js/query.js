@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    let yasqe = null,
+        start = false,
+        end = true,
+        query = null,
+        querytriples = [];
+    var vizdata = {nodes: {}, links: []};
+    var queryvars = []
     let table = null, selectedRow = null, selectedRowData = [],
         nodes = [], links = [];
     $("#selectfederation").prop("disabled", true);
@@ -19,8 +26,202 @@ $(document).ready(function() {
         federation = $(this).val();
         $("#queryrow").show();
         $("#resultrow").hide();
-        yasqe.setValue(yasqe.getValue());
+        if (yasqe == null) {
+            initialize_yasqe()
+        }
     });
+
+    if (federation !== "") {
+        initialize_yasqe()
+    }
+
+    function initialize_yasqe() {
+        yasqe = YASQE(document.getElementById("yasqe"), {
+            // display full query
+            viewportMargin: Infinity,
+            // grey edit window during query execution
+            backdrop: true,
+            // modify codemirror tab handling to solely use 2 spaces
+            tabSize: 2,
+            indentUnit: 2,
+            extraKeys: {
+                Tab: function(cm) {
+                    cm.replaceSelection(new Array(cm.getOption("indentUnit") + 1).join(" "));
+                }
+            },
+            sparql: {
+                showQueryButton: true,
+                endpoint: "/query/sparql",
+                callbacks: {
+                    beforeSend: function(jqXHR, setting) {
+                        //console.log("federation to query from",federation);
+                        $("#resstatus").hide();
+                        $("#visualizebtn").hide();
+                        $("#showtablebtn").hide();
+                        setting.url = "/query/sparql?federation=" + federation + "&query=" + encodeURIComponent(yasqe.getValue());
+                        setting.crossDomain = true;
+                        setting.data ={"query": yasqe.getValue()};
+                        $("#resultinfo").hide();
+                        $("#queryresultstable").empty();
+                    },
+                    success: function(data) {
+                        $("#resulttablediv").empty()
+                            .append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
+
+                        if ("error" in data) {
+                            $("#resstatus").html("Error:" + data.error);
+                            $("#resultrow").show();
+                            $("#resstatus").show();
+                            $("#resultinfo").show();
+                            return true
+                        }
+                        resdrawn = false;
+                        $("#frestime").html(" " + data.firstResult + " sec");
+                        $("#exetime").html(" " + data.execTime + " sec");
+
+                        query = encodeURIComponent(yasqe.getValue());
+
+                        let results = data.result,
+                            vars = []
+                        if (results.length > 0) {
+                            $("#resstatus").hide();
+                            $("#resultinfo").show();
+                            $("#resultrow").show();
+
+                            vars = data.vars;
+
+                            var theader = "<thead><tr>";
+                            var tfooter = "<tfoot><tr>";
+                            for (var i = 0; i < vars.length; i++) {
+                                theader =  theader + "<th>" + vars[i] + "</th> ";
+                                tfooter =  tfooter + "<th>" + vars[i] + "</th> ";
+                                queryvars.push(vars[i]);
+                            }
+                            $("#queryresultstable").append(theader + "</tr></thead>")
+                                .append("<tbody></tbody>")
+                                .append(tfooter + "</tr></tfoot>");
+
+                            table = $("#queryresultstable").DataTable({
+                                responsive: true,
+                                select: true,
+                                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                                dom: "Blfrtip",
+                                buttons: [
+                                    {
+                                        text: "copy"
+                                    }, {
+                                        text: "csv",
+                                        extend: "csvHtml5",
+                                        title: "sparql-results"
+                                    }, {
+                                        text: "excel",
+                                        extend: "excelHtml5",
+                                        title: "sparql-results"
+                                    }, {
+                                        text: "pdf",
+                                        extend: "pdfHtml5",
+                                        title: "sparql-results"
+                                    }, {
+                                        text: "TSV",
+                                        extend: "csvHtml5",
+                                        fieldSeparator: "\t",
+                                        extension: ".tsv",
+                                        title: "sparql-results"
+                                    }
+                                ]
+                            });
+                            querytriples = data.querytriples;
+                            var resmap = {}
+                            for (let i = 0; i < results.length; i++) {
+                                var row = results[i];
+                                var rowml = [];
+                                for (var j = 0; j < vars.length; j++) {
+                                    var val = row[vars[j]];
+                                    if (val.indexOf("^^<") !== -1) {
+                                        val = val.substring(0, val.indexOf("^^"));
+                                    }
+                                    if ("http" === val.substring(0, 4)) {
+                                        // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
+                                        rowml.push(val);
+                                    } else {
+                                        rowml.push(val);
+                                    }
+                                    resmap[vars[j]] = val;
+                                }
+                                table.row.add(rowml).draw(false);
+                                // append_nodes_edges(resmap, querytriples);
+                            }
+                            table.columns().every(function() {
+                                var column = this;
+                                var select = $('<select><option value="">All</option></select>')
+                                    .appendTo($(column.footer()).empty())
+                                    .on("change", function() {
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                        console.log(val);
+//
+//                                var ltix = val.indexOf("&lt;");
+//                                if (ltix > 0) {
+//                                    val = val.substring(ltix + 4, val.indexOf("&gt;"));
+//                                }
+                                        column.search(val ? "^" + val + "$" : "", true, false).draw();
+                                    } );
+                                //console.log(column.data().unique());
+                                column.data().unique().sort().each(function(d, j) {
+                                    var val = d;
+                                    var ltix = val.indexOf("&lt;");
+                                    if (ltix > 0) {
+                                        val = val.substring(ltix+4, val.indexOf("&gt;"));
+                                    }
+                                    // console.log("data", d, val);
+                                    select.append("<option value=" + d + ">" + d + "</option>");
+                                } );
+                            });
+                            table.on("select", function(e, dt, type, indexes) {
+                                selectedRow = table.rows( indexes ).data().toArray();
+
+                                selectedRowData = [];
+                                for (i in selectedRow[0]) {
+                                    var ltix = selectedRow[0][i].indexOf("&lt;");
+                                    if (ltix > 0) {
+                                        var value = selectedRow[0][i].substring(ltix + 4, selectedRow[0][i].indexOf("&gt;"));
+                                        selectedRowData.push(value)
+                                    } else {
+                                        selectedRowData.push(selectedRow[0][i])
+                                    }
+                                }
+
+                                //console.log("selected row:", selectedRowData, ltix);
+
+                                $("#addfeedback").prop("disabled", false);
+                            }).on("deselect", function(e, dt, type, indexes) {
+                                var rowData = table.rows(indexes).data().toArray();
+                                $("#addfeedback").prop("disabled", true);
+                                selectedRow = null;
+                            });
+                        } else {
+                            $("#resstatus").html("No results found!")
+                                .show();
+                            $("#resultinfo").show();
+                            $("#resultrow").show();
+                            response = false;
+                            return true;
+                        }
+                        response = true;
+                        $("#stopbutton").prop("disabled", false);
+                        show_incremental(vars);
+                    } // end of sparql success callback function
+                }
+            },
+            value: "SELECT DISTINCT ?concept WHERE {\n\t?s a ?concept\n} LIMIT 10"
+        });
+        query = encodeURIComponent(yasqe.getValue());
+        // register our custom autocompleters
+        YASQE.registerAutocompleter("customPropertyCompleter", customPropertyCompleter);
+        YASQE.registerAutocompleter("customClassCompleter", customClassCompleter);
+        // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
+        YASQE.defaults.autocompleters = ["customClassCompleter", "customPropertyCompleter"];
+    }
 
     $("#visualizebtn").hide()
     $("#visualizebtn").click(function() {
@@ -95,194 +296,6 @@ $(document).ready(function() {
         resdrawn = true;
         drawRDFMTS(manodes, malinks, "mtviz");
     }
-
-    // finally, initialize YASQE
-    let yasqe = YASQE(document.getElementById("yasqe"), {
-        // display full query
-        viewportMargin: Infinity,
-        // grey edit window during query execution
-        backdrop: 99,
-        // modify codemirror tab handling to solely use 2 spaces
-        tabSize: 2,
-        indentUnit: 2,
-        extraKeys: {
-            Tab: function(cm) {
-                cm.replaceSelection(new Array(cm.getOption("indentUnit") + 1).join(" "));
-            }
-        },
-        sparql: {
-            showQueryButton: true,
-            endpoint: "/query/sparql"
-        }
-    });
-
-    YASQE.defaults.sparql.showQueryButton = true;
-    YASQE.defaults.value = "SELECT DISTINCT ?concept\nWHERE {\n\t?s a ?concept\n} LIMIT 10";
-    YASQE.defaults.sparql.endpoint = "/query/sparql";
-    yasqe.options.sparql.callbacks.beforeSend = function(jqXHR, setting) {
-        //console.log("federation to query from",federation);
-        $("#resstatus").hide();
-        $("#visualizebtn").hide();
-        $("#showtablebtn").hide();
-        setting.url = "/query/sparql?federation=" + federation + "&query=" + encodeURIComponent(yasqe.getValue());
-        setting.crossDomain = true;
-        setting.data ={"query": yasqe.getValue()};
-        $("#resultinfo").hide();
-        $("#queryresultstable").empty();
-    }
-
-    var start = false, end = true;
-    let query = encodeURIComponent(yasqe.getValue()),
-        querytriples = [];
-    var vizdata = {nodes: {}, links: []};
-    var queryvars = []
-    yasqe.options.sparql.callbacks.success = function(data) {
-        $("#resulttablediv").empty()
-                                 .append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
-
-        if ("error" in data) {
-            $("#resstatus").html("Error:" + data.error);
-            $("#resultrow").show();
-            $("#resstatus").show();
-            $("#resultinfo").show();
-            return true
-        }
-        resdrawn = false;
-        $("#frestime").html(" " + data.firstResult + " sec");
-        $("#exetime").html(" " + data.execTime + " sec");
-
-        query = encodeURIComponent(yasqe.getValue());
-
-        let results = data.result,
-            vars = []
-        if (results.length > 0) {
-            $("#resstatus").hide();
-            $("#resultinfo").show();
-            $("#resultrow").show();
-
-            vars = data.vars;
-
-            var theader = "<thead><tr>";
-            var tfooter = "<tfoot><tr>";
-            for (var i = 0; i < vars.length; i++) {
-                theader =  theader + "<th>" + vars[i] + "</th> ";
-                tfooter =  tfooter + "<th>" + vars[i] + "</th> ";
-                queryvars.push(vars[i]);
-            }
-            $("#queryresultstable").append(theader + "</tr></thead>")
-                                        .append("<tbody></tbody>")
-                                        .append(tfooter + "</tr></tfoot>");
-
-            table = $("#queryresultstable").DataTable({
-                responsive: true,
-                select: true,
-                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-                dom: "Blfrtip",
-                buttons: [
-                    {
-                        text: "copy"
-                    }, {
-                        text: "csv",
-                        extend: "csvHtml5",
-                        title: "sparql-results"
-                    }, {
-                        text: "excel",
-                        extend: "excelHtml5",
-                        title: "sparql-results"
-                    }, {
-                        text: "pdf",
-                        extend: "pdfHtml5",
-                        title: "sparql-results"
-                    }, {
-                        text: "TSV",
-                        extend: "csvHtml5",
-                        fieldSeparator: "\t",
-                        extension: ".tsv",
-                        title: "sparql-results"
-                    }
-                ]
-            });
-            querytriples = data.querytriples;
-            var resmap = {}
-            for (let i = 0; i < results.length; i++) {
-                var row = results[i];
-                var rowml = [];
-                for (var j = 0; j < vars.length; j++) {
-                    var val = row[vars[j]];
-                    if (val.indexOf("^^<") !== -1) {
-                        val = val.substring(0, val.indexOf("^^"));
-                    }
-                    if ("http" === val.substring(0, 4)) {
-                        // rowml.push("<a href=\"" + val + "\"> &lt;" + val + "&gt;</a>");
-                        rowml.push(val);
-                    } else {
-                        rowml.push(val);
-                    }
-                    resmap[vars[j]] = val;
-                }
-                table.row.add(rowml).draw(false);
-                // append_nodes_edges(resmap, querytriples);
-            }
-            table.columns().every(function() {
-                var column = this;
-                var select = $('<select><option value="">All</option></select>')
-                    .appendTo($(column.footer()).empty())
-                    .on("change", function() {
-                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                        console.log(val);
-//
-//                                var ltix = val.indexOf("&lt;");
-//                                if (ltix > 0) {
-//                                    val = val.substring(ltix + 4, val.indexOf("&gt;"));
-//                                }
-                        column.search(val ? "^" + val + "$" : "", true, false).draw();
-                    } );
-                //console.log(column.data().unique());
-                column.data().unique().sort().each(function(d, j) {
-                    var val = d;
-                    var ltix = val.indexOf("&lt;");
-                    if (ltix > 0) {
-                        val = val.substring(ltix+4, val.indexOf("&gt;"));
-                    }
-                    // console.log("data", d, val);
-                    select.append("<option value=" + d + ">" + d + "</option>");
-                } );
-            });
-            table.on("select", function(e, dt, type, indexes) {
-                selectedRow = table.rows( indexes ).data().toArray();
-
-                selectedRowData = [];
-                for (i in selectedRow[0]) {
-                    var ltix = selectedRow[0][i].indexOf("&lt;");
-                    if (ltix > 0) {
-                        var value = selectedRow[0][i].substring(ltix + 4, selectedRow[0][i].indexOf("&gt;"));
-                        selectedRowData.push(value)
-                    } else {
-                        selectedRowData.push(selectedRow[0][i])
-                    }
-                }
-
-                //console.log("selected row:", selectedRowData, ltix);
-
-                $("#addfeedback").prop("disabled", false);
-            }).on("deselect", function(e, dt, type, indexes) {
-                var rowData = table.rows(indexes).data().toArray();
-                $("#addfeedback").prop("disabled", true);
-                selectedRow = null;
-            });
-        } else {
-            $("#resstatus").html("No results found!")
-                                .show();
-            $("#resultinfo").show();
-            $("#resultrow").show();
-            response = false;
-            return true;
-        }
-        response = true;
-        $("#stopbutton").prop("disabled", false);
-        show_incremental(vars);
-    }; // end of sparql success callback function
 
     var addfeedbackform = null;
     var addfeedbackdialog = null;
@@ -585,10 +598,7 @@ $(document).ready(function() {
         };
         return returnObj;
     };
-    // now register our new autocompleter
-    YASQE.registerAutocompleter("customPropertyCompleter", customPropertyCompleter);
 
-    // excellent, now do the same for the classes
     var customClassCompleter = function(yasqe) {
         var returnObj = {
             isValidCompletionPosition: function() { return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe) },
@@ -622,10 +632,6 @@ $(document).ready(function() {
         };
         return returnObj;
     };
-
-    YASQE.registerAutocompleter("customClassCompleter", customClassCompleter);
-    // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
-    YASQE.defaults.autocompleters = ["customClassCompleter", "customPropertyCompleter"];
 
     $("#classes").click(function() {
         yasqe.setValue("SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}");

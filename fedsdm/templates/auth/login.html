@@ -6,8 +6,13 @@
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
     <!-- Custom Fonts -->
-    <link href="{{ url_for('static', filename='css/fontawesome.min.css') }}" type="text/css">
-    <link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" >
+    <link href="{{ url_for('static', filename='css/fontawesome.all.min.css') }}" type="stylesheet">
+    <link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/libs/jquery.bundle.min.js') }}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -48,9 +53,4 @@
         </div>
     </div>
 </div>
-<!-- jQuery -->
-<script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/jquery-ui.min.js') }}"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
 </body>

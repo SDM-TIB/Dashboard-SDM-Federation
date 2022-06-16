@@ -4,6 +4,8 @@ venv/
 *.pyc
 parsetab.py
 
+node_modules/
+
 virtuoso.lck
 virtuoso.log
 virtuoso.pxa

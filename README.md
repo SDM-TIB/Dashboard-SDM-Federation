@@ -1,7 +1,18 @@
 # FedSDM: Semantic Data Manager for Federations of RDF Datasets
 
-Video demo: https://drive.google.com/file/d/135n39M87vikhaNJ6BjEGQ0WIzSGDEnWs/view?usp=sharing
+FedSDM is a semantic data manager for federations of RDF datasets.
 
-To start the dashboard:
-`docker build . -t fedsdm`
-`docker run --name fedsdm -p 5003:5003 fedsdm`
+## Running the Example
+**Prerequisites:**
+* make 4.1 or newer
+* Python3 (including pip) 3.6 or newer
+* npm 3.5 or newer
+* Docker 20.10 or newer
+* docker-compose 1.25 or newer
+
+You might want to activate a virtual enviornment before proceeding, so that the build dependencies are not messing with your main installation of Python.
+
+To start the dashboard with some pre-loaded example data, run
+```bash
+make run-example
+```

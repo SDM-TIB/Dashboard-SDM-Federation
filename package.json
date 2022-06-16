@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "jquery": "3.3.1",
+    "jquery.md5": "1.0.2",
+    "jquery-ui-dist": "1.12.1",
+    "chart.js": "2.7.2",
+    "morris.js.so": "0.5.1",
+    "raphael": "2.2.8",
+    "@fortawesome/fontawesome-free": "6.1.1",
+    "datatables.net": "1.10.18",
+    "datatables.net-dt": "1.10.18",
+    "datatables.net-responsive": "2.2.2",
+    "datatables.net-responsive-dt": "2.2.2",
+    "datatables.net-buttons": "1.5.4",
+    "datatables.net-buttons-dt": "1.5.4",
+    "datatables.net-select": "1.2.6",
+    "datatables.net-select-dt": "1.2.6",
+    "datatables.net-editor": "1.6.5",
+    "pdfmake": "0.2.5",
+    "bootstrap": "3.3.7",
+    "d3": "2.10.3",
+    "yasgui-yasqe": "2.11.22"
+  }
+}
