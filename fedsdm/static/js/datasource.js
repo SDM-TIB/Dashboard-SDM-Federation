@@ -1,6 +1,4 @@
-$(document).ready(function() {
-
-
+$(function() {
     /*
     **********************************************************
     ************ Manage data source Data Table ***************

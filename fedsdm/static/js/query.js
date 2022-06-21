@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     let yasqe = null,
         start = false,
         end = true,

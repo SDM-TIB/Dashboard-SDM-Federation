@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     var federation = $("#federations-list").val();
     $("#selectfederation").prop("disabled", true);
     var loaded = 0;

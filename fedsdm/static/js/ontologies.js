@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
         $( "#editds" ).prop( "disabled", true );
         $( "#removeds" ).prop( "disabled", true );
 

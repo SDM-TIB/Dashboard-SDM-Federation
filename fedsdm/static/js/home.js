@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     /*
     *************************************************************************
     ******* Load statistics about data sources, RDF-MTs and links ***********

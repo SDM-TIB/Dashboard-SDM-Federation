@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     $("#datasources").prop("disabled", true);
     $("#mtdetails").prop("disabled", true);
     $("#mtviz").hide();
