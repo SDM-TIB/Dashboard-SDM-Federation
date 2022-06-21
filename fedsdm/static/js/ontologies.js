@@ -112,7 +112,7 @@ $(function() {
       addUser();
     });
 
-     $( "#addds" ).click(function() {
+     $( "#addds" ).on("click", function() {
       dialog.dialog( "open" );
     });
 
@@ -132,7 +132,7 @@ $(function() {
             selectedRow = null
         } );
 
-    $( "#editds" ).click(function() {
+    $( "#editds" ).on("click", function() {
       console.log(selectedRow[0][0]);
       $( "#ename" ).val(selectedRow[0][0]);
       $( "#elabel" ).val(selectedRow[0][1]);
@@ -143,7 +143,7 @@ $(function() {
 
     });
 
-    $('#removeds').click( function () {
+    $('#removeds').on("click", function () {
         table.row('.selected').remove().draw( false );
         $( "#editds" ).prop( "disabled", true );
         $( "#removeds" ).prop( "disabled", true );

@@ -24,7 +24,7 @@ $(function() {
             }
             html += '<li class="divider"></li><li class="fed"><a href="#" class="fed" id="fed-'+(f+1)+'">All</a></li>'
             $("#federations-list").html(html);
-            $("a[class=fed]").click(function(){
+            $("a[class=fed]").on("click", function(){
                 fed = $(this).text()
                 $("#fedName").html(fed);
                 $("#mfedName").html(fed);
@@ -206,12 +206,12 @@ $(function() {
     }
 
     // Add data source click action
-     $( "#addds" ).click(function() {
+     $( "#addds" ).on("click", function() {
       dialog.dialog( "open" );
     });
 
     // Edit data source click action
-    $( "#editds" ).click(function() {
+    $( "#editds" ).on("click", function() {
       console.log(selectedRow[0][0]);
       $( "#ename" ).val(selectedRow[0][1]);
       $( "#eURL" ).val(selectedRow[0][2]);
@@ -223,7 +223,7 @@ $(function() {
     });
 
     //Remove data source click action
-    $('#removeds').click( function () {
+    $('#removeds').on("click", function () {
         table.row('.selected').remove().draw( false );
         $( "#editds" ).prop( "disabled", true );
         $( "#removeds" ).prop( "disabled", true );
@@ -231,7 +231,7 @@ $(function() {
     });
 
     // Create Mappings click action
-    $('#createmapping').click( function () {
+    $('#createmapping').on("click", function () {
           window.location = "api/mappings"
     });
 

@@ -47,7 +47,7 @@ $(function() {
             }
         });
 
-    $("#federations-list").change(function(){
+    $("#federations-list").on("change", function() {
         fed = $( this ).val()
         $("#mfedName").html(fed);
         basic_stat(fed);
@@ -95,7 +95,7 @@ $(function() {
             stats.ajax.url("/api/datasources?graph=" + fed + "&dstype=Neo4j").load();
         }
     }
-    $('#createmappingbtn').click(function(){
+    $('#createmappingbtn').on("click", function() {
         $("#datasourcerow").hide();
         $('#createmappingbtn').hide();
         $("#federationlistrow").hide();
@@ -105,7 +105,7 @@ $(function() {
         show_labels(federation, selectedDataSourceID);
     });
 
-    $("#backtotable").click(function(){
+    $("#backtotable").on("click", function() {
         $("#federationlistrow").show();
         $("#datasourcerow").show();
         $('#createmappingbtn').show();
@@ -150,7 +150,7 @@ $(function() {
         }
     }
 
-    $('#startmapping').click(function(){
+    $('#startmapping').on("click", function() {
          $("#graphlabelsinfodiv").hide();
          $("#sampledoctablediv").show();
 
@@ -267,7 +267,7 @@ $(function() {
         });
     }
 
-    $("#selectsubjcol").click(function(){
+    $("#selectsubjcol").on("click", function() {
         $("#mappingtextarea").prop('disabled', true);
         var lbl = selectedLabel.replace(" ", "_");
         var dbp = selectedDataSourceName.replace(" ", "_");
@@ -275,13 +275,13 @@ $(function() {
         dialog.dialog("open");
     });
 
-    $("#columnNames").change(function(){
+    $("#columnNames").on("change", function() {
         var lbl = selectedLabel.replace(" ", "_");
         var dbp = selectedDataSourceName.replace(" ", "_");
         $("#subjtemp").val(selectedDataSourceID + "/"+dbp + '/' + lbl + "/resource/{"+ $( this ).val().replace(" ", "_") +"}");
     });
 
-    $("#resetMappingBtn").click(function(){
+    $("#resetMappingBtn").on("click", function() {
         rml = "";
         $("#mappingtextarea").val('');
         $("#mappingtextarea").prop('disabled', true);
@@ -291,7 +291,7 @@ $(function() {
         $("#selectpredobjbtn").prop('disabled', true);
     });
 
-    $("#saveMappingBtn").click(function(){
+    $("#saveMappingBtn").on("click", function() {
         var mapareahtml = ""
             for (s in subjectRML){
                 mapareahtml += subjectRML[s];
@@ -423,12 +423,12 @@ $(function() {
      dialog.dialog( "close" );
      return true;
     }
-    $("#activeSubjectID").change(function(){
+    $("#activeSubjectID").on("change", function() {
         activeSubjectID = $(this).val();
         $("#selectedactiveSubjID").html($(this));
     });
 
-    $("#selectpredobjbtn").click(function(){
+    $("#selectpredobjbtn").on("click", function() {
         var parentMaps = '<option value="">--select parent triple map --</option>';
         for (t in subjectMaps){
             parentMaps += '<option value="' + subjectMaps[t] +'">' + t +'</option>';

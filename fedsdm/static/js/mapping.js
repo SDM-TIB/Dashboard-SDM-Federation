@@ -23,7 +23,7 @@ $(function() {
         show_datasource(federation);
     }
 
-    $("#federations-list").change(function(){
+    $("#federations-list").on("change", function() {
         fed = $( this ).val();
         if (fed == null || fed == ""){
             return false;
@@ -105,7 +105,7 @@ $(function() {
         }
     }
 
-    $('#showcollectionsbtn').click(function(){
+    $('#showcollectionsbtn').on("click", function() {
         $("#federationlistrow").hide();
         $("#datasourcerow").hide();
 
@@ -115,7 +115,7 @@ $(function() {
         show_databases();
     });
 
-    $("#backtodstablebtn").click(function(){
+    $("#backtodstablebtn").on("click", function() {
         $("#collectionsrow").hide();
 
         $("#federationlistrow").show();
@@ -188,14 +188,14 @@ $(function() {
 
     }
 
-    $('#createmappingbtn').click(function(){
+    $('#createmappingbtn').on("click", function() {
          $("#collectionsrow").hide();
          $("#mappingrow").show();
          $("#docname").html(selectedDatabaseName);
          show_samples();
     });
 
-    $("#backtocollectionstablebtn").click(function(){
+    $("#backtocollectionstablebtn").on("click", function() {
         $("#mappingrow").hide();
         $("#collectionsrow").show();
 
@@ -338,7 +338,7 @@ $(function() {
     ***************************************************
     */
 
-    $("#selectsubjcol").click(function(){
+    $("#selectsubjcol").on("click", function() {
         $("#mappingtextarea").prop('disabled', true);
         var lbl = selectedDatabaseName.replace(" ", "_");
         var dbp = selectedDatasourceRow[0][1].replace(" ", "_");
@@ -346,7 +346,7 @@ $(function() {
         dialog.dialog("open");
     });
 
-    $("#columnNames").change(function(){
+    $("#columnNames").on("change", function() {
         var lbl = selectedDatabaseName.replace(" ", "_");
         var dbp = selectedDatasourceRow[0][1].replace(" ", "_");
         $("#subjtemp").val(selectedDataSourceID + "/"+dbp + '/' + lbl + "/resource/{"+ $( this ).val().replace(" ", "_") +"}");
@@ -438,12 +438,12 @@ $(function() {
      dialog.dialog( "close" );
      return true;
     }
-    $("#activeSubjectID").change(function(){
+    $("#activeSubjectID").on("change", function() {
         activeSubjectID = $(this).val();
         $("#selectedactiveSubjID").html($(this));
     });
 
-    $("#selectpredobjbtn").click(function(){
+    $("#selectpredobjbtn").on("click", function() {
         var parentMaps = '<option value="">--select parent triple map --</option>';
         for (t in subjectMaps){
             parentMaps += '<option value="' + subjectMaps[t] +'">' + t +'</option>';

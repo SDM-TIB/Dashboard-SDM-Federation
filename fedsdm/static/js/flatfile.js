@@ -45,7 +45,7 @@ $(function() {
             }
         });
     }
-    $("#federations-list").change(function(){
+    $("#federations-list").on("change", function(){
         fed = $( this ).val()
         $("#mfedName").html(fed);
         basic_stat(fed);
@@ -88,7 +88,7 @@ $(function() {
         }
     }
 
-    $('#createmapping').click(function(){
+    $('#createmapping').on("click", function(){
         $("#datasourcerow").hide();
         $('#createmapping').hide();
         $("#federationlistrow").hide();
@@ -99,7 +99,7 @@ $(function() {
          $('#startmapping').prop('disabled', true);
         show_samples();
     });
-    $("#backtotable").click(function(){
+    $("#backtotable").on("click", function(){
         $("#federationlistrow").show();
         $("#datasourcerow").show();
         $('#createmapping').show();
@@ -203,19 +203,19 @@ $(function() {
 
     }
 
-    $("#selectsubjcol").click(function(){
+    $("#selectsubjcol").on("click", function() {
         $("#mappingtextarea").prop('disabled', true);
         var db = selectedDatabaseName.replace(" ", "_").replace(" ", "_").replace(" ", "_");
         $("#subjtemp").val(selectedDataSourceID + "/" + db +"/resource/")
         dialog.dialog("open");
     });
 
-    $("#columnNames").change(function(){
+    $("#columnNames").on("change", function() {
         var db = selectedDatabaseName.replace(" ", "_").replace(" ", "_").replace(" ", "_");
         $("#subjtemp").val(selectedDataSourceID + "/" + db +"/resource/{"+ $( this ).val().replace(" ", "_") +"}");
     });
 
-    $("#resetMappingBtn").click(function(){
+    $("#resetMappingBtn").on("click", function() {
         rml = ""
         $("#mappingtextarea").val('')
         subjectMaps = {};
@@ -224,7 +224,7 @@ $(function() {
         $("#selectpredobjbtn").prop('disabled', true);
     });
 
-    $("#saveMappingBtn").click(function(){
+    $("#saveMappingBtn").on("click", function() {
         var mapareahtml = ""
             for (s in subjectRML){
                 mapareahtml += subjectRML[s];
@@ -334,12 +334,12 @@ $(function() {
      dialog.dialog( "close" );
      return true;
     }
-    $("#activeSubjectID").change(function(){
+    $("#activeSubjectID").on("change", function() {
         activeSubjectID = $(this).val();
         $("#selectedactiveSubjID").html($(this));
     });
 
-    $("#selectpredobjbtn").click(function(){
+    $("#selectpredobjbtn").on("click", function() {
         var parentMaps = '<option value="">--select parent triple map --</option>';
         for (t in subjectMaps){
             parentMaps += '<option value="' + subjectMaps[t] +'">' + t +'</option>';

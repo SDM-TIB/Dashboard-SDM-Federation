@@ -22,7 +22,7 @@ $(function() {
         $("#resultrow").hide();
     }
 
-    $("#federations-list").change(function() {
+    $("#federations-list").on("change", function() {
         federation = $(this).val();
         $("#queryrow").show();
         $("#resultrow").hide();
@@ -224,7 +224,7 @@ $(function() {
     }
 
     $("#visualizebtn").hide()
-    $("#visualizebtn").click(function() {
+    $("#visualizebtn").on("click", function() {
         $("#resultgraphdiv").show();
         $("#resulttablediv").hide();
         $("#visualizebtn").hide();
@@ -232,7 +232,7 @@ $(function() {
         drawresults();
         $("#resultgraphdiv").show();
     });
-    $("#showtablebtn").click(function() {
+    $("#showtablebtn").on("click", function() {
         $("#resultgraphdiv").hide();
         $("#resulttablediv").show();
         $("#visualizebtn").show();
@@ -388,7 +388,7 @@ $(function() {
         }
     }
 
-    $("#addfeedback").click(function() {
+    $("#addfeedback").on("click", function() {
         $("#fedbackpreds").empty()
                                .append('<option value="-1">Select column</option>');
         for (d in queryvars) {
@@ -539,7 +539,7 @@ $(function() {
         // setTimeout(,1000);
     }
     let shouldstop = false;
-    $("#stopbutton").click(function() {
+    $("#stopbutton").on("click", function() {
         console.log("stop pressed");
         response = false;
         shouldstop = true;
@@ -633,11 +633,11 @@ $(function() {
         return returnObj;
     };
 
-    $("#classes").click(function() {
+    $("#classes").on("click", function() {
         yasqe.setValue("SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}");
     });
 
-    $("#analyticalnumtheoryex").click(function() {
+    $("#analyticalnumtheoryex").on("click", function() {
         yasqe.setValue("PREFIX schema: <http://schema.org/> \n" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
             "SELECT DISTINCT * WHERE {\n" +

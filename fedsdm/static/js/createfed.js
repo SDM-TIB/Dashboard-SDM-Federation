@@ -1,7 +1,7 @@
 $(function() {
     let federation = null;
 
-    $("#create-new-federation").click(function() {
+    $("#create-new-federation").on("click", function() {
         let name = $("#name").val(),
             desc = $("#description").val();
         console.log(name + " " + desc);

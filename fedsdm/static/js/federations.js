@@ -14,7 +14,7 @@ $(function() {
     showFederations(federation);
 
     // Federation list dropdown change event, triggers visualization of statistics and management data
-    $("#federations-list").change(function() {
+    $("#federations-list").on("change", function() {
         federation = $(this).val();
         showFederations(federation);
     });
@@ -236,12 +236,12 @@ $(function() {
     }
 
     // Add data source click action
-    $("#addds").click(function() {
+    $("#addds").on("click", function() {
         dialog.dialog("open");
     });
 
     // Edit data source click action
-    $("#editds").click(function() {
+    $("#editds").on("click", function() {
         $("#ename").val(selectedSource[0][1]);
         $("#eURL").val(selectedSource[0][2]);
         $("#edstype").val(selectedSource[0][3]);
@@ -255,7 +255,7 @@ $(function() {
     });
 
     //Remove data source click action
-    $("#removeds").click(function() {
+    $("#removeds").on("click", function() {
         // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
             type: "GET",
@@ -283,7 +283,7 @@ $(function() {
     });
 
     // Create Mappings click action
-    $("#recomputemts").click(function() {
+    $("#recomputemts").on("click", function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: "GET",
@@ -309,7 +309,7 @@ $(function() {
         });
     });
 
-    $("#findlinks").click(function() {
+    $("#findlinks").on("click", function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: "GET",
@@ -335,7 +335,7 @@ $(function() {
         });
     });
 
-    $("#findalllinks").click(function() {
+    $("#findalllinks").on("click", function() {
         $.ajax({
             type: "GET",
             headers: {
@@ -410,10 +410,10 @@ $(function() {
         addDataSource(true);
     });
 
-    $("#CreateNewFed").click(function() {
+    $("#CreateNewFed").on("click", function() {
         crnfdialog.dialog("open");
     });
-    $("#AddFed").click(function() {
+    $("#AddFed").on("click", function() {
         crnfdialog.dialog("open");
     });
 

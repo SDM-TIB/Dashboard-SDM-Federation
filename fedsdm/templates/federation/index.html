@@ -334,12 +334,12 @@
         let activeTab = window.location.hash;
         if (activeTab) {
             if (activeTab === "#home") {
-                $('#maincontent a[href="#home"]').click();
+                $('#maincontent a[href="#home"]').trigger("click");
                 $('#federations-list').val('All')
                     .change();
             }
             else if (activeTab === "#All") {
-                $('#maincontent a[href="#feder"]').click();
+                $('#maincontent a[href="#feder"]').trigger("click");
             }
         }
     });

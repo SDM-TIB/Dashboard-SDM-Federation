@@ -13,7 +13,7 @@ $(function() {
         load_data(federation);
     }
 
-    $("#federations-list").change(function() {
+    $("#federations-list").on("change", function() {
         load_data($(this).val());
     });
 
@@ -117,7 +117,7 @@ $(function() {
     var mmtcards = {"All":[]};
 
 
-    $("#mtdetails").click(function() {
+    $("#mtdetails").on("click", function() {
         $("#listofrdfmts").hide();
         $("#mtdetails").hide();
         $("#backtotable").show();
@@ -195,7 +195,7 @@ $(function() {
         drawRDFMTS(manodes, malinks, "mtviz");
     }
 
-    $("#backtotable").click(function() {
+    $("#backtotable").on("click", function() {
         $("#backtotable" ).hide();
         $("#mtviz").hide();
         $("#listofrdfmts").show();
@@ -309,7 +309,7 @@ $(function() {
             $("#datasources").html(datasources);
             $("#datasources").prop("disabled", false)
             $("#graph").html("<h1> Please select data source!</h1>");
-            $("a[class=datasource]").click(function() {
+            $("a[class=datasource]").on("click", function() {
                 $("#datasourcesbtn").val($(this).text())
                 if ($(this).text() == "All") {
                     $("#vdsname").html("ALL");
@@ -461,7 +461,7 @@ $(function() {
                     $('#legendd').append(legendItem);
 
                     $('#legendd').append('<p id="showmore'+sourcemt+'">Show more ..</p>');
-                    $("#showmore"+sourcemt).click(function () {
+                    $("#showmore"+sourcemt).on("click", function () {
                         $('span[class=legend'+sourcemt+']').show();
                         $("#showmore"+sourcemt).hide();
                         $("#showless"+sourcemt).show();
@@ -477,7 +477,7 @@ $(function() {
             });
             if (i > 9) {
                 $('#legendd').append('<p style="display:none" id="showless'+ sourcemt +'">Show less ..</p>');
-                $("#showless"+sourcemt).click(function() {
+                $("#showless"+sourcemt).on("click", function() {
                     $('span[class=legend'+sourcemt+']').hide();
                     $("#showmore"+sourcemt).show();
                     $("#showless"+sourcemt).hide();
@@ -522,7 +522,7 @@ $(function() {
                         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
                         $('#legend'+key ).append(legendItem);
                         $('#legend'+key ).append('<p id="showmore'+ key +'">Show more ..</p>');
-                        $("#showmore"+key).click(function() {
+                        $("#showmore"+key).on("click", function() {
                             console.log('p[class=legend'+key+']');
                             $('span[class=legend'+key+']').show();
                             $("#showmore"+key).hide();
@@ -539,7 +539,7 @@ $(function() {
                 });
                 if (i > 9) {
                     $('#legend'+key ).append('<p style="display:none" id="showless'+ key +'">Show less ..</p>');
-                    $("#showless"+key).click(function() {
+                    $("#showless"+key).on("click", function() {
                         console.log('p[class=legend'+key+']');
                         $('span[class=legend'+key+']').hide();
                         $("#showless"+key).hide();
@@ -550,12 +550,12 @@ $(function() {
         }
     }
 
-    $("#stopforce").click(function() {
+    $("#stopforce").on("click", function() {
         if (force) {
             force.stop()
         }
     });
-    $("#startforce").click(function() {
+    $("#startforce").on("click", function() {
         if (force) {
             linkdistance += 10;
             //ncharge -= 10;
@@ -563,7 +563,7 @@ $(function() {
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
-    $("#resetforce").click(function() {
+    $("#resetforce").on("click", function() {
         if (force) {
             linkdistance = 150
             var fit = Math.sqrt(anodes.length / (width * height));
@@ -574,19 +574,19 @@ $(function() {
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
-    $("#graphVizForce").click(function() {
+    $("#graphVizForce").on("click", function() {
         $("#graph").empty();
         console.log("visible tab for datasource selection:" + tabvisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'force');
         viztype = "fgraph";
     });
-    $("#graphVizCircular").click(function() {
+    $("#graphVizCircular").on("click", function() {
         $("#graph").empty();
         console.log("visible tab for datasource selection:" + tabvisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'circular');
         viztype = "cgraph";
     });
-    $("#donutViz").click(function() {
+    $("#donutViz").on("click", function() {
         $("#graph").empty();
         $("#graph").html('<div id="morris-donut-chart"></div>')
         console.log(source, mtcards);
@@ -1664,7 +1664,7 @@ $(function() {
 
         // update existing nodes (reflexive & selected visual states)
         circle.selectAll('circle')
-            .style('fill', function(d) { return  (d === selected_node) ?d3.rgb(colors(d.datasource)).brighter().toString() : colors(d.datasource); })
+            .style('fill', function(d) { return  (d === selected_node) ? d3.rgb(colors(d.datasource)).brighter().toString() : colors(d.datasource); })
             .classed('reflexive', function(d) { return d.reflexive; });
 
         // add new nodes

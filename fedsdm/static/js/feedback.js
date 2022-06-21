@@ -7,7 +7,7 @@ $(function() {
         load_table(federation);
     }
 
-    $("#federations-list").change(function() {
+    $("#federations-list").on("change", function() {
         federation = $(this).val();
         load_table(federation);
     });
@@ -107,7 +107,7 @@ $(function() {
         }
     });
 
-    $("#issuedetails").click(function(){
+    $("#issuedetails").on("click", function() {
         $.ajax({
             type: "GET",
             headers: {
