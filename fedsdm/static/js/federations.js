@@ -20,7 +20,7 @@ $(function() {
     });
 
     let statsTablefed = null;
-    window.federationOverview = function(feds, nf, nd, nl, nm, np, nk) {
+    window.federationOverview = function(feds) {
         if (statsTablefed == null) {
             statsTablefed = $("#federations-statistics").DataTable({
                 order: [[ 1, "desc" ]],
@@ -31,36 +31,18 @@ $(function() {
         } else {
             statsTablefed.clear().draw();
         }
-        var datas = [];
-        $.ajax({
-            type: "GET",
-            headers: {
-                Accept : "application/json"
-            },
-            url: "/federation/stats",
-            data: {"graph": federation},
-            dataType: "json",
-            crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
-                datas = feds;
-                var rdata = {labels:[], rdfmts:[], triples:[]};
-                for (d in nf) {
-                    rem = [];
-                    rem.push(nf[d]);
-                    rem.push(nd[d]);
-                    rem.push(nl[d]);
-                    rem.push(nm[d]);
-                    rem.push(np[d]);
-                    rem.push(nk[d]);
-                    statsTablefed.row.add(rem).draw(false);
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        });
+
+        for (let i in feds) {  // in JavaScript this will return the index and not the element
+            let fed = feds[i],
+                rem = [];
+            rem.push(fed['name']);
+            rem.push(fed['sources']);
+            rem.push(fed['triples']);
+            rem.push(fed['rdfmts']);
+            rem.push(fed['properties']);
+            rem.push(fed['links']);
+            statsTablefed.row.add(rem).draw(false);
+        }
     }
 
     // check if federation name is set, and show statistics and management data
