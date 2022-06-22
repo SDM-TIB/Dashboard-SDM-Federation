@@ -181,3 +181,18 @@ table.dataTable thead .sorting:after {
   opacity: .3 !important;
   filter: Alpha(Opacity=30) !important; /* support: IE8 */
 }
+table.dataTable thead .sorting {
+  background-image: unset !important;
+}
+table.dataTable thead .sorting_asc {
+  background-image: unset !important;
+}
+table.dataTable thead .sorting_desc {
+  background-image: unset !important;
+}
+table.dataTable thead .sorting_asc_disabled {
+  background-image: unset !important;
+}
+table.dataTable thead .sorting_desc_disabled {
+  background-image: unset !important;
+}
