@@ -1,6 +1,6 @@
 # Makefile for building FedSDM
 
-.PHONY: help install bundle build run-example stop
+.PHONY: help install bundle build run-example stop-example
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -8,7 +8,7 @@ help:
 	@echo "  bundle         to pack all dependencies for use in the tool"
 	@echo "  build          to build a fresh Docker image; calls install and bundle as well"
 	@echo "  run-example    to build a fresh Docker image and run the example containers"
-	@echo "  stop           to stop all example containers and remove their data"
+	@echo "  stop-example   to stop all example containers and remove their data"
 
 install:
 	python3 -m pip install -r requirements.txt
@@ -23,5 +23,5 @@ build: install bundle
 run-example: build
 	docker-compose -f example/docker-compose.yml up -d
 
-stop:
+stop-example:
 	docker-compose -f example/docker-compose.yml down -v
