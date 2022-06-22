@@ -272,76 +272,76 @@
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/federations.js') }}"></script>
 <script>
-    $(function(){
-        let nfeds = [],
-            nds = [],
-            ntpl = [],
-            nftm = [],
-            nprp = [],
-            nlnk = [];
-        let ndict = {},
-            ntriples = {},
-            nrdftms = {},
-            nproperties = {},
-            nlinks = {};
-        let federations = JSON.parse('{{ dsstats | tojson | safe }}');
-        let nfd = JSON.parse('{{ federations | tojson | safe }}');
-        for (let i = 0; i < nfd.length; i++) {
-            if (ndict[nfd[i]['name']] === undefined) {
-                ndict[nfd[i]['name']] = 0;
-                ntriples[nfd[i]['name']] = 0;
-                nrdftms[nfd[i]['name']] = 0;
-                nproperties[nfd[i]['name']] = 0;
-                nlinks[nfd[i]['name']] = 0;
-            }
-            for (let j = 0; j < federations.length; j++) {
-                if (federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase()) > 0) {
-                    ndict[nfd[i]['name']]++;
-                    ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(federations[j]['triples']);
-                    nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(federations[j]['rdfmts']);
-                    nproperties[nfd[i]['name']] = parseFloat(nproperties[nfd[i]['name']]) + parseFloat(federations[j]['properties']);
-                    nlinks[nfd[i]['name']] = parseFloat(nlinks[nfd[i]['name']]) + parseFloat(federations[j]['links']);
-                }
+$(function() {
+    let nfeds = [],
+        nds = [],
+        ntpl = [],
+        nftm = [],
+        nprp = [],
+        nlnk = [];
+    let ndict = {},
+        ntriples = {},
+        nrdftms = {},
+        nproperties = {},
+        nlinks = {};
+    let federations = JSON.parse('{{ dsstats | tojson | safe }}');
+    let nfd = JSON.parse('{{ federations | tojson | safe }}');
+    for (let i = 0; i < nfd.length; i++) {
+        if (ndict[nfd[i]['name']] === undefined) {
+            ndict[nfd[i]['name']] = 0;
+            ntriples[nfd[i]['name']] = 0;
+            nrdftms[nfd[i]['name']] = 0;
+            nproperties[nfd[i]['name']] = 0;
+            nlinks[nfd[i]['name']] = 0;
+        }
+        for (let j = 0; j < federations.length; j++) {
+            if (federations[j]['uri'].toLowerCase().indexOf(nfd[i]['name'].toLowerCase()) > 0) {
+                ndict[nfd[i]['name']]++;
+                ntriples[nfd[i]['name']] = parseFloat(ntriples[nfd[i]['name']]) + parseFloat(federations[j]['triples']);
+                nrdftms[nfd[i]['name']] = parseFloat(nrdftms[nfd[i]['name']]) + parseFloat(federations[j]['rdfmts']);
+                nproperties[nfd[i]['name']] = parseFloat(nproperties[nfd[i]['name']]) + parseFloat(federations[j]['properties']);
+                nlinks[nfd[i]['name']] = parseFloat(nlinks[nfd[i]['name']]) + parseFloat(federations[j]['links']);
             }
         }
-        for (let key_ndict in ndict) {
-            if (ndict.hasOwnProperty(key_ndict)) {
-                nds.push(ndict[key_ndict]);
-                nfeds.push(key_ndict);
-            }
+    }
+    for (let key_ndict in ndict) {
+        if (ndict.hasOwnProperty(key_ndict)) {
+            nds.push(ndict[key_ndict]);
+            nfeds.push(key_ndict);
         }
-        for (let key_ntriples in ntriples) {
-            if (ntriples.hasOwnProperty(key_ntriples)) {
-                ntpl.push(ntriples[key_ntriples]);
-            }
+    }
+    for (let key_ntriples in ntriples) {
+        if (ntriples.hasOwnProperty(key_ntriples)) {
+            ntpl.push(ntriples[key_ntriples]);
         }
-        for (let key_nrdftms in nrdftms) {
-            if (nrdftms.hasOwnProperty(key_nrdftms)) {
-                nftm.push(nrdftms[key_nrdftms]);
-            }
+    }
+    for (let key_nrdftms in nrdftms) {
+        if (nrdftms.hasOwnProperty(key_nrdftms)) {
+            nftm.push(nrdftms[key_nrdftms]);
         }
-        for (let key_nproperties in nproperties) {
-            if (nproperties.hasOwnProperty(key_nproperties)) {
-                nprp.push(nproperties[key_nproperties]);
-            }
+    }
+    for (let key_nproperties in nproperties) {
+        if (nproperties.hasOwnProperty(key_nproperties)) {
+            nprp.push(nproperties[key_nproperties]);
         }
-        for (let key_nlinks in nlinks) {
-            if (nlinks.hasOwnProperty(key_nlinks)) {
-                nlnk.push(nlinks[key_nlinks]);
-            }
+    }
+    for (let key_nlinks in nlinks) {
+        if (nlinks.hasOwnProperty(key_nlinks)) {
+            nlnk.push(nlinks[key_nlinks]);
         }
-        federationOverview(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
-        let activeTab = window.location.hash;
-        if (activeTab) {
-            if (activeTab === "#home") {
-                $('#maincontent a[href="#home"]').trigger("click");
-                $('#federations-list').val('All')
-                    .change();
-            }
-            else if (activeTab === "#All") {
-                $('#maincontent a[href="#feder"]').trigger("click");
-            }
+    }
+    federationOverview(federations, nfeds, nds, ntpl, nftm, nprp, nlnk);
+    let activeTab = window.location.hash;
+    if (activeTab) {
+        if (activeTab === "#home") {
+            $('#maincontent a[href="#home"]').trigger("click");
+            $('#federations-list').val('All')
+                                  .change();
         }
-    });
+        else if (activeTab === "#All") {
+            $('#maincontent a[href="#feder"]').trigger("click");
+        }
+    }
+});
 </script>
 {% endblock %}
