@@ -7,7 +7,9 @@ $(function() {
     let federation = $('#federations-list').val(),
         statsTable = null,
         sourceStatsChart = null,
-        bsloaded = 0;
+        bsloaded = 0,
+        table = null,
+        selectedSource = null;
     const prefix = 'http://ontario.tib.eu/federation/g/';
 
     // if federation is set from session, then trigger visualization and management data
@@ -166,9 +168,6 @@ $(function() {
         });
         bsloaded = 1;
     }
-
-    let table,
-        selectedSource = null;
 
     // basic information about data sources in a given federation
     function manage(fed) {
