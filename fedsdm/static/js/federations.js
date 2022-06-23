@@ -167,8 +167,8 @@ $(function() {
         bsloaded = 1;
     }
 
-    var table;
-    let selectedSource = null;
+    let table,
+        selectedSource = null;
 
     // basic information about data sources in a given federation
     function manage(fed) {
@@ -188,7 +188,7 @@ $(function() {
                 defaultContent: "<i>Not set</i>",
                 ajax: "/federation/datasources?graph=" + federation + "&dstype=All"
             });
-            // Dat source table select action
+            // Data source table select action
             table.on("select", function(e, dt, type, indexes) {
                 selectedSource = table.rows(indexes).data().toArray();
                 $("#editds").prop("disabled", false);
@@ -277,7 +277,7 @@ $(function() {
             dataType: "json",
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
-                if (data != null && data.status == 1) {
+                if (data != null && data.status === 1) {
                     alert("Recreating RDF-MTs for "+ selectedSource[0][0] + " is underway ...");
                 } else {
                     alert("Cannot start the process. Please check if there are data sources in this federation.");
@@ -327,7 +327,7 @@ $(function() {
             dataType: "json",
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
-                if (data != null && data.status == 1) {
+                if (data != null && data.status === 1) {
                     alert("Finding links in progress ...");
                 } else {
                     alert("Cannot start the process. Please check if there are data sources in this federation.");
@@ -372,11 +372,11 @@ $(function() {
             text: "Finish",
             click:addDataSource,
             class: "btn btn-success"
-        },{
+        }, {
             text: "Continue",
             click:saveAndMore,
             class: "btn btn-primary"
-        },{
+        }, {
             text: "Cancel",
             click: function() { dialog.dialog("close"); },
             class: "btn btn-danger"
@@ -411,7 +411,7 @@ $(function() {
             text: "Create",
             click: createnewfederation,
             class: "btn btn-success"
-        },{
+        }, {
             text: "Cancel",
             click: function() { crnfdialog.dialog("close"); },
             class: "btn btn-danger"
@@ -496,7 +496,7 @@ $(function() {
             text: "Update Data Source",
             click: updateDS,
             class: "btn btn-success"
-        },{
+        }, {
             text: "Cancel",
             click: function() { edialog.dialog("close"); },
             class: "btn btn-danger"
