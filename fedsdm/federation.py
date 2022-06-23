@@ -32,7 +32,7 @@ def index():
         if session['fed'] not in [f['uri'] for f in feds]:
             del session['fed']
 
-    return render_template('federation/index.html', fedStats=get_federation_stats())
+    return render_template('federation/index.html', fedStats=get_federation_stats(), federations=g.federations)
 
 
 @bp.route('/stats')
