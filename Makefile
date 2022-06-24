@@ -23,7 +23,7 @@ rebuild:
 
 build: install bundle rebuild
 
-run-example: build
+run-example: rebuild
 	docker-compose -f example/docker-compose.yml up -d
 
 stop-example:
