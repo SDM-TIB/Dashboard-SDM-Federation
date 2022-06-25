@@ -12,7 +12,7 @@ help:
 	@echo "  stop-example   to stop all example containers and remove their data"
 
 install:
-	python3 -m pip install -r requirements.txt
+	python3 -m pip install -r requirements-dev.txt
 	npm i
 
 bundle:
@@ -23,7 +23,7 @@ rebuild:
 
 build: install bundle rebuild
 
-run-example: build
+run-example: rebuild
 	docker-compose -f example/docker-compose.yml up -d
 
 stop-example:
