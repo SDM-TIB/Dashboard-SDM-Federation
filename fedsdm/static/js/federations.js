@@ -144,7 +144,7 @@ $(function() {
 
                 if (sourceStatsChart == null) {
                     sourceStatsChart = new Chart($('#sourceStatsChart'), {
-                        type: 'horizontalBar',
+                        type: 'bar',
                         data: {
                             labels: bardata.labels,
                             datasets: sourceStatsToBarChart(bardata)

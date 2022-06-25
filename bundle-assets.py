@@ -22,7 +22,7 @@ bundles = {
         output=CSS_PATH + 'bootstrap.min.css'
     ),
     'chart_js': Bundle(
-        NPM_PATH + 'chart.js/dist/Chart.min.js',
+        NPM_PATH + 'chart.js/dist/chart.min.js',
         filters='jsmin',
         output=JS_PATH + 'Chart.min.js'
     ),

@@ -1,32 +1,39 @@
 const chartOptions = {
+    indexAxis: 'y',
     scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero:true
-            },
-            gridLines: {
-                offsetGridLines: true
+        y: {
+            beginAtZero: true,
+            grid: {
+                offset: true
             }
-        }]
-    },
-    legend: {
-        display: true,
-        labels: {
-            fontColor: colorChartLabels,
-            boxWidth: 8
         }
     },
-    tooltips: {
-        callbacks: {
-            label: function(tooltipItem, data) {
-                let label = data.datasets[tooltipItem.datasetIndex].label || "";
-                if (label) {
-                    label = label.substring(0, label.indexOf("(") - 1);
-                    label += ': ';
+    animations: {
+        numbers: {
+            type: 'number',
+            properties: ['x']
+        }
+    },
+    plugins: {
+        legend: {
+            display: true,
+            labels: {
+                fontColor: colorChartLabels,
+                boxWidth: 12
+            }
+        },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    let label = context.dataset.label || "";
+                    if (label) {
+                        label = label.substring(0, label.indexOf("(") - 1);
+                        label += ': ';
+                    }
+                    const value = Math.round(Math.pow(10, context.parsed.x) * 100) / 100
+                    label += parseInt(value, 10);
+                    return label;
                 }
-                const value = Math.round(Math.pow(10, tooltipItem.xLabel) * 100) / 100
-                label += parseInt(value, 10);
-                return label;
             }
         }
     }

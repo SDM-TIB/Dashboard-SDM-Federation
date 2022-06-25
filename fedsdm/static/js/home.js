@@ -12,9 +12,11 @@ $(function() {
         federationSummaryChart = null;
 
     window.setFederation = function(dataSources, federations) {
-        if (dataSources != null) {
+        if (dataSources != null && federations != null) {
             $("#summary-row").show();
             $('#content-row').show();
+            $("#federation-summary").show();
+            $("#data-summary").show();
 
             let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []};
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
@@ -29,7 +31,7 @@ $(function() {
                 }
             }
             dataSummaryChart = new Chart($("#data-summary-chart"), {
-                type: 'horizontalBar',
+                type: 'bar',
                 data: {
                     labels: dsData.labels,
                     datasets : [
@@ -74,7 +76,7 @@ $(function() {
                 fedData.triples.push(log10(fed.triples))
             }
             federationSummaryChart = new Chart($("#federation-summary-chart"), {
-                type: 'horizontalBar',
+                type: 'bar',
                 data: {
                     labels: fedData.labels,
                     datasets : [
@@ -114,8 +116,6 @@ $(function() {
                 options: chartOptions
             });
         }
-        $("#federation-summary").show();
-        $("#data-summary").show();
     }
 
     window.setStats = function(stats) {
