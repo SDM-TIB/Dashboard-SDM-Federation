@@ -145,43 +145,5 @@ $(function() {
         table.row('.selected').remove().draw(false);
         $("#editds").prop("disabled", true);
         $("#removeds").prop("disabled", true);
-    } );
-
-    Morris.Bar({
-        element: 'morris-bar-chart',
-        data: [{
-            y: 'DBpedia',
-            a: 100,
-            b: 90
-        }, {
-            y: 'Bio2RDF',
-            a: 75,
-            b: 65
-        }, {
-            y: 'IASIS',
-            a: 50,
-            b: 40
-        }, {
-            y: 'Reactome',
-            a: 75,
-            b: 65
-        }, {
-            y: 'Chembl',
-            a: 50,
-            b: 40
-        }, {
-            y: 'Drugbank',
-            a: 75,
-            b: 65
-        }, {
-            y: 'EFADB',
-            a: 100,
-            b: 90
-        }],
-        xkey: 'y',
-        ykeys: ['a', 'b'],
-        labels: ['#Triples', '#Entities'],
-        hideHover: 'auto',
-        resize: true
     });
 });
