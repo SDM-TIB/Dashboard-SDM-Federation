@@ -27,7 +27,7 @@ $(function() {
                 fed = $(this).text()
                 $('#fedName').html(fed);
                 $('#mfedName').html(fed);
-                if (tabvisible == '#home') {
+                if (tabvisible === '#home') {
                     basic_stat(fed);
                 } else {
                     manage(fed);
@@ -49,7 +49,7 @@ $(function() {
     var bsloaded = 0;
     function basic_stat(fed) {
         console.log(fed);
-        if (fed == null || fed == federation && bsloaded == 1) {
+        if (fed == null || fed === federation && bsloaded === 1) {
             return
         }
         if (stats == null) {
@@ -79,12 +79,12 @@ $(function() {
                     rem = [];
                     rem.push(datas[d].ds);
                     var rdfmts = datas[d].rdfmts;
-                    if (rdfmts.indexOf('^^') != -1) {
+                    if (rdfmts.indexOf('^^') !== -1) {
                         rdfmts = rdfmts.substring(0, rdfmts.indexOf('^^'));
                     }
                     rem.push(rdfmts);
                     var triples = datas[d].triples;
-                    if (triples.indexOf('^^') != -1) {
+                    if (triples.indexOf('^^') !== -1) {
                         triples = triples.substring(0, triples.indexOf('^^'));
                     }
                     rem.push(triples);
@@ -121,7 +121,7 @@ $(function() {
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr('href') // activated tab
-        if (target == '#manage') {
+        if (target === '#manage') {
             tabvisible = target;
             manage(federation);
         } else {
@@ -134,7 +134,7 @@ $(function() {
     function manage(fed) {
         $('#fedName').html(fed);
         $('#mfedName').html(fed);
-        if (fed == federation && mngloaded == 1) {
+        if (fed === federation && mngloaded === 1) {
             return
         }
         //Disable buttons before selecting item on the table
