@@ -149,36 +149,10 @@ $(function() {
                 order: [[1, 'desc']],
                 responsive: true,
                 select: true,
-//                columnDefs: [
-//                        {
-//                            'targets': [ 0 ],
-//                            'visible': false,
-//                            'searchable': true
-//                        },
-//                        {
-//                            'targets': [ 4 ],
-//                            'visible': false
-//                        },
-//                        {
-//                            'targets': [ 8 ],
-//                            'visible': false,
-//                            'searchable': false
-//                        },
-//                        {
-//                            'targets': [ 9 ],
-//                            'visible': false,
-//                            'searchable': false
-//                        }
-//                    ],
                 ajax: 'api/datasources?graph=' + fed
 
             });
-            //            table.column( 0 ).visible( false );
-            //            table.column( 4 ).visible( false);
-            //            table.column( 6 ).visible( false );
-            //            table.column( 9 ).visible( false );
-            //            table.draw( false );
-            // Dat source table select action
+            // Data source table select action
             table.on('select', function (e, dt, type, indexes) {
                 selectedRow = table.rows( indexes ).data().toArray();
                 $('#editds').prop('disabled', false);
