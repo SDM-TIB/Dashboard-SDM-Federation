@@ -196,3 +196,6 @@ table.dataTable thead .sorting_asc_disabled {
 table.dataTable thead .sorting_desc_disabled {
   background-image: unset !important;
 }
+#basic-statistics_wrapper {
+  width: 99.8%;
+}
