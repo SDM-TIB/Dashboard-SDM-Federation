@@ -4,7 +4,14 @@ $(function() {
     ************ Manage data source Data Table ***************
     **********************************************************
     */
-    let federation = $('#federations-list').val(),
+    const federationList = $('#federations-list'),
+          button_add_source = $('#addds'),
+          button_edit_source = $('#editds'),
+          button_remove_source = $('#removeds'),
+          button_recompute_mts = $('#recomputemts'),
+          button_links = $('#findlinks'),
+          button_all_links = $('#findalllinks');
+    let federation = federationList.val(),
         statsTable = null,
         sourceStatsChart = null,
         bsloaded = 0,
@@ -16,7 +23,7 @@ $(function() {
     showFederations(federation);
 
     // Federation list dropdown change event, triggers visualization of statistics and management data
-    $('#federations-list').on('change', function() {
+    federationList.on('change', function() {
         federation = $(this).val();
         showFederations(federation);
     });
@@ -54,11 +61,11 @@ $(function() {
             basic_stat(federation);
             manage(federation);
             if (federation !== 'All'){
-                $('#addds').prop('disabled', false);
-                $('#findalllinks').prop('disabled', false);
+                button_add_source.prop('disabled', false);
+                button_all_links.prop('disabled', false);
             } else {
-                $('#addds').prop('disabled', true);
-                $('#findalllinks').prop('disabled', true);
+                button_add_source.prop('disabled', true);
+                button_all_links.prop('disabled', true);
             }
         } else {
             disableButtons();
@@ -78,16 +85,16 @@ $(function() {
 
     // if no data source is selected, some action buttons will be disabled
     function set_disabled_prop_ds_buttons(disabled) {
-        $('#editds').prop('disabled', disabled);
-        $('#removeds').prop('disabled', disabled);
-        $('#recomputemts').prop('disabled', disabled);
+        button_edit_source.prop('disabled', disabled);
+        button_remove_source.prop('disabled', disabled);
+        button_recompute_mts.prop('disabled', disabled);
     }
 
     // if no federation is selected, then all action buttons will be disabled
     function disableButtons() {
-        $('#addds').prop('disabled', true);
-        $('#findlinks').prop('disabled', true)
-        $('#findalllinks').prop('disabled', true);
+        button_add_source.prop('disabled', true);
+        button_links.prop('disabled', true)
+        button_all_links.prop('disabled', true);
         set_disabled_prop_ds_buttons(true)
     }
 
@@ -132,12 +139,11 @@ $(function() {
             data: {'graph': fed},
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 datas = data.data;
-                datasdon = [];
                 let bardata = {labels:[], rdfmts:[], triples:[]};
-                for (d in datas) {
-                    rem = [];
+                for (const d in datas) {
+                    let rem = [];
                     //console.log(datas)
                     rem.push(datas[d].ds);
                     let rdfmts = datas[d].rdfmts;
@@ -176,7 +182,7 @@ $(function() {
                     sourceStatsChart.update();
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
@@ -193,7 +199,6 @@ $(function() {
 
         //Construct data source management data table
         if (table == null) {
-            mngloaded = 1;
             table = $('#datasources').DataTable({
                 order: [[ 1, 'desc' ]],
                 responsive: true,
@@ -205,8 +210,7 @@ $(function() {
             table.on('select', function(e, dt, type, indexes) {
                 selectedSource = table.rows(indexes).data().toArray();
                 set_disabled_prop_ds_buttons(false);
-            }).on('deselect', function(e, dt, type, indexes) {
-                let rowData = table.rows(indexes).data().toArray();
+            }).on('deselect', function() {
                 set_disabled_prop_ds_buttons(true);
                 selectedSource = null
             });
@@ -217,20 +221,20 @@ $(function() {
         }
         table.on('draw', function() {
             if (table.column(0).data().length > 0) {
-                $('#findlinks').prop('disabled', false);
+                button_links.prop('disabled', false);
             } else {
-                $('#findlinks').prop('disabled', true);
+                button_links.prop('disabled', true);
             }
         });
     }
 
     // Add data source click action
-    $('#addds').on('click', function() {
+    button_add_source.on('click', function() {
         dialog.dialog('open');
     });
 
     // Edit data source click action
-    $('#editds').on('click', function() {
+    button_edit_source.on('click', function() {
         $('#ename').val(selectedSource[0][1]);
         $('#eURL').val(selectedSource[0][2]);
         $('#edstype').val(selectedSource[0][3]);
@@ -244,7 +248,7 @@ $(function() {
     });
 
     //Remove data source click action
-    $('#removeds').on('click', function() {
+    button_remove_source.on('click', function() {
         // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
             type: 'GET',
@@ -255,11 +259,11 @@ $(function() {
             data: {'ds': selectedSource[0][0], 'fed': fed},
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
-                if (data == true)
+            success: function(data) {
+                if (data === true)
                     table.row('.selected').remove().draw(false);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
@@ -270,7 +274,7 @@ $(function() {
     });
 
     // Create Mappings click action
-    $('#recomputemts').on('click', function() {
+    button_recompute_mts.on('click', function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: 'GET',
@@ -281,14 +285,14 @@ $(function() {
             data: {'query': 'all'},
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (data != null && data.status === 1) {
                     alert('Recreating RDF-MTs for '+ selectedSource[0][0] + ' is underway ...');
                 } else {
                     alert('Cannot start the process. Please check if there are data sources in this federation.');
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
@@ -296,7 +300,7 @@ $(function() {
         });
     });
 
-    $('#findlinks').on('click', function() {
+    button_links.on('click', function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: 'GET',
@@ -307,14 +311,14 @@ $(function() {
             data: {'query': 'all'},
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (data != null && data.status === 1) {
                     alert('Finding links in progress ...');
                 } else {
                     alert('Cannot start the process. Please check if there are data sources in this federation.');
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
@@ -322,7 +326,7 @@ $(function() {
         });
     });
 
-    $('#findalllinks').on('click', function() {
+    button_all_links.on('click', function() {
         $.ajax({
             type: 'GET',
             headers: {
@@ -331,14 +335,14 @@ $(function() {
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (data != null && data.status === 1) {
                     alert('Finding links in progress ...');
                 } else {
                     alert('Cannot start the process. Please check if there are data sources in this federation.');
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
@@ -454,7 +458,7 @@ $(function() {
                 },
                 dataType: 'json',
                 crossDomain: true,
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     if (data != null && data.length > 0) {
                         manage(federation);
                     } else {
@@ -463,7 +467,7 @@ $(function() {
                     table.clear().draw();
                     table.ajax.url('/federation/datasources?graph=' + federation).load();
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus) {
                     console.log(jqXHR.status);
                     console.log(jqXHR.responseText);
                     console.log(textStatus);
@@ -528,8 +532,7 @@ $(function() {
             ehomepage = $('#ehomepage'),
             eversion = $('#eversion'),
             eid = selectedSource[0][0],
-            allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
-            tips = $('.validateTips');
+            allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version);
         let valid = true;
         allFields.removeClass('ui-state-error');
         valid = valid && checkLength(ename, 'name', 2, 169);
@@ -537,8 +540,8 @@ $(function() {
         if (valid) {
             table.row('.selected').remove().draw(false);
             table.row.add([eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw(false);
-            $('#editds').prop('disabled', true);
-            $('#removeds').prop('disabled', true);
+            button_edit_source.prop('disabled', true);
+            button_remove_source.prop('disabled', true);
             $('#createmapping').prop('disabled', true);
             $.ajax({
                 type: 'POST',
@@ -560,7 +563,7 @@ $(function() {
                 },
                 dataType: 'json',
                 crossDomain: true,
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     if (data != null && data.length > 0) {
                         manage(federation);
                         console.log(data);
@@ -570,7 +573,7 @@ $(function() {
                     table.clear().draw();
                     table.ajax.url('/federation/datasources?graph=' + federation).load();
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus) {
                     console.log(jqXHR.status);
                     console.log(jqXHR.responseText);
                     console.log(textStatus);
@@ -594,7 +597,7 @@ $(function() {
                 url: '/federation/create',
                 data: {'name': name, 'description': desc},
                 crossDomain: true,
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     console.log(data);
                     if (data != null && data.length > 0) {
                         federation = data;
@@ -603,7 +606,7 @@ $(function() {
                         crnfdialog.dialog('close');
                         // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name;
-                        $('#federations-list').append('<option value=' + federation + ' selected>' + name + '</option>');
+                        federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
                         showFederations(federation);
                         let aTab = '#manage';
                         if (aTab) {
@@ -613,7 +616,7 @@ $(function() {
                         $('#errormsg').html('Error while creating the new federation! Please enter a valid name (var name).')
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus) {
                     console.log(jqXHR.status);
                     console.log(jqXHR.responseText);
                     console.log(textStatus);
