@@ -65,14 +65,19 @@ $(function() {
         }
     }
 
+    // if no data source is selected, some action buttons will be disabled
+    function set_disabled_prop_ds_buttons(disabled) {
+        $('#editds').prop('disabled', disabled);
+        $('#removeds').prop('disabled', disabled);
+        $('#recomputemts').prop('disabled', disabled);
+    }
+
     // if no federation is selected, then all action buttons will be disabled
-    function disableButtons(){
+    function disableButtons() {
         $('#addds').prop('disabled', true);
-        $('#editds').prop('disabled', true);
-        $('#removeds').prop('disabled', true);
-        $('#recomputemts').prop('disabled', true);
         $('#findlinks').prop('disabled', true)
         $('#findalllinks').prop('disabled', true);
+        set_disabled_prop_ds_buttons(true)
     }
 
     function sourceStatsToBarChart(data) {
@@ -173,9 +178,7 @@ $(function() {
     function manage(fed) {
         $('#mfedName').html(fed);
         //Disable buttons before selecting item on the table
-        $('#editds').prop('disabled', true);
-        $('#removeds').prop('disabled', true);
-        $('#recomputemts').prop('disabled', true);
+        set_disabled_prop_ds_buttons(true);
 
         //Construct data source management data table
         if (table == null) {
@@ -190,21 +193,15 @@ $(function() {
             // Data source table select action
             table.on('select', function(e, dt, type, indexes) {
                 selectedSource = table.rows(indexes).data().toArray();
-                $('#editds').prop('disabled', false);
-                $('#removeds').prop('disabled', false);
-                $('#recomputemts').prop('disabled', false);
+                set_disabled_prop_ds_buttons(false);
             }).on('deselect', function(e, dt, type, indexes) {
                 let rowData = table.rows(indexes).data().toArray();
-                $('#editds' ).prop('disabled', true);
-                $('#removeds' ).prop('disabled', true);
-                $('#recomputemts' ).prop('disabled', true);
+                set_disabled_prop_ds_buttons(true);
                 selectedSource = null
             });
         } else {
             table.clear().draw();
-            $('#editds').prop('disabled', true);
-            $('#removeds').prop('disabled', true);
-            $('#recomputemts').prop('disabled', true);
+            set_disabled_prop_ds_buttons(true);
             table.ajax.url('/federation/datasources?graph=' + fed).load();
         }
         table.on('draw', function() {
@@ -258,9 +255,7 @@ $(function() {
             }
         });
 
-        $('#editds').prop('disabled', true);
-        $('#removeds').prop('disabled', true);
-        $('#recomputemts').prop('disabled', true);
+        set_disabled_prop_ds_buttons(true);
     });
 
     // Create Mappings click action
