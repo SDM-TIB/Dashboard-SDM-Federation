@@ -62,6 +62,17 @@ $(function() {
             }
         } else {
             disableButtons();
+            if (table != null) {
+                table.clear().draw();
+            }
+            if (statsTable != null) {
+                statsTable.clear().draw();
+            }
+            if (sourceStatsChart != null) {
+                sourceStatsChart.data.labels = [];
+                sourceStatsChart.data.datasets = [];
+                sourceStatsChart.update();
+            }
         }
     }
 
