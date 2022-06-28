@@ -1,6 +1,6 @@
 # Makefile for building FedSDM
 
-.PHONY: help install bundle rebuild build run-example stop-example
+.PHONY: help install bundle rebuild build run-example stop-example example-run example-stop
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -28,3 +28,7 @@ run-example: rebuild
 
 stop-example:
 	docker-compose -f example/docker-compose.yml down -v
+
+example-run: run-example
+
+example-stop: stop-example
