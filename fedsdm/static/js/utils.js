@@ -25,13 +25,13 @@ const chartOptions = {
         tooltip: {
             callbacks: {
                 label: function(context) {
-                    let label = context.dataset.label || "";
+                    let label = context.dataset.label || '';
                     if (label) {
-                        label = label.substring(0, label.indexOf("(") - 1);
+                        label = label.substring(0, label.indexOf('(') - 1);
                         label += ': ';
                     }
                     const value = Math.round(Math.pow(10, context.parsed.x) * 100) / 100
-                    label += parseInt(value, 10);
+                    label += parseInt(value.toString(), 10);
                     return label;
                 }
             }
@@ -39,23 +39,23 @@ const chartOptions = {
     }
 }
 
-let tips = $(".validateTips");
+let tips = $('.validateTips');
 
 function log10(value) {
     return parseInt(value) === 1 ? 0.1 : Math.log10(value)
 }
 
 function updateTips(t) {
-    tips.text(t).addClass("ui-state-highlight");
+    tips.text(t).addClass('ui-state-highlight');
     setTimeout(function() {
-        tips.removeClass("ui-state-highlight", 1500);
+        tips.removeClass('ui-state-highlight', 1500, 'swing');
     }, 500 );
 }
 
 function checkLength(o, n, min, max) {
     if (o.val().length > max || o.val().length < min) {
-        o.addClass("ui-state-error");
-        updateTips("Length of " + n + " must be between " + min + " and " + max + "." );
+        o.addClass('ui-state-error');
+        updateTips('Length of ' + n + ' must be between ' + min + ' and ' + max + '.' );
         return false;
     } else {
         return true;
@@ -64,7 +64,7 @@ function checkLength(o, n, min, max) {
 
 function checkRegexp(o, regexp, n) {
     if (!regexp.test(o.val())) {
-        o.addClass("ui-state-error");
+        o.addClass('ui-state-error');
         updateTips(n);
         return false;
     } else {
