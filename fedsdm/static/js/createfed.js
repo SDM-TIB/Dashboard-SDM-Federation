@@ -14,7 +14,7 @@ $(function() {
                 url: '/federation/create',
                 data: {'name': name, 'description': desc},
                 crossDomain: true,
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     console.log(data);
                     if (data != null && data.length > 0) {
                         alert('The new data federation was successfully created!');
@@ -24,7 +24,7 @@ $(function() {
                         $('#errormsg').html('Error while creating the new federation! Please enter a valid name (var name).')
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus) {
                     console.log(jqXHR.status);
                     console.log(jqXHR.responseText);
                     console.log(textStatus);
