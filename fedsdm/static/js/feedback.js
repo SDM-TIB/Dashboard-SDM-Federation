@@ -1,9 +1,11 @@
 $(function() {
-    var federation = $('#federations-list').val();
+    let federation = $('#federations-list').val(),
+        table = null,
+        feedbackform = null,
+        feedbackdialog = null;
     $('#selectfederation').prop('disabled', true);
-    var loaded = 0;
 
-    if (federation != null && federation != '') {
+    if (federation != null && federation !== '') {
         load_table(federation);
     }
 
@@ -12,7 +14,6 @@ $(function() {
         load_table(federation);
     });
 
-    var table = null;
     function load_table() {
         //Disable buttons before selecting item on the table
         $('#editis').prop('disabled', true);
@@ -20,20 +21,11 @@ $(function() {
 
         //Construct data source management data table
         if (table == null) {
-            loaded = 1;
             table = $('#reportedissues').DataTable({
-                // order: [[1, 'desc']],
-//                'columnDefs': [
-//                            {
-//                                'Federation': [ 0 ],
-//                                'visible': false,
-//                                'searchable': false
-//                            }
-//                 ],
+                order: [[1, 'desc']],
                 responsive: true,
                 select: true,
-                defaultContent: '<i>Not set</i>',
-                ajax: '/feedback/issues?fed=' + federation
+                defaultContent: '<i>Not set</i>'
             });
 
             var issuetable = table;
@@ -57,7 +49,7 @@ $(function() {
                     url: '/feedback/details?id=' + rowData[0][0],
                     dataType: 'json',
                     crossDomain: true,
-                    success: function(data, textStatus, jqXHR) {
+                    success: function(data) {
                         console.log('details ', data);
                         $('#user').val(rowData[0][2]);
                         $('#query').val(rowData[0][3]);
@@ -71,7 +63,7 @@ $(function() {
                         $('#rowjson').val(pretty);
                         feedbackdialog.dialog('open');
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus) {
                         console.log(jqXHR.status);
                         console.log(jqXHR.responseText);
                         console.log(textStatus);
@@ -82,13 +74,38 @@ $(function() {
             table.clear().draw();
             $('#editis').prop('disabled', true);
             $('#issuedetails').prop('disabled', true);
-            table.ajax.url('/feedback/issues?fed=' + federation).load();
         }
-        table.on('draw', function() {});
+
+        $.ajax({
+                type: 'GET',
+                    headers: {
+                    Accept : 'application/json'
+                },
+                url: '/feedback/issues?fed=' + federation,
+                crossDomain: true,
+                success: function(data) {
+                    const datas = data.data;
+                    for (const d in datas) {
+                        let row = [
+                            datas[d].id,
+                            datas[d].fed,
+                            datas[d].user,
+                            datas[d].query,
+                            datas[d].desc,
+                            datas[d].status,
+                            datas[d].created
+                        ];
+                        table.row.add(row).draw(false);
+                    }
+                },
+                error: function(jqXHR, textStatus) {
+                    console.log(jqXHR.status);
+                    console.log(jqXHR.responseText);
+                    console.log(textStatus);
+                }
+            })
     }
 
-    var feedbackform = null;
-    var feedbackdialog = null;
     var feedbackdesc = $('#feedbackdesc'),
         fedbackpreds = $('#fedbackpreds'),
         tips = $('.validateTips');
@@ -102,8 +119,8 @@ $(function() {
             'ui-dialog': 'ui-corner-all'
         },
         close: function() {
-            feedbackform[0].reset();
-            allfeedbackFields.removeClass('ui-state-error');
+            // feedbackform[0].reset();
+            // allfeedbackFields.removeClass('ui-state-error');
         }
     });
 
@@ -116,8 +133,8 @@ $(function() {
             url: '/feedback/details?id=' + selectedRow[0][0],
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
-                console.log('details ', data);
+            success: function(data) {
+                console.log('details', data);
                 $('#user').val(selectedRow[0][2]);
                 $('#query').val(selectedRow[0][3]);
                 $('#desc').val(selectedRow[0][4]);
@@ -125,10 +142,10 @@ $(function() {
 
                 $('#var').val(data['var']);
                 $('#pred').val(data['pred']);
-                $('#rowjson').val(data['row']);
+                $('#rowjson').val(JSON.stringify(data['row']));
                 feedbackdialog.dialog('open');
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
