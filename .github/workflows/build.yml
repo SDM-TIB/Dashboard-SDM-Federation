@@ -1,0 +1,32 @@
+# This workflow will build the two different Docker images to see if the current state of the project can be built
+name: build
+
+on:
+  push:
+    branches: [ develop, master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -r requirements-dev.txt
+          npm i
+      - name: Bundle dependencies
+        run: python3 bundle-assets.py
+      - name: Build the Docker image based on Alpine Linux
+        run: docker build -f Dockerfile.alpine . -t fedsdm:alpine-latest
+      - name: Build the Docker image baded on Debian/Ubuntu
+        run: docker build -f Dockerfile . -t fedsdm:alpine-latest
