@@ -14,14 +14,14 @@ $(function() {
     var collectionstable = null;
     var federation = $('#federations-list').val();
 
-    if (federation != null && federation != '') {
+    if (federation != null && federation !== '') {
         $('#mfedName').html(federation);
         show_datasource(federation);
     }
 
     $('#federations-list').on('change', function() {
         fed = $(this).val();
-        if (fed == null || fed == '') {
+        if (fed == null || fed === '') {
             return false;
         }
         $('#mfedName').html(fed);
@@ -31,7 +31,7 @@ $(function() {
     var loadedsoruces = 0;
     var datasourcetable = null;
     function show_datasource(fed) {
-        if (loadedsoruces == 1 && datasourcetable) {
+        if (loadedsoruces === 1 && datasourcetable) {
             datasourcetable.destroy();
             $('#availabledatasources').empty();
         }
@@ -284,7 +284,7 @@ $(function() {
             dataType: 'json',
             crossDomain: true,
             success: function(data) {
-                if (data.data!=null && data.data != '') {
+                if (data.data!=null && data.data !== '') {
                     var mapareahtml = ''
                     oldsubjectRML = data.data;
                     console.log(data.data);
@@ -305,8 +305,7 @@ $(function() {
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
             }
-        });
-
+        })
     }
 
     /*
@@ -385,13 +384,13 @@ $(function() {
         subjectRML[subjectID] = rml;
         activeSubjectID = subjectID;
         for (s in subjectRML) {
-            if (s == subjectID) {
+            if (s === subjectID) {
                 continue;
             }
             rml += subjectRML[s]
         }
         for (s in oldsubjectRML) {
-            if (s == subjectID) {
+            if (s === subjectID) {
                 continue;
             }
             rml += oldsubjectRML[s]
@@ -451,7 +450,7 @@ $(function() {
             refe = $('#predobjref'),
             parenttripm = $('#predobjparenttmap');
 
-        if (parenttripm.val() == '' && refe.val() == '') {
+        if (parenttripm.val() === '' && refe.val() === '') {
             parenttripm.addClass('ui-state-error');
             refe.addClass('ui-state-error');
             return false;
@@ -465,7 +464,7 @@ $(function() {
         var predobid = $.md5(db + lbl + '-' + colnames.val().replace(' ', '') + selectedDataSourceID + temp.val() + subjclass.val() + predicate.val());
         rml += '\n' + activeSubjectID + ' rr:predicateObjectMap omap:' + predobid + ' . \n' +
             'omap:' + predobid + ' rr:predicate   <' + predicate.val() + '> ;\n';
-        if (parenttripm.val() != '') {
+        if (parenttripm.val() !== '') {
             var ombid = $.md5(db + lbl + '-' + colnames.val().replace(' ', '') + selectedDataSourceID + temp.val() + subjclass.val() + predicate.val() + parenttripm.val());
             rml += '\t rr:objectMap omap:' + ombid + ' .\n' +
                 'omap:' + ombid + ' rr:parentTriplesMap ' + parenttripm.val() + ' . \n'
