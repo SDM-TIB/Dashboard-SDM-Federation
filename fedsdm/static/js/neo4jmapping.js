@@ -17,8 +17,7 @@ $(function() {
 
     $('#sampledoctablediv').hide();
 
-    var federation = null,
-        datasource = null;
+    var federation = null;
 
     $.ajax({
         type: 'GET',
@@ -29,7 +28,7 @@ $(function() {
         data: {'query':'all'},
         dataType: 'json',
         crossDomain: true,
-        success: function(data, textStatus, jqXHR) {
+        success: function(data) {
             html = '<option value="All" selected>Please select federation</option>'
             for (f in data) {
                 html += '<option value="' +data[f] + '">' + data[f] + '</option>'
@@ -38,7 +37,7 @@ $(function() {
             $('#federations-list').html(html);
             $('#federations-list').prop('disabled', false);
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function(jqXHR, textStatus) {
             console.log('ERROR: get list of federations')
             console.log(jqXHR.status);
             console.log(jqXHR.responseText);
@@ -76,7 +75,6 @@ $(function() {
                 selectedLabel = null;
                 $('#createmappingbtn').prop('disabled', false)
             }).on('deselect', function(e, dt, type, indexes) {
-                var rowData = stats.rows(indexes).data().toArray();
                 selectedRow = null;
                 selectedDataSourceID = null;
                 selectedDataSourceName = null;
@@ -176,7 +174,7 @@ $(function() {
                 + '&label=' + encodeURIComponent(selectedLabel),
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 html = '<tr>';
                 conlumns = [];
                 var columnNamesHtml = '';
@@ -217,7 +215,7 @@ $(function() {
                     //$('#startmapping').prop('disabled', true);
                 });
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log('Error while showing sample', jqXHR)
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
@@ -234,7 +232,7 @@ $(function() {
             // + '&collname=' + encodeURIComponent(selectedLabel),
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 console.log(data);
                 if (data.data!=null && data.data != '') {
                     var mapareahtml = ''
@@ -250,7 +248,7 @@ $(function() {
                     oldsubjectMaps = data.subjmap;
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log('Error while getting existing mapping ...', jqXHR)
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
@@ -298,7 +296,7 @@ $(function() {
             data : {'mapping': mapareahtml, 'prefix': rmlprefs},
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 console.log(data);
                 rml = '';
                 docs = null;
@@ -314,7 +312,7 @@ $(function() {
                 $('#sampledoctablediv').hide();
                 show_collections();
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log('Error while saving mappings', jqXHR)
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
@@ -359,17 +357,14 @@ $(function() {
 
     form = dialog.find('form').on('submit', function(event) {
         event.preventDefault();
-        enableMappingArea(true);
+        enableMappingArea();
     });
 
-    function enableMappingArea(close) {
-        var mappingtextarea = $('#mappingtextarea').val();
-
+    function enableMappingArea() {
         $('#mappingtextarea').val('');
         var rml = '';
         var lbl = selectedLabel.replace(' ', '_');
         var db = selectedDataSourceName.replace(' ', '_');
-        var mappref = ''
         var lsid = $.md5(db + lbl + '-' + colnames.val().replace(' ', '') + selectedDataSourceID);
         var smid = $.md5(db + lbl + '-' + colnames.val().replace(' ', '') + selectedDataSourceID + temp.val() + subjclass.val());
 
