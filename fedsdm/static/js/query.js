@@ -108,7 +108,9 @@ $(function() {
                                 dom: 'Blfrtip',
                                 buttons: [
                                     {
-                                        text: 'copy'
+                                        text: 'copy',
+                                        extend: 'copyHtml5',
+                                        title: 'sparql-results'
                                     }, {
                                         text: 'csv',
                                         extend: 'csvHtml5',

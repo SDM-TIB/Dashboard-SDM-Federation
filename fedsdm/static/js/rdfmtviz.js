@@ -220,17 +220,19 @@ $(function() {
                 dom: 'Blfrtip',
                 buttons: [
                     {
-                        text:'copy'
+                        text: 'copy',
+                        extend: 'copyHtml5',
+                        title: 'rdfmtsdataTables'
                     }, {
-                        text:'csv',
+                        text: 'csv',
                         extend: 'csvHtml5',
                         title: 'rdfmtsdataTables'
                     }, {
-                        text:'excel',
+                        text: 'excel',
                         extend: 'excelHtml5',
                         title: 'rdfmtsdataTables'
                     }, {
-                        text:'pdf',
+                        text: 'pdf',
                         extend: 'pdfHtml5',
                         title: 'rdfmtsdataTables'
                     }, {
@@ -1275,9 +1277,11 @@ $(function() {
                 dom: 'Blfrtip',
                 buttons: [
                     {
-                        text:'copy'
+                        text: 'copy',
+                        extend: 'copyHtml5',
+                        title: 'mt-graph-analysis'
                     }, {
-                        text:'csv',
+                        text: 'csv',
                         extend: 'csvHtml5',
                         title: 'mt-graph-analysis'
                     }, {
