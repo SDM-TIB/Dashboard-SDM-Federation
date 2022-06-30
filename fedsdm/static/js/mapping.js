@@ -10,10 +10,9 @@ $(function() {
     var selectedDatasourceRow = null,
         selectedDataSourceID = null;
     var selectedDatabase = null, selectedDatabaseName = null;
-    var selectedCollection = null, selectedCollectionName = null;
+    var selectedCollectionName = null;
     var collectionstable = null;
-    var federation = $('#federations-list').val(),
-        datasource = null;
+    var federation = $('#federations-list').val();
 
     if (federation != null && federation != '') {
         $('#mfedName').html(federation);
@@ -186,7 +185,6 @@ $(function() {
 
     var docs = null;
     var selectedDocRow = null;
-    var columnNames = [];
     var subjectMaps = {};
     function show_samples() {
         $('#mappingtextarea').val('');
@@ -204,7 +202,7 @@ $(function() {
                 + '&dstype=' + encodeURIComponent(selectedDatasourceRow[0][3]),
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 html = '<tr>';
                 conlumns = [];
                 var columnNamesHtml = '';
@@ -265,7 +263,7 @@ $(function() {
                     selectedDocRow = null;
                 });
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log('Error while showing sample', jqXHR)
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
@@ -285,7 +283,7 @@ $(function() {
                 + '&dstype=' + encodeURIComponent(selectedDatasourceRow[0][3]),
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 if (data.data!=null && data.data != '') {
                     var mapareahtml = ''
                     oldsubjectRML = data.data;
@@ -301,7 +299,7 @@ $(function() {
                     oldsubjectMaps = data.subjmap;
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log('Error while getting existing mapping ..', jqXHR)
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
@@ -355,23 +353,20 @@ $(function() {
         },
         close: function() {
             form[0].reset();
-            //allFields.removeClass("ui-state-error" );
+            //allFields.removeClass('ui-state-error');
         }
     });
 
-    form = dialog.find('form' ).on('submit', function(event) {
+    form = dialog.find('form').on('submit', function(event) {
         event.preventDefault();
-        enableMappingArea(true);
+        enableMappingArea();
     });
 
-    function enableMappingArea(close) {
-        var mappingtextarea = $('#mappingtextarea').val();
-
+    function enableMappingArea() {
         $('#mappingtextarea').val('');
         var rml = '';
         var lbl = selectedDatabaseName.replace(' ', '_');
         var db = selectedDataSourceName.replace(' ', '_');
-        var mappref = ''
         var lsid = $.md5(db + lbl + '-' + colnames.val().replace(' ', '') + selectedDataSourceID);
         var smid = $.md5(db + lbl + '-' + colnames.val().replace(' ', '') + selectedDataSourceID + temp.val() + subjclass.val());
 
