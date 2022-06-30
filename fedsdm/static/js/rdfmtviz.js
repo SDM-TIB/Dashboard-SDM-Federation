@@ -1,31 +1,31 @@
 $(function() {
-    $("#datasources").prop("disabled", true);
-    $("#mtdetails").prop("disabled", true);
-    $("#mtviz").hide();
+    $('#datasources').prop('disabled', true);
+    $('#mtdetails').prop('disabled', true);
+    $('#mtviz').hide();
 
     let stats = null,
-        federation =  $("#federations-list").val(),
-        tabvisible = "#home",
+        federation =  $('#federations-list').val(),
+        tabvisible = '#home',
         width, height, h = 960, w = 760, chartWidth, chartHeight;
     window.jsdata = [];
 
-    if (federation != null && federation !== "") {
+    if (federation != null && federation !== '') {
         load_data(federation);
     }
 
-    $("#federations-list").on("change", function() {
+    $('#federations-list').on('change', function() {
         load_data($(this).val());
     });
 
     function load_data(fed) {
-        $("#fedName").html(fed);
-        $("#vfedName").html(fed);
-        $("#afedName").html(fed);
-        $("#datasources").empty();
-        $("#graph").empty()
-                   .html("<h1> Loading ... !</h1>");
-        $("#legend").empty();
-        $("#vdsname").html("");
+        $('#fedName').html(fed);
+        $('#vfedName').html(fed);
+        $('#afedName').html(fed);
+        $('#datasources').empty();
+        $('#graph').empty()
+                   .html('<h1> Loading ... !</h1>');
+        $('#legend').empty();
+        $('#vdsname').html('');
         loaded = 0;
         vized = 0;
         galoaded = 0;
@@ -37,21 +37,21 @@ $(function() {
 
     var drag = d3.behavior.drag()
         .origin(function(d) { return d; })
-        .on("dragstart", dragstarted)
-        .on("drag", dragged)
-        .on("dragend", dragended);
+        .on('dragstart', dragstarted)
+        .on('drag', dragged)
+        .on('dragend', dragended);
 
     function dragstarted(d) {
         d3.event.sourceEvent.stopPropagation();
-        d3.select(this).classed("dragging", true);
+        d3.select(this).classed('dragging', true);
     }
 
     function dragged(d) {
-        d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+        d3.select(this).attr('cx', d.x = d3.event.x).attr('cy', d.y = d3.event.y);
     }
 
     function dragended(d) {
-        d3.select(this).classed("dragging", false);
+        d3.select(this).classed('dragging', false);
     }
 
     var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
@@ -63,7 +63,7 @@ $(function() {
 
     var min_score = 0;
     var max_score = 1;
-    var highlight_color = "#A52A2A";
+    var highlight_color = '#A52A2A';
     var highlight_trans = 0.1;
 
     var size = d3.scale.pow().exponent(1)
@@ -71,9 +71,9 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    var default_node_color = "#ccc";
-    //var default_node_color = "rgb(3,190,100)";
-    var default_link_color = "#888";
+    var default_node_color = '#ccc';
+    //var default_node_color = 'rgb(3,190,100)';
+    var default_link_color = '#888';
     var nominal_base_node_size = 8;
     var nominal_text_size = 10;
     var max_text_size = 24;
@@ -104,9 +104,9 @@ $(function() {
 
     var anodes = [],
         alinks = [];
-    var mtcards = {"All":[]};
+    var mtcards = {'All': []};
     var viztype = null;
-    var data={nodes:[], links:[]};
+    var data={nodes: [], links: []};
 
     var selectedRow = null;
     var mnodes = [],
@@ -114,22 +114,21 @@ $(function() {
         mlinks = [];
     var msourcenodes = [],
         msourcelinks = [];
-    var mmtcards = {"All":[]};
+    var mmtcards = {'All': []};
 
-
-    $("#mtdetails").on("click", function() {
-        $("#listofrdfmts").hide();
-        $("#mtdetails").hide();
-        $("#backtotable").show();
+    $('#mtdetails').on('click', function() {
+        $('#listofrdfmts').hide();
+        $('#mtdetails').hide();
+        $('#backtotable').show();
         var url = encodeURIComponent(selectedRow[0][2]);
         console.log('url:', url);
         $.ajax({
             type: 'GET',
             headers: {
-                Accept : "application/json"
+                Accept : 'application/json'
             },
-            url: '/rdfmts/api/mtdetails?mt=' + url + "&fed="+federation,
-            dataType: "json",
+            url: '/rdfmts/api/mtdetails?mt=' + url + '&fed=' + federation,
+            dataType: 'json',
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
                 console.log(url)
@@ -161,11 +160,11 @@ $(function() {
                 flatnodes = [];
                 $.each(mnodes, function (key, val) {
                     flatnodes.push(val);
-                    mtcards["All"].push({"label": val.label, "value": val.weight}); //, "color": color(val.datasource)
+                    mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                     if (val.datasource in mtcards) {
-                        mtcards[val.datasource].push({"label": val.label, "value": val.weight}); //, "color": color(val.datasource)
+                        mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                     } else {
-                        mtcards[val.datasource] = [{"label": val.label, "value": val.weight}]; // , "color": color(val.datasource)
+                        mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                     }
                     if (val.datasource in msourcenodes) {
                         msourcenodes[val.datasource].push(val);
@@ -186,39 +185,38 @@ $(function() {
                 console.log(textStatus);
             }
         });
-
     });
 
     function draw_details() {
         data = {nodes: manodes, links: malinks};
-        $("#mtviz").html("<h1> Please select data source!</h1>");
-        drawRDFMTS(manodes, malinks, "mtviz");
+        $('#mtviz').html('<h1> Please select data source!</h1>');
+        drawRDFMTS(manodes, malinks, 'mtviz');
     }
 
-    $("#backtotable").on("click", function() {
-        $("#backtotable" ).hide();
-        $("#mtviz").hide();
-        $("#listofrdfmts").show();
-        $("#mtdetails" ).show();
+    $('#backtotable').on('click', function() {
+        $('#backtotable').hide();
+        $('#mtviz').hide();
+        $('#listofrdfmts').show();
+        $('#mtdetails').show();
     });
 
     function get_rdfmts_stats(fed) {
         if (fed == null || (fed == federation && loaded == 1)) {
-            console.log("already loaded");
+            console.log('already loaded');
             return
         }
-        $("#fedName").html(fed);
-        $("#vfedName").html(fed);
-        $("#afedName").html(fed);
-        if (stats == null || stats == "undefined") {
+        $('#fedName').html(fed);
+        $('#vfedName').html(fed);
+        $('#afedName').html(fed);
+        if (stats == null || stats == 'undefined') {
             $('#rdfmtsdataTables').empty();
-            $('#rdfmtsdataTables').append("<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>");
+            $('#rdfmtsdataTables').append('<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>');
             stats = $('#rdfmtsdataTables').DataTable({
-                order: [[ 1, 'desc' ]],
+                order: [[1, 'desc']],
                 responsive: true,
                 select: true,
-                defaultContent: "<i>Not set</i>",
-                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                defaultContent: '<i>Not set</i>',
+                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                 dom: 'Blfrtip',
                 buttons: [
                     {
@@ -249,23 +247,23 @@ $(function() {
             let statstable = stats;
             stats.on('select', function(e, dt, type, indexes) {
                 selectedRow = statstable.rows(indexes).data().toArray();
-                console.log("selected row:", selectedRow)
-                $("#editds").prop("disabled", false);
-                $("#removeds").prop("disabled", false);
-                $("#mtdetails").prop("disabled", false);
-                $("#backtotable").hide();
+                console.log('selected row:', selectedRow)
+                $('#editds').prop('disabled', false);
+                $('#removeds').prop('disabled', false);
+                $('#mtdetails').prop('disabled', false);
+                $('#backtotable').hide();
             }).on('deselect', function(e, dt, type, indexes) {
                 var rowData = statstable.rows(indexes).data().toArray();
-                $("#editds").prop("disabled", true);
-                $("#removeds").prop("disabled", true);
-                $("#mtdetails").prop("disabled", true);
-                $("#backtotable").hide();
+                $('#editds').prop('disabled', true);
+                $('#removeds').prop('disabled', true);
+                $('#mtdetails').prop('disabled', true);
+                $('#backtotable').hide();
                 selectedRow = null;
             });
         } else {
-            console.log("redrawing ... table ..");
+            console.log('redrawing table ...');
             stats.clear().draw();
-            stats.ajax.url("/rdfmts/api/rdfmtstats?graph=" + fed).load();
+            stats.ajax.url('/rdfmts/api/rdfmtstats?graph=' + fed).load();
         }
     }
     function get_rdfmts(fed) {
@@ -275,9 +273,9 @@ $(function() {
         if (fed == null || (fed == federation && vized == 1)) {
             return
         }
-        $("#fedName").html(fed);
-        $("#afedName").html(fed);
-        $("#vfedName").html(fed);
+        $('#fedName').html(fed);
+        $('#afedName').html(fed);
+        $('#vfedName').html(fed);
 
         var j = 0;
         //list of subjects and objects for the DAG
@@ -288,61 +286,60 @@ $(function() {
             links = data.links;
             sourcescard = sources.length;
             max_score = sourcescard;
-            var legend="";
-            $("#datasources").empty();
-            $("#gadatasources").empty();
+            var legend= '';
+            $('#datasources').empty();
+            $('#gadatasources').empty();
             var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="divider"></li>' ;
-            console.log("number of sources:", sources.length);
+            console.log('number of sources:', sources.length);
             for (var i = 0; i < sources.length; i++) {
                 var v = sources[i].id;
                 var name  = sources[i].name;
                 sourceids[name] = v;
                 sourcesnames[v] = name;
-                datasources += '<li class="datasource"><a href="#" class="datasource"  id="source-'+(i+1)+'">'+ name +'</a></li>'
-                legend = legend + '<span style="color:' + color(v) + '"><b>' + name +"</b></span> <br/> ";
+                datasources += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
+                legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
             }
+            $('#legend').empty();
+            $('#legend').html(legend);
 
-            $("#legend").empty();
-            $("#legend").html(legend);
-
-            $("#gadatasources").html(datasources);
-            $("#datasources").html(datasources);
-            $("#datasources").prop("disabled", false)
-            $("#graph").html("<h1> Please select data source!</h1>");
-            $("a[class=datasource]").on("click", function() {
-                $("#datasourcesbtn").val($(this).text())
-                if ($(this).text() == "All") {
-                    $("#vdsname").html("ALL");
-                    $("#gdsname").html("ALL");
-                    source = "All"
+            $('#gadatasources').html(datasources);
+            $('#datasources').html(datasources);
+            $('#datasources').prop('disabled', false)
+            $('#graph').html('<h1> Please select data source!</h1>');
+            $('a[class=datasource]').on('click', function() {
+                $('#datasourcesbtn').val($(this).text())
+                if ($(this).text() == 'All') {
+                    $('#vdsname').html('ALL');
+                    $('#gdsname').html('ALL');
+                    source = 'All'
                     sourcemt = source;
                 } else {
                     source = sourceids[$(this).text()];
                     sourcemt = source;
                 }
                 if (source) {
-                    $("#vdsname").html($(this).text());
-                    $("#gdsname").html($(this).text());
+                    $('#vdsname').html($(this).text());
+                    $('#gdsname').html($(this).text());
                 } else {
-                    $("#vdsname").html("ALL");
-                    $("#gdsname").html("ALL");
+                    $('#vdsname').html('ALL');
+                    $('#gdsname').html('ALL');
                 }
-                if (tabvisible == "#analysis") {
+                if (tabvisible == '#analysis') {
                     get_rdfmts_graph_analys(federation, $(this).text());
                 } else {
-                    $("#vdsname").html($(this).text());
-                    $("#gdsname").html($(this).text());
+                    $('#vdsname').html($(this).text());
+                    $('#gdsname').html($(this).text());
                     sourcemt = source;
-                    $("#graph").empty();
-                    $("#graph").html("<h3>Please select Vizualization type</h3>");
+                    $('#graph').empty();
+                    $('#graph').html('<h3>Please select Vizualization type</h3>');
                     //drawSingleSourceRDFMTS(sourcemt);
                     if (viztype == 'fgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'force');
                     } else if (viztype == 'cgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'circular');
                     } else if (viztype == 'donut') {
-                        $("#graph").empty();
-                        $("#graph").html('<div id="morris-donut-chart"></div>')
+                        $('#graph').empty();
+                        $('#graph').html('<div id="morris-donut-chart"></div>')
                         console.log(source, mtcards);
                         drawDonut(source);
                     }
@@ -400,11 +397,11 @@ $(function() {
             sourcenodes = [];
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
-                mtcards["All"].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
+                mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                 if (val.datasource in mtcards) {
-                    mtcards[val.datasource].push({"label":val.label, "value":val.weight}); //, "color": color(val.datasource)
+                    mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                 } else {
-                    mtcards[val.datasource] = [{"label":val.label, "value":val.weight}]; // , "color": color(val.datasource)
+                    mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                 }
                 if (val.datasource in sourcenodes) {
                     sourcenodes[val.datasource].push(val);
@@ -419,13 +416,13 @@ $(function() {
     }
 
     var showmore = function (key){
-        console.log('p[class=legend'+key+']');
-        $('p[class=legend'+key+']').toggle();
+        console.log('p[class=legend' + key + ']');
+        $('p[class=legend' + key + ']').toggle();
     };
 
     function drawDonut(sourcemt) {
-        if (source != "All") {
-            $("#graph").empty();
+        if (source != 'All') {
+            $('#graph').empty();
             for (let i = 0; i < jsdata.data.length; i++) {
                 for (let j in mtcards[sourcemt]) {
                     if (mtcards[sourcemt][j].label.includes(jsdata.data[i][1]))
@@ -435,7 +432,7 @@ $(function() {
             mtcards[sourcemt].sort(function(a, b) {
                 return b.value - a.value;
             });
-            $("#graph").append('<div style="float:left"><div id="morris-donut-chart" style="float:left"></div><div  style="margin-top:10px;display:inline-block" id="legendd" class="donut-legend"></div></div>');
+            $('#graph').append('<div style="float:left"><div id="morris-donut-chart" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legendd" class="donut-legend"></div></div>');
             var mtdonut = Morris.Donut({
                 element: 'morris-donut-chart',
                 data: mtcards[sourcemt],
@@ -444,7 +441,7 @@ $(function() {
                 labelColor: '#060',
                 colors: colors
             });
-            $('#legendd').append('<span style="color:'+ color(sourcemt) +'"><b><u>'+ sourcesnames[sourcemt] +'</u></b></span>');
+            $('#legendd').append('<span style="color:' + color(sourcemt) + '"><b><u>' + sourcesnames[sourcemt] + '</u></b></span>');
             var i = 0;
             mtdonut.options.data.forEach(function(label, j) {
                 if (i < 9) {
@@ -461,13 +458,13 @@ $(function() {
                     $('#legendd').append(legendItem);
 
                     $('#legendd').append('<p id="showmore'+sourcemt+'">Show more ..</p>');
-                    $("#showmore"+sourcemt).on("click", function () {
-                        $('span[class=legend'+sourcemt+']').show();
-                        $("#showmore"+sourcemt).hide();
-                        $("#showless"+sourcemt).show();
+                    $('#showmore'+sourcemt).on('click', function () {
+                        $('span[class=legend' + sourcemt + ']').show();
+                        $('#showmore' + sourcemt).hide();
+                        $('#showless' + sourcemt).show();
                     });
                 } else {
-                    var legendItem = $('<span style="display:none" class="legend'+ sourcemt +'"></span>')
+                    var legendItem = $('<span style="display:none" class="legend' + sourcemt + '"></span>')
                         .text(label['label'])
                         .prepend('<i>&nbsp;</i>');
                     legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
@@ -476,17 +473,17 @@ $(function() {
                 i += 1;
             });
             if (i > 9) {
-                $('#legendd').append('<p style="display:none" id="showless'+ sourcemt +'">Show less ..</p>');
-                $("#showless"+sourcemt).on("click", function() {
-                    $('span[class=legend'+sourcemt+']').hide();
-                    $("#showmore"+sourcemt).show();
-                    $("#showless"+sourcemt).hide();
+                $('#legendd').append('<p style="display:none" id="showless' + sourcemt + '">Show less ...</p>');
+                $('#showless' + sourcemt).on('click', function() {
+                    $('span[class=legend' + sourcemt + ']').hide();
+                    $('#showmore' + sourcemt).show();
+                    $('#showless' + sourcemt).hide();
                 });
             }
         } else {
-            $("#graph").empty();
+            $('#graph').empty();
             $.each(mtcards, function (key, val) {
-                $("#graph").append('<div style="float:left"><div id="morris-donut-chart' + key +'" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legend'+key +'" class="donut-legend"></div></div>');
+                $('#graph').append('<div style="float:left"><div id="morris-donut-chart' + key + '" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legend' + key + '" class="donut-legend"></div></div>');
                 for (let i = 0; i < jsdata.data.length; i++) {
                     for (let ii in val) {
                         if (val[ii].label.includes(jsdata.data[i][1]))
@@ -497,7 +494,7 @@ $(function() {
                     return b.value - a.value;
                 });
                 var mtdonut = Morris.Donut({
-                    element: 'morris-donut-chart'+key,
+                    element: 'morris-donut-chart' + key,
                     data: val,
                     resize: true,
                     backgroundColor: '#ccc',
@@ -505,7 +502,7 @@ $(function() {
                     colors: colors
                 });
                 var dsname = sourcesnames[key]? sourcesnames[key]: federation;
-                $('#legend'+key).append('<span style="color:'+ color(key) +'"><b><u>'+ dsname +'</u></b></span>');
+                $('#legend' + key).append('<span style="color:' + color(key) + '"><b><u>' + dsname + '</u></b></span>');
                 var i = 0;
                 mtdonut.options.data.forEach(function(label, j) {
                     if (i < 9) {
@@ -513,49 +510,49 @@ $(function() {
                             .text(label['label'])
                             .prepend('<i>&nbsp;</i>');
                         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-                        $('#legend'+key ).append(legendItem);
+                        $('#legend' + key ).append(legendItem);
 
                     } else if (i == 9) {
                         var legendItem = $('<span></span>')
                             .text(label['label'])
                             .prepend('<i>&nbsp;</i>');
                         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-                        $('#legend'+key ).append(legendItem);
-                        $('#legend'+key ).append('<p id="showmore'+ key +'">Show more ..</p>');
-                        $("#showmore"+key).on("click", function() {
-                            console.log('p[class=legend'+key+']');
-                            $('span[class=legend'+key+']').show();
-                            $("#showmore"+key).hide();
-                            $("#showless"+key).show();
+                        $('#legend' + key ).append(legendItem);
+                        $('#legend' + key ).append('<p id="showmore' + key + '">Show more ...</p>');
+                        $('#showmore' + key).on('click', function() {
+                            console.log('p[class=legend' + key + ']');
+                            $('span[class=legend' + key + ']').show();
+                            $('#showmore' + key).hide();
+                            $('#showless' + key).show();
                         });
                     } else {
-                        var legendItem = $('<span style="display:none" class="legend'+ key +'"></span>')
+                        var legendItem = $('<span style="display:none" class="legend' + key + '"></span>')
                             .text(label['label'])
                             .prepend('<i>&nbsp;</i>');
                         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-                        $('#legend'+key ).append(legendItem);
+                        $('#legend' + key ).append(legendItem);
                     }
                     i += 1;
                 });
                 if (i > 9) {
-                    $('#legend'+key ).append('<p style="display:none" id="showless'+ key +'">Show less ..</p>');
-                    $("#showless"+key).on("click", function() {
-                        console.log('p[class=legend'+key+']');
-                        $('span[class=legend'+key+']').hide();
-                        $("#showless"+key).hide();
-                        $("#showmore"+key).show();
+                    $('#legend' + key).append('<p style="display:none" id="showless' + key + '">Show less ...</p>');
+                    $('#showless' + key).on('click', function() {
+                        console.log('p[class=legend' + key + ']');
+                        $('span[class=legend' + key + ']').hide();
+                        $('#showless' + key).hide();
+                        $('#showmore' + key).show();
                     });
                 }
             });
         }
     }
 
-    $("#stopforce").on("click", function() {
+    $('#stopforce').on('click', function() {
         if (force) {
             force.stop()
         }
     });
-    $("#startforce").on("click", function() {
+    $('#startforce').on('click', function() {
         if (force) {
             linkdistance += 10;
             //ncharge -= 10;
@@ -563,7 +560,7 @@ $(function() {
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
-    $("#resetforce").on("click", function() {
+    $('#resetforce').on('click', function() {
         if (force) {
             linkdistance = 150
             var fit = Math.sqrt(anodes.length / (width * height));
@@ -574,33 +571,33 @@ $(function() {
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
-    $("#graphVizForce").on("click", function() {
-        $("#graph").empty();
-        console.log("visible tab for datasource selection:" + tabvisible, sourcemt);
+    $('#graphVizForce').on('click', function() {
+        $('#graph').empty();
+        console.log('visible tab for datasource selection:' + tabvisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'force');
-        viztype = "fgraph";
+        viztype = 'fgraph';
     });
-    $("#graphVizCircular").on("click", function() {
-        $("#graph").empty();
-        console.log("visible tab for datasource selection:" + tabvisible, sourcemt);
+    $('#graphVizCircular').on('click', function() {
+        $('#graph').empty();
+        console.log('visible tab for datasource selection:' + tabvisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'circular');
-        viztype = "cgraph";
+        viztype = 'cgraph';
     });
-    $("#donutViz").on("click", function() {
-        $("#graph").empty();
-        $("#graph").html('<div id="morris-donut-chart"></div>')
+    $('#donutViz').on('click', function() {
+        $('#graph').empty();
+        $('#graph').html('<div id="morris-donut-chart"></div>')
         console.log(source, mtcards);
         drawDonut(source);
-        viztype = "donut";
+        viztype = 'donut';
     });
 
     function drawSingleSourceRDFMTS(source, gt) {
-        console.log("source: " + source);
-        if (source == "All") {
+        console.log('source: ' + source);
+        if (source == 'All') {
             if (alinks.length < 1)
                 alinks=[]
             data = {nodes: anodes, links: alinks};
-            if (gt == "force") {
+            if (gt == 'force') {
                 anodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
@@ -611,14 +608,14 @@ $(function() {
             vized = 1;
         } else {
             var snodes = sourcenodes[source];
-            console.log("number of nodes:" + snodes.length);
+            console.log('number of nodes:' + snodes.length);
             //connection link between subject and object ->predicates
             var slinks = sourcelinks[source];
             if (!slinks) {
                 slinks=[]
             }
             data = {nodes: snodes, links: slinks}
-            if (gt == "force") {
+            if (gt == 'force') {
                 snodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
@@ -630,13 +627,13 @@ $(function() {
     }
 
     function nodeid(n) {
-        return n.size ? "_g_"+n.datasource : n.label;
+        return n.size ? '_g_' + n.datasource : n.label;
     }
 
     function linkid(l) {
         var u = nodeid(l.source),
             v = nodeid(l.target);
-        return u<v ? u+"|"+v : v+"|"+u;
+        return u < v ? u + '|' + v : v + '|' + u;
     }
     function getGroup(n) { return n.datasource; }
     var off = 15,    // cluster hull offset
@@ -716,7 +713,7 @@ $(function() {
             }
             u = expand[u] ? nm[e.source.label] : nm[u];
             v = expand[v] ? nm[e.target.label] : nm[v];
-            var i = (u<v ? u+"|"+v : v+"|"+u),
+            var i = (u < v ? u + '|' + v : v + '|' + u),
                 l = lm[i] || (lm[i] = {source:u, target:v, size:0});
             l.size += 1;
         }
@@ -750,59 +747,59 @@ $(function() {
         return hullset;
     }
     var curve = d3.svg.line()
-        .interpolate("cardinal-closed")
+        .interpolate('cardinal-closed')
         .tension(.85);
     function drawCluster(d) {
-        console.log("drawcluster", d)
+        console.log('drawcluster', d)
         return curve(d.path); // 0.8
     }
-    width = $("#graph").width();
+    width = $('#graph').width();
     height = 980;
-    var canv = "graph";
+    var canv = 'graph';
 
     function drawRDFMTS(nodes, links, divcanv) {
         console.log('nodes', nodes, 'links', links);
         var svg;
         if (divcanv == null) {
-            $("#graph").empty();
-            svg = d3.select("#graph").append("svg");
-            width = $("#graph").width();
+            $('#graph').empty();
+            svg = d3.select('#graph').append('svg');
+            width = $('#graph').width();
             height = 980;
-            canv = "graph"
+            canv = 'graph'
         } else {
-            $("#mtviz").empty();
-            svg = d3.select("#mtviz").append("svg");
-            width = $("#mtviz").width();
+            $('#mtviz').empty();
+            svg = d3.select('#mtviz').append('svg');
+            width = $('#mtviz').width();
             height = 980;
-            console.log("showing ..")
-            $("#mtviz").show();
-            canv = "mtviz"
+            console.log('showing ...')
+            $('#mtviz').show();
+            canv = 'mtviz'
         }
-        var chartLayer = svg.append("g").classed("chartLayer", true);
+        var chartLayer = svg.append('g').classed('chartLayer', true);
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
-        var g = svg.append("g");
+        var g = svg.append('g');
 
-        hullg = svg.append("g");
-        linkg = svg.append("g");
-        nodeg = svg.append("g");
+        hullg = svg.append('g');
+        linkg = svg.append('g');
+        nodeg = svg.append('g');
 
-        svg.attr("opacity", 1e-6)
+        svg.attr('opacity', 1e-6)
             .transition()
             .duration(1000)
-            .attr("opacity", 1);
+            .attr('opacity', 1);
 
-        var tocolor = "fill";
-        var towhite = "stroke";
+        var tocolor = 'fill';
+        var towhite = 'stroke';
         if (outline) {
-            tocolor = "stroke"
-            towhite = "fill"
+            tocolor = 'stroke'
+            towhite = 'fill'
         }
 
-        svg.style("cursor","move");
-        // d3.json("graph.json", function(error, graph) {
+        svg.style('cursor','move');
+        // d3.json('graph.json', function(error, graph) {
         var linkedByIndex = {};
         links.forEach(function(d) {
-            linkedByIndex[d.source + "," + d.target] = true;
+            linkedByIndex[d.source + ',' + d.target] = true;
         });
 
         //var ctx = svg.getContext("2d");
@@ -814,7 +811,7 @@ $(function() {
         if (force) force.stop()
         //data = {nodes:nodes, links:links}
         net = network(data, net, getGroup, expand);
-        console.log("network:", net, expand)
+        console.log('network:', net, expand)
         force = d3.layout.force()
             .nodes(net.nodes)
             .links(net.links)
@@ -837,81 +834,81 @@ $(function() {
             .size([width,height])
             .start(); //.chargeDistance(1000) .linkDistance(300)
 
-        link = g.selectAll(".link").data(net.links, linkid);
+        link = g.selectAll('.link').data(net.links, linkid);
         link.exit().remove();
-        link.enter().append("line")
-            .attr("class", "link")
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; })
-            .style("stroke-width", nominal_stroke)
-            .style("stroke", function(d) {
+        link.enter().append('line')
+            .attr('class', 'link')
+            .attr('x1', function(d) { return d.source.x; })
+            .attr('y1', function(d) { return d.source.y; })
+            .attr('x2', function(d) { return d.target.x; })
+            .attr('y2', function(d) { return d.target.y; })
+            .style('stroke-width', nominal_stroke)
+            .style('stroke', function(d) {
                 return color(d.datasource);
             });
-//        var link = g.selectAll(".link")
+//        var link = g.selectAll('.link')
 //            .data(links)
 //            .enter()
-//            .append("line")
-//            .attr("class", "link")
-//            .style("stroke-width",nominal_stroke)
-//            .style("stroke", function(d) {
+//            .append('line')
+//            .attr('class', 'link')
+//            .style('stroke-width', nominal_stroke)
+//            .style('stroke', function(d) {
 //                   return color(d.datasource);
 //            });
         var dr = 3;
-        node = g.selectAll(".node").data(net.nodes, nodeid);
+        node = g.selectAll('.node').data(net.nodes, nodeid);
         node.exit().remove();
-        node.enter().append("g")
-            .attr("class", function(d) {
-                return "node" + (d.size?"":" leaf"); })
-            //.attr("r", function(d) {console.log(d.size, dr); return d.size ? d.size + dr : 3; })
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; })
-            .on("dblclick", function(d) {
+        node.enter().append('g')
+            .attr('class', function(d) {
+                return 'node' + (d.size ? '' :' leaf'); })
+            //.attr('r', function(d) {console.log(d.size, dr); return d.size ? d.size + dr : 3; })
+            .attr('cx', function(d) { return d.x; })
+            .attr('cy', function(d) { return d.y; })
+            .on('dblclick', function(d) {
                 console.log(d.datasource, expand[d.datasource])
                 expand[d.datasource] = !expand[d.datasource];
                 drawRDFMTS(nodes, links, divcanv);
             })
-            //            .on("dblclick.zoom", function(d) {
+            //            .on('dblclick.zoom', function(d) {
             //                d3.event.stopPropagation();
-            //                var dcx = ($("#graph").width()/2-d.x*zoom.scale());
+            //                var dcx = ($('#graph').width()/2-d.x*zoom.scale());
             //                var dcy = (980/2-d.y*zoom.scale());
             //                zoom.translate([dcx,dcy]);
-            //                 g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+            //                 g.attr('transform', 'translate(' + dcx + ',' + dcy + ')scale(' + zoom.scale() + ')');
             //
             //           })
-            .on("mouseover", function(d) {
+            .on('mouseover', function(d) {
                 set_highlight(d);
             })
-            .on("mousedown", function(d) {
+            .on('mousedown', function(d) {
                 d3.event.stopPropagation();
                 focus_node = d;
                 set_focus(d)
                 if (highlight_node === null) { set_highlight(d) }
             })
-            .on("mouseout", function(d) {
+            .on('mouseout', function(d) {
                 exit_highlight();
             });
 
         node.call(force.drag);
 
-//        var node = g.selectAll(".node")
+//        var node = g.selectAll('.node')
 //            .data(nodes)
-//            .enter().append("g")
-//            .attr("class", "node")
+//            .enter().append('g')
+//            .attr('class', 'node')
 //            .call(force.drag);
 //
-//        node.on("dblclick.zoom", function(d) {
+//        node.on('dblclick.zoom', function(d) {
 //            d3.event.stopPropagation();
-//            var dcx = ($("#graph").width()/2-d.x*zoom.scale());
+//            var dcx = ($('#graph').width()/2-d.x*zoom.scale());
 //	        var dcy = (980/2-d.y*zoom.scale());
 //            zoom.translate([dcx,dcy]);
-//             g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+//             g.attr('transform', 'translate(' + dcx + ',' + dcy  + ')scale(' + zoom.scale() + ')');
 //           });
 
         var ci = 0;
-        var circle = node.append("path")
-            .attr("d", d3.svg.symbol()
+        var circle = node.append('path')
+            .attr('d', d3.svg.symbol()
                 .size(function(d) {
                     var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)||nominal_base_node_size,2):Math.PI*Math.pow(size(25)||nominal_base_node_size,2);
                     return v;}) //size(d.weight)
@@ -925,60 +922,60 @@ $(function() {
                     return color(d.datasource + (ci-1));
                 }
             })
-            .style("stroke-width", nominal_stroke)
-            .style(towhite, "white");
+            .style('stroke-width', nominal_stroke)
+            .style(towhite, 'white');
 
-        var text = g.selectAll(".text")
+        var text = g.selectAll('.text')
             .data(net.nodes)
-            .enter().append("text")
-            .attr("dy", ".35em")
-            .style("font-size",function(d){return d.size? 16 + "px": nominal_text_size + "px"})
+            .enter().append('text')
+            .attr('dy', '.35em')
+            .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' })
 
         if (text_center) {
             text.text(function (d) { if (d.label) { return d.label; } else { return sourcesnames[d.datasource]; } })
-                .style("text-anchor", "middle");
+                .style('text-anchor', 'middle');
         } else {
-            text.attr("dx", function(d) {return (size(65)-size(30)||nominal_base_node_size);}) //size(d.weight)
+            text.attr('dx', function(d) {return (size(65) - size(30) || nominal_base_node_size);}) //size(d.weight)
                 .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesnames[d.datasource]; });
         }
-//        node.on("mouseover", function(d) {
+//        node.on('mouseover', function(d) {
 //                set_highlight(d);
 //                })
-//            .on("mousedown", function(d) {
+//            .on('mousedown', function(d) {
 //                d3.event.stopPropagation();
 //                focus_node = d;
 //                set_focus(d)
 //                if (highlight_node === null)
 //                    set_highlight(d)
 //                })
-//            .on("mouseout", function(d) {
+//            .on('mouseout', function(d) {
 //                exit_highlight();
 //            });
 
-        d3.select(window).on("mouseup", function() {
+        d3.select(window).on('mouseup', function() {
             if (focus_node !== null) {
                 focus_node = null;
                 if (highlight_trans < 1) {
-                    circle.style("opacity", 1);
-                    text.style("opacity", 1);
-                    link.style("opacity", 1);
+                    circle.style('opacity', 1);
+                    text.style('opacity', 1);
+                    link.style('opacity', 1);
                 }
             }
             if (highlight_node === null) { exit_highlight(); }
         });
 
-        zoom.on("zoom", function() {
+        zoom.on('zoom', function() {
             var stroke = nominal_stroke;
             if (nominal_stroke * zoom.scale() > max_stroke)
                 stroke = max_stroke / zoom.scale();
 
-            link.style("stroke-width", stroke);
-            circle.style("stroke-width",stroke);
+            link.style('stroke-width', stroke);
+            circle.style('stroke-width',stroke);
 
             var base_radius = nominal_base_node_size;
             if (nominal_base_node_size * zoom.scale() > max_base_node_size)
                 base_radius = max_base_node_size / zoom.scale();
-            circle.attr("d", d3.svg.symbol()
+            circle.attr('d', d3.svg.symbol()
                 .size(function(d) {
                     var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
                     return v;}) //size(d.weight)
@@ -986,24 +983,24 @@ $(function() {
             );
             //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
             if (!text_center) {
-                text.attr("dx", function(d) {
+                text.attr('dx', function(d) {
                     return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
                 }); //size(d.weight)
             }
-            text.style("font-size", function(d) {
+            text.style('font-size', function(d) {
                 var text_size = nominal_text_size;
                 if (d.size) { text_size = 16; }
                 if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale(); }
-                return text_size + "px"
+                return text_size + 'px'
             });
-            g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         });
 
         svg.call(zoom);
 
         resize();
         //window.focus();
-        d3.select(window).on("resize", resize).on("keydown", keydown);
+        d3.select(window).on('resize', resize).on('keydown', keydown);
         var centroids = {};
         for (var i = 0; i < max_score; i += 3) {
             centroids[i] = {x: 200 * (i/3 +1), y:200}
@@ -1011,7 +1008,7 @@ $(function() {
             centroids[i+2] = {x: 200 * (i/3 +1), y:600}
         }
 
-        force.on("tick", function(e) {
+        force.on('tick', function(e) {
             var k = .1 * e.alpha;
             // updateGroups();
 
@@ -1029,13 +1026,13 @@ $(function() {
                     o.x += (centroids[o.datasource].x - o.x) * k;
                 }
             });
-            link.attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
+            link.attr('x1', function(d) { return d.source.x; })
+                .attr('y1', function(d) { return d.source.y; })
+                .attr('x2', function(d) { return d.target.x; })
+                .attr('y2', function(d) { return d.target.y; });
 
 //            link
-//                .attr("d", function(d) {
+//                .attr('d', function(d) {
 //                     var deltaX = d.target.x - d.source.x,
 //                  deltaY = d.target.y - d.source.y,
 //                  dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
@@ -1051,11 +1048,11 @@ $(function() {
 //                   });
 
             node.each(printn())
-                .attr("cx", function(d) { return d.x; })
-                .attr("cy", function(d) { return d.y; });
+                .attr('cx', function(d) { return d.x; })
+                .attr('cy', function(d) { return d.y; });
 
-            node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-            text.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+            text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         });
         function printn(alpha) {
             var quadtree = d3.geom.quadtree(nodes);
@@ -1107,12 +1104,12 @@ $(function() {
 //        }
 
         function isConnected(a, b) {
-            return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index == b.index;
+            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index == b.index;
         }
 
         function hasConnections(a) {
             for (var property in linkedByIndex) {
-                s = property.split(",");
+                s = property.split(',');
                 if ((s[0] == a.index || s[1] == a.index) && linkedByIndex[property])
                     return true;
             }
@@ -1121,12 +1118,12 @@ $(function() {
 
         function vis_by_type(type) {
             switch (type) {
-                case "circle": return keyc;
-                case "square": return keys;
-                case "triangle-up": return keyt;
-                case "diamond": return keyr;
-                case "cross": return keyx;
-                case "triangle-down": return keyd;
+                case 'circle': return keyc;
+                case 'square': return keys;
+                case 'triangle-up': return keyt;
+                case 'diamond': return keyr;
+                case 'cross': return keyx;
+                case 'triangle-down': return keyd;
                 default: return true;
             }
         }
@@ -1160,44 +1157,44 @@ $(function() {
         }
 
         function resize() {
-            var width = $("#"+canv).width(), height = 980;
-            svg.attr("width", width).attr("height", height);
-            force.size([force.size()[0]+(width-w)/zoom.scale(),force.size()[1]+(height-h)/zoom.scale()]).resume();
+            var width = $('#' + canv).width(), height = 980;
+            svg.attr('width', width).attr('height', height);
+            force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
             w = width;
             h = height;
         }
 
         function keydown() {
-            if (d3.event.keyCode==32) {
+            if (d3.event.keyCode == 32) {
                 force.stop();
             }
-            else if (d3.event.keyCode>=48 && d3.event.keyCode<=90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
+            else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
                 switch (String.fromCharCode(d3.event.keyCode)) {
-                    case "C": keyc = !keyc; break;
-                    case "S": keys = !keys; break;
-                    case "T": keyt = !keyt; break;
-                    case "R": keyr = !keyr; break;
-                    case "X": keyx = !keyx; break;
-                    case "D": keyd = !keyd; break;
-                    case "L": keyl = !keyl; break;
-                    case "M": keym = !keym; break;
-                    case "H": keyh = !keyh; break;
-                    case "1": key1 = !key1; break;
-                    case "2": key2 = !key2; break;
-                    case "3": key3 = !key3; break;
-                    case "0": key0 = !key0; break;
+                    case 'C': keyc = !keyc; break;
+                    case 'S': keys = !keys; break;
+                    case 'T': keyt = !keyt; break;
+                    case 'R': keyr = !keyr; break;
+                    case 'X': keyx = !keyx; break;
+                    case 'D': keyd = !keyd; break;
+                    case 'L': keyl = !keyl; break;
+                    case 'M': keym = !keym; break;
+                    case 'H': keyh = !keyh; break;
+                    case '1': key1 = !key1; break;
+                    case '2': key2 = !key2; break;
+                    case '3': key3 = !key3; break;
+                    case '0': key0 = !key0; break;
                 }
 
-                link.style("display", function(d) {
+                link.style('display', function(d) {
                     var flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
-                    linkedByIndex[d.source.index + "," + d.target.index] = flag;
-                    return flag ? "inline" : "none";
+                    linkedByIndex[d.source.index + ',' + d.target.index] = flag;
+                    return flag ? 'inline' : 'none';
                 });
-                node.style("display", function(d) {
-                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? "inline" : "none";
+                node.style('display', function(d) {
+                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
                 });
-                text.style("display", function(d) {
-                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? "inline" : "none";
+                text.style('display', function(d) {
+                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
                 });
 
                 if (highlight_node !== null) {
@@ -1214,12 +1211,12 @@ $(function() {
         function exit_highlight() {
             highlight_node = null;
             if (focus_node == null) {
-                svg.style("cursor","move");
-                if (highlight_color != "white") {
-                    circle.style(towhite, "white");
-                    text.style("font-weight", "normal");
-                    link.style("stroke", function(o) {
-                        return (isNumber(o.datasource) && o.datasource >= 0)? color(o.datasource): default_link_color
+                svg.style('cursor', 'move');
+                if (highlight_color != 'white') {
+                    circle.style(towhite, 'white');
+                    text.style('font-weight', 'normal');
+                    link.style('stroke', function(o) {
+                        return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color
                     });
                 }
             }
@@ -1227,33 +1224,33 @@ $(function() {
 
         function set_focus(d) {
             if (highlight_trans < 1) {
-                circle.style("opacity", function(o) {
+                circle.style('opacity', function(o) {
                     return isConnected(d, o) ? 1 : highlight_trans;
                 });
-                text.style("opacity", function(o) {
+                text.style('opacity', function(o) {
                     return isConnected(d, o) ? 1 : highlight_trans;
                 });
-                link.style("opacity", function(o) {
+                link.style('opacity', function(o) {
                     return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
                 });
             }
         }
 
         function set_highlight(d) {
-            svg.style("cursor","pointer");
+            svg.style('cursor', 'pointer');
             if (focus_node !== null) { d = focus_node; }
             highlight_node = d;
             // added this to make highlight color same as the color of the node
             highlight_color = color(d.datasource);
-            if (highlight_color != "white") {
+            if (highlight_color != 'white') {
                 circle.style(towhite, function(o) {
-                    return isConnected(d, o) ? highlight_color : "white";
+                    return isConnected(d, o) ? highlight_color : 'white';
                 });
-                text.style("font-weight", function(o) {
-                    return isConnected(d, o) ? "bold" : "normal";
+                text.style('font-weight', function(o) {
+                    return isConnected(d, o) ? 'bold' : 'normal';
                 });
-                link.style("stroke", function(o) {
-                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource>=0) ? color(o.datasource) : default_link_color);
+                link.style('stroke', function(o) {
+                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
                 });
             }
         }
@@ -1264,9 +1261,9 @@ $(function() {
         if (fed == null || source == null || (fed == federation && source == gsource && galoaded == 1)) {
             return
         }
-        $("#fedName").html(fed);
-        $("#vfedName").html(fed);
-        $("#afedName").html(fed);
+        $('#fedName').html(fed);
+        $('#vfedName').html(fed);
+        $('#afedName').html(fed);
         $('#adsname').html(source);
         gsource = source;
         if (gtable == null) {
@@ -1274,7 +1271,7 @@ $(function() {
                 responsive: false,
                 order: false,
                 select: true,
-                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                 dom: 'Blfrtip',
                 buttons: [
                     {
@@ -1299,26 +1296,26 @@ $(function() {
                         title: 'mt-graph-analysis'
                     }
                 ],
-                ajax: '/rdfmts/api/rdfmtanalysis?graph='+fed+"&source="+source
+                ajax: '/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source
             });
             galoaded = 1;
         } else {
             gtable.clear().draw();
-            gtable.ajax.url("/rdfmts/api/rdfmtanalysis?graph=" + fed+"&source="+source).load()
+            gtable.ajax.url('/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source).load()
         }
     }
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr("href") // activated tab
-        if (target == "#visualize") {
+        var target = $(e.target).attr('href') // activated tab
+        if (target == '#visualize') {
             //get_rdfmts(federation);
-            tabvisible = "#visualize";
-        } else if (target == "#analysis") {
-            //get_rdfmts_graph_analys(federation, "All");
-            tabvisible = "#analysis";
+            tabvisible = '#visualize';
+        } else if (target == '#analysis') {
+            //get_rdfmts_graph_analys(federation, 'All');
+            tabvisible = '#analysis';
         } else {
             //get_rdfmts_stats(federation);
-            tabvisible = "#home";
+            tabvisible = '#home';
         }
     });
 
@@ -1326,32 +1323,32 @@ $(function() {
     var radius = diameter / 2;
     var margin = 10;
 
-    // Generates a tooltip for a SVG circle element based on its ID
+    // Generates a tooltip for an SVG circle element based on its ID
     function addTooltip(circle) {
-        var x = parseFloat(circle.attr("cx"));
-        var y = parseFloat(circle.attr("cy"));
-        var r = parseFloat(circle.attr("r"));
-        var text = circle.attr("id");
+        var x = parseFloat(circle.attr('cx'));
+        var y = parseFloat(circle.attr('cy'));
+        var r = parseFloat(circle.attr('r'));
+        var text = circle.attr('id');
 
-        var tooltip = d3.select("#plot")
-            .append("text")
+        var tooltip = d3.select('#plot')
+            .append('text')
             .text(text)
-            .attr("x", x)
-            .attr("y", y)
-            .attr("dy", -r * 2)
-            .attr("id", "tooltip");
+            .attr('x', x)
+            .attr('y', y)
+            .attr('dy', -r * 2)
+            .attr('id', 'tooltip');
 
         var offset = tooltip.node().getBBox().width / 2;
 
         if ((x - offset) < -radius) {
-            tooltip.attr("text-anchor", "start");
-            tooltip.attr("dx", -r);
+            tooltip.attr('text-anchor', 'start');
+            tooltip.attr('dx', -r);
         } else if ((x + offset) > radius) {
-            tooltip.attr("text-anchor", "end");
-            tooltip.attr("dx", r);
+            tooltip.attr('text-anchor', 'end');
+            tooltip.attr('dx', r);
         } else {
-            tooltip.attr("text-anchor", "middle");
-            tooltip.attr("dx", 0);
+            tooltip.attr('text-anchor', 'middle');
+            tooltip.attr('dx', 0);
         }
     }
 
@@ -1359,7 +1356,7 @@ $(function() {
     function drawGraph(graph) {
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
         // create svg image
-        $("#graph").empty();
+        $('#graph').empty();
         var circumference = 0;
         graph.nodes.forEach(function(d, i) {
             circumference += 20+2;
@@ -1369,34 +1366,33 @@ $(function() {
         if (wh>1200) wh = 1200;
 
         diameter = wh;
-        var svg = d3.select("#graph").append("svg");
-        var chartLayer = svg.append("g").classed("chartLayer", true);
-        svg.attr("width", $("#graph").width())
-            .attr("height", 980);
+        var svg = d3.select('#graph').append('svg');
+        var chartLayer = svg.append('g').classed('chartLayer', true);
+        svg.attr('width', $('#graph').width())
+            .attr('height', 980);
 
         // draw border around svg image
-        // svg.append("rect")
-        //     .attr("class", "outline")
-        //     .attr("width", diameter)
-        //     .attr("height", diameter);
+        // svg.append('rect')
+        //     .attr('class', 'outline')
+        //     .attr('width', diameter)
+        //     .attr('height', diameter);
         radius = wh/2;
         // create plot area within svg image
-        var plot = svg.append("g")
-            .attr("width", wh)
-            .attr("height", wh)
-            .attr("id", "plot")
-            .attr("transform", "translate(" + $("#graph").width()/2 + ", " + 980/2 + ")");
+        var plot = svg.append('g')
+            .attr('width', wh)
+            .attr('height', wh)
+            .attr('id', 'plot')
+            .attr('transform', 'translate(' + $('#graph').width() / 2 + ', ' + 980 / 2 + ')');
 
-        zoom.on("zoom", function() {
-            plot.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        zoom.on('zoom', function() {
+            plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         });
         svg.call(zoom);
 
-
         // draw border around plot area
-        // plot.append("circle")
-        //     .attr("class", "outline")
-        //     .attr("r", radius - margin);
+        // plot.append('circle')
+        //     .attr('class', 'outline')
+        //     .attr('r', radius - margin);
 
         // fix graph links to map to objects instead of indices
 //        graph.links.forEach(function(d, i) {
@@ -1441,13 +1437,13 @@ $(function() {
     var circularnode, circularlink, circulartext;
     function dragged(d) {
         d.x = d3.event.x, d.y = d3.event.y;
-        d3.select(this).attr("cx", d.x).attr("cy", d.y);
-        circularlink.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
-        circularlink.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+        d3.select(this).attr('cx', d.x).attr('cy', d.y);
+        circularlink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
+        circularlink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
         var curve = d3.svg.diagonal()
             .projection(function(d) { return [d.x, d.y]; });
-        circularlink.filter(function(l) { return l.source === d; }).attr("d", curve);
-        circularlink.filter(function(l) { return l.target === d; }).attr("d", curve);
+        circularlink.filter(function(l) { return l.source === d; }).attr('d', curve);
+        circularlink.filter(function(l) { return l.target === d; }).attr('d', curve);
     }
 
     // Draws nodes with tooltips
@@ -1455,33 +1451,33 @@ $(function() {
         // used to assign nodes color by group
         // var color = d3.scale.category20();
 
-        circularnode = d3.select("#plot").selectAll(".node")
+        circularnode = d3.select('#plot').selectAll('.node')
             .data(nodes)
             .enter()
-            .append("circle")
-            .attr("class", "node")
-            .attr("id", function(d, i) { return d.label; })
-            .attr("cx", function(d, i) { return d.x; })
-            .attr("cy", function(d, i) { return d.y; })
-            .attr("r", 10)
-            .style("fill",   function(d, i) { return color(d.datasource); })
-            .on("mouseover", function(d, i) { addTooltip(d3.select(this)); })
-            .on("mouseout",  function(d, i) { d3.select("#tooltip").remove(); })
-            .call(d3.behavior.drag().on("drag", dragged));
+            .append('circle')
+            .attr('class', 'node')
+            .attr('id', function(d, i) { return d.label; })
+            .attr('cx', function(d, i) { return d.x; })
+            .attr('cy', function(d, i) { return d.y; })
+            .attr('r', 10)
+            .style('fill',   function(d, i) { return color(d.datasource); })
+            .on('mouseover', function(d, i) { addTooltip(d3.select(this)); })
+            .on('mouseout',  function(d, i) { d3.select('#tooltip').remove(); })
+            .call(d3.behavior.drag().on('drag', dragged));
     }
 
     // Draws straight edges betw    een nodes
     function drawLinks(links) {
-        circularlink = d3.select("#plot").selectAll(".link")
+        circularlink = d3.select('#plot').selectAll('.link')
             .data(links)
             .enter()
-            .append("line")
-            .attr("class", "link")
-            .style("stroke", function(d, i) { return default_link_color; })
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
+            .append('line')
+            .attr('class', 'link')
+            .style('stroke', function(d, i) { return default_link_color; })
+            .attr('x1', function(d) { return d.source.x; })
+            .attr('y1', function(d) { return d.source.y; })
+            .attr('x2', function(d) { return d.target.x; })
+            .attr('y2', function(d) { return d.target.y; });
     }
 
     // Draws curved edges between nodes
@@ -1490,36 +1486,36 @@ $(function() {
         var curve = d3.svg.diagonal()
             .projection(function(d) { return [d.x, d.y]; });
 
-        circularlink = d3.select("#plot").selectAll(".link")
+        circularlink = d3.select('#plot').selectAll('.link')
             .data(links)
             .enter()
-            .append("path")
-            .attr("class", "link")
-            .style("stroke-width", nominal_stroke)
-            .style("stroke", function(d, i) { return default_link_color; })
-            .attr("d", curve);
+            .append('path')
+            .attr('class', 'link')
+            .style('stroke-width', nominal_stroke)
+            .style('stroke', function(d, i) { return default_link_color; })
+            .attr('d', curve);
     }
 
 //    var color = d3.scale.linear()
 //      .domain([min_score, (min_score+max_score)/2, max_score])
-//      .range(["lime", "yellow", "red"]);
+//      .range(['lime', 'yellow', 'red']);
 //     //d3.scale.category20c();
 ////     var color = d3.scale.ordinal()
-////          .domain(["G", "R", "B"]);
+////          .domain(['G', 'R', 'B']);
 //
 //    var color = d3.scale.linear().domain([1,100])
 //      .interpolate(d3.interpolateHcl)
-//      .range([d3.rgb("#FF0F00"), d3.rgb('#007AFF')]);
+//      .range([d3.rgb('#FF0F00'), d3.rgb('#007AFF')]);
     //draw the DAG graph using d3.js
     function drawWhyDAG(nodes, links) {
         var width  = 960,
             height = 800,
             // colors = d3.scale.category10();
             colors = d3.scale.ordinal()
-                .domain(["G", "R", "B"])
-                .range(["#009933", "#FF0000", "#0000FD"]);
+                .domain(['G', 'R', 'B'])
+                .range(['#009933', '#FF0000', '#0000FD']);
         //clear explanation body element
-        $('#graph').html("");
+        $('#graph').html('');
         var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
 
         var focus_node = null, highlight_node = null;
@@ -1530,18 +1526,18 @@ $(function() {
         var h = h;
         var min_score = 0;
         var max_score = 1;
-        var highlight_color = "blue";
+        var highlight_color = 'blue';
         var highlight_trans = 0.1;
         var colors = d3.scale.linear()
             .domain([min_score, (min_score+max_score)/2, max_score])
-            .range(["lime", "yellow", "red"]);
+            .range(['lime', 'yellow', 'red']);
         var size = d3.scale.pow().exponent(1)
             .domain([1,100])
             .range([8,64]);
 
-        var default_node_color = "#ccc";
-        //var default_node_color = "rgb(3,190,100)";
-        var default_link_color = "#888";
+        var default_node_color = '#ccc';
+        //var default_node_color = 'rgb(3,190,100)';
+        var default_link_color = '#888';
         var nominal_base_node_size = 8;
         var nominal_text_size = 10;
         var max_text_size = 24;
@@ -1554,9 +1550,9 @@ $(function() {
         var svg = d3.select('#graph')
             .append('svg');
 
-        //.attr("preserveAspectRatio", "xMinYMin meet")
-        //.attr("viewBox", "0 0 960 500");
-        svg.style("cursor","move");
+        //.attr('preserveAspectRatio', 'xMinYMin meet')
+        //.attr('viewBox', '0 0 960 500');
+        svg.style('cursor', 'move');
 
         // init D3 force layout
         var force = d3.layout.force()
@@ -1640,18 +1636,18 @@ $(function() {
             .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
             .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; });
 
-        var thing = svg.append("svg:g").selectAll("text").data(links)
-            .attr("id", "thing")
-            .style("fill", "navy");
+        var thing = svg.append('svg:g').selectAll('text').data(links)
+            .attr('id', 'thing')
+            .style('fill', 'navy');
 
-        thing.enter().append("text")
-            .style("font-size", "16px")
-            .attr("dx", 30)
-            .attr("dy", 18)
-            .append("textPath")
-            .attr("xlink:href", function(d){return "#" + d.id;})
+        thing.enter().append('text')
+            .style('font-size', '16px')
+            .attr('dx', 30)
+            .attr('dy', 18)
+            .append('textPath')
+            .attr('xlink:href', function(d){return '#' + d.id;})
             .text(function(d) {
-                if (d.pred.lastIndexOf("/") == -1) { return d.pred; }
+                if (d.pred.lastIndexOf('/') == -1) { return d.pred; }
                 return d.pred.substring(d.pred.lastIndexOf('/'), d.pred.length);
             });
 
@@ -1671,9 +1667,9 @@ $(function() {
         var g = circle.enter().append('svg:g');
         var drag = d3.behavior.drag()
             .origin(function(d) { return d; })
-            .on("dragstart", dragstarted)
-            .on("drag", dragged)
-            .on("dragend", dragended);
+            .on('dragstart', dragstarted)
+            .on('drag', dragged)
+            .on('dragend', dragended);
 
         g.append('svg:circle')
             .attr('class', 'node')
@@ -1683,38 +1679,38 @@ $(function() {
             .classed('reflexive', function(d) { return d.reflexive; });
 
         var dragcontainer = d3.behavior.drag()
-            .on("drag", function(d, i) {
-                d3.select(this).attr("transform", "translate(" + (d.x = d3.event.x) + ","
-                    + (d.y = d3.event.y) + ")");
+            .on('drag', function(d, i) {
+                d3.select(this).attr('transform', 'translate(' + (d.x = d3.event.x) + ','
+                    + (d.y = d3.event.y) + ')');
             })
         // .call(drag);
 
 //         function dragged(d) {
 //            d.x = d3.event.x, d.y = d3.event.y;
-//            d3.select(this).attr("cx", d.x).attr("cy", d.y);
-//            path.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
-//            path.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+//            d3.select(this).attr('cx', d.x).attr('cy', d.y);
+//            path.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
+//            path.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
 //          }
         //.call(d3.behavior.drag()
         /*
-         .on("start", dragstarted)
-         .on("drag", dragged)
-         .on("end", dragended));*/
+         .on('start', dragstarted)
+         .on('drag', dragged)
+         .on('end', dragended));*/
         /*function dragstarted(d) {
-            console.log("drag start");
-          d3.select(this).raise().classed("active", true);
+            console.log('drag start');
+          d3.select(this).raise().classed('active', true);
         }
 
         function dragged(d) {
-          d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+          d3.select(this).attr('cx', d.x = d3.event.x).attr('cy', d.y = d3.event.y);
         }
 
         function dragended(d) {
-          d3.select(this).classed("active", false);
+          d3.select(this).classed('active', false);
         }
 */
         function dragstarted(d) {
-            d3.select(this).classed("dragging", true);
+            d3.select(this).classed('dragging', true);
             if (!d3.event.active)
                 simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -1727,7 +1723,7 @@ $(function() {
         }
 
         function dragended(d) {
-            d3.select(this).classed("dragging", false);
+            d3.select(this).classed('dragging', false);
             if (!d3.event.active)
                 simulation.alphaTarget(0);
             d.fx = null;
@@ -1750,17 +1746,17 @@ $(function() {
         // set the graph in motion
         force.start();
         /*var node_drag = d3.behavior.drag()
-                .on("dragstart", dragstart)
-                .on("drag", dragmove)
-                .on("dragend", dragend);
+                .on('dragstart', dragstart)
+                .on('drag', dragmove)
+                .on('dragend', dragend);
 
         function dragstart(d, i) {
-            console.log("drag start");
+            console.log('drag start');
             force.stop() // stops the force auto positioning before you start dragging
         }
 
         function dragmove(d, i) {
-        console.log("drag move");
+        console.log('drag move');
             d.px += d3.event.dx;
             d.py += d3.event.dy;
             d.x += d3.event.dx;
@@ -1769,7 +1765,7 @@ $(function() {
         }
 
         function dragend(d, i) {
-        console.log("drag end");
+        console.log('drag end');
             d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
             tick();
             force.resume();
@@ -1790,7 +1786,7 @@ $(function() {
                 var node = {};
                 var tablerow = [];
                 var n =  data[i].rootType;
-                var l = data[i].rootType.lastIndexOf("/");
+                var l = data[i].rootType.lastIndexOf('/');
                 var name = n.substring(l+1);
                 tablerow.push(k+1);
                 k = k + 1;
@@ -1817,8 +1813,8 @@ $(function() {
 
                 for (lk in linkedto) {
                     n =  linkedto[lk];
-                    li = n.lastIndexOf("/");
-                    lkname = n.substring(li+1);
+                    li = n.lastIndexOf('/');
+                    lkname = n.substring(li + 1);
 
                     var node2 = {};
                     node2.id = j;
@@ -1837,11 +1833,11 @@ $(function() {
 
                     if (snode != null && onode != null && snode.id != onode.id) {
                         link.source = snode;
-                        link.pred = "";
+                        link.pred = '';
                         link.target =onode;
                         link.left = false;
                         link.right = true;
-                        link.id = "s" + i;
+                        link.id = 's' + i;
                         //add to connection list array
                         links.push(link);
                     }
@@ -1858,8 +1854,8 @@ $(function() {
     function main() {
         var range = 100
         var data = {
-            nodes:d3.range(0, range).map(function(d){ return {label: "l"+d ,r:~~d3.randomUniform(8, 28)()}}),
-            links:d3.range(0, range).map(function(){ return {source:~~d3.randomUniform(range)(), target:~~d3.randomUniform(range)()} })
+            nodes:d3.range(0, range).map(function(d) { return {label: 'l' + d, r: ~~d3.randomUniform(8, 28)()} }),
+            links:d3.range(0, range).map(function() { return {source: ~~d3.randomUniform(range)(), target: ~~d3.randomUniform(range)()} })
         }
         console.log(data)
         setSize(data)
@@ -1875,49 +1871,49 @@ $(function() {
         chartWidth = width - (margin.left+margin.right)
         chartHeight = height - (margin.top+margin.bottom)
 
-        svg.attr("width", 860).attr("height", 800)
+        svg.attr('width', 860).attr('height', 800)
 
         chartLayer
-            .attr("width", chartWidth)
-            .attr("height", chartHeight)
-            .attr("transform", "translate(" + [margin.left, margin.top] + ")")
+            .attr('width', chartWidth)
+            .attr('height', chartHeight)
+            .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
     }
 
     function drawChart(data) {
         var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function(d) { return d.index }))
-            .force("collide",d3.forceCollide( function(d){return d.r + 8 }).iterations(16) )
-            .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(chartWidth / 2, chartHeight / 2))
-            .force("y", d3.forceY(0))
-            .force("x", d3.forceX(0))
+            .force('link', d3.forceLink().id(function(d) { return d.index }))
+            .force('collide',d3.forceCollide( function(d) { return d.r + 8 }).iterations(16))
+            .force('charge', d3.forceManyBody())
+            .force('center', d3.forceCenter(chartWidth / 2, chartHeight / 2))
+            .force('y', d3.forceY(0))
+            .force('x', d3.forceX(0))
 
-        var link = svg.append("g")
-            .attr("class", "links")
-            .selectAll("line")
+        var link = svg.append('g')
+            .attr('class', 'links')
+            .selectAll('line')
             .data(data.links)
             .enter()
-            .append("line")
-            .attr("stroke", "black")
+            .append('line')
+            .attr('stroke', 'black')
 
-        var node = svg.append("g")
-            .attr("class", "nodes")
-            .selectAll("circle")
+        var node = svg.append('g')
+            .attr('class', 'nodes')
+            .selectAll('circle')
             .data(data.nodes)
-            .enter().append("circle")
-            .attr("r", function(d){  return d.r })
+            .enter().append('circle')
+            .attr('r', function(d){  return d.r })
             .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
 
         var ticked = function() {
-            link.attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
-            node.attr("cx", function(d) { return d.x; })
-                .attr("cy", function(d) { return d.y; });
+            link.attr('x1', function(d) { return d.source.x; })
+                .attr('y1', function(d) { return d.source.y; })
+                .attr('x2', function(d) { return d.target.x; })
+                .attr('y2', function(d) { return d.target.y; });
+            node.attr('cx', function(d) { return d.x; })
+                .attr('cy', function(d) { return d.y; });
         }
 
         function dragstarted(d) {
@@ -1993,7 +1989,7 @@ $(function() {
         //update graph (called when needed)
         //function restart() {
         // path (link) group
-        path = simulation.force("link").links(data.links);
+        path = simulation.force('link').links(data.links);
 
         // update existing links
         path.classed('selected', function(d) { return d === selected_link; })
@@ -2007,18 +2003,18 @@ $(function() {
             .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
             .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; });
 
-        var thing = svg.append("svg:g").selectAll("text").data(data.links)
-            .attr("id", "thing")
-            .style("fill", "navy");
+        var thing = svg.append('svg:g').selectAll('text').data(data.links)
+            .attr('id', 'thing')
+            .style('fill', 'navy');
 
-        thing.enter().append("text")
-            .style("font-size", "16px")
-            .attr("dx", 30)
-            .attr("dy", 18)
-            .append("textPath")
-            .attr("xlink:href", function(d){return "#" + d.id;})
+        thing.enter().append('text')
+            .style('font-size', '16px')
+            .attr('dx', 30)
+            .attr('dy', 18)
+            .append('textPath')
+            .attr('xlink:href', function(d){return '#' + d.id;})
             .text(function(d){
-                if (d.pred.lastIndexOf("/") == -1) { return d.pred; }
+                if (d.pred.lastIndexOf('/') == -1) { return d.pred; }
                 return d.pred.substring(d.pred.lastIndexOf('/'), d.pred.length);
             });
 
@@ -2044,9 +2040,9 @@ $(function() {
             .style('stroke', function(d) { return d3.rgb(colors(d.id)).darker().toString(); })
             .classed('reflexive', function(d) { return d.reflexive; })
             .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
 
         // show node IDs
         g.append('svg:text')
