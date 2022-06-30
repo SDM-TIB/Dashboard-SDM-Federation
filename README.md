@@ -1,3 +1,4 @@
+[![build](https://github.com/SDM-TIB/Dashboard-SDM-Federation/actions/workflows/build.yml/badge.svg)](https://github.com/SDM-TIB/Dashboard-SDM-Federation/actions/workflows/build.yml)
 # FedSDM: Semantic Data Manager for Federations of RDF Datasets
 
 FedSDM is a semantic data manager for federations of RDF datasets.
