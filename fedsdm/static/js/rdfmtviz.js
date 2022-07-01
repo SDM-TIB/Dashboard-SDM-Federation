@@ -466,7 +466,8 @@ $(function() {
                             display: true,
                             text: 'Univ1',
                             font: {size: 16}
-                        }
+                        },
+                        tooltip: false
                     }
                 },
                 plugins: [{
