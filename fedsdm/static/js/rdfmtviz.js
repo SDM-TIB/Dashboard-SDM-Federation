@@ -422,10 +422,6 @@ $(function() {
         $('p[class=legend' + key + ']').toggle();
     };
 
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    }
-
     function drawDonut(sourcemt) {
         if (source !== 'All') {
             // $('#graph').empty();

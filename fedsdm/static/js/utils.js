@@ -45,6 +45,10 @@ function log10(value) {
     return parseInt(value) === 1 ? 0.1 : Math.log10(value)
 }
 
+function numberWithCommas(value) {
+    return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function updateTips(t) {
     tips.text(t).addClass('ui-state-highlight');
     setTimeout(function() {
