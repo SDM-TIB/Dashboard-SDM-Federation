@@ -31,7 +31,7 @@ const chartOptions = {
                         label += ': ';
                     }
                     const value = Math.round(Math.pow(10, context.parsed.x) * 100) / 100
-                    label += parseInt(value.toString(), 10);
+                    label += numberWithCommas(parseInt(value.toString(), 10));
                     return label;
                 }
             }
