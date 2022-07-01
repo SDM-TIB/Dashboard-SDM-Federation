@@ -471,16 +471,16 @@ $(function() {
                 },
                 plugins: [{
                     id: 'hoverLabel',
-                    afterDraw: function(chart, args, options) {
-//                        console.log(chart._active.length)
+                    afterDraw: function(chart) {
                         const width = chart.chartArea.width,
                               height = chart.chartArea.height,
                               top = chart.chartArea.top,
                               ctx = chart.ctx;
                         ctx.save();
                         if (chart._active.length > 0) {
-                            const numberLabel = chart.config.data.datasets[chart._active[0].datasetIndex].data[chart._active[0].index];
-                            const color = chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[chart._active[0].index];
+                            const idx = chart._active[0].index
+                            const numberLabel = chart.config.data.datasets[chart._active[0].datasetIndex].data[idx];
+                            const color = chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[idx];
                             ctx.font = 'bolder 60px Arial';
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
@@ -493,8 +493,7 @@ $(function() {
 
             let legend = document.getElementById('donut-chartjs-legend');
             const ul = document.createElement('UL');
-            donut.legend.legendItems.forEach((dataset, index) => {
-                console.log(dataset)
+            donut.legend.legendItems.forEach((dataset) => {
                 const text = dataset.text;
                 const datasetIndex = dataset.index;
                 const backgroundColor = dataset.fillStyle;
