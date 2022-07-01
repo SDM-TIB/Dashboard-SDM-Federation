@@ -199,3 +199,36 @@ table.dataTable thead .sorting_desc_disabled {
 #basic-statistics_wrapper {
   width: 99.8%;
 }
+.donut-legend ul li span {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+.donut-legend {
+  height: 396px;
+  overflow: auto;
+}
+.donut-legend ul {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+.donut-legend ul li {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+.donut-legend ul li p {
+  margin: 5px 0 0 0 !important;
+  padding: 0 !important;
+  line-height: 20px;
+  color: rgba(102, 102, 102, 1);
+}
+.donut-legend ul li.strike p {
+  text-decoration: line-through !important;
+  color: rgba(102, 102, 102, 0.5);
+}
