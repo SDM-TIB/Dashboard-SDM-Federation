@@ -199,6 +199,13 @@ table.dataTable thead .sorting_desc_disabled {
 #basic-statistics_wrapper {
   width: 99.8%;
 }
+.donut-box {
+  display: flex;
+  flex-direction: row;
+}
+.donut-wrapper {
+  width: 426px;
+}
 .donut-legend ul li span {
   display: inline-block;
   width: 15px;
@@ -208,6 +215,8 @@ table.dataTable thead .sorting_desc_disabled {
 .donut-legend {
   height: 396px;
   overflow: auto;
+  width: 65%;
+  margin-left: 50px;
 }
 .donut-legend ul {
   display: flex;
