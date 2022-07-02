@@ -68,17 +68,6 @@ bundles = {
         filters='cssmin',
         output=CSS_PATH + 'jquery-ui.min.css'
     ),
-    'morris_js': Bundle(
-        NPM_PATH + 'morris.js.so/morris.min.js',
-        NPM_PATH + 'raphael/raphael.min.js',
-        filters='jsmin',
-        output=JS_PATH + 'morris.bundle.min.js'
-    ),
-    'morris_css': Bundle(
-        NPM_PATH + 'morris.js.so/morris.css',
-        filters='cssmin',
-        output=CSS_PATH + 'morris.css'
-    ),
     'pdfmake_js': Bundle(
         NPM_PATH + 'pdfmake/build/pdfmake.min.js',
         NPM_PATH + 'pdfmake/build/vfs_fonts.js',

@@ -91,24 +91,7 @@ $(function() {
                     stats.row.add(rem).draw( false );
                 }
 
-                $('#morris-bar-chart').empty();
-                Morris.Donut({
-                    element: 'morris-bar-chart',
-                    data: datas,
-                    resize: true
-                });
-                Morris.Bar({
-                    element: 'morris-bar-chart',
-                    data: datas,
-                    xkey: 'ds',
-                    ykeys: ['rdfmts', 'triples'],
-                    labels: ['#RDF-MTs', '#Triples'],
-                    hideHover: 'auto',
-                    gridTextSize: 10,
-                    xLabelAngle: 5,
-                    barRatio: 0.4,
-                    resize: true
-                });
+                // here was a Morris bar chart
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.status);
