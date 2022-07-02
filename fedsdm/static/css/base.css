@@ -202,6 +202,7 @@ table.dataTable thead .sorting_desc_disabled {
 .donut-box {
   display: flex;
   flex-direction: row;
+  margin-bottom: 50px;
 }
 .donut-wrapper {
   width: 426px;

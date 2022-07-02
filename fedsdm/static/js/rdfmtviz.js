@@ -1,7 +1,11 @@
 $(function() {
+    const graph = $('#graph'),
+          graph_legend = $('#legend');
+
     $('#datasources').prop('disabled', true);
     $('#mtdetails').prop('disabled', true);
     $('#mtviz').hide();
+    graph_legend.hide();
 
     let stats = null,
         federation =  $('#federations-list').val(),
@@ -22,9 +26,8 @@ $(function() {
         $('#vfedName').html(fed);
         $('#afedName').html(fed);
         $('#datasources').empty();
-        $('#graph').empty()
-                   .html('<h1> Loading ... !</h1>');
-        $('#legend').empty();
+        graph.empty()
+             .html('<h1> Loading ... !</h1>');
         $('#vdsname').html('');
         loaded = 0;
         vized = 0;
@@ -100,13 +103,13 @@ $(function() {
     var sourcenodes = [];
     //connection link between subject and object ->predicates
     var sourcelinks = [];
-    var sourceids = {}, sourcesnames={};
+    var sourceids = {}, sourcesnames = {};
 
     var anodes = [],
         alinks = [];
     var mtcards = {'All': []};
     var viztype = null;
-    var data={nodes: [], links: []};
+    var data = {nodes: [], links: []};
 
     var selectedRow = null;
     var mnodes = [],
@@ -114,7 +117,6 @@ $(function() {
         mlinks = [];
     var msourcenodes = [],
         msourcelinks = [];
-    var mmtcards = {'All': []};
 
     $('#mtdetails').on('click', function() {
         $('#listofrdfmts').hide();
@@ -301,13 +303,13 @@ $(function() {
                 datasources += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
                 legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
             }
-            $('#legend').empty();
-            $('#legend').html(legend);
+            graph_legend.empty()
+                        .html(legend);
 
             $('#gadatasources').html(datasources);
             $('#datasources').html(datasources);
             $('#datasources').prop('disabled', false)
-            $('#graph').html('<h1> Please select data source!</h1>');
+            graph.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
                 $('#datasourcesbtn').val($(this).text())
                 if ($(this).text() == 'All') {
@@ -332,16 +334,13 @@ $(function() {
                     $('#vdsname').html($(this).text());
                     $('#gdsname').html($(this).text());
                     sourcemt = source;
-                    $('#graph').empty();
-                    $('#graph').html('<h3>Please select Vizualization type</h3>');
-                    //drawSingleSourceRDFMTS(sourcemt);
+                    graph.empty()
+                         .html('<h3>Please select Vizualization type</h3>');
                     if (viztype == 'fgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'force');
                     } else if (viztype == 'cgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'circular');
                     } else if (viztype == 'donut') {
-                        $('#graph').empty();
-                        $('#graph').html('<div id="morris-donut-chart"></div>')
                         console.log(source, mtcards);
                         drawDonut(source);
                     }
@@ -397,6 +396,7 @@ $(function() {
 
             flatnodes = [];
             sourcenodes = [];
+            mtcards = {'All': []};
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
                 mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
@@ -417,14 +417,105 @@ $(function() {
         });
     }
 
-    var showmore = function (key){
-        console.log('p[class=legend' + key + ']');
-        $('p[class=legend' + key + ']').toggle();
-    };
+    let donut_charts = [];
+    const graphArea = document.getElementById('graph');
+
+    function createDonut(title, labels_, data_) {
+        const donutBox = document.createElement('DIV');
+        donutBox.classList.add('donut-box');
+        graphArea.appendChild(donutBox);
+
+        const donutWrapper = document.createElement('DIV');
+        donutWrapper.classList.add('donut-wrapper');
+        donutBox.appendChild(donutWrapper);
+
+        const donutCanvas = document.createElement('CANVAS');
+        donutWrapper.appendChild(donutCanvas);
+
+        const donutLegend = document.createElement('DIV');
+        donutLegend.classList.add('donut-legend');
+        donutBox.appendChild(donutLegend);
+
+        const data = {
+            labels: labels_,
+            datasets: [{
+                data: data_,
+                backgroundColor: colors
+            }]
+        }
+
+        let donut = new Chart(donutCanvas, {
+            type: 'doughnut',
+            data: data,
+            options: {
+                cutout: '80%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: title,
+                        font: {size: 16}
+                    },
+                    tooltip: false
+                }
+            },
+            plugins: [{
+                id: 'hoverLabel',
+                afterDraw: function(chart) {
+                    const width = chart.chartArea.width,
+                        height = chart.chartArea.height,
+                        top = chart.chartArea.top,
+                        ctx = chart.ctx;
+                    ctx.save();
+                    if (chart._active.length > 0) {
+                        const idx = chart._active[0].index
+                        const numberLabel = chart.config.data.datasets[chart._active[0].datasetIndex].data[idx];
+                        const color = chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[idx];
+                        ctx.font = 'bolder 60px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = color;
+                        ctx.fillText(numberWithCommas(numberLabel), width / 2, height / 2 + top);
+                    }
+                }
+            }]
+        });
+        donut_charts.push(donut);
+
+        const ul = document.createElement('UL');
+        donut.legend.legendItems.forEach((dataset) => {
+            const text = dataset.text;
+            const datasetIndex = dataset.index;
+            const backgroundColor = dataset.fillStyle;
+
+            const li = document.createElement('LI');
+            const colorBox = document.createElement('SPAN');
+            colorBox.style.backgroundColor = backgroundColor;
+
+            const p = document.createElement('P');
+            const textNode = document.createTextNode(text);
+
+            li.onclick = (click) => {
+                click.target.parentNode.classList.toggle('strike');
+                donut.toggleDataVisibility(datasetIndex);
+                donut.update();
+            };
+
+            p.appendChild(textNode);
+            li.appendChild(colorBox);
+            li.appendChild(p);
+            ul.appendChild(li);
+        });
+        donutLegend.appendChild(ul);
+    }
 
     function drawDonut(sourcemt) {
+        donut_charts.forEach(value => value.destroy());
+        graph.empty();
+        graph_legend.hide();
         if (source !== 'All') {
-            // $('#graph').empty();
             for (let i = 0; i < jsdata.data.length; i++) {
                 for (let j in mtcards[sourcemt]) {
                     if (mtcards[sourcemt][j].label.includes(jsdata.data[i][1]))
@@ -441,138 +532,10 @@ $(function() {
                 data_.push(mtcards[sourcemt][i]['value']);
             }
 
-            const data = {
-                labels: labels_,
-                datasets: [{
-                    data: data_,
-                    backgroundColor: colors
-                }]
-            }
-
-            console.log('source:', source);
-            console.log('sourcemt:', sourcemt);
-            console.log('mtcards:', mtcards);
-
-            let donut = new Chart($('#donut-chartjs'), {
-                type: 'doughnut',
-                data: data,
-                options: {
-                    cutout: '80%',
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Univ1',
-                            font: {size: 16}
-                        },
-                        tooltip: false
-                    }
-                },
-                plugins: [{
-                    id: 'hoverLabel',
-                    afterDraw: function(chart) {
-                        const width = chart.chartArea.width,
-                              height = chart.chartArea.height,
-                              top = chart.chartArea.top,
-                              ctx = chart.ctx;
-                        ctx.save();
-                        if (chart._active.length > 0) {
-                            const idx = chart._active[0].index
-                            const numberLabel = chart.config.data.datasets[chart._active[0].datasetIndex].data[idx];
-                            const color = chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[idx];
-                            ctx.font = 'bolder 60px Arial';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillStyle = color;
-                            ctx.fillText(numberWithCommas(numberLabel), width / 2, height / 2 + top);
-                        }
-                    }
-                }]
-            })
-
-            let legend = document.getElementById('donut-chartjs-legend');
-            const ul = document.createElement('UL');
-            donut.legend.legendItems.forEach((dataset) => {
-                const text = dataset.text;
-                const datasetIndex = dataset.index;
-                const backgroundColor = dataset.fillStyle;
-
-                const li = document.createElement('LI');
-                const colorBox = document.createElement('SPAN');
-                colorBox.style.backgroundColor = backgroundColor;
-
-                const p = document.createElement('P');
-                const textNode = document.createTextNode(text);
-
-                li.onclick = (click) => {
-                    click.target.parentNode.classList.toggle('strike');
-                    donut.toggleDataVisibility(datasetIndex);
-                    donut.update();
-                };
-
-                p.appendChild(textNode);
-                li.appendChild(colorBox);
-                li.appendChild(p);
-                ul.appendChild(li);
-            });
-            legend.appendChild(ul);
-
-//            $('#donut-chartjs-legend').innerHTML = donut.generateLegend();
-
-            // $('#graph').append('<div style="float:left"><div id="morris-donut-chart" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legendd" class="donut-legend"></div></div>');
-            // var mtdonut = Morris.Donut({
-            //     element: 'morris-donut-chart',
-            //     data: mtcards[sourcemt],
-            //     resize: true,
-            //     backgroundColor: '#ccc',
-            //     labelColor: '#060',
-            //     colors: colors
-            // });
-            // $('#legendd').append('<span style="color:' + color(sourcemt) + '"><b><u>' + sourcesnames[sourcemt] + '</u></b></span>');
-            // var i = 0;
-            // mtdonut.options.data.forEach(function(label, j) {
-            //     if (i < 9) {
-            //         var legendItem = $('<span></span>')
-            //             .text(label['label'])
-            //             .prepend('<i>&nbsp;</i>');
-            //         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-            //         $('#legendd').append(legendItem);
-            //     } else if (i == 9) {
-            //         var legendItem = $('<span></span>')
-            //             .text(label['label'])
-            //             .prepend('<i>&nbsp;</i>');
-            //         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-            //         $('#legendd').append(legendItem);
-            //
-            //         $('#legendd').append('<p id="showmore'+sourcemt+'">Show more ..</p>');
-            //         $('#showmore'+sourcemt).on('click', function () {
-            //             $('span[class=legend' + sourcemt + ']').show();
-            //             $('#showmore' + sourcemt).hide();
-            //             $('#showless' + sourcemt).show();
-            //         });
-            //     } else {
-            //         var legendItem = $('<span style="display:none" class="legend' + sourcemt + '"></span>')
-            //             .text(label['label'])
-            //             .prepend('<i>&nbsp;</i>');
-            //         legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-            //         $('#legendd').append(legendItem);
-            //     }
-            //     i += 1;
-            // });
-            // if (i > 9) {
-            //     $('#legendd').append('<p style="display:none" id="showless' + sourcemt + '">Show less ...</p>');
-            //     $('#showless' + sourcemt).on('click', function() {
-            //         $('span[class=legend' + sourcemt + ']').hide();
-            //         $('#showmore' + sourcemt).show();
-            //         $('#showless' + sourcemt).hide();
-            //     });
-            // }
+            const title = sourcesnames[source];
+            createDonut(title, labels_, data_);
         } else {
-            $('#graph').empty();
             $.each(mtcards, function (key, val) {
-                $('#graph').append('<div style="float:left"><div id="morris-donut-chart' + key + '" style="float:left"></div><div style="margin-top:10px;display:inline-block" id="legend' + key + '" class="donut-legend"></div></div>');
                 for (let i = 0; i < jsdata.data.length; i++) {
                     for (let ii in val) {
                         if (val[ii].label.includes(jsdata.data[i][1]))
@@ -582,56 +545,15 @@ $(function() {
                 val.sort(function(a, b) {
                     return b.value - a.value;
                 });
-                var mtdonut = Morris.Donut({
-                    element: 'morris-donut-chart' + key,
-                    data: val,
-                    resize: true,
-                    backgroundColor: '#ccc',
-                    labelColor: '#060',
-                    colors: colors
-                });
-                var dsname = sourcesnames[key]? sourcesnames[key]: federation;
-                $('#legend' + key).append('<span style="color:' + color(key) + '"><b><u>' + dsname + '</u></b></span>');
-                var i = 0;
-                mtdonut.options.data.forEach(function(label, j) {
-                    if (i < 9) {
-                        var legendItem = $('<span></span>')
-                            .text(label['label'])
-                            .prepend('<i>&nbsp;</i>');
-                        legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-                        $('#legend' + key ).append(legendItem);
 
-                    } else if (i == 9) {
-                        var legendItem = $('<span></span>')
-                            .text(label['label'])
-                            .prepend('<i>&nbsp;</i>');
-                        legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-                        $('#legend' + key ).append(legendItem);
-                        $('#legend' + key ).append('<p id="showmore' + key + '">Show more ...</p>');
-                        $('#showmore' + key).on('click', function() {
-                            console.log('p[class=legend' + key + ']');
-                            $('span[class=legend' + key + ']').show();
-                            $('#showmore' + key).hide();
-                            $('#showless' + key).show();
-                        });
-                    } else {
-                        var legendItem = $('<span style="display:none" class="legend' + key + '"></span>')
-                            .text(label['label'])
-                            .prepend('<i>&nbsp;</i>');
-                        legendItem.find('i').css('backgroundColor', mtdonut.options.colors[i]);
-                        $('#legend' + key ).append(legendItem);
-                    }
-                    i += 1;
-                });
-                if (i > 9) {
-                    $('#legend' + key).append('<p style="display:none" id="showless' + key + '">Show less ...</p>');
-                    $('#showless' + key).on('click', function() {
-                        console.log('p[class=legend' + key + ']');
-                        $('span[class=legend' + key + ']').hide();
-                        $('#showless' + key).hide();
-                        $('#showmore' + key).show();
-                    });
+                let labels_ = [], data_ = []
+                for (let i = 0; i < val.length; i++) {
+                    labels_.push(val[i]['label']);
+                    data_.push(val[i]['value']);
                 }
+
+                const dsname = sourcesnames[key] ? sourcesnames[key] : federation;
+                createDonut(dsname, labels_, data_);
             });
         }
     }
@@ -661,26 +583,24 @@ $(function() {
         }
     });
     $('#graphVizForce').on('click', function() {
-        $('#graph').empty();
         console.log('visible tab for datasource selection:' + tabvisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'force');
         viztype = 'fgraph';
     });
     $('#graphVizCircular').on('click', function() {
-        $('#graph').empty();
         console.log('visible tab for datasource selection:' + tabvisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'circular');
         viztype = 'cgraph';
     });
     $('#donutViz').on('click', function() {
-        $('#graph').empty();
-        $('#graph').html('<div id="morris-donut-chart"></div>')
         console.log(source, mtcards);
         drawDonut(source);
         viztype = 'donut';
     });
 
     function drawSingleSourceRDFMTS(source, gt) {
+        graph.empty();
+        graph_legend.show();
         console.log('source: ' + source);
         if (source == 'All') {
             if (alinks.length < 1)
@@ -842,7 +762,7 @@ $(function() {
         console.log('drawcluster', d)
         return curve(d.path); // 0.8
     }
-    width = $('#graph').width();
+    width = graph.width();
     height = 980;
     var canv = 'graph';
 
@@ -850,9 +770,9 @@ $(function() {
         console.log('nodes', nodes, 'links', links);
         var svg;
         if (divcanv == null) {
-            $('#graph').empty();
+            graph.empty();
             svg = d3.select('#graph').append('svg');
-            width = $('#graph').width();
+            width = graph.width();
             height = 980;
             canv = 'graph'
         } else {
@@ -960,7 +880,7 @@ $(function() {
             })
             //            .on('dblclick.zoom', function(d) {
             //                d3.event.stopPropagation();
-            //                var dcx = ($('#graph').width()/2-d.x*zoom.scale());
+            //                var dcx = (graph.width()/2-d.x*zoom.scale());
             //                var dcy = (980/2-d.y*zoom.scale());
             //                zoom.translate([dcx,dcy]);
             //                 g.attr('transform', 'translate(' + dcx + ',' + dcy + ')scale(' + zoom.scale() + ')');
@@ -989,7 +909,7 @@ $(function() {
 //
 //        node.on('dblclick.zoom', function(d) {
 //            d3.event.stopPropagation();
-//            var dcx = ($('#graph').width()/2-d.x*zoom.scale());
+//            var dcx = (graph.width()/2-d.x*zoom.scale());
 //	        var dcy = (980/2-d.y*zoom.scale());
 //            zoom.translate([dcx,dcy]);
 //             g.attr('transform', 'translate(' + dcx + ',' + dcy  + ')scale(' + zoom.scale() + ')');
@@ -1447,7 +1367,7 @@ $(function() {
     function drawGraph(graph) {
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
         // create svg image
-        $('#graph').empty();
+        graph.empty();
         var circumference = 0;
         graph.nodes.forEach(function(d, i) {
             circumference += 20+2;
@@ -1459,7 +1379,7 @@ $(function() {
         diameter = wh;
         var svg = d3.select('#graph').append('svg');
         var chartLayer = svg.append('g').classed('chartLayer', true);
-        svg.attr('width', $('#graph').width())
+        svg.attr('width', graph.width())
             .attr('height', 980);
 
         // draw border around svg image
@@ -1473,7 +1393,7 @@ $(function() {
             .attr('width', wh)
             .attr('height', wh)
             .attr('id', 'plot')
-            .attr('transform', 'translate(' + $('#graph').width() / 2 + ', ' + 980 / 2 + ')');
+            .attr('transform', 'translate(' + graph.width() / 2 + ', ' + 980 / 2 + ')');
 
         zoom.on('zoom', function() {
             plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
@@ -1606,7 +1526,7 @@ $(function() {
                 .domain(['G', 'R', 'B'])
                 .range(['#009933', '#FF0000', '#0000FD']);
         //clear explanation body element
-        $('#graph').html('');
+        graph.html('');
         var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
 
         var focus_node = null, highlight_node = null;
