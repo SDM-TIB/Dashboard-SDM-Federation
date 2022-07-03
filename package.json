@@ -14,7 +14,7 @@
     "datatables.net-select": "1.4.0",
     "datatables.net-select-dt": "1.4.0",
     "pdfmake": "0.2.5",
-    "bootstrap": "3.4.1",
+    "bootstrap": "4.6.1",
     "d3": "2.10.3",
     "yasgui-yasqe": "2.11.22"
   }
