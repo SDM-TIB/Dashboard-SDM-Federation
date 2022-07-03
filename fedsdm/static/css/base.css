@@ -42,6 +42,10 @@ html, body {
 a {
   color: #337ab7;
 }
+a:hover {
+  text-decoration: none;
+  color: #23527c;
+}
 .navbar {
   padding: 0 !important;
 }
@@ -88,6 +92,31 @@ a {
 .navbar-top-links .dropdown-user {
   right: 0;
   left: auto;
+}
+.dropdown-toggle::after {
+  margin-left: 0;
+  border: 0;
+  content: unset !important;
+}
+.dropdown-toggle:hover, .dropdown-toggle:focus {
+  text-decoration: none;
+  background-color: #eee;
+  color: #23527c;
+}
+.dropdown-menu {
+  padding: 0.3125rem 0;
+  margin: 0.75rem 0 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+.dropdown-menu > li {
+  font-size: 0.875rem;
+}
+.dropdown-menu > li > a {
+  display: block;
+  clear: both;
+}
+.dropdown-menu > li > a:hover {
+  background-color: #f5f5f5;
 }
 .sidebar .sidebar-nav.navbar-collapse {
   padding-left: 0;
