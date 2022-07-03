@@ -26,6 +26,19 @@ html, body {
   margin: 40px 0 20px;
   border-bottom: 1px solid #eee;
 }
+#federations-list {
+  display: inline !important;
+  vertical-align: middle;
+  width: 70% !important;
+  height: unset !important;
+}
+#federations-list-label {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 5px;
+  font-size: 1rem;
+  line-height: normal !important;
+}
 .navbar-top-links {
   margin-right: 0;
 }
