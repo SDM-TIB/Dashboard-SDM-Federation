@@ -1,4 +1,4 @@
-<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
+<nav class="navbar navbar-light navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
     <!--**********************************************-->
     <!--************** TOP BAR *******************  -->
     <!--*********************************************-->
@@ -35,9 +35,9 @@
     <!--************** SIDE BAR *******************  -->
     <!--*********************************************-->
     {% if sidebar %}
-    <div class="navbar-default sidebar" role="navigation">
+    <div class="navbar-light sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
-            <ul class="nav" id="side-menu">
+            <ul class="navbar-nav sidebar sidebar-light" id="side-menu">
                 <!--<li class="sidebar-search">
                     <div class="input-group custom-search-form">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -48,18 +48,18 @@
                         </span>
                     </div>
                 </li>-->
-                <li><a href="{{ url_for('index') }}"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a></li>
                 <!--<li><a href="datasources.html"><i class="fa-solid fa-database  fa-fw"></i> Data Sources</a></li>-->
-                <li>
-                    <a href="{{ url_for('federation.index') }}"><i class="fa-solid fa-sitemap fa-fw"></i> Federations</a>
+                <li class="nav-item">
+                    <a href="{{ url_for('federation.index') }}" class="nav-link"><i class="fa-solid fa-sitemap fa-fw"></i> Federations</a>
                     <!--<ul class="nav nav-second-level">
                             <li><a href="{{ url_for('federation.create') }}"><i class="fa-solid fa-gear fa-fw"></i> Create New Federation</a></li>
                             <li><a href=""><i class="fa-solid fa-database fa-fw"></i> Manage Federations</a></li>
                         </ul>-->
                     <!-- /.nav-second-level -->
                 </li>
-                <li><a href="{{ url_for('rdfmts.rdfmt') }}"><i class="fa-solid fa-cogs fa-fw"></i> RDF Molecule Templates</a></li>
-                <li><a href="{{ url_for('query.query') }}"><i class="fa-solid fa-search fa-fw"></i> Query</a></li>
+                <li class="nav-item"><a href="{{ url_for('rdfmts.rdfmt') }}" class="nav-link"><i class="fa-solid fa-cogs fa-fw"></i> RDF Molecule Templates</a></li>
+                <li class="nav-item"><a href="{{ url_for('query.query') }}" class="nav-link"><i class="fa-solid fa-search fa-fw"></i> Query</a></li>
                 {# <a href="{{ url_for('mapping.mapping') }}"><i class="fa-solid fa-table fa-fw"></i> RML Mapping</a></li>
                     <li><a href="ontologies.html"><i class="fa-brands fa-connectdevelop fa-fw"></i> Ontologies</a></li>
                     <li><a href="analysis.html"><i class="fa-solid fa-analytics  fa-fw"></i> Advanced Analysis</a></li>

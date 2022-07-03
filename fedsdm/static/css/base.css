@@ -39,6 +39,26 @@ html, body {
   font-size: 1rem;
   line-height: normal !important;
 }
+a {
+  color: #337ab7;
+}
+.navbar {
+  padding: 0 !important;
+}
+.navbar-light {
+  background-color: #f8f8f8;
+  border-color: #e7e7e7;
+}
+.navbar-light .navbar-brand {
+  color: #337ab7;
+  font-size: 1.125rem;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  padding-left: 1rem;
+}
+.navbar-light .navbar-brand:hover {
+  color: #23527c;
+}
 .navbar-top-links {
   margin-right: 0;
 }
@@ -89,12 +109,23 @@ html, body {
 .sidebar .nav-third-level li a {
   padding-left: 52px;
 }
+.nav-item {
+  padding-left: 1rem;
+}
+.nav-link {
+  font-size: 0.875rem;
+  color: #337ab7 !important;
+}
+.nav-link:hover {
+  color: #23527c !important;
+  background-color: #eee;
+}
 @media (min-width: 768px) {
   .sidebar {
     z-index: 1;
     position: absolute;
     width: 250px;
-    margin-top: 51px;
+    margin-top: 18px;
   }
 }
 .login-panel {
