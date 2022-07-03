@@ -85,37 +85,37 @@
 <!-- /.row -->
 <div class="row" id="content-row">
     <div class="col-lg-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card bg-light">
+            <div class="card-header">
                 <i class="far fa-chart-bar fa-fw"></i> Federations Summary
-                <div class="pull-right">
+                <div class="float-right">
                     <a href="{{ url_for('federation.index') }}#All" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body" id="federation-summary">
+            <!-- /.card-header -->
+            <div class="card-body" id="federation-summary">
                 <canvas id="federation-summary-chart"></canvas>
             </div>
-            <!-- /.panel-body -->
+            <!-- /.card-body -->
         </div>
-        <!-- /.panel -->
+        <!-- /.card -->
     </div>
     <!-- /.col-lg-6 -->
     <div class="col-lg-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card bg-light">
+            <div class="card-header">
                 <i class="far fa-chart-bar fa-fw"></i> Data Summary
-                <div class="pull-right">
+                <div class="float-right">
                         <a href="{{ url_for('federation.index') }}#home" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body" id="data-summary">
+            <!-- /.card-header -->
+            <div class="card-body" id="data-summary">
                 <canvas id="data-summary-chart"></canvas>
             </div>
-            <!-- /.panel-body -->
+            <!-- /.card-body -->
         </div>
-        <!-- /.panel -->
+        <!-- /.card -->
     </div>
     <!-- /.col-lg-6 -->
 </div>

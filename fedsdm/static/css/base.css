@@ -152,6 +152,12 @@ table.dataTable thead .sorting:after {
   text-decoration: none;
   color: #df8a13;
 }
+.bg-light > .card-header {
+  background-color: #f5f5f5;
+}
+.bg-light > .card-body {
+  background-color: white;
+}
 .card-footer, .card-header {
   padding: .3rem 1rem !important;
 }
@@ -242,4 +248,17 @@ table.dataTable thead .sorting_desc_disabled {
 .donut-legend ul li.strike p {
   text-decoration: line-through !important;
   color: rgba(102, 102, 102, 0.5);
+}
+.btn-default {
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default:hover {
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+#content-row {
+  margin-top: 1.2rem;
 }
