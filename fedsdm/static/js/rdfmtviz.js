@@ -218,6 +218,10 @@ $(function() {
                 responsive: true,
                 select: true,
                 defaultContent: '<i>Not set</i>',
+                columnDefs: [
+                    { target: 3, render: number_renderer },
+                    { target: 4, render: number_renderer }
+                ],
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                 dom: 'Blfrtip',
                 buttons: [

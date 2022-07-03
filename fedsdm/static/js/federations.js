@@ -35,7 +35,14 @@ $(function() {
                 order: [[ 1, 'desc' ]],
                 responsive: false,
                 defaultContent: '-1',
-                select: true
+                select: true,
+                columnDefs: [
+                    { target: 1, render: number_renderer },
+                    { target: 2, render: number_renderer },
+                    { target: 3, render: number_renderer },
+                    { target: 4, render: number_renderer },
+                    { target: 5, render: number_renderer }
+                ]
             });
         } else {
             statsTablefed.clear().draw();
@@ -124,6 +131,16 @@ $(function() {
                 order: [[ 1, 'desc' ]],
                 responsive: false,
                 defaultContent: '-1',
+                columnDefs: [
+                    {
+                        target: 1,
+                        render: number_renderer
+                    },
+                    {
+                        target: 2,
+                        render: number_renderer
+                    }
+                ],
                 select: true
             });
         } else {

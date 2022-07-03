@@ -39,6 +39,8 @@ const chartOptions = {
     }
 }
 
+const number_renderer = DataTable.render.number(',', '.', 0);
+
 let tips = $('.validateTips');
 
 function log10(value) {
