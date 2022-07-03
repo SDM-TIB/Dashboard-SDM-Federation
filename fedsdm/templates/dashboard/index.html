@@ -6,89 +6,77 @@
 {% block content %}
 <div class="row" id="summary-row">
     <div class="col-lg-3">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa-solid fa-sitemap fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><span id="total-federations">0</span></div>
-                        <div>Federations!</div>
-                    </div>
+        <div class="card text-white bg-blue">
+            <div class="card-header clearfix">
+                <div class="float-left">
+                    <i class="fa-solid fa-sitemap fa-5x"></i>
+                </div>
+                <div class="float-right text-right">
+                    <div class="huge"><span id="total-federations">0</span></div>
+                    <div>Federations!</div>
                 </div>
             </div>
             <a href="{{ url_for('federation.index') }}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
+                <div class="card-footer bg-light clearfix">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
                 </div>
             </a>
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="panel panel-red">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa-solid fa-database fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><span id="total-data-sources">0</span></div>
-                        <div>Data Sources!</div>
-                    </div>
+        <div class="card text-white bg-red">
+            <div class="card-header clearfix">
+                <div class="float-left">
+                    <i class="fa-solid fa-database fa-5x"></i>
+                </div>
+                <div class="float-right text-right">
+                    <div class="huge"><span id="total-data-sources">0</span></div>
+                    <div>Data Sources!</div>
                 </div>
             </div>
             <a href="{{ url_for('federation.index') }}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
+                <div class="card-footer bg-light clearfix">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
                 </div>
             </a>
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa-solid fa-cogs fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge" id="total-rdfmts">0</div>
-                        <div>RDF Molecules!</div>
-                    </div>
+        <div class="card text-white bg-green">
+            <div class="card-header clearfix">
+                <div class="float-left">
+                    <i class="fa-solid fa-cogs fa-5x"></i>
+                </div>
+                <div class="float-right text-right">
+                    <div class="huge" id="total-rdfmts">0</div>
+                    <div>RDF Molecules!</div>
                 </div>
             </div>
             <a href="{{ url_for('rdfmts.rdfmt') }}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
+                <div class="card-footer bg-light clearfix">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
                 </div>
             </a>
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="panel panel-yellow">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa-solid fa-link fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge" id="total-links-rdfmts">0</div>
-                        <div>Links between RDF Molecules!</div>
-                    </div>
+        <div class="card text-white bg-yellow">
+            <div class="card-header clearfix">
+                <div class="float-left">
+                    <i class="fa-solid fa-link fa-5x"></i>
+                </div>
+                <div class="float-right text-right">
+                    <div class="huge" id="total-links-rdfmts">0</div>
+                    <div>Links between RDF Molecules!</div>
                 </div>
             </div>
             <a href="{{ url_for('rdfmts.rdfmt') }}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
+                <div class="card-footer bg-light clearfix">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right"><i class="fa-solid fa-arrow-circle-right"></i></span>
                 </div>
             </a>
         </div>
