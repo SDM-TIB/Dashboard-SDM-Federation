@@ -66,7 +66,7 @@ $(function() {
                     },
                     success: function(data) {
                         $('#resulttablediv').empty()
-                            .append('<table style="width: 100%" class="table display table-striped table-bordered table-hover" id="queryresultstable"></table>')
+                            .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
                         if ('error' in data) {
                             $('#resstatus').html('Error:' + data.error);
@@ -102,7 +102,7 @@ $(function() {
                                 .append(tfooter + '</tr></tfoot>');
 
                             table = $('#queryresultstable').DataTable({
-                                responsive: true,
+                                responsive: false,
                                 select: true,
                                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                                 dom: 'Blfrtip',
