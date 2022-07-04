@@ -218,9 +218,10 @@ $(function() {
         if (table == null) {
             table = $('#datasources').DataTable({
                 order: [[ 1, 'desc' ]],
-                responsive: true,
+                responsive: false,
                 select: true,
                 defaultContent: '<i>Not set</i>',
+                columnDefs: [{ target: 0, visible: false, searchable: false }],
                 ajax: '/federation/datasources?graph=' + federation + '&dstype=All'
             });
             // Data source table select action
