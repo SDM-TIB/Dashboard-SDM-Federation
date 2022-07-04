@@ -12,7 +12,7 @@ WEBFONTS_PATH = 'webfonts/'
 
 bundles = {
     'bootstrap_js': Bundle(
-        NPM_PATH + 'bootstrap/dist/js/bootstrap.min.js',
+        NPM_PATH + 'bootstrap/dist/js/bootstrap.bundle.min.js',
         filters='jsmin',
         output=JS_PATH + 'bootstrap.min.js'
     ),

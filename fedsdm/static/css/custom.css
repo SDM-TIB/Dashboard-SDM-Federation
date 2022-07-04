@@ -85,6 +85,9 @@ a:hover {
 .navbar-top-links .dropdown-menu li:last-child {
   margin-right: 0;
 }
+.dropdown-menu li a {
+  padding: 1px 10px;
+}
 .navbar-top-links .dropdown-menu li a {
   padding: 3px 20px;
   min-height: 0;
@@ -108,8 +111,10 @@ a:hover {
 }
 .dropdown-menu {
   padding: 0.3125rem 0;
-  margin: 0.75rem 0 0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+#user-dropdown {
+  margin: 0.75rem 0 0;
 }
 .dropdown-menu > li {
   font-size: 0.875rem;
@@ -399,6 +404,9 @@ table.dataTable thead .sorting_desc_disabled {
 .form-control {
   font-size: 0.875rem;
 }
+.form-group-header {
+  margin-bottom: 0 !important;
+}
 @keyframes growIn {
  0% {
   transform:scale(.9);
@@ -416,10 +424,15 @@ table.dataTable thead .sorting_desc_disabled {
 .tab-pane > .card > .card-header {
   font-size: 0.875rem;
 }
+.multi-elements {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 #yasqe, #resultinfo {
   font-size: 0.875rem;
 }
-#resulttablediv, #queryresultstable_wrapper {
+#resulttablediv, #queryresultstable_wrapper, #graph-analysis {
   width: 100%;
 }
 #resstatus {

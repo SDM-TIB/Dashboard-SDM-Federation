@@ -13,89 +13,79 @@
     <div class="col-lg-12">
         <!--begin tabs going in wide content -->
         <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
-            <li class="active"><a href="#home" role="tab" data-toggle="tab">RDF-MTs Statistics</a></li>
-            <li><a href="#visualize" role="tab" data-toggle="tab">Visualization</a></li>
-            <li><a href="#analysis" role="tab" data-toggle="tab">Analysis</a></li>
+            <li class="nav-item"><a href="#home" class="nav-link active" role="tab" data-toggle="tab">RDF-MTs Statistics</a></li>
+            <li class="nav-item"><a href="#visualize" class="nav-link" role="tab" data-toggle="tab">Visualization</a></li>
+            <li class="nav-item"><a href="#analysis" class="nav-link" role="tab" data-toggle="tab">Analysis</a></li>
         </ul>
         <!--/.nav-tabs.content-tabs -->
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="home">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+            <div class="tab-pane fade in active show" id="home">
+                <div class="card bg-light">
+                    <div class="card-header multi-elements">
                         <i class="fa-solid fa-chart-column fa-fw"></i> RDF-MTs Statistics
-                        <div class="form-group pull-right">
-                            <button class="btn btn-primary" name="add" id="mtdetails" disabled > Show Details </button>
-                            <button class="btn btn-primary" name="add" id="backtotable" style="display:none" > Back to RDF-MTs </button>
-                            <button class="btn btn-primary" name="add" id="addmt" > Add </button>
-                            <button class="btn btn-warning" name="add" id="editmt" disabled="disabled" > Edit </button>
-                            <button class="btn btn-danger" name="add" id="removemt" disabled="disabled" > Remove </button>
+                        <div style="margin-left: auto; padding-right: 2em;">
+                            <b>Federation: <span id="fedName" style="color:#D2691E"></span></b>
                         </div>
-                        <div class="pull-right" style="padding-right:2em">
-                            <p><b>Federation: <span id="fedName" style="color:#D2691E"></span></b></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="panel-body" id="listofrdfmts">
-                            <table style="width: 100%" class="table display table-striped table-bordered table-hover" id="rdfmtsdataTables">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>URI</th>
-                                    <th>Instances</th>
-                                    <th>Num. of Properties</th>
-                                </tr>
-                                </thead>
-                            </table>
-                            <!-- /.table-responsive -->
+                        <div class="form-group form-group-header">
+                            <button class="btn btn-primary" name="add" id="mtdetails" disabled> Show Details </button>
+                            <button class="btn btn-primary" name="add" id="backtotable" style="display:none"> Back to RDF-MTs </button>
+                            <button class="btn btn-primary" name="add" id="addmt"> Add </button>
+                            <button class="btn btn-warning" name="add" id="editmt" disabled="disabled"> Edit </button>
+                            <button class="btn btn-danger" name="add" id="removemt" disabled="disabled"> Remove </button>
                         </div>
                     </div>
-                    <div class="row" >
-                        <div class="panel-body col-lg-12" id="mtviz"></div>
+                    <div class="card-body" id="listofrdfmts">
+                        <table style="width: 100%" class="table table-striped table-bordered table-hover" id="rdfmtsdataTables">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>URI</th>
+                                <th>Instances</th>
+                                <th>Num. of Properties</th>
+                            </tr>
+                            </thead>
+                        </table>
+                        <!-- /.table-responsive -->
                     </div>
-                    <!-- /.panel-body -->
+                    <div class="card-body col-lg-12" id="mtviz"></div>
+                    <!-- /.card-body -->
                 </div>
             </div>
             <div class="tab-pane fade" id="visualize">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+                <div class="card bg-light">
+                    <div class="card-header multi-elements">
                         <i class="fa-solid fa-chart-column fa-fw"></i> RDF-MTs Visualization
-                        <div class="pull-right" style="padding-left:2em">
+                        <div class="btn-group" style="margin-left: auto; margin-right: 1em;">
+                            <button type="button" id="datasourcesbtn" class="btn btn-default btn-xl dropdown-toggle" data-toggle="dropdown">
+                                Select Data Source <i class="fa-solid fa-caret-down"></i>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="datasources"></ul>
+                        </div>
+                        <div class="btn-group" style="padding-right: 2em;">
+                            <button type="button" class="btn btn-default btn-xl dropdown-toggle" data-toggle="dropdown">
+                                Select Viz Type <i class="fa-solid fa-caret-down"></i>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="viztype">
+                                <li class=""><a href="#" id="graphVizForce">Force Graph</a></li>
+                                <li class=""><a href="#" id="graphVizCircular">Circular Graph</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li class=""><a href="#" id="donutViz">Donut</a></li>
+                            </ul>
+                        </div>
+                        <div style="padding-right: 2em;">
+                            <b>Federation: <span id="vfedName" style="color:#D2691E"></span></b><br>
+                            <b>Data Source: <span id="vdsname" style="color:#D2691E"></span></b>
+                        </div>
+                        <div class="form-group form-group-header">
                             <button type="button" class="btn btn-success" id="startforce">Expand</button>
                             <button type="button" class="btn btn-danger" id="stopforce">Stop</button>
                             <button type="button" class="btn btn-warning" id="resetforce">Reset</button>
                         </div>
-                        <div class="pull-right" style="padding-left:2em">
-                            <p><b>Federation: <span id="vfedName" style="color:#D2691E"></span></b></p>
-                            <p><b>Data Source: <span id="vdsname" style="color:#D2691E"></span></b></p>
-                        </div>
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xl dropdown-toggle" data-toggle="dropdown">
-                                    Select Viz Type
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu" id="viztype">
-                                    <li><a href="#" id="graphVizForce">Force Graph</a></li>
-                                    <li><a href="#" id="graphVizCircular">Circular Graph</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#" id="donutViz">Donut</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" id="datasourcesbtn" class="btn btn-default btn-xl dropdown-toggle" data-toggle="dropdown">
-                                    Select Data Source
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu" id="datasources"></ul>
-                            </div>
-                        </div>
                     </div>
-                    <div class="panel-body">
+                    <!-- /.card-header -->
+                    <div class="card-body">
                         <div class="row">
-                        <!-- /.panel-heading -->
                             <div id="graph" class="col-lg-12" style="display: flex; flex-direction: column;"></div>
                         </div>
                         <div class="row">
@@ -104,30 +94,27 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.panel-body -->
+                    <!-- /.card-body -->
                 </div>
             </div>
             <div class="tab-pane fade" id="analysis">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+                <div class="card bg-light">
+                    <div class="card-header multi-elements">
                         <i class="fa-solid fa-chart-column fa-fw"></i> Graph Analysis
-                        <div class="pull-right" style="padding-left:2em">
-                            <p><b>Federation: <span id="afedName" style="color:#D2691E"></span></b></p>
-                            <p><b>Data Source: <span id="adsname" style="color:#D2691E"></span></b></p>
+                        <div class="btn-group" style="margin-left: auto; margin-right: 2em;">
+                            <button type="button" class="btn btn-default btn-xl dropdown-toggle" data-toggle="dropdown">
+                                Select Data Source <i class="fa-solid fa-caret-down"></i>
+                            </button>
+                            <ul class="dropdown-menu float-right" role="menu" id="gadatasources"></ul>
                         </div>
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xl dropdown-toggle" data-toggle="dropdown">
-                                    Select Data Source
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu" id="gadatasources"></ul>
-                            </div>
+                        <div>
+                            <b>Federation: <span id="afedName" style="color:#D2691E"></span></b><br>
+                            <b>Data Source: <span id="adsname" style="color:#D2691E"></span></b>
                         </div>
                     </div>
-                    <div class="row" >
-                        <div class="col-lg-6">
-                            <div class="panel-body ">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
                                 <table class="table table-striped table-bordered table-hover" id="graph-analysis">
                                     <thead>
                                     <tr>

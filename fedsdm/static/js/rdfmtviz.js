@@ -1,5 +1,5 @@
 $(function() {
-    const graph = $('#graph'),
+    const graph_container = $('#graph'),
           graph_legend = $('#legend');
 
     $('#datasources').prop('disabled', true);
@@ -26,8 +26,8 @@ $(function() {
         $('#vfedName').html(fed);
         $('#afedName').html(fed);
         $('#datasources').empty();
-        graph.empty()
-             .html('<h1> Loading ... !</h1>');
+        graph_container.empty()
+            .html('<h1> Loading ... !</h1>');
         $('#vdsname').html('');
         loaded = 0;
         vized = 0;
@@ -297,7 +297,7 @@ $(function() {
             var legend= '';
             $('#datasources').empty();
             $('#gadatasources').empty();
-            var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="divider"></li>' ;
+            var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources:', sources.length);
             for (var i = 0; i < sources.length; i++) {
                 var v = sources[i].id;
@@ -313,7 +313,7 @@ $(function() {
             $('#gadatasources').html(datasources);
             $('#datasources').html(datasources);
             $('#datasources').prop('disabled', false)
-            graph.html('<h1> Please select data source!</h1>');
+            graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
                 $('#datasourcesbtn').val($(this).text())
                 if ($(this).text() == 'All') {
@@ -338,8 +338,8 @@ $(function() {
                     $('#vdsname').html($(this).text());
                     $('#gdsname').html($(this).text());
                     sourcemt = source;
-                    graph.empty()
-                         .html('<h3>Please select Vizualization type</h3>');
+                    graph_container.empty()
+                        .html('<h3>Please select Vizualization type</h3>');
                     if (viztype == 'fgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'force');
                     } else if (viztype == 'cgraph') {
@@ -517,7 +517,7 @@ $(function() {
 
     function drawDonut(sourcemt) {
         donut_charts.forEach(value => value.destroy());
-        graph.empty();
+        graph_container.empty();
         graph_legend.hide();
         if (source !== 'All') {
             for (let i = 0; i < jsdata.data.length; i++) {
@@ -603,7 +603,7 @@ $(function() {
     });
 
     function drawSingleSourceRDFMTS(source, gt) {
-        graph.empty();
+        graph_container.empty();
         graph_legend.show();
         console.log('source: ' + source);
         if (source == 'All') {
@@ -766,7 +766,7 @@ $(function() {
         console.log('drawcluster', d)
         return curve(d.path); // 0.8
     }
-    width = graph.width();
+    width = graph_container.width();
     height = 980;
     var canv = 'graph';
 
@@ -774,9 +774,9 @@ $(function() {
         console.log('nodes', nodes, 'links', links);
         var svg;
         if (divcanv == null) {
-            graph.empty();
+            graph_container.empty();
             svg = d3.select('#graph').append('svg');
-            width = graph.width();
+            width = graph_container.width();
             height = 980;
             canv = 'graph'
         } else {
@@ -884,7 +884,7 @@ $(function() {
             })
             //            .on('dblclick.zoom', function(d) {
             //                d3.event.stopPropagation();
-            //                var dcx = (graph.width()/2-d.x*zoom.scale());
+            //                var dcx = (graph_container.width()/2-d.x*zoom.scale());
             //                var dcy = (980/2-d.y*zoom.scale());
             //                zoom.translate([dcx,dcy]);
             //                 g.attr('transform', 'translate(' + dcx + ',' + dcy + ')scale(' + zoom.scale() + ')');
@@ -913,7 +913,7 @@ $(function() {
 //
 //        node.on('dblclick.zoom', function(d) {
 //            d3.event.stopPropagation();
-//            var dcx = (graph.width()/2-d.x*zoom.scale());
+//            var dcx = (graph_container.width()/2-d.x*zoom.scale());
 //	        var dcy = (980/2-d.y*zoom.scale());
 //            zoom.translate([dcx,dcy]);
 //             g.attr('transform', 'translate(' + dcx + ',' + dcy  + ')scale(' + zoom.scale() + ')');
@@ -1371,7 +1371,7 @@ $(function() {
     function drawGraph(graph) {
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
         // create svg image
-        graph.empty();
+        graph_container.empty();
         var circumference = 0;
         graph.nodes.forEach(function(d, i) {
             circumference += 20+2;
@@ -1383,7 +1383,7 @@ $(function() {
         diameter = wh;
         var svg = d3.select('#graph').append('svg');
         var chartLayer = svg.append('g').classed('chartLayer', true);
-        svg.attr('width', graph.width())
+        svg.attr('width', graph_container.width())
             .attr('height', 980);
 
         // draw border around svg image
@@ -1397,7 +1397,7 @@ $(function() {
             .attr('width', wh)
             .attr('height', wh)
             .attr('id', 'plot')
-            .attr('transform', 'translate(' + graph.width() / 2 + ', ' + 980 / 2 + ')');
+            .attr('transform', 'translate(' + graph_container.width() / 2 + ', ' + 980 / 2 + ')');
 
         zoom.on('zoom', function() {
             plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
@@ -1530,7 +1530,7 @@ $(function() {
                 .domain(['G', 'R', 'B'])
                 .range(['#009933', '#FF0000', '#0000FD']);
         //clear explanation body element
-        graph.html('');
+        graph_container.html('');
         var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
 
         var focus_node = null, highlight_node = null;
