@@ -158,7 +158,10 @@ a:hover {
   }
 }
 .login-panel {
-  margin-top: 25%;
+  margin-top: 6rem;
+  width: 20%;
+  margin-left: auto;
+  margin-right: auto;
 }
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,
@@ -239,8 +242,12 @@ table.dataTable thead .sorting:after {
 .card-footer, .card-header {
   padding: .5rem 1rem !important;
 }
-.card-footer {
+.card-footer, .card-body {
   font-size: 0.875rem;
+}
+.card-title {
+  font-size: 1rem;
+  margin-bottom: 0 !important;
 }
 .row-header {
   border-bottom: 1px solid #eeeeee;
@@ -340,6 +347,18 @@ table.dataTable thead .sorting_desc_disabled {
   background-color: #e6e6e6;
   border-color: #adadad;
 }
+.btn-success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.btn-success:hover {
+  background-color: #449d44;
+  border-color: #398439;
+}
 #content-row {
   margin-top: 1.2rem;
+}
+.form-control {
+  font-size: 0.875rem;
 }

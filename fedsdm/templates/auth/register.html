@@ -17,32 +17,26 @@
 <div id="wrapper">
     {% set sidebar = false %}
     {% include 'navbar.html' %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Register</h3>
+    <div class="login-panel card bg-light">
+        <div class="card-header">
+            <h3 class="card-title">Please Register</h3>
+        </div>
+        <div class="card-body">
+            {% for message in get_flashed_messages() %}
+                <div class="flash"> {{ message }}</div>
+            {% endfor %}
+            <form role="form" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="username" name="username" type="text" autofocus required>
                     </div>
-                    <div class="panel-body">
-                        {% for message in get_flashed_messages() %}
-                            <div class="flash"> {{ message }}</div>
-                        {% endfor %}
-                        <form role="form" method="post">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="username" name="username" type="text" autofocus required>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
-                                </div>
-                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Register">
-                                <a href="{{ url_for('auth.login') }}">Login</a>
-                            </fieldset>
-                        </form>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
                     </div>
-                </div>
-            </div>
+                    <input type="submit" class="btn btn-lg btn-success btn-block" value="Register">
+                    <a href="{{ url_for('auth.login') }}">Login</a>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
