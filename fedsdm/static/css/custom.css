@@ -237,7 +237,10 @@ table.dataTable thead .sorting:after {
   background-color: white;
 }
 .card-footer, .card-header {
-  padding: .3rem 1rem !important;
+  padding: .5rem 1rem !important;
+}
+.card-footer {
+  font-size: 0.875rem;
 }
 .row-header {
   border-bottom: 1px solid #eeeeee;
