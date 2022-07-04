@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>Login - FedSDM</title>
+    <title>{{ title }} - FedSDM</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom CSS and Fontawesome -->
@@ -19,7 +19,7 @@
     {% include 'navbar.html' %}
     <div class="login-panel card bg-light">
         <div class="card-header">
-            <h3 class="card-title">Please Sign In</h3>
+            <h3 class="card-title">Please {% if operation == 'Login' %}Sign In{% else %}{{ operation }}{% endif %}</h3>
         </div>
         <div class="card-body">
             {% for message in get_flashed_messages() %}
@@ -28,18 +28,20 @@
             <form role="form" method="post">
                 <fieldset>
                     <div class="form-group">
-                        <input class="form-control" placeholder="username" name="username" autofocus required>
+                        <input class="form-control" placeholder="username" name="username" type="text" autofocus required>
                     </div>
                     <div class="form-group">
                         <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input name="remember" type="checkbox" value="Remember Me"> Remember Me
-                        </label>
-                    </div>
-                    <input type="submit" class="btn btn-lg btn-success btn-block" value="Login">
-                    <a  href="{{ url_for('auth.register') }}">Register</a>
+                    {% if operation == 'Login' %}
+                        <div class="checkbox">
+                            <label>
+                                <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                            </label>
+                        </div>
+                    {% endif %}
+                    <input type="submit" class="btn btn-lg btn-success btn-block" value="{{ operation }}">
+                    <a href="{{ url_for('auth.' ~ other|lower ) }}">{{ other }}</a>
                 </fieldset>
             </form>
         </div>

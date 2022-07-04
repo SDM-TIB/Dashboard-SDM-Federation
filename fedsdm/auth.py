@@ -68,8 +68,7 @@ def register():
             return redirect(url_for('auth.login'))
 
         flash(error)
-
-    return render_template('auth/register.html')
+    return render_template('auth.html', title='Register', operation='Register', other='Login')
 
 
 @bp.route('/login', methods=('GET', "POST"))
@@ -111,7 +110,7 @@ def login():
 
         flash(error)
         print(error)
-    return render_template('auth/login.html')
+    return render_template('auth.html', title='Register', operation='Login', other='Register')
 
 
 @bp.before_app_request
