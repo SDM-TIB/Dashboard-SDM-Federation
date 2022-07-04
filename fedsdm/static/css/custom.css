@@ -337,8 +337,10 @@ table.dataTable thead .sorting_desc_disabled {
   text-decoration: line-through !important;
   color: rgba(102, 102, 102, 0.5);
 }
+.btn {
+  font-size: 0.875rem;
+}
 .btn-default {
-  font-size: 14px;
   color: #333;
   background-color: #fff;
   border-color: #ccc;
@@ -407,4 +409,7 @@ table.dataTable thead .sorting_desc_disabled {
 .animated--grow-in {
   animation-name: growIn;
   animation-duration: .5s;
+}
+.tab-pane > .card > .card-header {
+  font-size: 0.875rem;
 }
