@@ -362,3 +362,17 @@ table.dataTable thead .sorting_desc_disabled {
 .form-control {
   font-size: 0.875rem;
 }
+@keyframes growIn {
+ 0% {
+  transform:scale(.9);
+  opacity:0
+ }
+ 100% {
+  transform:scale(1);
+  opacity:1
+ }
+}
+.animated--grow-in {
+  animation-name: growIn;
+  animation-duration: .5s;
+}
