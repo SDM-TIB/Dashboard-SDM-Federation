@@ -367,6 +367,7 @@ table.dataTable thead .sorting_desc_disabled {
   border-color: #4cae4c;
 }
 .btn-warning:hover {
+  color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
