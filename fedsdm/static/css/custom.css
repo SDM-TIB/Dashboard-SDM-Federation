@@ -37,6 +37,7 @@ html, body {
   vertical-align: middle;
   margin-right: 5px;
   font-size: 1rem;
+  font-weight: bold;
   line-height: normal !important;
 }
 a {
