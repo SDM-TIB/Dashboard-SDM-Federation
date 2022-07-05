@@ -277,6 +277,9 @@ table.dataTable thead .sorting:after {
   background-position: -96px -128px;
   background-repeat: no-repeat;
 }
+.ui-dialog-titlebar, .ui-widget-content {
+  font-size: 0.875rem;
+}
 .navbar-static-top {
   z-index: 1 !important;
 }
