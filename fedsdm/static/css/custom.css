@@ -273,7 +273,7 @@ table.dataTable thead .sorting:after {
   height: 20px;
   display: inline-block;
   /* Change path to image*/
-  background-image: url(images/ui-icons_777777_256x240.png);
+  background-image: url(images/ui-icons_444444_256x240.png);
   background-position: -96px -128px;
   background-repeat: no-repeat;
 }
