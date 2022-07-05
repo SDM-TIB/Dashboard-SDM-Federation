@@ -51,6 +51,11 @@ function numberWithCommas(value) {
     return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function resetTips() {
+    tips.removeClass('ui-state-error')
+        .text('Some fields are required.');
+}
+
 function updateTips(t) {
     tips.text(t).addClass('ui-state-highlight');
     setTimeout(function() {
