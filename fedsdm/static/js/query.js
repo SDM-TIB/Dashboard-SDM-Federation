@@ -328,6 +328,7 @@ $(function() {
         close: function() {
             addfeedbackform[0].reset();
             allfeedbackFields.removeClass('ui-state-error');
+            resetTips();
         }
     });
 
@@ -337,9 +338,10 @@ $(function() {
     });
 
     function addFeedback(close) {
-        var valid = true;
         allfeedbackFields.removeClass('ui-state-error');
-        valid = valid && checkLength(feedbackdesc, 'description', 2, 500);
+        let valid_pred = checkSelection(fedbackpreds, 'column');
+        let valid_desc = checkLength(feedbackdesc, 'description', 2, 500);
+        const valid = valid_desc && valid_pred;
         data = {
             'desc': feedbackdesc.val(),
             'pred': fedbackpreds.val(),
@@ -382,8 +384,7 @@ $(function() {
             });
         } else {
             close = false;
-            feedbackdesc.addClass('ui-state-error')
-            console.log('Invalid data ...');
+            console.log('Invalid data...');
         }
         if (close) {
             addfeedbackdialog.dialog('close');

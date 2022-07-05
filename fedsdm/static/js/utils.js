@@ -57,7 +57,19 @@ function resetTips() {
 }
 
 function updateTips(t) {
-    tips.text(t).addClass('ui-state-highlight');
+    const current_text = tips.text()
+    console.log("current: " + current_text + "\tnew: " + t);
+    if (current_text.includes('Some fields are required.')) {
+        tips.text(t);
+    } else {
+        const str_ary = current_text.split('.');
+        const str_set = [...new Set(str_ary)];
+        const text = str_set.join('.\n')
+        tips.text(text + t);
+        tips.html(tips.html().replace(/\n/g,'<br>'))
+    }
+
+    tips.addClass('ui-state-highlight');
     setTimeout(function() {
         tips.removeClass('ui-state-highlight', 1500, 'swing');
     }, 500 );
@@ -77,6 +89,16 @@ function checkRegexp(o, regexp, n) {
     if (!regexp.test(o.val())) {
         o.addClass('ui-state-error');
         updateTips(n);
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function checkSelection(o, n) {
+    if (o.val() === '-1') {
+        o.addClass('ui-state-error');
+        updateTips('Select an option for ' + n + '.');
         return false;
     } else {
         return true;

@@ -374,7 +374,6 @@ $(function() {
     ***************************************************
     */
     let dialog, edialog, form, eform,
-        // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
         name = $('#name'),
         desc = $('#desc'),
         dstype = $('#dstype'),
@@ -385,7 +384,20 @@ $(function() {
         homepage = $('#homepage'),
         version = $('#version'),
         allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
-        crnfdialog;
+        ename = $('#ename'),
+        edesc = $('#edesc'),
+        edstype = $('#edstype'),
+        eURL = $('#eURL'),
+        eparams = $('#eparams'),
+        ekeywords = $('#ekeywords'),
+        eorganization = $('#eorganization'),
+        ehomepage = $('#ehomepage'),
+        eversion = $('#eversion'),
+        allFieldsEdit = $([]).add(ename).add(edesc).add(edstype).add(eURL).add(eparams).add(ekeywords).add(eorganization).add(ehomepage).add(eversion),
+        crnfdialog, crnfform,
+        fedName = $('#namecf'),
+        fedDesc = $('#description'),
+        allFieldsFed = $([]).add(fedName).add(fedDesc);
 
     dialog = $('#add-form').dialog({
         autoOpen: false,
@@ -445,17 +457,18 @@ $(function() {
             class: 'btn btn-danger'
         }],
         close: function() {
-            form[0].reset();
-            allFields.removeClass('ui-state-error');
+            crnfform[0].reset();
+            allFieldsFed.removeClass('ui-state-error');
             resetTips();
         }
     });
 
     function addDataSource(close) {
-        let valid = true;
+        resetTips();
         allFields.removeClass('ui-state-error');
-        valid = valid && checkLength(name, 'name', 2, 169);
-        valid = valid && checkLength(URL, 'url', 6, 100);
+        const validName = checkLength(name, 'name', 2, 169);
+        const validURL = checkLength(URL, 'URL', 6, 100);
+        const valid = validName && validURL;
         //valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, 'Data source should consist of a-z, 0-9, underscores, spaces and must begin with a letter.' );
         //valid = valid && checkRegexp( URL, emailRegex, 'eg. ui@jquery.com' );
         if (valid) {
@@ -495,8 +508,6 @@ $(function() {
             });
         } else {
             close = false;
-            name.addClass('ui-state-error');
-            URL.addClass('ui-state-error');
             console.log('Invalid data...');
         }
         if (close) {
@@ -532,7 +543,7 @@ $(function() {
         }],
         close: function() {
             eform[0].reset();
-            allFields.removeClass('ui-state-error');
+            allFieldsEdit.removeClass('ui-state-error');
             resetTips();
         }
     });
@@ -543,21 +554,12 @@ $(function() {
     });
 
     function updateDS() {
-        let ename = $('#ename'),
-            edesc = $('#elabel'),
-            edstype = $('#edstype'),
-            eURL = $('#eURL'),
-            eparams = $('#eparams'),
-            ekeywords = $('#ekeywords'),
-            eorganization = $('#eorganization'),
-            ehomepage = $('#ehomepage'),
-            eversion = $('#eversion'),
-            eid = selectedSource[0][0],
-            allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version);
-        let valid = true;
-        allFields.removeClass('ui-state-error');
-        valid = valid && checkLength(ename, 'name', 2, 169);
-        valid = valid && checkLength(eURL, 'url', 6, 100);
+        resetTips();
+        allFieldsEdit.removeClass('ui-state-error');
+        let eid = selectedSource[0][0];
+        const validName = checkLength(ename, 'name', 2, 169);
+        const validURL = checkLength(eURL, 'URL', 6, 100);
+        const valid = validName && validURL;
         if (valid) {
             table.row('.selected').remove().draw(false);
             table.row.add([eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw(false);
@@ -605,11 +607,12 @@ $(function() {
         return valid;
     }
 
-    function createnewfederation() {
-        let name = $('#namecf').val();
-        let desc = $('#description').val();
+    function createnewfederation(close) {
+        let name = fedName.val();
+        let desc = fedDesc.val();
         console.log(name + ' ' + desc);
-        if (name != null && name !== '' && name.length > 0) {
+        const valid = checkLength(fedName, 'name', 2, 169);
+        if (valid) {
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -643,10 +646,18 @@ $(function() {
                     console.log(textStatus);
                 }
             });
+        } else {
+            close = false;
+            console.log('Invalid data...');
         }
-        if (name == null || name === '' || name.length <= 0) {
-            alert('The Name field should not be empty.\nPlease insert a name in the Name field.');
+        if (close) {
+            crnfdialog.dialog('close');
         }
-        return false
+        return valid;
     }
+
+    crnfform = crnfdialog.find('form').on('submit', function(event) {
+        event.preventDefault();
+        createnewfederation(true);
+    });
 });
