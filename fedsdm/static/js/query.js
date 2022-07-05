@@ -339,7 +339,7 @@ $(function() {
     function addFeedback(close) {
         var valid = true;
         allfeedbackFields.removeClass('ui-state-error');
-        valid = valid && checkLength(feedbackdesc, 'name', 2, 500);
+        valid = valid && checkLength(feedbackdesc, 'description', 2, 500);
         data = {
             'desc': feedbackdesc.val(),
             'pred': fedbackpreds.val(),
@@ -370,7 +370,7 @@ $(function() {
                     if (data != null && data.length > 0) {
                         // load_query_table(data);
                     } else {
-                        $('#validateTips').html('Error while adding data source to the federation!')
+                        $('#validateTips').html('Error while adding feedback!')
                     }
                     // showqueries(datasource);
                 },
@@ -381,6 +381,7 @@ $(function() {
                 }
             });
         } else {
+            close = false;
             feedbackdesc.addClass('ui-state-error')
             console.log('Invalid data ...');
         }
