@@ -13,25 +13,22 @@ WEBFONTS_PATH = 'webfonts/'
 bundles = {
     'bootstrap_js': Bundle(
         NPM_PATH + 'bootstrap/dist/js/bootstrap.bundle.min.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'bootstrap.min.js'
     ),
     'bootstrap_css': Bundle(
         NPM_PATH + 'bootstrap/dist/css/bootstrap.min.css',
-        NPM_PATH + 'bootstrap/dist/css/bootstrap-grid.min.css',
-        NPM_PATH + 'bootstrap/dist/css/bootstrap-reboot.min.css',
-        NPM_PATH + 'bootstrap/dist/css/bootstrap-utilities.min.css',
         filters='cssmin',
         output=CSS_PATH + 'bootstrap.min.css'
     ),
     'chart_js': Bundle(
         NPM_PATH + 'chart.js/dist/chart.min.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'Chart.min.js'
     ),
     'd3_js': Bundle(
         NPM_PATH + 'd3/d3.v2.min.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'd3.min.js'
     ),
     'datatables_js': Bundle(
@@ -41,7 +38,7 @@ bundles = {
         NPM_PATH + 'datatables.net-buttons/js/dataTables.buttons.min.js',
         NPM_PATH + 'datatables.net-buttons/js/buttons.html5.min.js',
         NPM_PATH + 'jszip/dist/jszip.min.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'dataTables.bundle.min.js'
     ),
     'datatables_css': Bundle(
@@ -61,7 +58,7 @@ bundles = {
         NPM_PATH + 'jquery/dist/jquery.min.js',
         NPM_PATH + 'jquery-ui-dist/jquery-ui.min.js',
         NPM_PATH + 'jquery.md5/index.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'jquery.bundle.min.js'
     ),
     'jquery_css': Bundle(
@@ -74,12 +71,12 @@ bundles = {
     'pdfmake_js': Bundle(
         NPM_PATH + 'pdfmake/build/pdfmake.min.js',
         NPM_PATH + 'pdfmake/build/vfs_fonts.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'pdfmake.bundle.min.js'
     ),
     'yasqe_js': Bundle(
         NPM_PATH + 'yasgui-yasqe/dist/yasqe.bundled.min.js',
-        filters='jsmin',
+        filters='rjsmin',
         output=JS_PATH + 'yasqe.bundled.min.js'
     ),
     'yasqe_css': Bundle(
