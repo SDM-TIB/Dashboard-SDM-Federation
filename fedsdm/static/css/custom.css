@@ -186,7 +186,6 @@ a:hover {
 }
 @media (min-width: 768px) {
   .sidebar {
-    z-index: 1;
     position: absolute;
     width: 250px;
     margin-top: 18px;
@@ -266,30 +265,6 @@ a:hover {
   margin-bottom: 20px;
   margin-left: 0;
   margin-right: 0;
-}
-.ui-dialog-titlebar-close {
-  padding:0 !important;
-}
-.ui-dialog-titlebar-close:after {
-  content: '';
-  text-align: center;
-  width: 19px;
-  height: 20px;
-  display: inline-block;
-  /* Change path to image*/
-  background-image: url(images/ui-icons_444444_256x240.png);
-  background-position: -96px -128px;
-  background-repeat: no-repeat;
-}
-.ui-dialog-titlebar, .ui-widget-content {
-  font-size: 0.875rem;
-}
-.navbar-static-top {
-  z-index: 1 !important;
-}
-.ui-widget-overlay {
-  opacity: .3 !important;
-  filter: Alpha(Opacity=30) !important; /* support: IE8 */
 }
 #basic-statistics_wrapper {
   width: 99.8%;
