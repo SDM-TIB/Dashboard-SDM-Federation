@@ -157,6 +157,10 @@
 </div>
 <!-- /.row -->
 
+{% include 'federation/modal-federation-create.html' %}
+{% include 'federation/modal-source-add.html' %}
+{% include 'federation/modal-source-edit.html' %}
+
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/federations.js') }}"></script>
@@ -179,7 +183,3 @@ $(function() {
 });
 </script>
 {% endblock %}
-
-{% include 'federation/modal-federation-create.html' %}
-{% include 'federation/modal-source-add.html' %}
-{% include 'federation/modal-source-edit.html' %}
