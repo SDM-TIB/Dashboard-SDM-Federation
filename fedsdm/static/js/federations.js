@@ -367,31 +367,86 @@ $(function() {
     ***** Dialog management functions *****************
     ***************************************************
     */
-    let form, eform,
-        name = $('#name'),
-        desc = $('#desc'),
-        dstype = $('#dstype'),
-        URL = $('#URL'),
-        params = $('#params'),
-        keywords = $('#keywords'),
-        organization = $('#organization'),
-        homepage = $('#homepage'),
-        version = $('#version'),
-        allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
-        ename = $('#ename'),
-        edesc = $('#edesc'),
-        edstype = $('#edstype'),
-        eURL = $('#eURL'),
-        eparams = $('#eparams'),
-        ekeywords = $('#ekeywords'),
-        eorganization = $('#eorganization'),
-        ehomepage = $('#ehomepage'),
-        eversion = $('#eversion'),
-        allFieldsEdit = $([]).add(ename).add(edesc).add(edstype).add(eURL).add(eparams).add(ekeywords).add(eorganization).add(ehomepage).add(eversion),
-        crnfform,
-        fedName = $('#namecf'),
-        fedDesc = $('#description'),
-        allFieldsFed = $([]).add(fedName).add(fedDesc);
+    const fedModal = $('#federationModal'),
+          addSourceModal = $('#addSourceModal'),
+          editSourceModal = $('#editSourceModal'),
+          crnfform = fedModal.find('form'),
+          form = addSourceModal.find('form'),
+          eform = editSourceModal.find('form'),
+          name = $('#name'),
+          desc = $('#desc'),
+          dstype = $('#dstype'),
+          URL = $('#URL'),
+          params = $('#params'),
+          keywords = $('#keywords'),
+          organization = $('#organization'),
+          homepage = $('#homepage'),
+          version = $('#version'),
+          allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
+          ename = $('#ename'),
+          edesc = $('#edesc'),
+          edstype = $('#edstype'),
+          eURL = $('#eURL'),
+          eparams = $('#eparams'),
+          ekeywords = $('#ekeywords'),
+          eorganization = $('#eorganization'),
+          ehomepage = $('#ehomepage'),
+          eversion = $('#eversion'),
+          allFieldsEdit = $([]).add(ename).add(edesc).add(edstype).add(eURL).add(eparams).add(ekeywords).add(eorganization).add(ehomepage).add(eversion),
+          fedName = $('#namecf'),
+          fedDesc = $('#description'),
+          allFieldsFed = $([]).add(fedName).add(fedDesc);
+
+    crnfform.on('submit', function(event) {
+        event.preventDefault();
+        createnewfederation(true);
+    });
+    fedModal.on('shown.bs.modal', function() {
+        fedName.trigger('focus');
+    });
+    fedModal.on('hidden.bs.modal', function() {
+        crnfform[0].reset();
+        allFieldsFed.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#create-fed-btn-create').on('click', function() {
+       createnewfederation(true);
+    });
+
+    form.on('submit', function(event) {
+        event.preventDefault();
+        addDataSource(true);
+    });
+    addSourceModal.on('shown.bs.modal', function() {
+        name.trigger('focus');
+    });
+    addSourceModal.on('hidden.bs.modal', function() {
+        form[0].reset();
+        allFields.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#add-source-btn-finish').on('click', function() {
+       addDataSource(true);
+    });
+    $('#add-source-btn-more').on('click', function() {
+       saveAndMore();
+    });
+
+    eform.on('submit', function(event) {
+        event.preventDefault();
+        updateDS();
+    });
+    editSourceModal.on('shown.bs.modal', function() {
+        edesc.trigger('focus');
+    });
+    editSourceModal.on('hidden.bs.modal', function() {
+        eform[0].reset();
+        allFieldsEdit.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#edit-source-btn').on('click', function() {
+       updateDS();
+    });
 
     function addDataSource(close) {
         resetTips();
@@ -557,58 +612,4 @@ $(function() {
         }
         return valid;
     }
-
-    const fedModal = $('#federationModal');
-    crnfform = fedModal.find('form').on('submit', function(event) {
-        event.preventDefault();
-        createnewfederation(true);
-    });
-    fedModal.on('shown.bs.modal', function() {
-        fedName.trigger('focus');
-    });
-    fedModal.on('hidden.bs.modal', function() {
-        crnfform[0].reset();
-        allFieldsFed.removeClass('ui-state-error');
-        resetTips();
-    });
-    $('#create-fed-btn-create').on('click', function() {
-       createnewfederation(true);
-    });
-
-    const addSourceModal = $('#addSourceModal');
-    form = addSourceModal.find('form').on('submit', function(event) {
-        event.preventDefault();
-        addDataSource(true);
-    });
-    addSourceModal.on('shown.bs.modal', function() {
-        name.trigger('focus');
-    });
-    addSourceModal.on('hidden.bs.modal', function() {
-        form[0].reset();
-        allFields.removeClass('ui-state-error');
-        resetTips();
-    });
-    $('#add-source-btn-finish').on('click', function() {
-       addDataSource(true);
-    });
-    $('#add-source-btn-more').on('click', function() {
-       saveAndMore();
-    });
-
-    const editSourceModal = $('#editSourceModal');
-    eform = editSourceModal.find('form').on('submit', function(event) {
-        event.preventDefault();
-        updateDS();
-    });
-    editSourceModal.on('shown.bs.modal', function() {
-        edesc.trigger('focus');
-    });
-    editSourceModal.on('hidden.bs.modal', function() {
-        eform[0].reset();
-        allFieldsEdit.removeClass('ui-state-error');
-        resetTips();
-    });
-    $('#edit-source-btn').on('click', function() {
-       updateDS();
-    });
 });
