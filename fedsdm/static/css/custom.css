@@ -42,6 +42,20 @@ label {
   font-size: 0.875rem;
   font-weight: bold;
 }
+.dataTables_length label {
+  padding-top: 0.38rem;
+  margin-bottom: 0 !important;
+}
+.dataTables_filter {
+  margin-bottom: 10px;
+}
+.dataTables_filter label {
+  padding-top: 0.2rem;
+  margin-bottom: 0 !important;
+}
+.dt-buttons {
+  margin-right: 2rem;
+}
 a {
   color: #337ab7;
 }
