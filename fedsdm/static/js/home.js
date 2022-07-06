@@ -72,8 +72,10 @@ $(function() {
                 fedData.sources.push(log10(fed.sources));
                 fedData.rdfmts.push(log10(fed.rdfmts));
                 fedData.links.push(log10(fed.links));
-                fedData.links.push(log10(fed.properties));
+                fedData.properties.push(log10(fed.properties));
                 fedData.triples.push(log10(fed.triples))
+                console.log("input: " + JSON.stringify(fed));
+                console.log("output: " + JSON.stringify(fedData));
             }
             federationSummaryChart = new Chart($('#federation-summary-chart'), {
                 type: 'bar',
