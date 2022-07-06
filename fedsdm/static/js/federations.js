@@ -637,6 +637,7 @@ $(function() {
                             $('#maincontent a[href="' + aTab + '"]').tab('show');
                         }
                     } else {
+                        close = false;
                         $('#errormsg').html('Error while creating the new federation! Please enter a valid name (var name).')
                     }
                 },
