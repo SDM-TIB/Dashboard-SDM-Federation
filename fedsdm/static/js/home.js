@@ -30,6 +30,7 @@ $(function() {
                     break;
                 }
             }
+            $('#data-summary').height(62 + 110 * dsData.labels.length);
             dataSummaryChart = new Chart($('#data-summary-chart'), {
                 type: 'bar',
                 data: {
@@ -74,9 +75,8 @@ $(function() {
                 fedData.links.push(log10(fed.links));
                 fedData.properties.push(log10(fed.properties));
                 fedData.triples.push(log10(fed.triples))
-                console.log("input: " + JSON.stringify(fed));
-                console.log("output: " + JSON.stringify(fedData));
             }
+            $('#federation-summary').height(62 + 130 * fedData.labels.length);
             federationSummaryChart = new Chart($('#federation-summary-chart'), {
                 type: 'bar',
                 data: {

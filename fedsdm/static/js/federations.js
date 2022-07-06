@@ -181,6 +181,7 @@ $(function() {
                     bardata.triples.push(triples);
                 }
 
+                $('#sourceStatsChartContainer').height(62 + 70 * bardata.labels.length)
                 if (sourceStatsChart == null) {
                     sourceStatsChart = new Chart($('#sourceStatsChart'), {
                         type: 'bar',

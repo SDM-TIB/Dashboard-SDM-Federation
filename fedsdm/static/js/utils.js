@@ -1,5 +1,6 @@
 const chartOptions = {
     indexAxis: 'y',
+    maintainAspectRatio: false,
     scales: {
         y: {
             beginAtZero: true,
