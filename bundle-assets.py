@@ -39,6 +39,7 @@ bundles = {
         NPM_PATH + 'datatables.net-select/js/dataTables.select.min.js',
         NPM_PATH + 'datatables.net-buttons/js/dataTables.buttons.min.js',
         NPM_PATH + 'datatables.net-buttons/js/buttons.html5.min.js',
+        NPM_PATH + 'jszip/dist/jszip.min.js',
         filters='jsmin',
         output=JS_PATH + 'dataTables.bundle.min.js'
     ),

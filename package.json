@@ -16,6 +16,7 @@
     "pdfmake": "0.2.5",
     "bootstrap": "4.6.1",
     "d3": "2.10.3",
-    "yasgui-yasqe": "2.11.22"
+    "yasgui-yasqe": "2.11.22",
+    "jszip": "3.10.0"
   }
 }
