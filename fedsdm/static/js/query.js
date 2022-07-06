@@ -275,42 +275,25 @@ $(function() {
         drawRDFMTS(manodes, malinks, 'mtviz');
     }
 
-    var addfeedbackform = null;
-    var addfeedbackdialog = null;
-    var feedbackdesc =  $('#feedbackdesc'),
-        fedbackpreds = $('#fedbackpreds'),
-        allfeedbackFields = $([]).add(feedbackdesc).add(fedbackpreds);
-    addfeedbackdialog = $('#feedback-form').dialog({
-        autoOpen: false,
-        height: 400,
-        width: 550,
-        modal: true,
-        classes: {
-            'ui-dialog': 'ui-corner-all'
-        },
-        buttons: [
-            {
-                text: 'Save',
-                click: addFeedback,
-                class: 'btn btn-success'
-            }, {
-                text: 'Cancel',
-                click: function() {
-                    addfeedbackdialog.dialog('close');
-                },
-                class: 'btn btn-danger'
-            }
-        ],
-        close: function() {
-            addfeedbackform[0].reset();
-            allfeedbackFields.removeClass('ui-state-error');
-            resetTips();
-        }
-    });
-
-    addfeedbackform = addfeedbackdialog.find('form').on('submit', function(event) {
+    const addfeedbackdialog = $('#feedbackModal');
+    const addfeedbackform = addfeedbackdialog.find('form').on('submit', function(event) {
         event.preventDefault();
         addFeedback(true);
+    });
+    const feedbackdesc =  $('#feedbackdesc'),
+          fedbackpreds = $('#fedbackpreds'),
+          allfeedbackFields = $([]).add(feedbackdesc).add(fedbackpreds);
+
+    addfeedbackdialog.on('shown.bs.modal', function() {
+        feedbackdesc.trigger('focus');
+    });
+    addfeedbackdialog.on('hidden.bs.modal', function() {
+        addfeedbackform[0].reset();
+        allfeedbackFields.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#add-feedback-btn').on('click', function() {
+       addFeedback(true);
     });
 
     function addFeedback(close) {
@@ -363,19 +346,18 @@ $(function() {
             console.log('Invalid data...');
         }
         if (close) {
-            addfeedbackdialog.dialog('close');
-            return valid;
+            addfeedbackdialog.modal('hide');
         }
+        return valid;
     }
 
     $('#addfeedback').on('click', function() {
-        $('#fedbackpreds').empty()
-                          .append('<option value="-1">Select column</option>');
-        for (d in queryvars) {
-            $('#fedbackpreds').append('<option value=' + queryvars[d] + '> ' + queryvars[d] + '</option>');
+        fedbackpreds.empty()
+                    .append('<option value="-1">Select column</option>');
+        for (const d in queryvars) {
+            fedbackpreds.append('<option value=' + queryvars[d] + '> ' + queryvars[d] + '</option>');
         }
-        $('#fedbackpreds').append('<option value="All">All</option>');
-        addfeedbackdialog.dialog('open');
+        fedbackpreds.append('<option value="All">All</option>');
     });
 
     function append_nodes_edges(rowmap, qtripl) {

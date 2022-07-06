@@ -1,8 +1,7 @@
 $(function() {
     let federation = $('#federations-list').val(),
         table = null,
-        feedbackform = null,
-        feedbackdialog = null;
+        feedbackdialog = $('#detailsModal');
     $('#selectfederation').prop('disabled', true);
 
     if (federation != null && federation !== '') {
@@ -58,10 +57,11 @@ $(function() {
 
                         $('#var').val(data['var']);
                         $('#pred').val(data['pred']);
-                        var obj = JSON.parse(data['row']);
+/*                        var obj = JSON.parse(data['row']);
                         var pretty = JSON.stringify(obj, undefined, 4);
-                        $('#rowjson').val(pretty);
-                        feedbackdialog.dialog('open');
+                        $('#rowjson').val(pretty); */
+                        $('#rowjson').val(JSON.stringify(data['row'], undefined, 4));
+                        feedbackdialog.modal('show');
                     },
                     error: function(jqXHR, textStatus) {
                         console.log(jqXHR.status);
@@ -106,24 +106,6 @@ $(function() {
             })
     }
 
-    var feedbackdesc = $('#feedbackdesc'),
-        fedbackpreds = $('#fedbackpreds'),
-        tips = $('.validateTips');
-
-    feedbackdialog = $('#feedback-dialog').dialog({
-        autoOpen: false,
-        height: 400,
-        width: 550,
-        modal: true,
-        classes: {
-            'ui-dialog': 'ui-corner-all'
-        },
-        close: function() {
-            // feedbackform[0].reset();
-            // allfeedbackFields.removeClass('ui-state-error');
-        }
-    });
-
     $('#issuedetails').on('click', function() {
         $.ajax({
             type: 'GET',
@@ -142,8 +124,7 @@ $(function() {
 
                 $('#var').val(data['var']);
                 $('#pred').val(data['pred']);
-                $('#rowjson').val(JSON.stringify(data['row']));
-                feedbackdialog.dialog('open');
+                $('#rowjson').val(JSON.stringify(data['row'], undefined, 4));
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);

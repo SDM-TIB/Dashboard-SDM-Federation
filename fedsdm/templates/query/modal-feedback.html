@@ -1,0 +1,31 @@
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Give Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="validateTips">Some fields are required.</p>
+                <form>
+                    <fieldset>
+                        <label for="fedbackpreds" class="required">Column of Interest</label>
+                        <select class="form-control form-select" id="fedbackpreds" style="width:300px;" required>
+                            <option value="-1">Select column</option>
+                            <option value="All">All</option>
+                        </select>
+                        <label for="feedbackdesc" class="required">Description</label>
+                        <textarea class="form-control" name="feedbackdesc" id="feedbackdesc" placeholder="Enter a query" rows="4" required></textarea>
+
+                        <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                        <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="add-feedback-btn" type="button" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

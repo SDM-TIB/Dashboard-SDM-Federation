@@ -8,27 +8,7 @@
     {% set feds_all = true %}
     {% include 'federations-list.html' %}
     <div style="width: auto; margin-left: auto; padding-right: 15px;">
-        <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed"> Create New Federation </button>
-        <div id="my-form" title="Create New Federation" style="display:none">
-            <p class="validateTips">Some fields are required.</p>
-            <form method="post">
-                <fieldset>
-                    <div class="form-group">
-                        <label for="namecf" class="required">Name</label>
-                        <input class="text ui-widget-content ui-corner-all" name="namecf" id="namecf" placeholder="Enter name of the new federation" value="{{ request.form['namecf'] }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="text ui-widget-content ui-corner-all" name="description" style="resize: none; width: 100%" id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="checkbox" value="1" name="public" id="public" checked>
-                        <label for="public">Public</label>
-                    </div>
-                    <span id="errormsg" style="color:red"></span>
-                </fieldset>
-            </form>
-        </div>
+        <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed" data-bs-toggle="modal" data-bs-target="#federationModal"> Create New Federation </button>
     </div>
 </div>
 
@@ -58,7 +38,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="form-group" style="text-align: right">
-                            <button type="button" class="btn btn-success" name="AddFed" id="AddFed">Add</button>
+                            <button type="button" class="btn btn-success" name="AddFed" id="AddFed" data-bs-toggle="modal" data-bs-target="#federationModal">Add</button>
                             <button class="btn btn-warning" name="editfd" id="editfd" disabled>Edit</button>
                             <button class="btn btn-danger" name="removefd" id="removefd" disabled>Remove</button>
                         </div>
@@ -136,8 +116,8 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="form-group" style="text-align: right">
-                            <button type="button" class="btn btn-success" name="add" id="addds">Add</button>
-                            <button class="btn btn-warning" name="edit" id="editds" disabled>Edit</button>
+                            <button type="button" class="btn btn-success" name="add" id="addds" data-bs-toggle="modal" data-bs-target="#addSourceModal">Add</button>
+                            <button class="btn btn-warning" name="edit" id="editds" disabled data-bs-toggle="modal" data-bs-target="#editSourceModal">Edit</button>
                             <button class="btn btn-danger" name="remove" id="removeds" disabled>Remove</button>
                             <button class="btn btn-primary" name="mapping" id="recomputemts" disabled>Re-create MTs</button>
                             <button class="btn btn-primary" name="findlinks" id="findlinks" disabled>Find Connection</button>
@@ -177,97 +157,6 @@
 </div>
 <!-- /.row -->
 
-<div id="add-form" title="Add New Data Source" style="display:none">
-    <p class="validateTips">Some fields are required.</p>
-    <form>
-        <fieldset>
-            <label for="name" class="required">Name</label>
-            <input type="text" name="name" id="name" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" required>
-
-            <label for="desc">Short Description</label>
-            <input type="text" name="label" id="desc" placeholder="DBpedia - a Public Data Infrastructure for a Large Semantic Knowledge Graph"
-                   class="text ui-widget-content ui-corner-all">
-
-            <label for="dstype" class="required">Data Source Type</label>
-            <select name="dstype" id="dstype" class="form-control ui-widget-content ui-corner-all" required disabled>
-                <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
-                <!--            <option value="MongoDB">MongoDB</option>
-                            <option value="Neo4j">Neo4j</option>
-                            <option value="MySQL">MySQL</option>
-                            <option value="SPARK_CSV">Hadoop CSV File</option>
-                            <option value="SPARK_TSV">Hadoop TSV File</option>
-                            <option value="SPARK_JSON">Hadoop JSON File</option>
-                            <option value="SPARK_XML">Hadoop XML File</option>
-                            <option value="LOCAL_CSV">Local CSV File</option>
-                            <option value="LOCAL_TSV">Local TSV File</option>
-                            <option value="LOCAL_JSON">Local JSON File</option>
-                            <option value="LOCAL_XML">Local XML File</option>
-                            <option value="REST_Service">REST Service</option> -->
-            </select>
-
-            <label for="URL" class="required">URL</label>
-            <input type="url" name="URL" id="URL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all" required>
-
-            <label for="params">Parameters (key-value):</label>
-            <input type="text"
-                   name="params" id="params"
-                   placeholder="username:user1;password:1234;timeout:100000;Content-type:application/json"
-                   class="text ui-widget-content ui-corner-all">
-
-            <label for="keywords">Keywords:</label>
-            <input type="text" name="keywords" id="keywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
-
-            <label for="homepage">Homepage:</label>
-            <input type="text" name="homepage" id="homepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
-
-            <label for="organization">Organization:</label>
-            <input type="text" name="organization" id="organization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
-
-            <label for="version">Version:</label>
-            <input type="text" name="version" id="version" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
-
-            <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-        </fieldset>
-    </form>
-
-</div>
-<!-- end of add dialog -->
-<div id="editdsdialog" title="Edit Data Source" style="display:none">
-    <p class="validateTips">Some fields are required.</p>
-    <form>
-        <fieldset>
-            <label for="ename" class="required">Name</label>
-            <input type="text" name="ename" id="ename" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" readonly>
-            <label for="edesc">Short Description</label>
-            <input type="text" name="elabel" id="edesc" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph" class="text ui-widget-content ui-corner-all">
-            <label for="edstype">Data Source Type</label>
-            <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required>
-                <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
-            </select>
-            <label for="eURL" class="required">URL</label>
-            <input type="url" name="eURL" required id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
-            <label for="eparams">Parameters (key-value):</label>
-            <input type="text" name="eparams" id="eparams" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
-
-            <label for="ekeywords">Keywords:</label>
-            <input type="text" name="ekeywords" id="ekeywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
-
-            <label for="ehomepage">Homepage:</label>
-            <input type="text" name="ehomepage" id="ehomepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
-
-            <label for="eorganization">Organization:</label>
-            <input type="text" name="eorganization" id="eorganization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
-
-            <label for="eversion">Version:</label>
-            <input type="text" name="eversion" id="eversion" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
-
-            <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-        </fieldset>
-    </form>
-</div>
-<!-- end of edit dialog -->
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/federations.js') }}"></script>
@@ -290,3 +179,7 @@ $(function() {
 });
 </script>
 {% endblock %}
+
+{% include 'federation/modal-federation-create.html' %}
+{% include 'federation/modal-source-add.html' %}
+{% include 'federation/modal-source-edit.html' %}

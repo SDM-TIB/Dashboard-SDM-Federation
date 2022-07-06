@@ -1,0 +1,34 @@
+<div class="modal fade" id="federationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Federation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="validateTips">Some fields are required.</p>
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="namecf" class="required">Name</label>
+                            <input class="text ui-widget-content ui-corner-all" name="namecf" id="namecf" placeholder="Enter name of the new federation" value="{{ request.form['namecf'] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="text ui-widget-content ui-corner-all" name="description" style="resize: none; width: 100%" id="description" placeholder="Enter a short description of the Federation" rows="8"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" value="1" name="public" id="public" checked>
+                            <label for="public">Public</label>
+                        </div>
+                        <span id="errormsg" style="color:red"></span>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="create-fed-btn-create" type="button" class="btn btn-success">Create</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

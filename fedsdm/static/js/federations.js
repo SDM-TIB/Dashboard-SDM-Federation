@@ -246,11 +246,6 @@ $(function() {
         });
     }
 
-    // Add data source click action
-    button_add_source.on('click', function() {
-        dialog.dialog('open');
-    });
-
     // Edit data source click action
     button_edit_source.on('click', function() {
         $('#ename').val(selectedSource[0][1]);
@@ -262,7 +257,6 @@ $(function() {
         $('#elabel').val(selectedSource[0][7].trim());
         $('#eversion').val(selectedSource[0][8].trim());
         $('#eparams').val(selectedSource[0][9].trim());
-        edialog.dialog('open');
     });
 
     //Remove data source click action
@@ -373,7 +367,7 @@ $(function() {
     ***** Dialog management functions *****************
     ***************************************************
     */
-    let dialog, edialog, form, eform,
+    let form, eform,
         name = $('#name'),
         desc = $('#desc'),
         dstype = $('#dstype'),
@@ -394,74 +388,10 @@ $(function() {
         ehomepage = $('#ehomepage'),
         eversion = $('#eversion'),
         allFieldsEdit = $([]).add(ename).add(edesc).add(edstype).add(eURL).add(eparams).add(ekeywords).add(eorganization).add(ehomepage).add(eversion),
-        crnfdialog, crnfform,
+        crnfform,
         fedName = $('#namecf'),
         fedDesc = $('#description'),
         allFieldsFed = $([]).add(fedName).add(fedDesc);
-
-    dialog = $('#add-form').dialog({
-        autoOpen: false,
-        height: 800,
-        width: 550,
-        modal: true,
-        classes: {
-            'ui-dialog': 'ui-corner-all'
-        },
-        buttons: [{
-            text: 'Finish',
-            click:addDataSource,
-            class: 'btn btn-success'
-        }, {
-            text: 'Continue',
-            click:saveAndMore,
-            class: 'btn btn-primary'
-        }, {
-            text: 'Cancel',
-            click: function() { dialog.dialog('close'); },
-            class: 'btn btn-danger'
-        }],
-        close: function() {
-            form[0].reset();
-            allFields.removeClass('ui-state-error');
-            resetTips();
-        }
-    });
-
-    form = dialog.find('form').on('submit', function(event) {
-        event.preventDefault();
-        addDataSource(true);
-    });
-
-    $('#CreateNewFed').on('click', function() {
-        crnfdialog.dialog('open');
-    });
-    $('#AddFed').on('click', function() {
-        crnfdialog.dialog('open');
-    });
-
-    crnfdialog = $('#my-form').dialog({
-        autoOpen: false,
-        height: 550,
-        width: 550,
-        modal: true,
-        classes: {
-            'ui-dialog': 'ui-corner-all'
-        },
-        buttons: [{
-            text: 'Create',
-            click: createnewfederation,
-            class: 'btn btn-success'
-        }, {
-            text: 'Cancel',
-            click: function() { crnfdialog.dialog('close'); },
-            class: 'btn btn-danger'
-        }],
-        close: function() {
-            crnfform[0].reset();
-            allFieldsFed.removeClass('ui-state-error');
-            resetTips();
-        }
-    });
 
     function addDataSource(close) {
         resetTips();
@@ -511,7 +441,7 @@ $(function() {
             console.log('Invalid data...');
         }
         if (close) {
-            dialog.dialog('close');
+            addSourceModal.modal('hide');
         }
         return valid;
     }
@@ -523,35 +453,6 @@ $(function() {
             allFields.removeClass('ui-state-error');
         }
     }
-
-    edialog = $('#editdsdialog').dialog({
-        autoOpen: false,
-        height: 800,
-        width: 700,
-        modal: true,
-        classes: {
-            'ui-dialog': 'ui-corner-all'
-        },
-        buttons: [{
-            text: 'Update Data Source',
-            click: updateDS,
-            class: 'btn btn-success'
-        }, {
-            text: 'Cancel',
-            click: function() { edialog.dialog('close'); },
-            class: 'btn btn-danger'
-        }],
-        close: function() {
-            eform[0].reset();
-            allFieldsEdit.removeClass('ui-state-error');
-            resetTips();
-        }
-    });
-
-    eform = edialog.find('form').on('submit', function(event) {
-        event.preventDefault();
-        updateDS();
-    });
 
     function updateDS() {
         resetTips();
@@ -602,7 +503,7 @@ $(function() {
                     console.log(textStatus);
                 }
             });
-            edialog.dialog('close');
+            editSourceModal.modal('hide');
         }
         return valid;
     }
@@ -628,7 +529,6 @@ $(function() {
                         federation = data;
                         $('#fedName').html(name);
                         $('#newfedform').hide();
-                        crnfdialog.dialog('close');
                         // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name;
                         federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
@@ -653,13 +553,62 @@ $(function() {
             console.log('Invalid data...');
         }
         if (close) {
-            crnfdialog.dialog('close');
+            fedModal.modal('hide');
         }
         return valid;
     }
 
-    crnfform = crnfdialog.find('form').on('submit', function(event) {
+    const fedModal = $('#federationModal');
+    crnfform = fedModal.find('form').on('submit', function(event) {
         event.preventDefault();
         createnewfederation(true);
+    });
+    fedModal.on('shown.bs.modal', function() {
+        fedName.trigger('focus');
+    });
+    fedModal.on('hidden.bs.modal', function() {
+        crnfform[0].reset();
+        allFieldsFed.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#create-fed-btn-create').on('click', function() {
+       createnewfederation(true);
+    });
+
+    const addSourceModal = $('#addSourceModal');
+    form = addSourceModal.find('form').on('submit', function(event) {
+        event.preventDefault();
+        addDataSource(true);
+    });
+    addSourceModal.on('shown.bs.modal', function() {
+        name.trigger('focus');
+    });
+    addSourceModal.on('hidden.bs.modal', function() {
+        form[0].reset();
+        allFields.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#add-source-btn-finish').on('click', function() {
+       addDataSource(true);
+    });
+    $('#add-source-btn-more').on('click', function() {
+       saveAndMore();
+    });
+
+    const editSourceModal = $('#editSourceModal');
+    eform = editSourceModal.find('form').on('submit', function(event) {
+        event.preventDefault();
+        updateDS();
+    });
+    editSourceModal.on('shown.bs.modal', function() {
+        edesc.trigger('focus');
+    });
+    editSourceModal.on('hidden.bs.modal', function() {
+        eform[0].reset();
+        allFieldsEdit.removeClass('ui-state-error');
+        resetTips();
+    });
+    $('#edit-source-btn').on('click', function() {
+       updateDS();
     });
 });

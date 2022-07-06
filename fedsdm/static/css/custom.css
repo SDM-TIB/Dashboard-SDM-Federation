@@ -434,3 +434,12 @@ a:hover {
 .table-bordered {
   border: 1px solid #dee2e6;
 }
+.modal {
+  font-size: .875rem;
+}
+.modal-header {
+  background-color: #e9e9e9;
+}
+.modal-title {
+  font-size: 1rem;
+}

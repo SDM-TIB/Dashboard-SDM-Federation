@@ -1,0 +1,69 @@
+<div class="modal fade" id="addSourceModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Data Source</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="validateTips">Some fields are required.</p>
+                <form>
+                    <fieldset>
+                        <label for="name" class="required">Name</label>
+                        <input type="text" name="name" id="name" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" required>
+
+                        <label for="desc">Short Description</label>
+                        <input type="text" name="label" id="desc" placeholder="DBpedia - a Public Data Infrastructure for a Large Semantic Knowledge Graph"
+                               class="text ui-widget-content ui-corner-all">
+
+                        <label for="dstype" class="required">Data Source Type</label>
+                        <select name="dstype" id="dstype" class="form-control ui-widget-content ui-corner-all" required disabled>
+                            <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
+                            <!--            <option value="MongoDB">MongoDB</option>
+                                        <option value="Neo4j">Neo4j</option>
+                                        <option value="MySQL">MySQL</option>
+                                        <option value="SPARK_CSV">Hadoop CSV File</option>
+                                        <option value="SPARK_TSV">Hadoop TSV File</option>
+                                        <option value="SPARK_JSON">Hadoop JSON File</option>
+                                        <option value="SPARK_XML">Hadoop XML File</option>
+                                        <option value="LOCAL_CSV">Local CSV File</option>
+                                        <option value="LOCAL_TSV">Local TSV File</option>
+                                        <option value="LOCAL_JSON">Local JSON File</option>
+                                        <option value="LOCAL_XML">Local XML File</option>
+                                        <option value="REST_Service">REST Service</option> -->
+                        </select>
+
+                        <label for="URL" class="required">URL</label>
+                        <input type="url" name="URL" id="URL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all" required>
+
+                        <label for="params">Parameters (key-value):</label>
+                        <input type="text"
+                               name="params" id="params"
+                               placeholder="username:user1;password:1234;timeout:100000;Content-type:application/json"
+                               class="text ui-widget-content ui-corner-all">
+
+                        <label for="keywords">Keywords:</label>
+                        <input type="text" name="keywords" id="keywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
+
+                        <label for="homepage">Homepage:</label>
+                        <input type="text" name="homepage" id="homepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
+
+                        <label for="organization">Organization:</label>
+                        <input type="text" name="organization" id="organization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
+
+                        <label for="version">Version:</label>
+                        <input type="text" name="version" id="version" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
+
+                        <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                        <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="add-source-btn-finish" type="button" class="btn btn-success">Finish</button>
+                <button id="add-source-btn-more" type="button" class="btn btn-primary">Continue</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

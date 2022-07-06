@@ -1,0 +1,34 @@
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                        <label for="user">Username</label>
+                        <input type="text" name="user" id="user" class="text ui-widget-content ui-corner-all disabled">
+                        <br>
+                        <label for="query" style="margin-top: 10px">Query</label>
+                        <textarea class="form-control disabled" name="query" placeholder="Enter a query" id="query" rows="4"></textarea>
+
+                        <label for="desc" style="margin-top: 10px">Description</label>
+                        <input type="text" name="desc" id="desc" class="text ui-widget-content ui-corner-all disabled"><br>
+                        <label for="status" style="margin-top: 10px">Status</label>
+                        <input type="text" name="status" id="status" class="text ui-widget-content ui-corner-all disabled"><br>
+
+                        <label for="var" style="margin-top: 10px">Column</label>
+                        <input type="text" name="var" id="var"  class="text ui-widget-content ui-corner-all disabled"><br>
+                        <label for="pred" style="margin-top: 10px">Associated Predicate(s)</label>
+                        <input type="text" name="pred" id="pred" placeholder="predicate" class="text ui-widget-content ui-corner-all disabled"><br>
+
+                        <label for="rowjson" class="label-class" style="margin-top: 10px">Row</label>
+                        <textarea class="form-control disabled" name="rowjson" placeholder="Enter a query" id="rowjson" rows="4"></textarea>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

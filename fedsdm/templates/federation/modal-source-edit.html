@@ -1,0 +1,48 @@
+<div class="modal fade" id="editSourceModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Data Source</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="validateTips">Some fields are required.</p>
+                <form>
+        <fieldset>
+            <label for="ename" class="required">Name</label>
+            <input type="text" name="ename" id="ename" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" readonly>
+            <label for="edesc">Short Description</label>
+            <input type="text" name="elabel" id="edesc" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph" class="text ui-widget-content ui-corner-all">
+            <label for="edstype">Data Source Type</label>
+            <select name="edstype" id="edstype" class="form-control ui-widget-content ui-corner-all" required>
+                <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
+            </select>
+            <label for="eURL" class="required">URL</label>
+            <input type="url" name="eURL" required id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
+            <label for="eparams">Parameters (key-value):</label>
+            <input type="text" name="eparams" id="eparams" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
+
+            <label for="ekeywords">Keywords:</label>
+            <input type="text" name="ekeywords" id="ekeywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
+
+            <label for="ehomepage">Homepage:</label>
+            <input type="text" name="ehomepage" id="ehomepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
+
+            <label for="eorganization">Organization:</label>
+            <input type="text" name="eorganization" id="eorganization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
+
+            <label for="eversion">Version:</label>
+            <input type="text" name="eversion" id="eversion" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+    </form>
+            </div>
+            <div class="modal-footer">
+                <button id="edit-source-btn" type="button" class="btn btn-success">Update Data Source</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
