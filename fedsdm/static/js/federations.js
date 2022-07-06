@@ -608,6 +608,7 @@ $(function() {
     }
 
     function createnewfederation(close) {
+        resetTips();
         let name = fedName.val();
         let desc = fedDesc.val();
         console.log(name + ' ' + desc);
