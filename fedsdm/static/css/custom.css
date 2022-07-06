@@ -325,53 +325,53 @@ a:hover {
   color: rgba(102, 102, 102, 0.5);
 }
 .btn {
-  font-size: 0.875rem;
+  font-size: 0.875rem !important;
 }
 .btn-default {
-  color: #333;
-  background-color: #fff;
-  border-color: #ccc;
+  color: #333 !important;
+  background-color: #fff !important;
+  border-color: #ccc !important;
 }
 .btn-default:hover {
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 .btn-success:hover {
-  background-color: #449d44;
-  border-color: #398439;
+  background-color: #449d44 !important;
+  border-color: #398439 !important;
 }
 .btn-success, .btn-success.disabled, .btn-success:disabled {
-  color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  color: #fff !important;
+  background-color: #5cb85c !important;
+  border-color: #4cae4c !important;
 }
 .btn-warning:hover {
-  color: #fff;
-  background-color: #ec971f;
-  border-color: #d58512;
+  color: #fff !important;
+  background-color: #ec971f !important;
+  border-color: #d58512 !important;
 }
 .btn-warning, .btn-warning.disabled, .btn-warning:disabled {
-  color: #fff;
-  background-color: #f0ad4e;
-  border-color: #eea236;
+  color: #fff !important;
+  background-color: #f0ad4e !important;
+  border-color: #eea236 !important;
 }
 .btn-danger:hover {
-  background-color: #c9302c;
-  border-color: #ac2925;
+  background-color: #c9302c !important;
+  border-color: #ac2925 !important;
 }
 .btn-danger, .btn-danger.disabled, .btn-danger:disabled {
-  color: #fff;
-  background-color: #d9534f;
-  border-color: #d43f3a;
+  color: #fff !important;
+  background-color: #d9534f !important;
+  border-color: #d43f3a !important;
 }
 .btn-primary:hover {
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #286090 !important;
+  border-color: #204d74 !important;
 }
 .btn-primary, .btn-primary.disabled, .btn-primary:disabled {
-  color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  color: #fff !important;
+  background-color: #337ab7 !important;
+  border-color: #2e6da4 !important;
 }
 .btn.disabled, .btn:disabled {
   cursor: not-allowed;
@@ -380,6 +380,9 @@ a:hover {
 }
 #content-row {
   margin-top: 1.2rem;
+}
+.form-group {
+  margin-bottom: 1rem;
 }
 .form-control {
   font-size: 0.875rem;
