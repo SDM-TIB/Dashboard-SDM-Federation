@@ -57,6 +57,7 @@ label {
   margin-right: 2rem;
 }
 a {
+  text-decoration: none;
   color: #337ab7;
 }
 a:hover {
