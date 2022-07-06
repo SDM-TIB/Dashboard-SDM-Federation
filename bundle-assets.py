@@ -20,6 +20,7 @@ bundles = {
         NPM_PATH + 'bootstrap/dist/css/bootstrap.min.css',
         NPM_PATH + 'bootstrap/dist/css/bootstrap-grid.min.css',
         NPM_PATH + 'bootstrap/dist/css/bootstrap-reboot.min.css',
+        NPM_PATH + 'bootstrap/dist/css/bootstrap-utilities.min.css',
         filters='cssmin',
         output=CSS_PATH + 'bootstrap.min.css'
     ),
