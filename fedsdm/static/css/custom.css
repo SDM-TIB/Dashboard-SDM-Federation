@@ -379,14 +379,14 @@ a:hover {
   margin-bottom: 0 !important;
 }
 @keyframes growIn {
- 0% {
-  transform:scale(.9);
-  opacity:0
- }
- 100% {
-  transform:scale(1);
-  opacity:1
- }
+  0% {
+    transform:scale(.9);
+    opacity:0
+  }
+  100% {
+    transform:scale(1);
+    opacity:1
+  }
 }
 .animated--grow-in {
   animation-name: growIn;
