@@ -71,11 +71,13 @@ a:hover {
   background-color: #f8f8f8;
   border-color: #e7e7e7;
 }
+.navbar-light .navbar-header {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
 .navbar-light .navbar-brand {
   color: #337ab7;
   font-size: 1.125rem;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
   padding-left: 1rem;
 }
 .navbar-light .navbar-brand:hover {
