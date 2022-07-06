@@ -106,31 +106,7 @@ $(function() {
                                 select: true,
                                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                                 dom: 'Blfrtip',
-                                buttons: [
-                                    {
-                                        text: 'copy',
-                                        extend: 'copyHtml5',
-                                        title: 'sparql-results'
-                                    }, {
-                                        text: 'csv',
-                                        extend: 'csvHtml5',
-                                        title: 'sparql-results'
-                                    }, {
-                                        text: 'excel',
-                                        extend: 'excelHtml5',
-                                        title: 'sparql-results'
-                                    }, {
-                                        text: 'pdf',
-                                        extend: 'pdfHtml5',
-                                        title: 'sparql-results'
-                                    }, {
-                                        text: 'TSV',
-                                        extend: 'csvHtml5',
-                                        fieldSeparator: '\t',
-                                        extension: '.tsv',
-                                        title: 'sparql-results'
-                                    }
-                                ]
+                                buttons: table_buttons('sparql-results')
                             });
                             querytriples = data.querytriples;
                             var resmap = {}

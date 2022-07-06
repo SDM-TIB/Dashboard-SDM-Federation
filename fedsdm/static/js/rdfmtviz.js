@@ -224,31 +224,7 @@ $(function() {
                 ],
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                 dom: 'Blfrtip',
-                buttons: [
-                    {
-                        text: 'copy',
-                        extend: 'copyHtml5',
-                        title: 'rdfmtsdataTables'
-                    }, {
-                        text: 'csv',
-                        extend: 'csvHtml5',
-                        title: 'rdfmtsdataTables'
-                    }, {
-                        text: 'excel',
-                        extend: 'excelHtml5',
-                        title: 'rdfmtsdataTables'
-                    }, {
-                        text: 'pdf',
-                        extend: 'pdfHtml5',
-                        title: 'rdfmtsdataTables'
-                    }, {
-                        text: 'TSV',
-                        extend: 'csvHtml5',
-                        fieldSeparator: '\t',
-                        extension: '.tsv',
-                        title: 'rdfmtsdataTables'
-                    }
-                ],
+                buttons: table_buttons('rdfmtsdataTables'),
                 ajax: '/rdfmts/api/rdfmtstats?graph=' + fed
             });
             loaded = 1;
@@ -1286,31 +1262,7 @@ $(function() {
                 select: true,
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                 dom: 'Blfrtip',
-                buttons: [
-                    {
-                        text: 'copy',
-                        extend: 'copyHtml5',
-                        title: 'mt-graph-analysis'
-                    }, {
-                        text: 'csv',
-                        extend: 'csvHtml5',
-                        title: 'mt-graph-analysis'
-                    }, {
-                        text:'excel',
-                        extend: 'excelHtml5',
-                        title: 'mt-graph-analysis'
-                    }, {
-                        text:'pdf',
-                        extend: 'pdfHtml5',
-                        title: 'mt-graph-analysis'
-                    }, {
-                        text: 'TSV',
-                        extend: 'csvHtml5',
-                        fieldSeparator: '\t',
-                        extension: '.tsv',
-                        title: 'mt-graph-analysis'
-                    }
-                ],
+                buttons: table_buttons('mt-graph-analysis'),
                 ajax: '/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source
             });
             galoaded = 1;

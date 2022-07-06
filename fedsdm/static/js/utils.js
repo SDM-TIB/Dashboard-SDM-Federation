@@ -39,6 +39,34 @@ const chartOptions = {
     }
 }
 
+function table_buttons(title) {
+    return [
+        {
+            text: 'copy',
+            extend: 'copyHtml5',
+            title: title
+        }, {
+            text: 'csv',
+            extend: 'csvHtml5',
+            title: title
+        }, {
+            text: 'excel',
+            extend: 'excelHtml5',
+            title: title
+        }, {
+            text: 'pdf',
+            extend: 'pdfHtml5',
+            title: title
+        }, {
+            text: 'TSV',
+            extend: 'csvHtml5',
+            fieldSeparator: '\t',
+            extension: '.tsv',
+            title: title
+        }
+    ];
+}
+
 const number_renderer = DataTable.render.number(',', '.', 0);
 
 let tips = $('.validateTips');
