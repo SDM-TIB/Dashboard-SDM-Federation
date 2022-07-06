@@ -431,3 +431,6 @@ a:hover {
   color: red;
   font-weight: bold;
 }
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
