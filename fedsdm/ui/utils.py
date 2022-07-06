@@ -102,27 +102,38 @@ def get_num_properties(graph, datasource=None):
 
 def get_federation_stats():
     mdb = get_mdb()
-    query = "SELECT DISTINCT ?fed ?name (COUNT(DISTINCT ?ds) AS ?sources) (SUM(?count_mts) AS ?rdfmts) " \
-            "(SUM(?count_links) AS ?links) (SUM(?count_prop) AS ?properties) (SUM(?ds_triples) AS ?triples) WHERE {" \
+    query = "SELECT DISTINCT ?fed ?name (COUNT(DISTINCT ?ds) AS ?sources) (SUM(COALESCE(?count_mts, 0)) AS ?rdfmts) " \
+            "(SUM(COALESCE(?count_links, 0)) AS ?links) (SUM(COALESCE(?count_prop, 0)) AS ?properties) " \
+            "(SUM(COALESCE(?ds_triples, 0)) AS ?triples) WHERE {" \
             "  ?fed a <" + mdb.mtonto + "Federation> ." \
             "  ?fed <" + mdb.mtonto + "name> ?name ." \
-            "  { SELECT DISTINCT ?fed ?ds (COUNT (DISTINCT ?mt) AS ?count_mts) (COUNT(DISTINCT ?d) as ?count_links) " \
-            "    (COUNT (DISTINCT ?mtp) AS ?count_prop) WHERE {" \
+            "  OPTIONAL { SELECT DISTINCT ?fed ?ds (COUNT (DISTINCT ?mt) AS ?count_mts) " \
+            "    (COUNT(DISTINCT ?d) as ?count_links) (COUNT (DISTINCT ?mtp) AS ?count_prop) WHERE {" \
             "      GRAPH ?fed {" \
-            "        ?ds a <" + mdb.mtonto + "DataSource> ." \
-            "        ?mt a <" + mdb.mtonto + "RDFMT> ." \
-            "        ?mt <" + mdb.mtonto + "source> ?mtsource ." \
-            "        ?mt <" + mdb.mtonto + "hasProperty> ?mtp ." \
-            "        ?mtsource <" + mdb.mtonto + "datasource> ?ds ." \
-            "        ?d a <" + mdb.mtonto + "PropRange> ." \
-            "        ?d <" + mdb.mtonto + "datasource> ?ds ." \
+            "        OPTIONAL { " \
+            "          ?ds a <" + mdb.mtonto + "DataSource> . " \
+            "          OPTIONAL {" \
+            "            ?d a <" + mdb.mtonto + "PropRange> ." \
+            "            ?d <" + mdb.mtonto + "datasource> ?ds ." \
+            "          }" \
+            "        }" \
+            "        OPTIONAL {" \
+            "          ?mt a <" + mdb.mtonto + "RDFMT> ." \
+            "          ?mt <" + mdb.mtonto + "source> ?mtsource ." \
+            "          ?mt <" + mdb.mtonto + "hasProperty> ?mtp ." \
+            "          ?mtsource <" + mdb.mtonto + "datasource> ?ds ." \
+            "        }" \
             "      }" \
             "  } GROUP BY ?fed ?ds }" \
-            "  { SELECT DISTINCT ?fed ?ds ?ds_triples WHERE {" \
+            "  OPTIONAL { SELECT DISTINCT ?fed ?ds ?ds_triples WHERE {" \
             "    GRAPH ?fed {" \
             "      ?ds <" + mdb.mtonto + "triples> ?ds_triples ." \
             "    }" \
             "  }}" \
             "} GROUP BY ?fed ?name"
+
+    from fedsdm import get_logger
+    logger = get_logger(__name__)
+    logger.info(query)
     res, _ = mdb.query(query)
     return res
