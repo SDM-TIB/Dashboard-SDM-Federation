@@ -42,26 +42,26 @@ const chartOptions = {
 function table_buttons(title) {
     return [
         {
-            text: 'copy',
+            text: 'Copy',
             extend: 'copyHtml5',
             title: title
         }, {
-            text: 'csv',
-            extend: 'csvHtml5',
-            title: title
-        }, {
-            text: 'excel',
+            text: 'Excel',
             extend: 'excelHtml5',
             title: title
         }, {
-            text: 'pdf',
-            extend: 'pdfHtml5',
+            text: 'CSV',
+            extend: 'csvHtml5',
             title: title
         }, {
             text: 'TSV',
             extend: 'csvHtml5',
             fieldSeparator: '\t',
             extension: '.tsv',
+            title: title
+        }, {
+            text: 'PDF',
+            extend: 'pdfHtml5',
             title: title
         }
     ];
