@@ -447,3 +447,21 @@ a:hover {
   background-color: #fffa90;
   color: #777620;
 }
+.validateTips {
+  border: 1px solid transparent;
+  padding: .375rem 0 .375rem .75rem;
+  margin-bottom: -.5rem;
+}
+.modal fieldset {
+  padding: 0;
+  border: 0;
+  margin-top: 25px;
+}
+.modal select, .modal textarea, .modal input.text {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: .375rem 0 .375rem .75rem;
+}
+.modal label {
+  margin-bottom: .25rem;
+}
