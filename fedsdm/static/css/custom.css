@@ -430,3 +430,20 @@ a:hover {
 .modal-title {
   font-size: 1rem;
 }
+.ui-corner-all {
+  border-radius: 3px;
+}
+.ui-state-error {
+  border: 1px solid #f1a899;
+  background-color: #fddfdf;
+  color: #5f3f3f;
+}
+.ui-widget-content {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #333;
+}
+.ui-state-highlight {
+  background-color: #fffa90;
+  color: #777620;
+}
