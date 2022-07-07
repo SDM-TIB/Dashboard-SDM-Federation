@@ -315,6 +315,11 @@ a:hover {
 .btn {
   font-size: 0.875rem !important;
 }
+.btn-block {
+  display: block;
+  margin: .875rem 0;
+  width: 100%;
+}
 .btn-default {
   color: #333 !important;
   background-color: #fff !important;
