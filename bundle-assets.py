@@ -56,17 +56,9 @@ bundles = {
     ),
     'jquery_js': Bundle(
         NPM_PATH + 'jquery/dist/jquery.min.js',
-        NPM_PATH + 'jquery-ui-dist/jquery-ui.min.js',
         NPM_PATH + 'jquery.md5/index.js',
         filters='rjsmin',
         output=JS_PATH + 'jquery.bundle.min.js'
-    ),
-    'jquery_css': Bundle(
-        NPM_PATH + 'jquery-ui-dist/jquery-ui.min.css',
-        NPM_PATH + 'jquery-ui-dist/jquery-ui.structure.css',
-        NPM_PATH + 'jquery-ui-dist/jquery-ui.theme.css',
-        filters='cssmin',
-        output=CSS_PATH + 'jquery-ui.min.css'
     ),
     'pdfmake_js': Bundle(
         NPM_PATH + 'pdfmake/build/pdfmake.min.js',
