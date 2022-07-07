@@ -86,9 +86,5 @@ for name, bundle in bundles.items():
 shutil.rmtree('fedsdm/static/webfonts')
 shutil.copytree('node_modules/@fortawesome/fontawesome-free/webfonts', 'fedsdm/static/webfonts', dirs_exist_ok=True)
 
-# copy jQuery UI theme
-shutil.rmtree('fedsdm/static/css/images')
-shutil.copytree('node_modules/jquery-ui-dist/images', 'fedsdm/static/css/images', dirs_exist_ok=True)
-
 # remove webassets cache
 shutil.rmtree('fedsdm/static/.webassets-cache')
