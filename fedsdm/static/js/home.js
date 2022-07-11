@@ -4,19 +4,23 @@ $(function() {
     ******* Load statistics about data sources, RDF-MTs and links ***********
     *************************************************************************
     */
-    $('#federation-summary').hide();
-    $('#data-summary').hide();
-    $('#summary-row').hide();
-    $('#content-row').hide();
+    const federationSummary = $('#federation-summary'),
+          dataSummary = $('#data-summary'),
+          summaryRow =$('#summary-row'),
+          contentRow = $('#content-row');
+    federationSummary.hide();
+    dataSummary.hide();
+    summaryRow.hide();
+    contentRow.hide();
     let dataSummaryChart = null,
         federationSummaryChart = null;
 
     window.setFederation = function(dataSources, federations) {
         if (dataSources != null && federations != null) {
-            $('#summary-row').show();
-            $('#content-row').show();
-            $('#federation-summary').show();
-            $('#data-summary').show();
+            summaryRow.show();
+            contentRow.show();
+            federationSummary.show();
+            dataSummary.show();
 
             let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []};
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
@@ -30,7 +34,7 @@ $(function() {
                     break;
                 }
             }
-            $('#data-summary').height(62 + 110 * dsData.labels.length);
+            dataSummary.height(62 + 110 * dsData.labels.length);
             dataSummaryChart = new Chart($('#data-summary-chart'), {
                 type: 'bar',
                 data: {
@@ -76,7 +80,7 @@ $(function() {
                 fedData.properties.push(log10(fed.properties));
                 fedData.triples.push(log10(fed.triples))
             }
-            $('#federation-summary').height(62 + 130 * fedData.labels.length);
+            federationSummary.height(62 + 130 * fedData.labels.length);
             federationSummaryChart = new Chart($('#federation-summary-chart'), {
                 type: 'bar',
                 data: {
