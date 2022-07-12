@@ -35,8 +35,7 @@ $(function() {
                 selectedRow = issuetable.rows(indexes).data().toArray();
                 editIssue.prop('disabled', false);
                 detailsIssue.prop('disabled', false);
-            }).on('deselect', function(e, dt, type, indexes) {
-                var rowData = issuetable.rows(indexes).data().toArray();
+            }).on('deselect', function() {
                 editIssue.prop('disabled', true);
                 detailsIssue.prop('disabled', true);
                 selectedRow = null;
