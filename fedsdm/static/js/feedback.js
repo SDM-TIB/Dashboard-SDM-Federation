@@ -1,5 +1,8 @@
 $(function() {
-    let federation = $('#federations-list').val(),
+    const federationList = $('#federations-list'),
+          editIssue = $('#editis'),
+          detailsIssue = $('#issuedetails');
+    let federation = federationList.val(),
         table = null,
         feedbackdialog = $('#detailsModal');
     $('#selectfederation').prop('disabled', true);
@@ -8,15 +11,15 @@ $(function() {
         load_table(federation);
     }
 
-    $('#federations-list').on('change', function() {
+    federationList.on('change', function() {
         federation = $(this).val();
         load_table(federation);
     });
 
     function load_table() {
         //Disable buttons before selecting item on the table
-        $('#editis').prop('disabled', true);
-        $('#issuedetails').prop('disabled', true);
+        editIssue.prop('disabled', true);
+        detailsIssue.prop('disabled', true);
 
         //Construct data source management data table
         if (table == null) {
@@ -30,12 +33,12 @@ $(function() {
             var issuetable = table;
             table.on('select', function(e, dt, type, indexes) {
                 selectedRow = issuetable.rows(indexes).data().toArray();
-                $('#editis').prop('disabled', false);
-                $('#issuedetails').prop('disabled', false);
+                editIssue.prop('disabled', false);
+                detailsIssue.prop('disabled', false);
             }).on('deselect', function(e, dt, type, indexes) {
                 var rowData = issuetable.rows(indexes).data().toArray();
-                $('#editis').prop('disabled', true);
-                $('#issuedetails').prop('disabled', true);
+                editIssue.prop('disabled', true);
+                detailsIssue.prop('disabled', true);
                 selectedRow = null;
             }).on('dblclick', function(e, dt, type, indexes) {
                 var rowData = issuetable.rows( indexes ).data().toArray();
@@ -72,8 +75,8 @@ $(function() {
             });
         } else {
             table.clear().draw();
-            $('#editis').prop('disabled', true);
-            $('#issuedetails').prop('disabled', true);
+            editIssue.prop('disabled', true);
+            detailsIssue.prop('disabled', true);
         }
 
         $.ajax({
@@ -106,7 +109,7 @@ $(function() {
             })
     }
 
-    $('#issuedetails').on('click', function() {
+    detailsIssue.on('click', function() {
         $.ajax({
             type: 'GET',
             headers: {
