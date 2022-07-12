@@ -4,7 +4,8 @@ $(function() {
         detailsIssue = $('#issuedetails');
     let federation = federationList.val(),
         table = null,
-        feedbackdialog = $('#detailsModal');
+        feedbackdialog = $('#detailsModal'),
+        selectedRow = null;
     $('#selectfederation').prop('disabled', true);
 
     if (federation != null && federation !== '') {
@@ -30,7 +31,7 @@ $(function() {
                 defaultContent: '<i>Not set</i>'
             });
 
-            var issuetable = table;
+            let issuetable = table;
             table.on('select', function(e, dt, type, indexes) {
                 selectedRow = issuetable.rows(indexes).data().toArray();
                 editIssue.prop('disabled', false);
@@ -40,7 +41,7 @@ $(function() {
                 detailsIssue.prop('disabled', true);
                 selectedRow = null;
             }).on('dblclick', function(e, dt, type, indexes) {
-                var rowData = issuetable.rows(indexes).data().toArray();
+                const rowData = issuetable.rows(indexes).data().toArray();
                 console.log('report id', rowData[0][0]);
                 $.ajax({
                     type: 'GET',
