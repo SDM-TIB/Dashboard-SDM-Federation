@@ -1,7 +1,7 @@
 $(function() {
     const federationList = $('#federations-list'),
-          editIssue = $('#editis'),
-          detailsIssue = $('#issuedetails');
+        editIssue = $('#editis'),
+        detailsIssue = $('#issuedetails');
     let federation = federationList.val(),
         table = null,
         feedbackdialog = $('#detailsModal');
@@ -40,7 +40,7 @@ $(function() {
                 detailsIssue.prop('disabled', true);
                 selectedRow = null;
             }).on('dblclick', function(e, dt, type, indexes) {
-                var rowData = issuetable.rows( indexes ).data().toArray();
+                var rowData = issuetable.rows(indexes).data().toArray();
                 console.log('report id', rowData[0][0]);
                 $.ajax({
                     type: 'GET',
@@ -59,7 +59,7 @@ $(function() {
 
                         $('#var').val(data['var']);
                         $('#pred').val(data['pred']);
-/*                        var obj = JSON.parse(data['row']);
+                        /* var obj = JSON.parse(data['row']);
                         var pretty = JSON.stringify(obj, undefined, 4);
                         $('#rowjson').val(pretty); */
                         $('#rowjson').val(JSON.stringify(data['row'], undefined, 4));
@@ -79,33 +79,33 @@ $(function() {
         }
 
         $.ajax({
-                type: 'GET',
-                    headers: {
-                    Accept : 'application/json'
-                },
-                url: '/feedback/issues?fed=' + federation,
-                crossDomain: true,
-                success: function(data) {
-                    const datas = data.data;
-                    for (const d in datas) {
-                        let row = [
-                            datas[d].id,
-                            datas[d].fed,
-                            datas[d].user,
-                            datas[d].query,
-                            datas[d].desc,
-                            datas[d].status,
-                            datas[d].created
-                        ];
-                        table.row.add(row).draw(false);
-                    }
-                },
-                error: function(jqXHR, textStatus) {
-                    console.log(jqXHR.status);
-                    console.log(jqXHR.responseText);
-                    console.log(textStatus);
+            type: 'GET',
+            headers: {
+                Accept : 'application/json'
+            },
+            url: '/feedback/issues?fed=' + federation,
+            crossDomain: true,
+            success: function(data) {
+                const datas = data.data;
+                for (const d in datas) {
+                    let row = [
+                        datas[d].id,
+                        datas[d].fed,
+                        datas[d].user,
+                        datas[d].query,
+                        datas[d].desc,
+                        datas[d].status,
+                        datas[d].created
+                    ];
+                    table.row.add(row).draw(false);
                 }
-            })
+            },
+            error: function(jqXHR, textStatus) {
+                console.log(jqXHR.status);
+                console.log(jqXHR.responseText);
+                console.log(textStatus);
+            }
+        })
     }
 
     detailsIssue.on('click', function() {
