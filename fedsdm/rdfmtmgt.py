@@ -29,22 +29,20 @@ def rdfmtstats():
     try:
         graph = request.args["graph"]
     except KeyError:
-        return Response(json.dumps({}),
-                    mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
     if graph == 'All' or graph is None:
         graph = None
     else:
         session['fed'] = graph
     res = get_rdfmt_stats(graph)
-    return Response(json.dumps(res),
-                    mimetype="application/json")
+    return Response(json.dumps(res), mimetype="application/json")
 
 
 def get_rdfmt_stats(graph=None):
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
-        query = "SELECT distinct ?subject ?name (sum(?scard) as ?subjectcard)  (count(?pred) as ?preds)  " \
+        query = "SELECT distinct ?subject ?name (sum(?scard) as ?subjectcard) (count(?pred) as ?preds)" \
                 "    WHERE {  graph <" + graph + "> {"
         query += '''          
             ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .            
@@ -85,7 +83,7 @@ def get_rdfmt_stats(graph=None):
 
             '''
 
-        ex= """
+        ex = """
         optional {
                       ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .
                       ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mt .
@@ -96,7 +94,6 @@ def get_rdfmt_stats(graph=None):
         """
     res, card = mdb.query(query)
     if card > 0:
-
         if card == 1 and 'subject' not in res[0]:
             return []
         else:
@@ -146,7 +143,6 @@ def get_rdfmt_stats(graph=None):
                 data.append(dd)
             return {"data": data, "draw": 1, "recordsTotal": len(res), "recordsFiltered": 100}
     else:
-
         return []
 
 
@@ -157,15 +153,12 @@ def api_rdfmtdetails():
         mt = request.args["mt"]
         print('MT:', mt, fed)
     except KeyError:
-        return Response(json.dumps({}),
-                    mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
     if mt is None:
-        return Response(json.dumps({}),
-                        mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
 
     res = get_rdfmt_details(fed, mt)
-    return Response(json.dumps(res),
-                    mimetype="application/json")
+    return Response(json.dumps(res), mimetype="application/json")
 
 
 def get_rdfmt_details(fed, mt):
@@ -173,7 +166,7 @@ def get_rdfmt_details(fed, mt):
     print(fed, mt, "get_rdfmt_details")
     query = "SELECT distinct ?datasource ?endpoint ?mtp ?preddatasource ?mtrdatasource ?card ?pred " \
             " ?mtr " \
-            " WHERE { graph <" + fed+ "> {" \
+            " WHERE { graph <" + fed + "> {" \
             "  <" + mt + "> a <http://tib.eu/dsdl/ontario/ontology/RDFMT> ." \
             "  <" + mt + "> <http://tib.eu/dsdl/ontario/ontology/source> ?source. " \
             "  optional{" \
@@ -210,7 +203,7 @@ def get_rdfmt_details(fed, mt):
             break
         offset += limit
     res = reslist
-    print(len(res), ' results found')
+    print(len(res), 'results found')
     if len(reslist) > 0:
         card = len(reslist)
         nodes = {}
@@ -236,12 +229,13 @@ def get_rdfmt_details(fed, mt):
                 j += 1
 
             if mt+mdssource not in nodes:
-                nodes[mt+mdssource] = {"id": mt,
-                                       "label": mt,
-                                       "datasource": sources[mdssource],
-                                       "weight": r['card'][:r['card'].find("^^")] if 'card' in r and '^' in r['card'] else 10,
-                                       "type": "root"
-                                      }
+                nodes[mt+mdssource] = {
+                    "id": mt,
+                    "label": mt,
+                    "datasource": sources[mdssource],
+                    "weight": r['card'][:r['card'].find("^^")] if 'card' in r and '^' in r['card'] else 10,
+                    "type": "root"
+                }
                 nodeids[mt + mdssource] = i
                 i += 1
 
@@ -257,20 +251,22 @@ def get_rdfmt_details(fed, mt):
                     weight = -1
 
                 nodecards[nid + dssource] = weight
-                nodes[nid+dssource] = {"id": nid + dssource,
-                                       "label": nlabel,
-                                       "datasource": sources[dssource],
-                                       "weight": weight,
-                                       "type": "square"
-                                       }
+                nodes[nid+dssource] = {
+                    "id": nid + dssource,
+                    "label": nlabel,
+                    "datasource": sources[dssource],
+                    "weight": weight,
+                    "type": "square"
+                }
                 nodeids[nid+dssource] = i
                 i += 1
-                edges.append({"source": mt + mdssource,
-                              "target": nid + dssource,
-                              "weight": weight,
-                              "pred": 'hasPredicate',
-                              'ltype': "predicate"
-                              })
+                edges.append({
+                    "source": mt+mdssource,
+                    "target": nid + dssource,
+                    "weight": weight,
+                    "pred": 'hasPredicate',
+                    'ltype': "predicate"
+                })
 
             if 'mtr' in r:
                 lnid = r['mtr']
@@ -286,13 +282,14 @@ def get_rdfmt_details(fed, mt):
                     lweight = -1
 
                 if lnid + ldssource not in nodes:
-                    nodes[lnid + ldssource] = {"id": lnid + ldssource,
-                                               "label": lnlabel,
-                                               "datasource": sources[ldssource],
-                                               "weight": lweight,
-                                               "type": "circle",
-                                               "predicateid": nid+dssource
-                                               }
+                    nodes[lnid + ldssource] = {
+                        "id": lnid + ldssource,
+                        "label": lnlabel,
+                        "datasource": sources[ldssource],
+                        "weight": lweight,
+                        "type": "circle",
+                        "predicateid": nid + dssource
+                    }
                     nodeids[lnid + ldssource] = i
                     i += 1
                 if "predcard" in r:
@@ -302,43 +299,42 @@ def get_rdfmt_details(fed, mt):
                 else:
                     lcard = -1
 
-                edges.append({"source": nid+dssource,
-                              "target": lnid + ldssource,
-                              "weight": lcard,
-                              'ltype': "link",
-                              'type': "link",
-                              "pred": r['pred']
-                              })
+                edges.append({
+                    "source": nid + dssource,
+                    "target": lnid + ldssource,
+                    "weight": lcard,
+                    'ltype': "link",
+                    'type': "link",
+                    "pred": r['pred']
+                })
 
-        print("total nodes", len(nodes), nodes)
-        print("total edges: ", len(edges), edges)
+        print("total nodes:", len(nodes), nodes)
+        print("total edges:", len(edges), edges)
 
         sources = [{"id": v, "name": k} for k, v in sources.items()]
         print(edges)
-        return {"nodes": nodes,
-                "links": edges,
-                "sources": sources
-                }
+        return {
+            "nodes": nodes,
+            "links": edges,
+            "sources": sources
+        }
     else:
-        return {"nodes":[], "links":[], "sources":[]}
+        return {"nodes": [], "links": [], "sources": []}
 
 
 @bp.route('/api/rdfmts')
 def api_rdfmts():
-
     try:
         graph = request.args["graph"]
     except KeyError:
-        return Response(json.dumps({}),
-                    mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
     if graph == 'All' or graph is None:
         graph = None
     else:
         session['fed'] = graph
     res, sources = get_rdfmt_nodes(graph)
     res.update(get_rdfmt_edges(sources, graph))
-    return Response(json.dumps(res),
-                    mimetype="application/json")
+    return Response(json.dumps(res), mimetype="application/json")
 
 
 def get_rdfmt_edges(rdfmtsources, graph=None):
@@ -389,7 +385,7 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
             break
         offset += limit
     res = reslist
-    print("Query edges time: ", (time.time()-start))
+    print("Query edges time:", (time.time() - start))
     processtime = time.time()
     if len(reslist) > 0:
         card = len(reslist)
@@ -414,15 +410,16 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
                     ldssource = rdfmtsources[lnid]['source']
 
                     lcard = -1
-                    edges.append({"source": nid + rdfmtsources[nid]['source'],
-                                  "target": lnid + ldssource,
-                                  "weight": lcard,
-                                  "pred": 'linkedto'
-                                  })
+                    edges.append({
+                        "source": nid + rdfmtsources[nid]['source'],
+                        "target": lnid + ldssource,
+                        "weight": lcard,
+                        "pred": 'linkedto'
+                    })
 
-            print("total edges: ", len(edges))
+            print("total edges:", len(edges))
             print("Process time:", (time.time()-processtime))
-            return {"links": list(edges) }
+            return {"links": list(edges)}
     else:
         return {"links": []}
 
@@ -480,7 +477,7 @@ def get_rdfmt_nodes(graph=None):
             break
         offset += limit
     res = reslist
-    print("query time: ", (time.time()-start))
+    print("query time:", (time.time() - start))
     processtime = time.time()
     if len(reslist) > 0:
         card = len(reslist)
@@ -521,21 +518,20 @@ def get_rdfmt_nodes(graph=None):
                 weight = -1
 
                 if nid + sourceid not in nodes:
-                    nodes[nid + sourceid] = {"id": nid + sourceid,
-                                             "label": dssource + '-' + nlabel,
-                                             "datasource": sources[dssource],
-                                             "node_type": sources[dssource],
-                                             "cluster": sources[dssource],
-                                             "weight": weight
-                                             }
+                    nodes[nid + sourceid] = {
+                        "id": nid + sourceid,
+                        "label": dssource + '-' + nlabel,
+                        "datasource": sources[dssource],
+                        "node_type": sources[dssource],
+                        "cluster": sources[dssource],
+                        "weight": weight
+                    }
                     i += 1
 
             print("total nodes", len(nodes))
             sourcenamess = [{"id": v, "name": k} for k, v in sources.items()]
             print("Process time ", (time.time()-processtime))
-            return {"nodes": nodes,
-                    "sources": sourcenamess
-                    }, rdfmtsources
+            return {"nodes": nodes, "sources": sourcenamess}, rdfmtsources
     else:
         return {"nodes": [], "sources": []}, {}
 
@@ -671,32 +667,31 @@ def get_rdfmt_links(graph=None):
                         lweight = -1
 
                     if lnid + ldssource not in nodes:
-                        nodes[lnid + ldssource] = {"id": lnid + ldssource,
-                                                   "label": lnlabel,
-                                                   "datasource": sources[ldssource],
-                                                   "weight": lweight
-                                                   }
+                        nodes[lnid + ldssource] = {
+                            "id": lnid + ldssource,
+                            "label": lnlabel,
+                            "datasource": sources[ldssource],
+                            "weight": lweight
+                        }
                         nodeids[lnid + ldssource] = i
                         i += 1
                     lcard = -1
 
-                    edges.append({"source": nid + dssource,
-                                  "target": lnid + ldssource,
-                                  "weight": lcard,
-                                  # "left": False,
-                                  # "right": True,
-                                  "pred": r['pred']
-                                  })
+                    edges.append({
+                        "source": nid + dssource,
+                        "target": lnid + ldssource,
+                        "weight": lcard,
+                        # "left": False,
+                        # "right": True,
+                        "pred": r['pred']
+                    })
 
-            print("total nodes", len(nodes))
-            print("total edges: ", len(edges))
+            print("total nodes:", len(nodes))
+            print("total edges:", len(edges))
 
             sources = [{"id": v, "name": k} for k, v in sources.items()]
             print(sources)
-            return {"nodes": nodes,
-                    "links": list(edges),
-                    "sources": sources
-                    }
+            return {"nodes": nodes, "links": list(edges), "sources": sources}
     else:
         return {"nodes": [], "links": [], "sources": []}
 
@@ -707,8 +702,7 @@ def api_rdfmtanalysis():
         graph = request.args["graph"]
         source = request.args['source']
     except KeyError:
-        return Response(json.dumps({}),
-                    mimetype="application/json")
+        return Response(json.dumps({}), mimetype="application/json")
     if graph == 'All' or graph is None:
         graph = None
     else:
@@ -717,8 +711,7 @@ def api_rdfmtanalysis():
         source = None
 
     res = get_graph_stat(graph, source)
-    return Response(json.dumps({"data": res}),
-                    mimetype="application/json")
+    return Response(json.dumps({"data": res}), mimetype="application/json")
 
 
 def get_graph_stat(graph=None, source=None):
@@ -733,7 +726,7 @@ def get_graph_stat(graph=None, source=None):
                 "?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> ."\
                 "  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source. "\
                 "  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource." \
-                "  ?datasource <http://tib.eu/dsdl/ontario/ontology/name> " + source +" ."\
+                "  ?datasource <http://tib.eu/dsdl/ontario/ontology/name> " + source + " ."\
                 "optional{"\
                 "    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp ."\
                 "    optional {"\
@@ -775,7 +768,7 @@ def get_graph_stat(graph=None, source=None):
             break
         offset += limit
     res = reslist
-    print("Graph analysis query time: ", (time.time()-start))
+    print("Graph analysis query time:", (time.time() - start))
     processtime = time.time()
     if len(reslist) > 0:
         card = len(reslist)
@@ -793,7 +786,7 @@ def get_graph_stat(graph=None, source=None):
                     if (r['subject'], r['target']) not in edges:
                         edges.append((r['subject'], r['target']))  # , {'relation': r['mtp'] if 'mtp' in r else " "}
             result = compute_graph_properties(list(set(nodes)), edges)
-            print("Graph analysis time: ", (time.time()-processtime))
+            print("Graph analysis time: ", (time.time() - processtime))
             return result
     else:
         return []
@@ -813,7 +806,7 @@ def compute_graph_properties(nodes, edges):
     cc = nx.number_connected_components(G)
     t = nx.transitivity(G)
 
-    print('calculating ... ', density, n,e,c, cc)
+    print('calculating ... ', density, n, e, c, cc)
     #
     # x = nx.average_node_connectivity(G)
     #
@@ -832,9 +825,11 @@ def compute_graph_properties(nodes, edges):
     return res
 
 
-meta = ["http://purl.org/goodrelations/",
-        "http://rdfs.org/ns/void#",
-        "http://www.w3.org/ns/dcat",
-        "http://www.w3.org/2001/vcard-rdf/",
-        "http://www.ebusiness-unibw.org/ontologies/eclass",
-        "http://bio2rdf.org/bio2rdf.dataset_vocabulary:Dataset"]
+meta = [
+    "http://purl.org/goodrelations/",
+    "http://rdfs.org/ns/void#",
+    "http://www.w3.org/ns/dcat",
+    "http://www.w3.org/2001/vcard-rdf/",
+    "http://www.ebusiness-unibw.org/ontologies/eclass",
+    "http://bio2rdf.org/bio2rdf.dataset_vocabulary:Dataset"
+]
