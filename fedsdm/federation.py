@@ -41,7 +41,7 @@ def stats():
     try:
         graph = request.args['graph']
     except KeyError:
-        print('KeyError: ', request.args)
+        print('KeyError:', request.args)
         return Response(json.dumps({}), mimetype='application/json')
 
     stats = {}
@@ -114,7 +114,7 @@ def datasources():
             dstype = None
 
     except KeyError:
-        print('KeyError: ', request.args)
+        print('KeyError:', request.args)
         return Response(json.dumps({}), mimetype='application/json')
 
     if graph == 'All':
@@ -313,7 +313,7 @@ def api_recreatemts():
         fed = request.args.get('fed', None)
         ds = request.args.get('datasource', None)
     except KeyError:
-        return Response(json.dumps({}),  mimetype='application/json')
+        return Response(json.dumps({}), mimetype='application/json')
     if fed is None or ds is None:
         return Response(json.dumps({}), mimetype='application/json')
     res, queue = recreatemts(fed, ds)
