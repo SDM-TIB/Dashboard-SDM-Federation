@@ -1,5 +1,6 @@
 import functools
 
+import flask
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -110,7 +111,7 @@ def login():
 
         flash(error)
         print(error)
-    return render_template('auth.html', title='Register', operation='Login', other='Register')
+    return render_template('auth.html', title='Login', operation='Login', other='Register')
 
 
 @bp.before_app_request
