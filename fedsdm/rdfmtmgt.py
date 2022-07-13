@@ -505,7 +505,7 @@ def get_rdfmt_nodes(graph=None):
                 if 'datasource' in r:
                     dssource = r['datasource']
                 else:
-                    print("unkown source for MT: ", r['subject'])
+                    print("unknown source for MT: ", r['subject'])
                     dssource = "Unknown"
 
                 rdfmtsources[nid] = {"source": sourceid}
@@ -624,7 +624,7 @@ def get_rdfmt_links(graph=None):
                 if 'datasource' in r:
                     dssource = r['datasource']
                 else:
-                    print("unkown source for MT: ", r['subject'])
+                    print("unknown source for MT: ", r['subject'])
                     dssource = "Unknown"
                 if dssource not in sources:
                     sources[dssource] = j
