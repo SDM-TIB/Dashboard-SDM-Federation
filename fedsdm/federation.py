@@ -1,7 +1,6 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, session, Response, request, url_for
+    Blueprint, flash, g, redirect, render_template, session, Response, request, url_for, abort
 )
-from werkzeug.exceptions import abort
 
 import datetime as dtime
 import json
