@@ -44,24 +44,24 @@ def get_rdfmt_stats(graph=None):
         session['fed'] = graph
         query = 'SELECT DISTINCT ?subject ?name (sum(?scard) as ?subjectcard) (count(?pred) as ?preds) ' \
                 'WHERE {  GRAPH <' + graph + '> {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
-                '  OPTIONAL { ?source <http://tib.eu/dsdl/ontario/ontology/cardinality> ?scard . }\n' \
-                '  OPTIONAL { ?subject <http://tib.eu/dsdl/ontario/ontology/name> ?name . }\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?source .\n' \
+                '  OPTIONAL { ?source mt:cardinality ?scard . }\n' \
+                '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '  OPTIONAL {\n' \
-                '    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-                '    ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '    ?subject mt:hasProperty ?mtp .\n' \
+                '    ?mtp mt:predicate ?pred .\n' \
                 '  }\n' \
                 '}} GROUP BY ?subject ?name'
     else:
         query = 'SELECT DISTINCT ?subject ?name (sum(?scard) as ?subjectcard) (count(?pred) as ?preds) WHERE {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source.\n' \
-                '  OPTIONAL { ?source <http://tib.eu/dsdl/ontario/ontology/cardinality> ?scard . }\n' \
-                '  OPTIONAL { ?subject <http://tib.eu/dsdl/ontario/ontology/name> ?name . }\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?source.\n' \
+                '  OPTIONAL { ?source mt:cardinality ?scard . }\n' \
+                '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '  OPTIONAL {\n' \
-                '    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-                '    ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '    ?subject mt:hasProperty ?mtp .\n' \
+                '    ?mtp mt:predicate ?pred .\n' \
                 '  }\n' \
                 '} GROUP BY ?subject ?name'
 
@@ -139,20 +139,20 @@ def get_rdfmt_details(fed, mt):
     print(fed, mt, 'get_rdfmt_details')
     query = 'SELECT DISTINCT ?datasource ?endpoint ?mtp ?preddatasource ?mtrdatasource ?card ?pred ?mtr ' \
             'WHERE { graph <' + fed + '> {\n' \
-            '  <' + mt + '> a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-            '  <' + mt + '> <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
-            '  OPTIONAL { ?source <http://tib.eu/dsdl/ontario/ontology/cardinality> ?card. }\n' \
-            '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
-            '  ?datasource <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .\n' \
-            '  <' + mt + '> <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-            '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
-            '  ?mtp <http://tib.eu/dsdl/ontario/ontology/propSource> ?mtpsource .\n' \
-            '  ?mtpsource <http://tib.eu/dsdl/ontario/ontology/datasource> ?preddatasource .\n' \
+            '  <' + mt + '> a mt:RDFMT .\n' \
+            '  <' + mt + '> mt:source ?source .\n' \
+            '  OPTIONAL { ?source mt:cardinality ?card. }\n' \
+            '  ?source mt:datasource ?datasource .\n' \
+            '  ?datasource mt:url ?endpoint .\n' \
+            '  <' + mt + '> mt:hasProperty ?mtp .\n' \
+            '  ?mtp mt:predicate ?pred .\n' \
+            '  ?mtp mt:propSource ?mtpsource .\n' \
+            '  ?mtpsource mt:datasource ?preddatasource .\n' \
             '  OPTIONAL {\n' \
-            '    ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-            '    ?mtrange <http://tib.eu/dsdl/ontario/ontology/name> ?mtr .\n'\
-            '    ?mtr  <http://tib.eu/dsdl/ontario/ontology/source> ?mtrsource .\n'\
-            '    ?mtrsource <http://tib.eu/dsdl/ontario/ontology/datasource> ?mtrdatasource .\n' \
+            '    ?mtp mt:linkedTo ?mtrange .\n' \
+            '    ?mtrange mt:name ?mtr .\n'\
+            '    ?mtr  mt:source ?mtrsource .\n'\
+            '    ?mtrsource mt:datasource ?mtrdatasource .\n' \
             '  }\n' \
             '}}'
 
@@ -313,15 +313,15 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
     if graph is not None:
         session['fed'] = graph
         query = 'SELECT DISTINCT ?subject ?mt WHERE {  graph <' + graph + '> {\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-                '  ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mt .\n' \
+                '  ?subject mt:hasProperty ?mtp .\n' \
+                '  ?mtp mt:linkedTo ?mtrange .\n' \
+                '  ?mtrange mt:rdfmt ?mt .\n' \
                 '}}'
     else:
         query = 'SELECT COUNT DISTINCT ?subject ?mt WHERE {\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-                '  ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mt .\n' \
+                '  ?subject mt:hasProperty ?mtp .\n' \
+                '  ?mtp mt:linkedTo ?mtrange .\n' \
+                '  ?mtrange mt:rdfmt ?mt .\n' \
                 '}'
     # group by ?subject ?name ?datasource ?pred ?mt ?mtrangesource ?mtr
     # res, card = contactSource(query, sparql_endpoint)
@@ -393,19 +393,19 @@ def get_rdfmt_nodes(graph=None):
     if graph is not None:
         session['fed'] = graph
         query = 'SELECT DISTINCT ?subject ?source ?name ?datasource WHERE {  graph <' + graph + '> {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?ds .\n' \
-                '  ?ds <http://tib.eu/dsdl/ontario/ontology/datasource> ?source .\n' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/name> ?datasource .\n' \
-                '  OPTIONAL { ?subject <http://tib.eu/dsdl/ontario/ontology/name> ?name . }\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?ds .\n' \
+                '  ?ds mt:datasource ?source .\n' \
+                '  ?source mt:name ?datasource .\n' \
+                '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '}}'
     else:
         query = 'SELECT DISTINCT ?subject ?name ?source ?datasource WHERE {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?ds .\n' \
-                '  ?ds <http://tib.eu/dsdl/ontario/ontology/datasource> ?source .\n' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/name> ?datasource .\n' \
-                '  OPTIONAL { ?subject <http://tib.eu/dsdl/ontario/ontology/name> ?name . }\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?ds .\n' \
+                '  ?ds mt:datasource ?source .\n' \
+                '  ?source mt:name ?datasource .\n' \
+                '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '}'
     # group by ?subject ?name  ?datasource ?pred ?mt ?mtrangesource ?mtr
     # res, card = contactSource(query, sparql_endpoint)
@@ -494,31 +494,31 @@ def get_rdfmt_links(graph=None):
     if graph is not None:
         session['fed'] = graph
         query = 'SELECT DISTINCT ?subject  ?datasource ?pred ?mt  ?mtrangesource WHERE {  graph <' + graph + '> {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?source .\n' \
+                '  ?source mt:datasource ?datasource .\n' \
                 '  OPTIONAL {\n' \
-                '    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-                '    ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '    ?subject mt:hasProperty ?mtp .\n' \
+                '    ?mtp mt:predicate ?pred .\n' \
                 '    OPTIONAL {\n' \
-                '      ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-                '      ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mt .\n' \
-                '      ?mtrange <http://tib.eu/dsdl/ontario/ontology/datasource> ?mtrangesource .\n' \
+                '      ?mtp mt:linkedTo ?mtrange .\n' \
+                '      ?mtrange mt:rdfmt ?mt .\n' \
+                '      ?mtrange mt:datasource ?mtrangesource .\n' \
                 '    }\n' \
                 '  }\n' \
                 '}}'
     else:
         query = 'SELECT DISTINCT ?subject ?datasource ?pred ?mt ?mtrangesource WHERE {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?source .\n' \
+                '  ?source mt:datasource ?datasource .\n' \
                 '  OPTIONAL {\n' \
-                '    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
-                '    ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '    ?subject mt:hasProperty ?mtp .\n' \
+                '    ?mtp mt:predicate ?pred .\n' \
                 '    OPTIONAL {\n' \
-                '      ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-                '      ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mt .\n' \
-                '      ?mtrange <http://tib.eu/dsdl/ontario/ontology/datasource> ?mtrangesource .\n' \
+                '      ?mtp mt:linkedTo ?mtrange .\n' \
+                '      ?mtrange mt:rdfmt ?mt .\n' \
+                '      ?mtrange mt:datasource ?mtrangesource .\n' \
                 '    }' \
                 '  }' \
                 '}'
@@ -668,29 +668,29 @@ def get_graph_stat(graph=None, source=None):
         source = '"' + source + '" '
     if graph is not None:
         query = 'SELECT distinct ?subject  ?target WHERE { graph <' + graph + '> {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
-                '  ?datasource <http://tib.eu/dsdl/ontario/ontology/name> ' + source + ' .\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?source .\n' \
+                '  ?source mt:datasource ?datasource .\n' \
+                '  ?datasource mt:name ' + source + ' .\n' \
                 '  OPTIONAL {\n' \
-                '    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
+                '    ?subject mt:hasProperty ?mtp .\n' \
                 '    OPTIONAL {\n' \
-                '      ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-                '      ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?target .\n' \
+                '      ?mtp mt:linkedTo ?mtrange .\n' \
+                '      ?mtrange mt:rdfmt ?target .\n' \
                 '    }\n' \
                 '  }\n' \
                 '}}'
     else:
         query = 'SELECT distinct ?subject  ?target WHERE {\n' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
-                '  ?datasource <http://tib.eu/dsdl/ontario/ontology/name> ' + source + ' .\n' \
+                '  ?subject a mt:RDFMT .\n' \
+                '  ?subject mt:source ?source .\n' \
+                '  ?source mt:datasource ?datasource .\n' \
+                '  ?datasource mt:name ' + source + ' .\n' \
                 '  OPTIONAL {\n' \
-                '    ?subject <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
+                '    ?subject mt:hasProperty ?mtp .\n' \
                 '    OPTIONAL {\n' \
-                '      ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
-                '      ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?target .\n' \
+                '      ?mtp mt:linkedTo ?mtrange .\n' \
+                '      ?mtrange mt:rdfmt ?target .\n' \
                 '    }\n' \
                 '  }\n' \
                 '}'
