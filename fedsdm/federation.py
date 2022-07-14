@@ -260,10 +260,12 @@ def api_edit_source():
         )
         data = ds.to_rdf(update=True)
         mdb = get_mdb()
-        insertquery = 'INSERT { ' + ' . \n'.join(data) + ' }'
-        deletequery = 'DELETE { <' + e['id'] + '> ?p ?o . }'
-        wherequery = 'WHERE { <' + e['id'] + '> ?p ?o .\nFILTER( ?p != <http://purl.org/dc/terms/created> && ?p != <http://tib.eu/dsdl/ontario/ontology/triples> ) }'
-        rr = mdb.update('WITH GRAPH <' + fed + '>\n' + deletequery + '\n' + insertquery + '\n' + wherequery)
+        insert_query = 'INSERT { ' + ' . \n'.join(data) + ' }'
+        delete_query = 'DELETE { <' + e['id'] + '> ?p ?o . }'
+        where_query = 'WHERE { <' + e['id'] + '> ?p ?o .\n' \
+                      'FILTER( ?p != <http://purl.org/dc/terms/created> && ' \
+                      '?p != <http://tib.eu/dsdl/ontario/ontology/triples> )\n}'
+        rr = mdb.update('WITH GRAPH <' + fed + '>\n' + delete_query + '\n' + insert_query + '\n' + where_query)
 
         if not ds.isAccessible():
             if rr:
@@ -375,12 +377,11 @@ def create_federation(name, desc, is_public):
         '<' + uri + '>  <http://tib.eu/dsdl/ontario/ontology/ispublic> ' + str(is_public),
         '<' + uri + '>  <http://purl.org/dc/terms/created> "' + today + '"',
         '<' + uri + '>  <http://purl.org/dc/terms/modified> "' + today + '"'
-        ]
+    ]
 
-    insertquery = 'INSERT DATA { GRAPH <' + g.default_graph + '>{ ' + ' . \n'.join(data) + '} }'
-    res = mdb.update(insertquery)
-    creategraph = 'CREATE GRAPH <' + uri + '>'
-    res = mdb.update(creategraph)
+    insert_query = 'INSERT DATA { GRAPH <' + g.default_graph + '> { ' + ' . \n'.join(data) + '} }'
+    res = mdb.update(insert_query)
+    res = mdb.update('CREATE GRAPH <' + uri + '>')
     if res:
         return uri
     else:
@@ -390,10 +391,9 @@ def create_federation(name, desc, is_public):
 def get_datasource(graph=None, dstype=None):
     mdb = get_mdb()
     if graph is not None:
-        query = 'SELECT DISTINCT * ' \
-                'WHERE { GRAPH <' + graph + '> {  '
+        query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {  '
         if dstype is None:
-            query += 'OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .}'
+            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }'
         elif isinstance(dstype, list) and len(dstype) > 0:
             query += '?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .'
             filters = []
@@ -401,36 +401,30 @@ def get_datasource(graph=None, dstype=None):
                 filters.append(' ?dstype=<http://tib.eu/dsdl/ontario/resource/DatasourceType/' + str(dt.value) + '> ')
             query += ' FILTER (' + ' || '.join(filters) + ')'
         else:
-            query += 'OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .}'
-        query += '''                  
-                ?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .
-                ?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .
-                ?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .                 			                               
-                OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage .}
-                OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/version> ?version .}
-                OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords .}
-                OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/params> ?params .}
-                OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc .}
-                OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization .}
-            }
-        } 
-        '''
+            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }'
+        query += '?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .' \
+                 '?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .' \
+                 '?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }' \
+                 '}}'
     else:
-        query = '''
-                SELECT distinct *
-                WHERE {                            
-                        ?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .
-                        ?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .
-                        ?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint . 
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .}			                               
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage .}
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/version> ?version .}
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords .}
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/params> ?params .}
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc .}
-                        OPTIONAL {?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization .}
-                } 
-                '''
+        query = 'SELECT distinct * WHERE {' \
+                '  ?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .' \
+                '  ?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .' \
+                '  ?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }' \
+                '}'
     res, card = mdb.query(query)
     if card > 0:
         data = []
@@ -462,7 +456,7 @@ def get_datasource(graph=None, dstype=None):
             else:
                 dd.append(' ')
 
-            if 'version' in r :
+            if 'version' in r:
                 dd.append(r['version'])
             else:
                 dd.append(' ')
