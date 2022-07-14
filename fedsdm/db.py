@@ -43,9 +43,13 @@ class MetadataDB:
         self.rdfs = "http://www.w3.org/2000/01/rdf-schema#"
         self.mtonto = "http://tib.eu/dsdl/ontario/ontology/"
         self.mtresource = "http://tib.eu/dsdl/ontario/resource/"
+        self.prefixes = 'PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n' \
+                        'PREFIX mt: <http://tib.eu/dsdl/ontario/ontology/>\n' \
+                        'PREFIX mtres: <http://tib.eu/dsdl/ontario/resource/>\n'
 
     def query(self, query, outputqueue=Queue(), format="application/sparql-results+json"):
         # Build the query and header.
+        query = self.prefixes + query
         params = urlparse.urlencode({'query': query, 'format': format, 'timeout': 10000000})
         headers = {"Accept": "*/*", "Referer": self.query_endpoint, "Host": self.query_server}
 
@@ -106,6 +110,7 @@ class MetadataDB:
 
     def update(self, insertquery):
         # Build the header.
+        insertquery = self.prefixes + insertquery
         headers = {"Accept": "*/*",
                    "Referer": self.update_endpoint,
                    "Host": self.update_server,
