@@ -264,7 +264,7 @@ def api_edit_source():
         delete_query = 'DELETE { <' + e['id'] + '> ?p ?o . }'
         where_query = 'WHERE { <' + e['id'] + '> ?p ?o .\n' \
                       '  FILTER( ?p != <http://purl.org/dc/terms/created> && ' \
-                      '    ?p != <http://tib.eu/dsdl/ontario/ontology/triples> )\n}'
+                      '    ?p != mt:triples )\n}'
         rr = mdb.update('WITH GRAPH <' + fed + '>\n' + delete_query + '\n' + insert_query + '\n' + where_query)
 
         if not ds.isAccessible():
@@ -371,10 +371,10 @@ def create_federation(name, desc, is_public):
     today = str(dtime.datetime.now())
 
     data = [
-        '<' + uri + '>  a  <http://tib.eu/dsdl/ontario/ontology/Federation> ',
-        '<' + uri + '>  <http://tib.eu/dsdl/ontario/ontology/name> "' + name + '"',
-        '<' + uri + '>  <http://tib.eu/dsdl/ontario/ontology/desc> "' + desc + '"',
-        '<' + uri + '>  <http://tib.eu/dsdl/ontario/ontology/ispublic> ' + str(is_public),
+        '<' + uri + '>  a  mt:Federation ',
+        '<' + uri + '>  mt:name "' + name + '"',
+        '<' + uri + '>  mt:desc "' + desc + '"',
+        '<' + uri + '>  mt:ispublic ' + str(is_public),
         '<' + uri + '>  <http://purl.org/dc/terms/created> "' + today + '"',
         '<' + uri + '>  <http://purl.org/dc/terms/modified> "' + today + '"'
     ]
@@ -393,37 +393,37 @@ def get_datasource(graph=None, dstype=None):
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
         if dstype is None:
-            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }\n'
+            query += 'OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
         elif isinstance(dstype, list) and len(dstype) > 0:
-            query += '?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .\n'
+            query += '?id mt:dataSourceType ?dstype .\n'
             filters = []
             for dt in dstype:
-                filters.append(' ?dstype=<http://tib.eu/dsdl/ontario/resource/DatasourceType/' + str(dt.value) + '> ')
+                filters.append(' ?dstype=<' + mdb.mtresource + 'DatasourceType/' + str(dt.value) + '> ')
             query += ' FILTER (' + ' || '.join(filters) + ')\n'
         else:
-            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }\n'
-        query += '?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .\n' \
-                 '?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .\n' \
-                 '?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .\n' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }\n' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }\n' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }\n' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }\n' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }\n' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }\n' \
+            query += 'OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
+        query += '?id a mt:DataSource .\n' \
+                 '?id mt:name ?name .\n' \
+                 '?id mt:url ?endpoint .\n' \
+                 'OPTIONAL { ?id mt:homepage ?homepage . }\n' \
+                 'OPTIONAL { ?id mt:version ?version . }\n' \
+                 'OPTIONAL { ?id mt:keywords ?keywords . }\n' \
+                 'OPTIONAL { ?id mt:params ?params . }\n' \
+                 'OPTIONAL { ?id mt:desc ?desc . }\n' \
+                 'OPTIONAL { ?id mt:organization ?organization . }\n' \
                  '}}'
     else:
         query = 'SELECT DISTINCT * WHERE {\n' \
-                '  ?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .\n' \
-                '  ?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .\n' \
-                '  ?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }\n' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }\n' \
+                '  ?id a mt:DataSource .\n' \
+                '  ?id mt:name ?name .\n' \
+                '  ?id mt:url ?endpoint .\n' \
+                '  OPTIONAL { ?id mt:dataSourceType ?dstype . }\n' \
+                '  OPTIONAL { ?id mt:homepage ?homepage . }\n' \
+                '  OPTIONAL { ?id mt:version ?version . }\n' \
+                '  OPTIONAL { ?id mt:keywords ?keywords . }\n' \
+                '  OPTIONAL { ?id mt:params ?params . }\n' \
+                '  OPTIONAL { ?id mt:desc ?desc . }\n' \
+                '  OPTIONAL { ?id mt:organization ?organization . }\n' \
                 '}'
     res, card = mdb.query(query)
     if card > 0:
