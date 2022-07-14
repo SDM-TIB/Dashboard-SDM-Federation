@@ -263,8 +263,8 @@ def api_edit_source():
         insert_query = 'INSERT { ' + ' . \n'.join(data) + ' }'
         delete_query = 'DELETE { <' + e['id'] + '> ?p ?o . }'
         where_query = 'WHERE { <' + e['id'] + '> ?p ?o .\n' \
-                      'FILTER( ?p != <http://purl.org/dc/terms/created> && ' \
-                      '?p != <http://tib.eu/dsdl/ontario/ontology/triples> )\n}'
+                      '  FILTER( ?p != <http://purl.org/dc/terms/created> && ' \
+                      '    ?p != <http://tib.eu/dsdl/ontario/ontology/triples> )\n}'
         rr = mdb.update('WITH GRAPH <' + fed + '>\n' + delete_query + '\n' + insert_query + '\n' + where_query)
 
         if not ds.isAccessible():
@@ -379,7 +379,7 @@ def create_federation(name, desc, is_public):
         '<' + uri + '>  <http://purl.org/dc/terms/modified> "' + today + '"'
     ]
 
-    insert_query = 'INSERT DATA { GRAPH <' + g.default_graph + '> { ' + ' . \n'.join(data) + '} }'
+    insert_query = 'INSERT DATA { GRAPH <' + g.default_graph + '> {\n' + ' . \n'.join(data) + '}}'
     res = mdb.update(insert_query)
     res = mdb.update('CREATE GRAPH <' + uri + '>')
     if res:
@@ -391,39 +391,39 @@ def create_federation(name, desc, is_public):
 def get_datasource(graph=None, dstype=None):
     mdb = get_mdb()
     if graph is not None:
-        query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {  '
+        query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
         if dstype is None:
-            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }'
+            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }\n'
         elif isinstance(dstype, list) and len(dstype) > 0:
-            query += '?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .'
+            query += '?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .\n'
             filters = []
             for dt in dstype:
                 filters.append(' ?dstype=<http://tib.eu/dsdl/ontario/resource/DatasourceType/' + str(dt.value) + '> ')
-            query += ' FILTER (' + ' || '.join(filters) + ')'
+            query += ' FILTER (' + ' || '.join(filters) + ')\n'
         else:
-            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }'
-        query += '?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .' \
-                 '?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .' \
-                 '?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }' \
-                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }' \
+            query += 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }\n'
+        query += '?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .\n' \
+                 '?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .\n' \
+                 '?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .\n' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }\n' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }\n' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }\n' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }\n' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }\n' \
+                 'OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }\n' \
                  '}}'
     else:
-        query = 'SELECT distinct * WHERE {' \
-                '  ?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .' \
-                '  ?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .' \
-                '  ?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }' \
-                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }' \
+        query = 'SELECT DISTINCT * WHERE {\n' \
+                '  ?id a <http://tib.eu/dsdl/ontario/ontology/DataSource> .\n' \
+                '  ?id <http://tib.eu/dsdl/ontario/ontology/name> ?name .\n' \
+                '  ?id <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . }\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage . }\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/version> ?version . }\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords . }\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/params> ?params . }\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/desc> ?desc . }\n' \
+                '  OPTIONAL { ?id <http://tib.eu/dsdl/ontario/ontology/organization> ?organization . }\n' \
                 '}'
     res, card = mdb.query(query)
     if card > 0:
