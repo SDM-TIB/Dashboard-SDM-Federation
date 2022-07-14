@@ -85,17 +85,17 @@ def login():
 
     :return:
     """
-    if request.method == "POST":
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         db = get_db()
         error = None
-        user = db.execute("SELECT * FROm user WHERE username = ?", (username, )).fetchone()
+        user = db.execute('SELECT * FROm user WHERE username = ?', (username, )).fetchone()
 
         if user is None:
-            error = "Incorrect username. "
+            error = 'Incorrect username. '
         elif not check_password_hash(user['password'], password):
-            error = "Incorrect password. "
+            error = 'Incorrect password. '
 
         if error is None:
             session.clear()
@@ -123,7 +123,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute("SELECT * FROM user WHERE id = ?", (user_id, )).fetchone()
+        g.user = get_db().execute('SELECT * FROM user WHERE id = ?', (user_id, )).fetchone()
 
 
 # Logout
