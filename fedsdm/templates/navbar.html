@@ -1,20 +1,35 @@
-<nav class="navbar navbar-light navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #343a40 !important">
-    <!--**********************************************-->
-    <!--************** TOP BAR *******************  -->
-    <!--*********************************************-->
-    <div class="navbar-header">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Dashboard SDM Federation</a>
-    </div>
-    <!-- /.navbar-header -->
-    <ul class="nav navbar-top-links navbar-right">
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
-                <i class="fa-solid fa-user fa-fw"></i> <i class="fa-solid fa-caret-down"></i>
-                {% if g.user %}
-                    {{ g.user['username'] }}
-                {% endif %}
+<div class="col-nav px-sm-2 px-0 bg-dark">
+    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white sidebar">
+        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <span class="fs-5 d-none d-sm-inline">FedSDM</span>
+        </a>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+            <li class="nav-item">
+                <a href="{{ url_for('dashboard.stats') }}" class="nav-link align-middle px-0">
+                    <i class="fs-6 fa-solid fa-tachometer-alt fa-fw"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('federation.index') }}" class="nav-link px-0 align-middle">
+                    <i class="fs-6 fa-solid fa-sitemap fa-fw"></i> <span class="ms-1 d-none d-sm-inline">Federations</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('rdfmts.rdfmt') }}" class="nav-link px-0 align-middle">
+                    <i class="fs-6 fa-solid fa-cogs fa-fw"></i> <span class="ms-1 d-none d-sm-inline">RDF Molecule Templates</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('query.query') }}" class="nav-link px-0 align-middle ">
+                    <i class="fs-6 fa-solid fa-search fa-fw"></i> <span class="ms-1 d-none d-sm-inline">Query</span>
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown pb-4">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="fa-solid fa-user fa-fw"></i>&nbsp;{% if g.user %}<span class="ms-1 d-none d-sm-inline">{{ g.user['username'] }}</span>&nbsp;{% endif %}&nbsp;<i class="fa-solid fa-caret-down"></i>
             </a>
-            <ul class="dropdown-menu dropdown-user animated--grow-in" id="user-dropdown">
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow dropdown-user animated--fadeIn" id="user-dropdown">
                 {% if g.user %}
                     <li><a href="#"><i class="fa-solid fa-user fa-fw"></i> User Profile</a></li>
                     <li><a href="#"><i class="fa-solid fa-user-cog fa-fw"></i> Settings</a></li>
@@ -24,50 +39,7 @@
                     <li><a href="{{ url_for('auth.register') }}"><i class="fa-solid fa-user-plus fa-fw"></i> Register</a></li>
                     <li><a href="{{ url_for('auth.login') }}"><i class="fa-solid fa-right-to-bracket fa-fw"></i> Log In</a></li>
                 {% endif %}
-
-            </ul>
-            <!-- /.dropdown-user -->
-        </li>
-        <!-- /.dropdown -->
-    </ul>
-    <!-- /.navbar-top-links -->
-    <!--**********************************************-->
-    <!--************** SIDE BAR *******************  -->
-    <!--*********************************************-->
-    {% if sidebar %}
-    <div class="navbar-light sidebar" role="navigation">
-        <div class="sidebar-nav navbar-collapse">
-            <ul class="navbar-nav sidebar sidebar-light" id="side-menu">
-                <!--<li class="sidebar-search">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="fa-solid fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </li>-->
-                <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a></li>
-                <!--<li><a href="datasources.html"><i class="fa-solid fa-database  fa-fw"></i> Data Sources</a></li>-->
-                <li class="nav-item">
-                    <a href="{{ url_for('federation.index') }}" class="nav-link"><i class="fa-solid fa-sitemap fa-fw"></i> Federations</a>
-                    <!--<ul class="nav nav-second-level">
-                            <li><a href="{{ url_for('federation.create') }}"><i class="fa-solid fa-gear fa-fw"></i> Create New Federation</a></li>
-                            <li><a href=""><i class="fa-solid fa-database fa-fw"></i> Manage Federations</a></li>
-                        </ul>-->
-                    <!-- /.nav-second-level -->
-                </li>
-                <li class="nav-item"><a href="{{ url_for('rdfmts.rdfmt') }}" class="nav-link"><i class="fa-solid fa-cogs fa-fw"></i> RDF Molecule Templates</a></li>
-                <li class="nav-item"><a href="{{ url_for('query.query') }}" class="nav-link"><i class="fa-solid fa-search fa-fw"></i> Query</a></li>
-                {# <a href="{{ url_for('mapping.mapping') }}"><i class="fa-solid fa-table fa-fw"></i> RML Mapping</a></li>
-                    <li><a href="ontologies.html"><i class="fa-brands fa-connectdevelop fa-fw"></i> Ontologies</a></li>
-                    <li><a href="analysis.html"><i class="fa-solid fa-analytics  fa-fw"></i> Advanced Analysis</a></li>
-                    <li><a href="blank.html"><i class="fa-solid fa-cogs fa-fw"></i> Settings</a></li> #}
             </ul>
         </div>
-        <!-- /.sidebar-collapse -->
     </div>
-    <!-- /.navbar-static-side -->
-    {% endif %}
-</nav>
+</div>

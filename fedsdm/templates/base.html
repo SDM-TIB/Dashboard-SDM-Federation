@@ -17,15 +17,30 @@
     <script src="{{ url_for('static', filename='js/libs/pdfmake.bundle.min.js') }}"></script>
     <!-- Chart JavaScript -->
     <script src="{{ url_for('static', filename='js/libs/Chart.min.js') }}"></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="{{ url_for('static', filename='js/menu-setup.js') }}"></script>
+    <!-- Custom Sidebar JavaScript -->
+    <script type="text/javascript">
+        $(window).on('load resize', function() {
+            const innerHeight = this.window.innerHeight;
+            const screenHeight = this.screen.height;
+            let height = (innerHeight > 0) ? innerHeight : screenHeight;
+            if (height < 1) height = 1;
+            $('#page-wrapper').css('min-height', height + 'px');
+        });
+
+        $(function() {
+            const url = window.location.href;
+            $('#menu a').filter(function() {
+                return this.href === url;
+            }).addClass('active');
+        });
+    </script>
 </head>
 <body>
-<div id="wrapper">
+<div class="row flex-nowrap" id="wrapper">
     {% set sidebar = true %}
     {% include 'navbar.html' %}
 
-    <div id="page-wrapper">
+    <div class="col" id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">{% block header %} {% endblock %}</h1>
