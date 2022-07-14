@@ -40,19 +40,19 @@ def get_all_stats():
             links_ = get_mtconns(graph, s)
             datasources[s]['links'] = links_
             stat = {
-                "rdfmts": num_mts,
-                "links": links_,
-                "triples": datasources[s]['triples'] if 'triples' in datasources[s] else -1,
-                "properties": props,
-                "source": datasources[s]['source']
+                'rdfmts': num_mts,
+                'links': links_,
+                'triples': datasources[s]['triples'] if 'triples' in datasources[s] else -1,
+                'properties': props,
+                'source': datasources[s]['source']
             }
             stats[f['uri']].append(stat)
 
     stat = {
-        "rdfmts": rdfmts,
-        "sources": len(set(source_ids)),
-        "federations": len(feds),
-        "links": links
+        'rdfmts': rdfmts,
+        'sources': len(set(source_ids)),
+        'federations': len(feds),
+        'links': links
     }
 
     datasource_stats = list(datasources.values())
