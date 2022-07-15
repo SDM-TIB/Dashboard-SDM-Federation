@@ -74,32 +74,28 @@ def get_stats(graph):
     return stats
 
 
-@bp.route('/create', methods=('GET', 'POST'))
-@login_required
+@bp.route('/create', methods=['POST'])
 def create():
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        ispublic = 'public' in request.form
-        error = None
+    name = request.form['name']
+    description = request.form['description']
+    ispublic = 'public' in request.form
+    error = None
 
-        if not name:
-            error = 'Name is required. '
-        federation = ''
-        if error is not None:
+    if not name:
+        error = 'Name is required. '
+    federation = ''
+    if error is not None:
+        flash(error)
+    else:
+        inserted = create_federation(name, description, ispublic)
+
+        if inserted is None:
+            error = 'Cannot insert new federation to endpoint.'
             flash(error)
         else:
-            inserted = create_federation(name, description, ispublic)
-
-            if inserted is None:
-                error = 'Cannot insert new federation to endpoint.'
-                flash(error)
-            else:
-                federation = inserted
-                session['fed'] = federation
-        return Response(federation, mimetype='text/plain')
-
-    return render_template('federation/create.html')
+            federation = inserted
+            session['fed'] = federation
+    return Response(federation, mimetype='text/plain')
 
 
 @bp.route('/datasources', methods=['GET'])
@@ -157,7 +153,7 @@ def datasources():
     return Response(json.dumps({'data': res}), mimetype='application/json')
 
 
-@bp.route('/addsource', methods=['GET', 'POST'])
+@bp.route('/addsource', methods=['POST'])
 def api_add_source():
     try:
         e = request.form
