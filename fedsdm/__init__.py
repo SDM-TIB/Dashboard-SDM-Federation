@@ -4,7 +4,7 @@ from flask import Flask, send_from_directory, redirect
 
 
 def get_logger(name, file=None):
-    log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
     if file is not None:
@@ -33,17 +33,17 @@ class PrefixMiddleware(object):
             return self.app(environ, start_response)
         else:
             start_response('404', [('Content-Type', 'text/plain')])
-            return [str(self.prefix + ". This url does not belong to the app.").encode()]
+            return [str(self.prefix + '. This url does not belong to the app.').encode()]
 
 
 def create_app(test_config=None):
-    prefix = "/"
-    if "APP_PREFIX" in os.environ:
+    prefix = '/'
+    if 'APP_PREFIX' in os.environ:
         prefix = os.environ['APP_PREFIX']
     # create and configure the app
     app = Flask(__name__, instance_relative_config=False)
-    app.config["APPLICATION_ROOT"] = prefix
-    app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
+    app.config['APPLICATION_ROOT'] = prefix
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
     app.debug = True
 
     # app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=prefix)
