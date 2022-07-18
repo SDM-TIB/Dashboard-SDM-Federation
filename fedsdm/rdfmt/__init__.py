@@ -121,9 +121,9 @@ class RDFMTMgr(object):
         reslist = []
         if len(types) == 0:
             #  'Optional {?t  <' + rdfs + 'label> ?label} .  'Optional {?t  <' + rdfs + 'comment> ?desc} .
-            query = 'SELECT DISTINCT ?t ?label WHERE { ' \
-                    '?s a ?t . ' \
-                    'OPTIONAL { ?t  <' + rdfs + 'label> ?label } }'
+            query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
+                    '  ?s a ?t .\n' \
+                    '  OPTIONAL { ?t  <' + rdfs + 'label> ?label }\n}'
                     # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
             if limit == -1:
                 limit = 100
@@ -266,8 +266,8 @@ class RDFMTMgr(object):
         return results
 
     def get_rdfs_ranges(self, referer, p, limit=-1):
-        RDFS_RANGES = 'SELECT DISTINCT ?range WHERE { ' \
-                      '<' + p + '> <' + rdfs + 'range> ?range . } '
+        RDFS_RANGES = 'SELECT DISTINCT ?range WHERE {\n' \
+                      '  <' + p + '> <' + rdfs + 'range> ?range .\n}'
         # filter (regex(str(?range), 'http://dbpedia.org/ontology', 'i'))
 
         reslist = []
@@ -309,10 +309,10 @@ class RDFMTMgr(object):
         return ranges
 
     def find_instance_range(self, referer, t, p, limit=-1):
-        INSTANCE_RANGES = 'SELECT DISTINCT ?r WHERE { ' \
-                          '?s a <' + t + '> . ' \
-                          '?s <' + p + '> ?pt . ' \
-                          '?pt a ?r . }'
+        INSTANCE_RANGES = 'SELECT DISTINCT ?r WHERE {\n' \
+                          '  ?s a <' + t + '> .\n' \
+                          '  ?s <' + p + '> ?pt .\n' \
+                          '  ?pt a ?r .\n}'
         # filter (regex(str(?r), 'http://dbpedia.org/ontology', 'i'))
         reslist = []
         if limit == -1:
@@ -363,10 +363,10 @@ class RDFMTMgr(object):
         :param limit:
         :return:
         """
-        query = 'SELECT DISTINCT ?p ?label WHERE{ ' \
-                '?s a <' + t + '> . ' \
-                '?s ?p ?pt .  ' \
-                'OPTIONAL { ?p  <' + rdfs + 'label> ?label } }'
+        query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
+                '  ?s a <' + t + '> .\n' \
+                '  ?s ?p ?pt .\n' \
+                '  OPTIONAL { ?p  <' + rdfs + 'label> ?label }\n}'
         reslist = []
         if limit == -1:
             limit = 50
@@ -452,9 +452,9 @@ class RDFMTMgr(object):
         return reslist
 
     def get_preds_of_instance(self, referer, inst, limit=-1):
-        query = 'SELECT DISTINCT ?p ?label WHERE{ ' \
-                '<' + inst + '> ?p ?pt . ' \
-                'OPTIONAL {?p  <' + rdfs + 'label> ?label} } '
+        query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
+                '  <' + inst + '> ?p ?pt .\n' \
+                '  OPTIONAL {?p  <' + rdfs + 'label> ?label}\n}'
         reslist = []
         if limit == -1:
             limit = 1000
@@ -487,11 +487,11 @@ class RDFMTMgr(object):
         endpoint = e.url
         referer = endpoint
         reslist = []
-        query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{ ' \
-                '  ?p <' + rdfs + 'domain> ?t . ' \
-                '  OPTIONAL { ?p <' + rdfs + 'range> ?range }' \
-                '  OPTIONAL { ?p <' + rdfs + "label> ?plabel . FILTER langMatches(?plabel, 'EN')}" \
-                '  OPTIONAL { ?t <' + rdfs + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN')}" \
+        query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
+                '  ?p <' + rdfs + 'domain> ?t .\n' \
+                '  OPTIONAL { ?p <' + rdfs + 'range> ?range }\n' \
+                '  OPTIONAL { ?p <' + rdfs + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
+                '  OPTIONAL { ?t <' + rdfs + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
                 '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
         if limit == -1:
             limit = 50
@@ -665,20 +665,20 @@ class RDFMTMgr(object):
         else:
             mt = mt.replace(' ', '_')
             if mr is None:
-                query = 'SELECT (COUNT(?s) as ?count) WHERE { ?s a <' + mt + '> . ?s <' + prop + '> ?o }'
+                query = 'SELECT (COUNT(?s) as ?count) WHERE {\n  ?s a <' + mt + '> .\n  ?s <' + prop + '> ?o\n}'
             else:
                 mr = mr.replace(' ', '_')
                 if mrtype is None:
-                    query = 'SELECT (COUNT(?s) as ?count) WHERE { ' \
-                            '  ?s a <' + mt + '> .' \
-                            '  ?s <' + prop + '> ?o .' \
-                            '  ?o a <' + mr + '>' \
+                    query = 'SELECT (COUNT(?s) as ?count) WHERE {\n' \
+                            '  ?s a <' + mt + '> .\n' \
+                            '  ?s <' + prop + '> ?o .\n' \
+                            '  ?o a <' + mr + '>\n' \
                             '}'
                 else:
-                    query = 'SELECT (COUNT(?s) as ?count) WHERE{ ' \
-                            '  ?s a <' + mt + '> .' \
-                            '  ?s <' + prop + '> ?o .' \
-                            '  FILTER((datatype(?o))=<' + mr + '>)' \
+                    query = 'SELECT (COUNT(?s) as ?count) WHERE {\n' \
+                            '  ?s a <' + mt + '> .\n' \
+                            '  ?s <' + prop + '> ?o .\n' \
+                            '  FILTER((datatype(?o))=<' + mr + '>)\n' \
                             '}'
 
         res, card = contactRDFSource(query, endpoint)
@@ -689,14 +689,14 @@ class RDFMTMgr(object):
 
     def get_subclasses(self, endpoint, root):
         referer = endpoint
-        query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> ' + rdfs + 'subClassOf> ?subc }'
+        query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + rdfs + 'subClassOf> ?subc }'
         res, card = contactRDFSource(query, referer)
         return res
 
     def get_sources(self):
-        query = 'SELECT DISTINCT ?subject ?url WHERE { GRAPH <' + self.graph + '> { ' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/DataSource> .' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/url> ?url .' \
+        query = 'SELECT DISTINCT ?subject ?url WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/DataSource> .\n' \
+                '  ?subject <http://tib.eu/dsdl/ontario/ontology/url> ?url .\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -720,17 +720,17 @@ class RDFMTMgr(object):
         return reslist
 
     def get_source(self, dsid):
-        query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> { ' \
-                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/url> ?url . ' \
-                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype . ' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/name> ?name }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/version> ?version }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/organization> ?organization }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/params> ?params }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/desc> ?desc }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/triples> ?triples }' \
+        query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/url> ?url .\n' \
+                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/name> ?name }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/version> ?version }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/organization> ?organization }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/params> ?params }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/desc> ?desc }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/triples> ?triples }\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -753,11 +753,11 @@ class RDFMTMgr(object):
         return reslist
 
     def get_ds_rdfmts(self, datasource):
-        query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> { ' \
-                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .' \
-                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .' \
-                '  OPTIONAL { ?source <http://tib.eu/dsdl/ontario/ontology/cardinality> ?card }' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> <' + datasource + '> .' \
+        query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  ?subject a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
+                '  ?subject <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
+                '  OPTIONAL { ?source <http://tib.eu/dsdl/ontario/ontology/cardinality> ?card }\n' \
+                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> <' + datasource + '> .\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -940,11 +940,14 @@ class RDFMTMgr(object):
         for m1 in srdfmts:
             print(m1)
             print('--------------------------------------------------')
-            predquery = 'SELECT DISTINCT ?p WHERE { ?s a <' + m1 + '> . ?s ?p ?t . FILTER (isURI(?t)) }'
+            predquery = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
             preds = self.getPredicates(predquery, endpoint1)
             reslist = {}
             for p in preds:
-                query = 'SELECT DISTINCT ?t WHERE { ?s a <' + m1 + '> . ?s <' + p + '> ?t . FILTER (isURI(?t)) } '
+                query = 'SELECT DISTINCT ?t WHERE {\n' \
+                        '  ?s a <' + m1 + '> .\n' \
+                        '  ?s <' + p + '> ?t .\n' \
+                        '  FILTER (isURI(?t))\n}'
                 limit = 500
                 offset = 0
 
@@ -1017,7 +1020,7 @@ class RDFMTMgr(object):
             subjs = ['?s=<' + r + '>' for r in results[j:i]]
 
             # Check if there are subjects with prefixes matching
-            tquery = 'SELECT DISTINCT ?t WHERE { ?s a ?t . FILTER (' + ' || '.join(subjs) + ') }'
+            tquery = 'SELECT DISTINCT ?t WHERE {\n  ?s a ?t .\n  FILTER (' + ' || '.join(subjs) + ')\n}'
             res = self.get_results(tquery, e)
             reslist.extend(res)
             if len(res) > 0:
@@ -1026,7 +1029,7 @@ class RDFMTMgr(object):
 
         if i < len(reslist):
             subjs = ['?s=<' + r + '>' for r in results[:-50]]
-            tquery = 'SELECT DISTINCT ?t WHERE { ?s a ?t . FILTER (' + ' || '.join(subjs) + ') }'
+            tquery = 'SELECT DISTINCT ?t WHERE {\n  ?s a ?t .\n  FILTER (' + ' || '.join(subjs) + ')\n}'
             reslist.extend(self.get_results(tquery, e))
 
         return reslist
@@ -1066,14 +1069,14 @@ class RDFMTMgr(object):
         for i in range(10, len(prefixes), 10):
             prefs = [" regex(str(?t), '" + p + "', 'i') " for p in prefixes[j:i]]
             # Check if there are subjects with prefixes matching
-            tquery = 'SELECT DISTINCT * WHERE { ?t a <' + m2 + '> . FILTER (' + ' || '.join(prefs) + ') }'
+            tquery = 'SELECT DISTINCT * WHERE {\n  ?t a <' + m2 + '> .\n  FILTER (' + ' || '.join(prefs) + ')\n}'
             print(tquery)
             reslist.extend(self.get_results(tquery, e))
             j += 10
 
         if i < len(prefixes):
             prefs = [" regex(str(?t), '" + p + "', 'i') " for p in prefixes[i:]]
-            tquery = 'SELECT DISTINCT * WHERE { ?t a <' + m2 + '> . FILTER (' + ' || '.join(prefs) + ') }'
+            tquery = 'SELECT DISTINCT * WHERE {\n  ?t a <' + m2 + '> .\n  FILTER (' + ' || '.join(prefs) + ')\n}'
             reslist.extend(self.get_results(tquery, e))
 
         return reslist
@@ -1117,20 +1120,20 @@ class RDFMTMgr(object):
         prefix = 'prefix rr: <http://www.w3.org/ns/r2rml#> ' \
                  'prefix rml: <http://semweb.mmlab.be/ns/rml#>'
         mtquery = prefix + \
-            'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> { ' \
-            '  ?tm rml:logicalSource ?ls .' \
-            '  ?ls rml:source <' + ds.rid + '> .' \
-            '  ?tm rr:subjectMap  ?sm. ?sm rr:class ?t .' \
-            '  ?tm rr:predicateObjectMap ?pom .' \
-            '  ?pom rr:predicate ?p .' \
-            '  ?pom rr:objectMap ?om .' \
-            '  OPTIONAL { ' \
-            '    ?om rr:parentTriplesMap ?pt .' \
-            '    ?pt rr:subjectMap ?ptsm .' \
-            '    ?ptsm rr:class ?r .' \
-            '    ?pt rml:logicalSource ?ptls .' \
-            '    ?ptls rml:source ?rds .' \
-            '  }' \
+            'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> {\n' \
+            '  ?tm rml:logicalSource ?ls .\n' \
+            '  ?ls rml:source <' + ds.rid + '> .\n' \
+            '  ?tm rr:subjectMap  ?sm. ?sm rr:class ?t .\n' \
+            '  ?tm rr:predicateObjectMap ?pom .\n' \
+            '  ?pom rr:predicate ?p .\n' \
+            '  ?pom rr:objectMap ?om .\n' \
+            '  OPTIONAL {\n' \
+            '    ?om rr:parentTriplesMap ?pt .\n' \
+            '    ?pt rr:subjectMap ?ptsm .\n' \
+            '    ?ptsm rr:class ?r .\n' \
+            '    ?pt rml:logicalSource ?ptls .\n' \
+            '    ?ptls rml:source ?rds .\n' \
+            '  }\n' \
             '}}'
         print(mtquery)
         res, card = contactRDFSource(mtquery, self.queryendpoint)
@@ -1228,9 +1231,9 @@ class MTManager(object):
         self.passwd = passwd
 
     def get_data_sources(self):
-        query = 'SELECT DISTINCT ?rid ?endpoint WHERE { GRAPH <' + self.graph + '> { ' \
-                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/DataSource> .' \
-                '  ?rid <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .' \
+        query = 'SELECT DISTINCT ?rid ?endpoint WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/DataSource> .\n' \
+                '  ?rid <http://tib.eu/dsdl/ontario/ontology/url> ?endpoint .\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1259,14 +1262,14 @@ class MTManager(object):
             filters = ['?pred=<' + p +'> ' for p in preds]
             preds = 'FILTER (' + (' || '.join(filters)) + ')'
 
-        query = 'SELECT DISTINCT ?datasource  ?pred ?mtr WHERE { GRAPH <' + self.graph + '> {' \
-                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/source> ?source .' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .' \
-                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .' \
-                '  ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mtr . ' \
-                + preds + '}}'
+        query = 'SELECT DISTINCT ?datasource  ?pred ?mtr WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
+                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
+                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
+                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
+                '  ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mtr .\n  ' \
+                + preds + '\n}}'
         limit = 1000
         offset = 0
         reslist = []
@@ -1345,16 +1348,16 @@ class MTManager(object):
 
     # def get_pred_ranges(self, mt, pred):
     def get_rdfmts(self):
-        query = 'SELECT DISTINCT ?rid ?datasource ?pred ?mtr ?mtrange WHERE { GRAPH <' + self.graph + '> {' \
-                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .' \
-                '  ?rid <http://tib.eu/dsdl/ontario/ontology/source> ?source .' \
-                '  ?rid <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .' \
-                '  OPTIONAL {' \
-                '    ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .' \
-                '    ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mtr .' \
-                '  }' \
+        query = 'SELECT DISTINCT ?rid ?datasource ?pred ?mtr ?mtrange WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
+                '  ?rid <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
+                '  ?rid <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
+                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource .\n' \
+                '  OPTIONAL {\”' \
+                '    ?mtp <http://tib.eu/dsdl/ontario/ontology/linkedTo> ?mtrange .\n' \
+                '    ?mtrange <http://tib.eu/dsdl/ontario/ontology/rdfmt> ?mtr .\n' \
+                '  }\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1430,11 +1433,11 @@ class MTManager(object):
         return results
 
     def get_rdfmt(self, rdfclass):
-        query = 'SELECT DISTINCT ?datasource ?pred WHERE { GRAPH <' + self.graph + '> {' \
-                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/source> ?source .' \
-                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .' \
-                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource.' \
+        query = 'SELECT DISTINCT ?datasource ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/source> ?source .\n' \
+                '  <' + rdfclass + '> <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
+                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n' \
+                '  ?source <http://tib.eu/dsdl/ontario/ontology/datasource> ?datasource.\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1511,17 +1514,17 @@ class MTManager(object):
         return results[rdfclass] if rdfclass in results else {}
 
     def get_data_source(self, dsid):
-        query = 'SELECT DISTINCT *  WHERE { GRAPH <' + self.graph + '> { ' \
-                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/url> ?url .' \
-                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/name> ?name }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/version> ?version }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/organization> ?organization }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/params> ?params }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/desc> ?desc }' \
-                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/triples> ?triples }' \
+        query = 'SELECT DISTINCT *  WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/url> ?url .\n' \
+                '  <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/dataSourceType> ?dstype .\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/name> ?name }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/version> ?version }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/keywords> ?keywords }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/organization> ?organization }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/homepage> ?homepage }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/params> ?params }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/desc> ?desc }\n' \
+                '  OPTIONAL { <' + dsid + '> <http://tib.eu/dsdl/ontario/ontology/triples> ?triples }\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1563,33 +1566,33 @@ class MTManager(object):
         prefix = 'prefix rr: <http://www.w3.org/ns/r2rml#> ' \
                  'prefix rml: <http://semweb.mmlab.be/ns/rml#>'
         mtquery = prefix + \
-            'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> { ' \
-            '  ?tm rml:logicalSource ?ls .' \
-            '  ?ls rml:source <' + dsid + '> .' \
-            '  ?tm rr:subjectMap ?sm .' \
-            '  ?sm rr:class ?t .' \
-            '  ?tm rr:predicateObjectMap ?pom .' \
-            '  ?pom rr:predicate ?p .' \
-            '  ?pom rr:objectMap ?om .' \
-            '  OPTIONAL {' \
-            '    ?om rr:parentTriplesMap ?pt .' \
-            '    ?pt rr:subjectMap ?ptsm .' \
-            '    ?ptsm rr:class ?r .' \
-            '    ?pt rml:logicalSource ?ptls .' \
-            '    ?ptls rml:source ?rds .' \
-            '  }' \
+            'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> {\n' \
+            '  ?tm rml:logicalSource ?ls .\n' \
+            '  ?ls rml:source <' + dsid + '> .\n' \
+            '  ?tm rr:subjectMap ?sm .\n' \
+            '  ?sm rr:class ?t .\n' \
+            '  ?tm rr:predicateObjectMap ?pom .\n' \
+            '  ?pom rr:predicate ?p .\n' \
+            '  ?pom rr:objectMap ?om .\n' \
+            '  OPTIONAL {\n' \
+            '    ?om rr:parentTriplesMap ?pt .\n' \
+            '    ?pt rr:subjectMap ?ptsm .\n' \
+            '    ?ptsm rr:class ?r .\n' \
+            '    ?pt rml:logicalSource ?ptls .\n' \
+            '    ?ptls rml:source ?rds .\n' \
+            '  }\n' \
             '}}'
         print(mtquery)
         res, card = contactRDFSource(mtquery, self.queryendpoint)
         return res
 
     def get_rdfmts_by_preds(self, preds):
-        query = 'SELECT DISTINCT ?rid WHERE { GRAPH <' + self.graph + '> {' \
-                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .'
+        query = 'SELECT DISTINCT ?rid WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n'
         i = 0
         for p in preds:
-            query += '  ?rid <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp' + str(i) + '.' \
-                     '  ?mtp' + str(i) + ' <http://tib.eu/dsdl/ontario/ontology/predicate> <' + p + '> .'
+            query += '  ?rid <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp' + str(i) + '.\n' \
+                     '  ?mtp' + str(i) + ' <http://tib.eu/dsdl/ontario/ontology/predicate> <' + p + '> .\n'
             i += 1
 
         query += '}}'
@@ -1608,12 +1611,12 @@ class MTManager(object):
         if props is not None:
             filter = ' || '.join(['?pred=<' + p + '> ' for p in props])
 
-        query = 'SELECT DISTINCT ?rid ?pred WHERE { GRAPH <' + self.graph + '> {' \
-                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .' \
-                '  ?rid <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .' \
-                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .'
+        query = 'SELECT DISTINCT ?rid ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
+                '  ?rid a <http://tib.eu/dsdl/ontario/ontology/RDFMT> .\n' \
+                '  ?rid <http://tib.eu/dsdl/ontario/ontology/hasProperty> ?mtp .\n' \
+                '  ?mtp <http://tib.eu/dsdl/ontario/ontology/predicate> ?pred .\n'
         if len(filter) > 0:
-            query += '  FILTER (' + filter + ')'
+            query += '  FILTER (' + filter + ')\n'
         query += '}}'
         reslist = query_endpoint(self.queryendpoint, query)
 
