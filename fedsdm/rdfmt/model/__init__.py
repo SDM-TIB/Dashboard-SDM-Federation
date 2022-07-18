@@ -227,10 +227,10 @@ class DataSource(object):
 
     def __repr__(self):
         return '{' + \
-                   '\trid: ' + self.rid +\
-                   ',\turl: ' + self.url + \
-                   ',\tdstype: ' + str(self.dstype) + \
-                   ',\tparams: ' + str(self.params) + \
+               '\trid: ' + self.rid +\
+               ',\turl: ' + self.url + \
+               ',\tdstype: ' + str(self.dstype) + \
+               ',\tparams: ' + str(self.params) + \
                '}'
 
 
