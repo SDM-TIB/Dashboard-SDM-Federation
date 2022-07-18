@@ -21,12 +21,13 @@ def get_logger(name, file=None, file_and_console=False):
 
 
 def create_app():
-    app = Flask(__name__, instance_relative_config=False)
+    app = Flask(__name__)
     app.debug = True
 
     app.config.from_mapping(
         APPLICATION_ROOT=os.environ['APP_PREFIX'] if 'APP_PREFIX' in os.environ else '/',
         DATABASE=os.path.join(app.instance_path, 'fedsdm.sqlite'),
+        SECRET_KEY='dev',
         SESSION_COOKIE_SAMESITE='Strict'
     )
 
