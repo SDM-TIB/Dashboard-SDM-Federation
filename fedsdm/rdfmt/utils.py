@@ -1,16 +1,7 @@
-import urllib
 import urllib.parse as urlparse
-import http.client as htclient
 from http import HTTPStatus
 import requests
-import json
-import pprint as pp
-import pprint
-import os
-import random
-import sys, getopt, os
-from multiprocessing import Queue, Process
-from multiprocessing.queues import Empty
+from multiprocessing import Queue
 import logging
 
 
@@ -120,4 +111,3 @@ def updateRDFSource(update, endpoint):
         logger.error('EXCEPTION ON: ' + update)
 
     return False
-
