@@ -1,6 +1,4 @@
 import hashlib
-import pprint as pp
-import pprint
 from multiprocessing import Queue, Process
 from multiprocessing.queues import Empty
 import logging
@@ -102,7 +100,7 @@ class RDFMTMgr(object):
 
         rdfmolecules[endpoint] = results
 
-        pp.pprint(results)
+        pprint(results)
         logger.info('*****' + endpoint + ' ***********')
         logger.info('*************finished *********************' )
 
@@ -1212,7 +1210,7 @@ class RDFMTMgr(object):
                 mtd = mt.to_rdf()
                 data.extend(mtd)
                 data = list(set(data))
-                #pprint.pprint(data)
+                #pprint(data)
 
         if len(data) > 0:
             self.updateGraph(data)
