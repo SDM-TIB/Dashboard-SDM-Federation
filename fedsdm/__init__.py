@@ -20,27 +20,15 @@ def get_logger(name, file=None, file_and_console=False):
     return logger
 
 
-def create_app(test_config=None):
-    prefix = '/'
-    if 'APP_PREFIX' in os.environ:
-        prefix = os.environ['APP_PREFIX']
-    # create and configure the app
+def create_app():
     app = Flask(__name__, instance_relative_config=False)
-    app.config['APPLICATION_ROOT'] = prefix
-    app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
     app.debug = True
 
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'fedsdm.sqlite')
+        APPLICATION_ROOT=os.environ['APP_PREFIX'] if 'APP_PREFIX' in os.environ else '/',
+        DATABASE=os.path.join(app.instance_path, 'fedsdm.sqlite'),
+        SESSION_COOKIE_SAMESITE='Strict'
     )
-
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
 
     # ensure the instance folder exists
     try:
