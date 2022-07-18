@@ -1342,7 +1342,7 @@ class MTManager(object):
                 '  ?rid <' + mtonto + 'hasProperty> ?mtp .\n' \
                 '  ?mtp <' + mtonto + 'predicate> ?pred .\n' \
                 '  ?source <' + mtonto + 'datasource> ?datasource .\n' \
-                '  OPTIONAL {\”' \
+                '  OPTIONAL {\n' \
                 '    ?mtp <' + mtonto + 'linkedTo> ?mtrange .\n' \
                 '    ?mtrange <' + mtonto + 'rdfmt> ?mtr .\n' \
                 '  }\n' \
