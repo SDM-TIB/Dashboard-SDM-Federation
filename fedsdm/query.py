@@ -41,7 +41,7 @@ def query():
 resqueues = {}
 
 
-@bp.route('/feedback', methods=["POST"])
+@bp.route('/feedback', methods=['POST'])
 @login_required
 def feedback():
     fed = request.args.get('fed', -1)
@@ -69,23 +69,23 @@ def feedback():
     fdb = db.execute(
         'SELECT id'
         ' FROM feedbackreport '
-        ' where userID=' + str(userid) + ' AND issueDesc = \"' + desc + "\" AND issueQuery=\"" + query + "\""
+        ' where userID=' + str(userid) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query + '"'
     ).fetchone()
     dsid = fdb['id']
-    print("Last inserted row selected: ", dsid)
+    print('Last inserted row selected: ', dsid)
     db.execute(
         'INSERT INTO feedbackdata (reportID, projVar, projPred, rowData)'
         ' VALUES (?, ?, ?, ?)',
-        (dsid, ",".join(list(selectedrow.keys())), pred, str(json.dumps(selectedrow)))
+        (dsid, ','.join(list(selectedrow.keys())), pred, str(json.dumps(selectedrow)))
     )
     db.commit()
 
-    return Response(json.dumps({}), mimetype="application/json")
+    return Response(json.dumps({}), mimetype='application/json')
 
 
 def finalize(processqueue):
     p = processqueue.get()
-    while p != "EOF":
+    while p != 'EOF':
         try:
             os.kill(p, 9)
         except OSError as ex:
@@ -94,7 +94,7 @@ def finalize(processqueue):
         p = processqueue.get()
 
 
-@bp.route("/nextresult", methods=['POST', 'GET'])
+@bp.route('/nextresult', methods=['POST', 'GET'])
 def get_next_result():
     vars = session['vars']
     start = session['start']
@@ -104,11 +104,11 @@ def get_next_result():
         process = resqueues[session['hashquery']]['process']
     else:
         total = time() - start
-        return jsonify(execTime=total, firstResult=first, totalRows=1, result="EOF", error="Already finished")
+        return jsonify(execTime=total, firstResult=first, totalRows=1, result='EOF', error='Already finished')
     try:
         r = output.get()
         total = time() - start
-        if r == "EOF":
+        if r == 'EOF':
             finalize(process)
             del resqueues[session['hashquery']]
             del session['hashquery']
@@ -119,35 +119,35 @@ def get_next_result():
         exc_type, exc_value, exc_traceback = sys.exc_info()
         emsg = repr(traceback.format_exception(exc_type, exc_value,
                                                exc_traceback))
-        logger.error("Exception while returning incremental results .. " + emsg)
-        print("Exception: ")
+        logger.error('Exception while returning incremental results .. ' + emsg)
+        print('Exception: ')
         import pprint
         pprint.pprint(emsg)
         total = time() - start
         return jsonify(execTime=total, firstResult=first, totalRows=1, result= [], error= str(emsg))
 
 
-@bp.route("/sparql", methods=['POST', 'GET'])
+@bp.route('/sparql', methods=['POST', 'GET'])
 def sparql():
     if request.method == 'GET' or request.method == 'POST':
         try:
-            query = request.args.get("query", '')
+            query = request.args.get('query', '')
             federation = request.args.get('federation', None)
             session['fed'] = federation
 
             query = query.replace('\n', ' ').replace('\r', ' ')
-            print("federation:", federation)
+            print('federation:', federation)
             print('query:', query)
             logger.info(query)
             session['hashquery'] = str(hashlib.md5(query.encode()).hexdigest())
             if federation is None or len(federation) < 6:
-                return jsonify({"result": [], "error": "Please select the federation you want to query"})
+                return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
             if query is None or len(query) == 0:
-                return jsonify({"result": [], "error": "cannot read query"})
+                return jsonify({'result': [], 'error': 'cannot read query'})
 
             output = Queue()
             variables, res, start, total, first, i, processqueue, alltriplepatterns = execute_query(federation, query, output)
-            resqueues[session['hashquery']] = {"output": output, "process": processqueue}
+            resqueues[session['hashquery']] = {'output': output, 'process': processqueue}
             if res is None or len(res) == 0:
                 del resqueues[session['hashquery']]
                 del session['hashquery']
@@ -156,18 +156,18 @@ def sparql():
             if variables is None:
                 print('no results during decomposition', query)
                 del resqueues[session['hashquery']]
-                return jsonify({"result": [],
-                                "error": "cannot execute query on this federation. No matching molecules found"})
+                return jsonify({'result': [],
+                                'error': 'cannot execute query on this federation. No matching molecules found'})
 
             session['start'] = start
             session['vars'] = variables
             session['first'] = first
             session['fed'] = federation
-            processqueue.put("EOF")
+            processqueue.put('EOF')
             triplepatterns = []
             for t in alltriplepatterns:
                 triplepatterns.append({
-                    "s": t.subject.name,
+                    's': t.subject.name,
                     'p': t.predicate.name,
                     'o': t.theobject.name
                 })
@@ -177,25 +177,25 @@ def sparql():
             exc_type, exc_value, exc_traceback = sys.exc_info()
             emsg = repr(traceback.format_exception(exc_type, exc_value,
                                                    exc_traceback))
-            logger.error("Exception while semantifying: " + emsg)
-            print("Exception: ", e)
+            logger.error('Exception while semantifying: ' + emsg)
+            print('Exception: ', e)
             import pprint
             pprint.pprint(emsg)
-            return jsonify({"result": [], "error": str(emsg)})
+            return jsonify({'result': [], 'error': str(emsg)})
     else:
-        return jsonify({"result": [], "error": "Invalid HTTP method used. Use GET "})
+        return jsonify({'result': [], 'error': 'Invalid HTTP method used. Use GET '})
 
 
 def execute_query(graph, query, output=Queue()):
     mdb = get_mdb()
-    config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, "dba", 'dba123')
+    config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
     # pprint.pprint(configuration.metadata)
     start = time()
     decomposer = Decomposer(query, config)
     decomposed_query = decomposer.decompose()
     logger.info(decomposed_query)
     if decomposed_query is None:
-        logger.warning("Decomposer returned None. It might be that the query cannot be answered by the endpoints in the federation.")
+        logger.warning('Decomposer returned None. It might be that the query cannot be answered by the endpoints in the federation.')
         return None, None, 1, 1, 1, 0, None, []
 
     planner = Planner(decomposed_query, True, contact_source, 'RDF', config)
@@ -211,8 +211,8 @@ def execute_query(graph, query, output=Queue()):
     variables = [p.name[1:] for p in decomposer.query.args]
     first = time() - start
 
-    if r == "EOF":
-        print("END of results ....")
+    if r == 'EOF':
+        print('END of results ....')
         first = 0
     else:
         if len(variables) == 0 or (len(variables) == 1 and variables[0] == '*'):
