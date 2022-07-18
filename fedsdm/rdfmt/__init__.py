@@ -1,25 +1,15 @@
 import hashlib
 from multiprocessing import Queue, Process
 from multiprocessing.queues import Empty
-import logging
 import time
 from pprint import pprint
 
+from fedsdm import get_logger
 from fedsdm.rdfmt.model import *
 from fedsdm.rdfmt.utils import contactRDFSource, updateRDFSource
 
 
-logFormatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
-logger = logging.getLogger('rdfmts')
-logger.setLevel(logging.INFO)
-fileHandler = logging.FileHandler('{0}/{1}.log'.format('.', 'ontario-rdfmts-log'))
-fileHandler.setLevel(logging.INFO)
-fileHandler.setFormatter(logFormatter)
-logger.addHandler(fileHandler)
-consoleHandler = logging.StreamHandler()
-consoleHandler.setLevel(logging.INFO)
-consoleHandler.setFormatter(logFormatter)
-logger.addHandler(consoleHandler)
+logger = get_logger('rdfmts', './ontario-rdfmts-log.log', True)
 
 xsd = 'http://www.w3.org/2001/XMLSchema#'
 rdfs = 'http://www.w3.org/2000/01/rdf-schema#'

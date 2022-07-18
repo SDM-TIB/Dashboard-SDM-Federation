@@ -2,20 +2,10 @@ import urllib.parse as urlparse
 from http import HTTPStatus
 import requests
 from multiprocessing import Queue
-import logging
+from fedsdm import get_logger
 
 
-logFormatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
-logger = logging.getLogger('mtupdate')
-logger.setLevel(logging.INFO)
-fileHandler = logging.FileHandler('{0}/{1}.log'.format('.', 'ontario-update-log'))
-fileHandler.setLevel(logging.INFO)
-fileHandler.setFormatter(logFormatter)
-logger.addHandler(fileHandler)
-consoleHandler = logging.StreamHandler()
-consoleHandler.setLevel(logging.INFO)
-consoleHandler.setFormatter(logFormatter)
-logger.addHandler(consoleHandler)
+logger = get_logger('mtupdate', './ontario-update-log.log', True)
 
 
 def contactRDFSource(query, endpoint, outputqueue=Queue(), format='application/sparql-results+json'):
