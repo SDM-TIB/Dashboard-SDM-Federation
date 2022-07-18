@@ -20,22 +20,6 @@ def get_logger(name, file=None, file_and_console=False):
     return logger
 
 
-class PrefixMiddleware(object):
-
-    def __init__(self, app, prefix=''):
-        self.app = app
-        self.prefix = prefix
-
-    def __call__(self, environ, start_response):
-        if environ['PATH_INFO'].startswith(self.prefix):
-            environ['PATH_INFO'] = environ['PATH_INFO'][len(self.prefix):]
-            environ['SCRIPT_NAME'] = self.prefix
-            return self.app(environ, start_response)
-        else:
-            start_response('404', [('Content-Type', 'text/plain')])
-            return [str(self.prefix + '. This url does not belong to the app.').encode()]
-
-
 def create_app(test_config=None):
     prefix = '/'
     if 'APP_PREFIX' in os.environ:
@@ -45,8 +29,6 @@ def create_app(test_config=None):
     app.config['APPLICATION_ROOT'] = prefix
     app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
     app.debug = True
-
-    # app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=prefix)
 
     app.config.from_mapping(
         SECRET_KEY='dev',
