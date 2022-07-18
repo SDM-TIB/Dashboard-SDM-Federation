@@ -24,8 +24,6 @@ consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
 
 xsd = 'http://www.w3.org/2001/XMLSchema#'
-owl = ''
-rdf = ''
 rdfs = 'http://www.w3.org/2000/01/rdf-schema#'
 mtonto = 'http://tib.eu/dsdl/ontario/ontology/'
 mtresource = 'http://tib.eu/dsdl/ontario/resource/'
@@ -127,7 +125,6 @@ class RDFMTMgr(object):
                     ' WHERE{  ?s a ?t. ' \
                     'Optional {?t  <' + rdfs + 'label> ?label} }'
                     # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
-                    #
             if limit == -1:
                 limit = 100
                 offset = 0
@@ -269,11 +266,9 @@ class RDFMTMgr(object):
         return results
 
     def get_rdfs_ranges(self, referer, p, limit=-1):
-
         RDFS_RANGES = ' SELECT DISTINCT ?range' \
                       '  WHERE{ <' + p + '> <http://www.w3.org/2000/01/rdf-schema#range> ?range. } '
         # filter (regex(str(?range), 'http://dbpedia.org/ontology', 'i'))
-        # ' ' \
 
         reslist = []
         if limit == -1:
@@ -314,12 +309,10 @@ class RDFMTMgr(object):
         return ranges
 
     def find_instance_range(self, referer, t, p, limit=-1):
-
         INSTANCE_RANGES = ' SELECT DISTINCT ?r WHERE{ ?s a <' + t + '>. ' \
                             ' ?s <' + p + '> ?pt. ' \
                             ' ?pt a ?r .  } '
         # filter (regex(str(?r), 'http://dbpedia.org/ontology', 'i'))
-        #
         reslist = []
         if limit == -1:
             limit = 50
@@ -369,7 +362,6 @@ class RDFMTMgr(object):
         :param limit:
         :return:
         """
-
         query = ' SELECT DISTINCT ?p ?label WHERE{ ?s a <' + t + '>. ?s ?p ?pt.  ' \
                 ' Optional {?p  <' + rdfs + 'label> ?label}} '
         reslist = []
@@ -409,7 +401,6 @@ class RDFMTMgr(object):
         return reslist
 
     def get_preds_of_random_instances(self, referer, t, limit=-1):
-
         """
         get a union of predicated from 'randomly' selected 10 entities from the first 100 subjects returned
 
@@ -498,7 +489,6 @@ class RDFMTMgr(object):
                         'Optional {?p <' + rdfs + "label> ?plabel. filter langMatches(?plabel, 'EN')}" \
                         'Optional {?t <' + rdfs + "label> ?tlabel. filter langMatches(?tlabel, 'EN')}" \
                 '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
-        #
         if limit == -1:
             limit = 50
             offset = 0
@@ -580,7 +570,6 @@ class RDFMTMgr(object):
             else:
                 predcard = str(predcard)
 
-            #print(pred, predcard)
             rn['p'] = pred
             rn['predcard'] = predcard
 
@@ -786,7 +775,6 @@ class RDFMTMgr(object):
         return reslist
 
     def create_inter_ds_links(self, datasource=None, outputqueue=Queue()):
-
         sources = self.get_sources()
         rdfmts = {}
         if len(sources) == 0:
@@ -844,7 +832,6 @@ class RDFMTMgr(object):
                                 del processes[r]
 
     def update_links(self, rdfmts, sourcemaps, datasource):
-
         queues = {}
         processes = {}
         if isinstance(datasource, DataSource):
@@ -896,7 +883,6 @@ class RDFMTMgr(object):
             p2.start()
             processes[si] = p2
             if len(queues) >= 2:
-
                 while len(queues) > 0:
                     toremove = []
                     for endpoint in queues:
@@ -920,7 +906,6 @@ class RDFMTMgr(object):
         print('linking DONE!', did)
 
     def getPredicates(self, query, endpoint):
-
         limit = 1000
         offset = 0
         reslist = []
@@ -938,9 +923,6 @@ class RDFMTMgr(object):
             if card < limit:
                 break
 
-            # if offset + limit >= srdfmts[m1]:
-            #     offset += limit
-            # else:
             offset += limit
 
         return reslist
@@ -976,9 +958,6 @@ class RDFMTMgr(object):
                     if card < limit:
                         break
 
-                    # if offset + limit >= srdfmts[m1]:
-                    #     offset += limit
-                    # else:
                     offset += limit
 
                     time.sleep(5)
@@ -1014,7 +993,6 @@ class RDFMTMgr(object):
         queue.put('EOF')
 
     def get_links_bn_ds(self, reslist, trdfmts, e2):
-
         results = {}
 
         for p in reslist:
@@ -1048,7 +1026,6 @@ class RDFMTMgr(object):
         return reslist
 
     def get_links_bn_ds_prefixed(self, reslist, m2, e2):
-
         resdict = {}
         results = {}
         prefixes = {}
@@ -1082,8 +1059,6 @@ class RDFMTMgr(object):
         j = 0
         for i in range(10, len(prefixes), 10):
             prefs = [" regex(str(?t), '" + p + "', 'i') " for p in prefixes[j:i]]
-            #for p in prefixes:
-            #    prefs.append(" regex(str(?t), '"+p+"', 'i') ")
             # Check if there are subjects with prefixes matching
             tquery = 'SELECT DISTINCT * WHERE {?t a <' + m2 + '>. FILTER (' + ' || '.join(prefs) + ') }'
             print(tquery)
@@ -1366,7 +1341,6 @@ class MTManager(object):
 
     # def get_pred_ranges(self, mt, pred):
     def get_rdfmts(self):
-
         query = 'SELECT distinct ?rid ?datasource ?pred ?mtr ?mtrange ' \
                 ' WHERE { ' \
                 ' GRAPH <' + self.graph + '> {' \
@@ -1608,7 +1582,6 @@ class MTManager(object):
                            '} '
         print(mtquery)
         res, card = contactRDFSource(mtquery, self.queryendpoint)
-        results = []
         return res
 
     def get_rdfmts_by_preds(self, preds):
@@ -1672,45 +1645,3 @@ def query_endpoint(endpoint, query):
         offset += limit
 
     return reslist
-
-
-if __name__ == '__main__':
-
-    # with open('public-dbpedia-endpoint.json') as f: # pubmed-single-endpoint.json bio2rdf-public-single-endpoint.json
-    #     endps = json.load(f)
-    datasets = []
-    # for e in endps:
-    #     ds = DataSource(e['id'],
-    #                     e['url'],
-    #                     DataSourceType.SPARQL_ENDPOINT,
-    #                     name=e['name'],
-    #                     desc=e['desc'] if 'desc' in e else '',
-    #                     keywords=e['keywords'] if 'keywords' in e else '',
-    #                     version=e['version'] if 'version' in e else '',
-    #                     homepage=e['homepage'] if 'homepage' in e else '',
-    #                     organization=e['organization'] if 'organization' in e else '',
-    #                     ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None
-    #                     )
-    #     datasets.append(ds)
-
-    mgraph = 'http://ontario.tib.eu/federation/g/drugbanknewxmltest'
-    print('******* ****************************')
-
-    mgmgr = RDFMTMgr('http://node2.research.tib.eu:1300/sparql',
-                      'http://node2.research.tib.eu:1300/sparql',
-                      'dba',
-                      'dba', mgraph)
-    mgr = MTManager('http://node2.research.tib.eu:1300/sparql',
-                      'dba',
-                      'dba', mgraph)
-    ds = mgr.get_data_source('http://ontario.tib.eu/drugbanknewxmltest/datasource/Drugbankxml')
-    # ds = DataSource('http://tib.eu/dsdl/ontario/resource/ReactomeNeo4j',
-    #                 'bolt://node3.research.tib.eu:7687',
-    #                 DataSourceType.NEO4J)
-    mgmgr.get_rdfmts_from_mapping(ds, [])
-    # print(ds)
-    # # pprint.pprint(mgmgr.get_rdfmts())
-    # mgmgr.create(ds)
-    # print('DONE!!')
-    # print('LINKING ........')
-    # mgmgr.create_inter_ds_links()
