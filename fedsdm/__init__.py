@@ -3,7 +3,7 @@ import logging
 from flask import Flask, send_from_directory, redirect
 
 
-def get_logger(name, file=None):
+def get_logger(name, file=None, file_and_console=False):
     log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
@@ -12,7 +12,7 @@ def get_logger(name, file=None):
         file_handler.setLevel(logging.INFO)
         file_handler.setFormatter(log_formatter)
         logger.addHandler(file_handler)
-    else:
+    if file is None or file_and_console:
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.INFO)
         console_handler.setFormatter(log_formatter)
