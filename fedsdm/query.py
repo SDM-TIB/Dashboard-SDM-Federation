@@ -13,11 +13,11 @@ from flask.json import jsonify
 from DeTrusty.Decomposer.Decomposer import Decomposer
 from DeTrusty.Decomposer.Planner import Planner
 from DeTrusty.Wrapper.RDFWrapper import contact_source
+from fedsdm import get_logger
 from fedsdm.auth import login_required
 from fedsdm.config import ConfigSimpleStore
 from fedsdm.db import get_db, get_mdb
 from fedsdm.ui.utils import get_federations
-from fedsdm import get_logger
 
 bp = Blueprint('query', __name__, url_prefix='/query')
 
