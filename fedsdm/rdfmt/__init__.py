@@ -1,14 +1,13 @@
 import hashlib
+import time
 from multiprocessing import Queue, Process
 from multiprocessing.queues import Empty
-import time
 from pprint import pprint
 
 from fedsdm import get_logger
 from fedsdm.rdfmt.model import *
 from fedsdm.rdfmt.prefixes import *
 from fedsdm.rdfmt.utils import contactRDFSource, updateRDFSource
-
 
 logger = get_logger('rdfmts', './ontario-rdfmts-log.log', True)
 
