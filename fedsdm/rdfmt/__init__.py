@@ -136,14 +136,8 @@ class RDFMTMgr(object):
             else:
                 reslist, card = contactRDFSource(query, referer)
 
-            toremove = []
-            # [toremove.append(r) for v in metas for r in reslist if v in r['t']]
-            for r in reslist:
-                for m in metas:
-                    if m in str(r['t']):
-                        toremove.append(r)
-
-            for r in toremove:
+            to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
+            for r in to_remove:
                 reslist.remove(r)
         else:
             reslist = [{'t': t} for t in types]
@@ -505,14 +499,8 @@ class RDFMTMgr(object):
         else:
             reslist, card = contactRDFSource(query, referer)
 
-        toremove = []
-        # [toremove.append(r) for v in metas for r in reslist if v in r['t']]
-        for r in reslist:
-            for m in metas:
-                if m in str(r['t']):
-                    toremove.append(r)
-
-        for r in toremove:
+        to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
+        for r in to_remove:
             reslist.remove(r)
 
         logger.info(endpoint)
@@ -807,17 +795,17 @@ class RDFMTMgr(object):
                 processes[ti] = p
                 # self.get_inter_ds_links_bn(s, rdfmts[s], t, rdfmts[t], graph)
                 if len(queues) > 2:
-                    toremove = []
+                    to_remove = []
                     while len(queues) > 0:
                         for endpoint in queues:
                             try:
                                 queue = queues[endpoint]
                                 r = queue.get(False)
                                 if r == 'EOF':
-                                    toremove.append(endpoint)
+                                    to_remove.append(endpoint)
                             except Empty:
                                 pass
-                        for r in toremove:
+                        for r in to_remove:
                             if r in queues:
                                 del queues[r]
                             if r in processes and processes[r].is_alive():
@@ -878,17 +866,17 @@ class RDFMTMgr(object):
             processes[si] = p2
             if len(queues) >= 2:
                 while len(queues) > 0:
-                    toremove = []
+                    to_remove = []
                     for endpoint in queues:
                         try:
                             queue = queues[endpoint]
                             r = queue.get(False)
                             print(r)
                             if r == 'EOF':
-                                toremove.append(endpoint)
+                                to_remove.append(endpoint)
                         except Empty:
                             pass
-                    for r in toremove:
+                    for r in to_remove:
                         if r in queues:
                             del queues[r]
                         print(r, queues.keys())
