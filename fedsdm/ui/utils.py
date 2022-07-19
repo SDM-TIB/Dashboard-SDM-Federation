@@ -1,4 +1,5 @@
 from flask import g
+
 from fedsdm.db import get_mdb
 
 
