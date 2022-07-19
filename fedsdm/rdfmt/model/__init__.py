@@ -1,8 +1,9 @@
-from fedsdm.rdfmt.utils import contactRDFSource
-from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
-from enum import Enum
-import urllib.parse as urlparse
 import datetime
+import urllib.parse as urlparse
+from enum import Enum
+
+from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
+from fedsdm.rdfmt.utils import contactRDFSource
 
 
 class RDFMT(object):
