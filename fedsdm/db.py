@@ -6,6 +6,7 @@ from multiprocessing import Queue
 
 import requests
 from flask import current_app, g
+
 from fedsdm import get_logger
 from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
 
