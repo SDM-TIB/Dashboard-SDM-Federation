@@ -1,10 +1,9 @@
-from flask import (
-    Blueprint, g, render_template, session, Response, request
-)
-
 import json
 
 import networkx as nx
+from flask import (
+    Blueprint, g, render_template, session, Response, request
+)
 
 from fedsdm.auth import login_required
 from fedsdm.db import get_mdb
