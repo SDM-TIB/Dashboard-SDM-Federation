@@ -1,8 +1,8 @@
+import json
+
 from flask import (
     Blueprint, g, render_template, session, Response, request
 )
-
-import json
 
 from fedsdm.auth import login_required
 from fedsdm.db import get_db
