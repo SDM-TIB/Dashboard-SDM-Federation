@@ -1,22 +1,19 @@
+import datetime as dtime
+import json
+from multiprocessing import Process, Queue
+
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, Response, request, url_for, abort
 )
 
-import datetime as dtime
-import json
-
 from fedsdm import get_logger
-
-from fedsdm.rdfmt import RDFMTMgr
-from multiprocessing import Process, Queue
-
 from fedsdm.auth import login_required
 from fedsdm.db import get_db, get_mdb
+from fedsdm.rdfmt import RDFMTMgr
+from fedsdm.rdfmt.model import *
 from fedsdm.ui.utils import (
     get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
 )
-
-from fedsdm.rdfmt.model import *
 
 bp = Blueprint('federation', __name__, url_prefix='/federation')
 
