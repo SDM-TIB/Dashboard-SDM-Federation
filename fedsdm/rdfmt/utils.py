@@ -1,9 +1,10 @@
 import urllib.parse as urlparse
 from http import HTTPStatus
-import requests
 from multiprocessing import Queue
-from fedsdm import get_logger
 
+import requests
+
+from fedsdm import get_logger
 
 logger = get_logger('mtupdate', './ontario-update-log.log', True)
 
