@@ -1,11 +1,8 @@
 from fedsdm.rdfmt.utils import contactRDFSource
+from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
 from enum import Enum
 import urllib.parse as urlparse
 import datetime
-
-mtonto = 'http://tib.eu/dsdl/ontario/ontology/'
-mtresource = 'http://tib.eu/dsdl/ontario/resource/'
-xsd = 'http://www.w3.org/2001/XMLSchema#'
 
 
 class RDFMT(object):
@@ -24,26 +21,26 @@ class RDFMT(object):
         self.mt_type = mt_type
 
     def to_rdf(self):
-        data = ['<' + self.rid + '> a <' + mtonto + 'RDFMT> ']
+        data = ['<' + self.rid + '> a <' + MT_ONTO + 'RDFMT> ']
         if self.mt_type == 0:
-            data.append('<' + self.rid + '> a <' + mtonto + 'TypedRDFMT> ')
+            data.append('<' + self.rid + '> a <' + MT_ONTO + 'TypedRDFMT> ')
         for s in self.sources:
             data.extend(s.to_rdf())
-            data.append('<' + self.rid + '> <' + mtonto + 'source> <' + s.rid + '>')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'source> <' + s.rid + '>')
         for s in self.subClassOf:
-            data.append('<' + self.rid + '> <' + mtonto + 'subClassOf> <' + s + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'subClassOf> <' + s + '> ')
         if self.desc is not None and self.desc != '':
             self.desc = self.desc.replace('"', "'").replace('\n', ' ')
-            data.append('<' + self.rid + '> <' + mtonto + 'desc> "' + self.desc + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'desc> "' + self.desc + '" ')
         if self.name is not None and self.name != '':
             self.name = self.name.replace('"', "'").replace('\n', ' ')
-            data.append('<' + self.rid + '> <' + mtonto + 'name> "' + self.name + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'name> "' + self.name + '" ')
         else:
-            data.append('<' + self.rid + '> <' + mtonto + 'name> "' + self.rid + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'name> "' + self.rid + '" ')
 
         for r in self.properties:
             data.extend(r.to_rdf())
-            data.append('<' + self.rid + '> <' + mtonto + 'hasProperty> <' + r.rid + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'hasProperty> <' + r.rid + '> ')
 
         today = str(datetime.datetime.now())
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/created> "' + today + '"')
@@ -67,25 +64,25 @@ class MTProperty(object):
         self.label = label
 
     def to_rdf(self):
-        data = ['<' + self.rid + '> a <' + mtonto + 'MTProperty> ']
+        data = ['<' + self.rid + '> a <' + MT_ONTO + 'MTProperty> ']
         if self.cardinality != '' and int(self.cardinality) >= 0:
-            data.append('<' + self.rid + '> <' + mtonto + 'cardinality> ' + str(self.cardinality))
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'cardinality> ' + str(self.cardinality))
         for s in self.sources:
             data.extend(s.to_rdf())
-            data.append('<' + self.rid + '> <' + mtonto + 'propSource> <' + s.rid + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'propSource> <' + s.rid + '> ')
 
         if self.label is not None and self.label != '':
             self.label = self.label.replace('"', "'").replace('\n', ' ')
-            data.append('<' + self.rid + '> <' + mtonto + 'label> "' + self.label + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'label> "' + self.label + '" ')
         if self.predicate is not None:
-            data.append('<' + self.rid + '> <' + mtonto + 'predicate> <' + self.predicate + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'predicate> <' + self.predicate + '> ')
         for r in self.ranges:
             data.extend(r.to_rdf())
-            data.append('<' + self.rid + '> <' + mtonto + 'linkedTo> <' + r.rid + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'linkedTo> <' + r.rid + '> ')
 
         for p in self.policies:
             data.extend(p.to_rdf())
-            data.append('<' + self.rid + '> <' + mtonto + 'policies> <' + p.rid + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'policies> <' + p.rid + '> ')
 
         return data
 
@@ -100,15 +97,15 @@ class PropRange(object):
         self.range_type = range_type
 
     def to_rdf(self):
-        data = ['<' + self.rid + '> a <' + mtonto + 'PropRange> ',
-                '<' + self.rid + '> <' + mtonto + 'datasource> <' + self.source.rid + '> ',
-                '<' + self.rid + '> <' + mtonto + 'name> <' + self.prange + '> ']
+        data = ['<' + self.rid + '> a <' + MT_ONTO + 'PropRange> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'datasource> <' + self.source.rid + '> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'name> <' + self.prange + '> ']
         if self.cardinality != '' and int(self.cardinality) >= 0:
-            data.append('<' + self.rid + '> <' + mtonto + 'cardinality> ' + str(self.cardinality))
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'cardinality> ' + str(self.cardinality))
         if self.range_type == 0:
-            data.append('<' + self.rid + '> <' + mtonto + 'rdfmt> <' + self.prange + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'rdfmt> <' + self.prange + '> ')
         else:
-            data.append('<' + self.rid + '> <' + mtonto + 'xsdtype> <' + self.prange + '> ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'xsdtype> <' + self.prange + '> ')
 
         return data
 
@@ -121,10 +118,10 @@ class Source(object):
         self.cardinality = cardinality
 
     def to_rdf(self):
-        data = ['<' + self.rid + '> a <' + mtonto + 'Source> ',
-                '<' + self.rid + '> <' + mtonto + 'datasource> <' + self.source.rid + '> ']
+        data = ['<' + self.rid + '> a <' + MT_ONTO + 'Source> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'datasource> <' + self.source.rid + '> ']
         if self.cardinality != '' and int(self.cardinality) >= 0:
-            data.append('<' + self.rid + '> <' + mtonto + 'cardinality> ' + str(self.cardinality))
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'cardinality> ' + str(self.cardinality))
 
         return data
 
@@ -198,26 +195,26 @@ class DataSource(object):
         return False
 
     def to_rdf(self, update=False):
-        data = ['<' + self.rid + '> a <' + mtonto + 'DataSource> ',
-                '<' + self.rid + '> <' + mtonto + 'dataSourceType> <' + mtresource + 'DatasourceType/' + str(self.dstype.value) + '> ',
-                '<' + self.rid + '> <' + mtonto + 'url> "' + urlparse.quote(self.url, safe='/:') + '" ']
+        data = ['<' + self.rid + '> a <' + MT_ONTO + 'DataSource> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'dataSourceType> <' + MT_RESOURCE + 'DatasourceType/' + str(self.dstype.value) + '> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'url> "' + urlparse.quote(self.url, safe='/:') + '" ']
         if self.name is not None and self.name != '':
             self.name = self.name.replace('"', "'").replace('\n', ' ')
-            data.append('<' + self.rid + '> <' + mtonto + 'name> "' + self.name + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'name> "' + self.name + '" ')
         if self.version is not None and self.version != '':
-            data.append('<' + self.rid + '> <' + mtonto + 'version> "' + self.version + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'version> "' + self.version + '" ')
         if self.keywords is not None and self.keywords != '':
-            data.append('<' + self.rid + '> <' + mtonto + 'keywords> "' + self.keywords + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'keywords> "' + self.keywords + '" ')
         if self.organization is not None and self.organization != '':
-            data.append('<' + self.rid + '> <' + mtonto + 'organization> "' + self.organization + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'organization> "' + self.organization + '" ')
         if self.homepage is not None and self.homepage != '':
-            data.append('<' + self.rid + '> <' + mtonto + 'homepage> "' + self.homepage + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'homepage> "' + self.homepage + '" ')
         if self.params is not None and len(self.params) > 0:
-            data.append('<' + self.rid + '> <' + mtonto + 'params> "' + str(self.params) + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'params> "' + str(self.params) + '" ')
         if self.desc is not None and self.desc != '':
-            data.append('<' + self.rid + '> <' + mtonto + 'desc> "' + self.desc.replace('"', "'").replace('`', "'") + '"')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'desc> "' + self.desc.replace('"', "'").replace('`', "'") + '"')
         if self.triples != '' and int(self.triples) >= 0:
-            data.append('<' + self.rid + '> <' + mtonto + 'triples> ' + str(self.triples))
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'triples> ' + str(self.triples))
 
         today = str(datetime.datetime.now())
         if not update:

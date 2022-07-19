@@ -7,6 +7,7 @@ from multiprocessing import Queue
 import requests
 from flask import current_app, g
 from fedsdm import get_logger
+from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
 
 logger = get_logger('mtupdate', file="{0}/{1}.log".format('.', 'ontario-update-log'))
 
@@ -37,15 +38,9 @@ class MetadataDB:
         (server, path) = server.split('/', 1)
         self.update_server = server
         self.update_path = path
-        self.xsd = 'http://www.w3.org/2001/XMLSchema#'
-        self.owl = ''
-        self.rdf = ''
-        self.rdfs = 'http://www.w3.org/2000/01/rdf-schema#'
-        self.mtonto = 'http://tib.eu/dsdl/ontario/ontology/'
-        self.mtresource = 'http://tib.eu/dsdl/ontario/resource/'
-        self.prefixes = 'PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n' \
-                        'PREFIX mt: <http://tib.eu/dsdl/ontario/ontology/>\n' \
-                        'PREFIX mtres: <http://tib.eu/dsdl/ontario/resource/>\n'
+        self.prefixes = 'PREFIX xsd: <' + XSD + '>\n' \
+                        'PREFIX mt: <' + MT_ONTO + '>\n' \
+                        'PREFIX mtres: <' + MT_RESOURCE + '>\n'
 
     def query(self, query, outputqueue=Queue(), format='application/sparql-results+json'):
         # Build the query and header.

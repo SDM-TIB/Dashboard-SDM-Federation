@@ -394,7 +394,7 @@ def get_datasource(graph=None, dstype=None):
             query += '?id mt:dataSourceType ?dstype .\n'
             filters = []
             for dt in dstype:
-                filters.append(' ?dstype=<' + mdb.mtresource + 'DatasourceType/' + str(dt.value) + '> ')
+                filters.append(' ?dstype=<' + MT_RESOURCE + 'DatasourceType/' + str(dt.value) + '> ')
             query += ' FILTER (' + ' || '.join(filters) + ')\n'
         else:
             query += 'OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'

@@ -6,15 +6,11 @@ from pprint import pprint
 
 from fedsdm import get_logger
 from fedsdm.rdfmt.model import *
+from fedsdm.rdfmt.prefixes import *
 from fedsdm.rdfmt.utils import contactRDFSource, updateRDFSource
 
 
 logger = get_logger('rdfmts', './ontario-rdfmts-log.log', True)
-
-xsd = 'http://www.w3.org/2001/XMLSchema#'
-rdfs = 'http://www.w3.org/2000/01/rdf-schema#'
-mtonto = 'http://tib.eu/dsdl/ontario/ontology/'
-mtresource = 'http://tib.eu/dsdl/ontario/resource/'
 
 metas = ['http://www.w3.org/ns/sparql-service-description',
          'http://www.openlinksw.com/schemas/virtrdf#',
@@ -60,7 +56,7 @@ class RDFMTMgr(object):
                 triples = int(triples[:triples.find('^^')])
             ds.triples = triples
 
-            data = '<' + ds.rid + '> <' + mtonto + 'triples> ' + triples
+            data = '<' + ds.rid + '> <' + MT_ONTO + 'triples> ' + triples
             self.updateGraph([data])
         else:
             today = str(datetime.datetime.now())
@@ -108,10 +104,10 @@ class RDFMTMgr(object):
         referer = endpoint
         reslist = []
         if len(types) == 0:
-            #  'Optional {?t  <' + rdfs + 'label> ?label} .  'Optional {?t  <' + rdfs + 'comment> ?desc} .
+            #  'Optional {?t  <' + RDFS + 'label> ?label} .  'Optional {?t  <' + RDFS + 'comment> ?desc} .
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
-                    '  OPTIONAL { ?t  <' + rdfs + 'label> ?label }\n}'
+                    '  OPTIONAL { ?t  <' + RDFS + 'label> ?label }\n}'
                     # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
             if limit == -1:
                 limit = 100
@@ -167,7 +163,7 @@ class RDFMTMgr(object):
             else:
                 mcard = str(card)
 
-            sourceURI = mtresource + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
+            sourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
             source = Source(sourceURI, e, mcard)
             # GEt subclasses:
             subc = self.get_subclasses(endpoint, t)
@@ -187,8 +183,8 @@ class RDFMTMgr(object):
 
                 propertiesprocessed.append(pred)
 
-                mtpredicateURI = mtresource + str(hashlib.md5(str(t + pred).encode()).hexdigest())
-                propsourceURI = mtresource + str(hashlib.md5(str(endpoint + t + pred).encode()).hexdigest())
+                mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
+                propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
                 predcard = self.get_cardinality(endpoint, t, prop=pred)
                 if isinstance(predcard, str) and '^^' in predcard:
@@ -212,9 +208,9 @@ class RDFMTMgr(object):
                 for mr in mtranges:
                     if '^^' in mr:
                         continue
-                    mrpid = mtresource + str(hashlib.md5(str(endpoint + t + pred + mr).encode()).hexdigest())
+                    mrpid = MT_RESOURCE + str(hashlib.md5(str(endpoint + t + pred + mr).encode()).hexdigest())
                     rcard = -1
-                    if xsd not in mr:
+                    if XSD not in mr:
                         rcard = self.get_cardinality(endpoint, t, prop=pred, mr=mr)
                         rtype = 0
                     else:
@@ -249,7 +245,7 @@ class RDFMTMgr(object):
 
     def get_rdfs_ranges(self, referer, p, limit=-1):
         RDFS_RANGES = 'SELECT DISTINCT ?range WHERE {\n' \
-                      '  <' + p + '> <' + rdfs + 'range> ?range .\n}'
+                      '  <' + p + '> <' + RDFS + 'range> ?range .\n}'
         # filter (regex(str(?range), 'http://dbpedia.org/ontology', 'i'))
 
         reslist = []
@@ -348,7 +344,7 @@ class RDFMTMgr(object):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  ?s a <' + t + '> .\n' \
                 '  ?s ?p ?pt .\n' \
-                '  OPTIONAL { ?p  <' + rdfs + 'label> ?label }\n}'
+                '  OPTIONAL { ?p  <' + RDFS + 'label> ?label }\n}'
         reslist = []
         if limit == -1:
             limit = 50
@@ -436,7 +432,7 @@ class RDFMTMgr(object):
     def get_preds_of_instance(self, referer, inst, limit=-1):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + inst + '> ?p ?pt .\n' \
-                '  OPTIONAL {?p  <' + rdfs + 'label> ?label}\n}'
+                '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
         reslist = []
         if limit == -1:
             limit = 1000
@@ -470,10 +466,10 @@ class RDFMTMgr(object):
         referer = endpoint
         reslist = []
         query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
-                '  ?p <' + rdfs + 'domain> ?t .\n' \
-                '  OPTIONAL { ?p <' + rdfs + 'range> ?range }\n' \
-                '  OPTIONAL { ?p <' + rdfs + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
-                '  OPTIONAL { ?t <' + rdfs + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
+                '  ?p <' + RDFS + 'domain> ?t .\n' \
+                '  OPTIONAL { ?p <' + RDFS + 'range> ?range }\n' \
+                '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
+                '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
                 '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
         if limit == -1:
             limit = 50
@@ -526,7 +522,7 @@ class RDFMTMgr(object):
                 #     mcard = str(card)
                 mcard = -1
                 print(t)
-                sourceURI = mtresource + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
+                sourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
                 source = Source(sourceURI, e, mcard)
                 alreadyprocessed[t] = mcard
                 subc = self.get_subclasses(endpoint, t)
@@ -541,8 +537,8 @@ class RDFMTMgr(object):
             pred = r['p']
             print(pred)
             rn = {'t': t, 'cardinality': mcard, 'subclasses': subclasses}
-            mtpredicateURI = mtresource + str(hashlib.md5(str(t + pred).encode()).hexdigest())
-            propsourceURI = mtresource + str(hashlib.md5(str(endpoint + t + pred).encode()).hexdigest())
+            mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
+            propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t + pred).encode()).hexdigest())
             # Get cardinality of this predicate from this RDF-MT
             predcard = -1# self.get_cardinality(endpoint, t, prop=pred)
             if isinstance(predcard, str)  and '^^' in predcard:
@@ -557,13 +553,13 @@ class RDFMTMgr(object):
             rn['range'] = [] # self.get_rdfs_ranges(referer, pred)
 
             ranges = []
-            if 'range' in r and xsd not in r['range']:
+            if 'range' in r and XSD not in r['range']:
                 print('range', r['range'])
                 rn['range'].append(r['range'])
                 mr = r['range']
-                mrpid = mtresource + str(hashlib.md5(str(endpoint + t + pred + mr).encode()).hexdigest())
+                mrpid = MT_RESOURCE + str(hashlib.md5(str(endpoint + t + pred + mr).encode()).hexdigest())
 
-                if xsd not in mr:
+                if XSD not in mr:
                     rcard = -1#self.get_cardinality(endpoint, t, prop=pred, mr=mr)
                     rtype = 0
                 else:
@@ -665,14 +661,14 @@ class RDFMTMgr(object):
 
     def get_subclasses(self, endpoint, root):
         referer = endpoint
-        query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + rdfs + 'subClassOf> ?subc }'
+        query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + RDFS + 'subClassOf> ?subc }'
         res, card = contactRDFSource(query, referer)
         return res
 
     def get_sources(self):
         query = 'SELECT DISTINCT ?subject ?url WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  ?subject a <' + mtonto + 'DataSource> .\n' \
-                '  ?subject <' + mtonto + 'url> ?url .\n' \
+                '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
+                '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -697,16 +693,16 @@ class RDFMTMgr(object):
 
     def get_source(self, dsid):
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + dsid + '> <' + mtonto + 'url> ?url .\n' \
-                '  <' + dsid + '> <' + mtonto + 'dataSourceType> ?dstype .\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'name> ?name }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'version> ?version }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'keywords> ?keywords }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'organization> ?organization }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'homepage> ?homepage }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'params> ?params }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'desc> ?desc }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'triples> ?triples }\n' \
+                '  <' + dsid + '> <' + MT_ONTO + 'url> ?url .\n' \
+                '  <' + dsid + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'name> ?name }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'version> ?version }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'keywords> ?keywords }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'organization> ?organization }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'homepage> ?homepage }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'params> ?params }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -730,10 +726,10 @@ class RDFMTMgr(object):
 
     def get_ds_rdfmts(self, datasource):
         query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  ?subject a <' + mtonto + 'RDFMT> .\n' \
-                '  ?subject <' + mtonto + 'source> ?source .\n' \
-                '  OPTIONAL { ?source <' + mtonto + 'cardinality> ?card }\n' \
-                '  ?source <' + mtonto + 'datasource> <' + datasource + '> .\n' \
+                '  ?subject a <' + MT_ONTO + 'RDFMT> .\n' \
+                '  ?subject <' + MT_ONTO + 'source> ?source .\n' \
+                '  OPTIONAL { ?source <' + MT_ONTO + 'cardinality> ?card }\n' \
+                '  ?source <' + MT_ONTO + 'datasource> <' + datasource + '> .\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -957,14 +953,14 @@ class RDFMTMgr(object):
                     try:
                         for m2 in typesfound[link]:
                             val = str(endpoint2 + m1 + link + m2).encode()
-                            mrpid = mtresource + str(hashlib.md5(val).hexdigest())
+                            mrpid = MT_RESOURCE + str(hashlib.md5(val).hexdigest())
 
                             card = -1
                             rs = DataSource(t['subject'], t['url'], DataSourceType.SPARQL_ENDPOINT)
                             ran = PropRange(mrpid, m2, rs, range_type=0, cardinality=card)
                             data.extend(ran.to_rdf())
-                            mtpid = mtresource + str(hashlib.md5(str(m1 + link).encode()).hexdigest())
-                            data.append('<' + mtpid + '> <' + mtonto + 'linkedTo> <' + mrpid + '> ')
+                            mtpid = MT_RESOURCE + str(hashlib.md5(str(m1 + link).encode()).hexdigest())
+                            data.append('<' + mtpid + '> <' + MT_ONTO + 'linkedTo> <' + mrpid + '> ')
                         if len(data) > 0:
                             self.updateGraph(data)
                     except Exception as e:
@@ -1147,7 +1143,7 @@ class RDFMTMgr(object):
                         continue
 
             for t in reslist:
-                sourceURI = mtresource + str(hashlib.md5(str(ds.url + t).encode()).hexdigest())
+                sourceURI = MT_RESOURCE + str(hashlib.md5(str(ds.url + t).encode()).hexdigest())
                 source = Source(sourceURI, ds)
 
                 rdfpropteries = []
@@ -1155,12 +1151,12 @@ class RDFMTMgr(object):
 
                 for p in preds:
                     rn = {'t': t, 'cardinality': -1, 'subclasses': [], 'p': p, 'predcard': -1, 'range': preds[p].keys()}
-                    mtpredicateURI = mtresource + str(hashlib.md5(str(t + p).encode()).hexdigest())
-                    propsourceURI = mtresource + str(hashlib.md5(str(ds.url + t + p).encode()).hexdigest())
+                    mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
+                    propsourceURI = MT_RESOURCE + str(hashlib.md5(str(ds.url + t + p).encode()).hexdigest())
                     ranges = []
                     if len(preds[p]) > 0:
                         for mr in preds[p]:
-                            mrpid = mtresource + str(hashlib.md5(str(ds.url + t + p + mr).encode()).hexdigest())
+                            mrpid = MT_RESOURCE + str(hashlib.md5(str(ds.url + t + p + mr).encode()).hexdigest())
                             rtype = 0
                             for mrr in preds[p][mr]:
                                 print(p, mr, mrr)
@@ -1175,8 +1171,8 @@ class RDFMTMgr(object):
                     results.append(rn)
                 # add rdf:type property
                 p = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-                mtpredicateURI = mtresource + str(hashlib.md5(str(t + p).encode()).hexdigest())
-                propsourceURI = mtresource + str(hashlib.md5(str(ds.url + t + p).encode()).hexdigest())
+                mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
+                propsourceURI = MT_RESOURCE + str(hashlib.md5(str(ds.url + t + p).encode()).hexdigest())
 
                 predsouce = Source(propsourceURI, ds, -1)
                 mtprop = MTProperty(mtpredicateURI, p, [predsouce], ranges=[], label='RDF type')
@@ -1208,8 +1204,8 @@ class MTManager(object):
 
     def get_data_sources(self):
         query = 'SELECT DISTINCT ?rid ?endpoint WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  ?rid a <' + mtonto + 'DataSource> .\n' \
-                '  ?rid <' + mtonto + 'url> ?endpoint .\n' \
+                '  ?rid a <' + MT_ONTO + 'DataSource> .\n' \
+                '  ?rid <' + MT_ONTO + 'url> ?endpoint .\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1239,12 +1235,12 @@ class MTManager(object):
             preds = 'FILTER (' + (' || '.join(filters)) + ')'
 
         query = 'SELECT DISTINCT ?datasource  ?pred ?mtr WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + rdfclass + '> <' + mtonto + 'source> ?source .\n' \
-                '  ?source <' + mtonto + 'datasource> ?datasource .\n' \
-                '  <' + rdfclass + '> <' + mtonto + 'hasProperty> ?mtp .\n' \
-                '  ?mtp <' + mtonto + 'predicate> ?pred .\n' \
-                '  ?mtp <' + mtonto + 'linkedTo> ?mtrange .\n' \
-                '  ?mtrange <' + mtonto + 'rdfmt> ?mtr .\n  ' \
+                '  <' + rdfclass + '> <' + MT_ONTO + 'source> ?source .\n' \
+                '  ?source <' + MT_ONTO + 'datasource> ?datasource .\n' \
+                '  <' + rdfclass + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
+                '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
+                '  ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
+                '  ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n  ' \
                 + preds + '\n}}'
         limit = 1000
         offset = 0
@@ -1325,14 +1321,14 @@ class MTManager(object):
     # def get_pred_ranges(self, mt, pred):
     def get_rdfmts(self):
         query = 'SELECT DISTINCT ?rid ?datasource ?pred ?mtr ?mtrange WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  ?rid a <' + mtonto + 'RDFMT> .\n' \
-                '  ?rid <' + mtonto + 'source> ?source .\n' \
-                '  ?rid <' + mtonto + 'hasProperty> ?mtp .\n' \
-                '  ?mtp <' + mtonto + 'predicate> ?pred .\n' \
-                '  ?source <' + mtonto + 'datasource> ?datasource .\n' \
+                '  ?rid a <' + MT_ONTO + 'RDFMT> .\n' \
+                '  ?rid <' + MT_ONTO + 'source> ?source .\n' \
+                '  ?rid <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
+                '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
+                '  ?source <' + MT_ONTO + 'datasource> ?datasource .\n' \
                 '  OPTIONAL {\n' \
-                '    ?mtp <' + mtonto + 'linkedTo> ?mtrange .\n' \
-                '    ?mtrange <' + mtonto + 'rdfmt> ?mtr .\n' \
+                '    ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
+                '    ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n' \
                 '  }\n' \
                 '}}'
         limit = 1000
@@ -1410,10 +1406,10 @@ class MTManager(object):
 
     def get_rdfmt(self, rdfclass):
         query = 'SELECT DISTINCT ?datasource ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + rdfclass + '> <' + mtonto + 'source> ?source .\n' \
-                '  <' + rdfclass + '> <' + mtonto + 'hasProperty> ?mtp .\n' \
-                '  ?mtp <' + mtonto + 'predicate> ?pred .\n' \
-                '  ?source <' + mtonto + 'datasource> ?datasource.\n' \
+                '  <' + rdfclass + '> <' + MT_ONTO + 'source> ?source .\n' \
+                '  <' + rdfclass + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
+                '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
+                '  ?source <' + MT_ONTO + 'datasource> ?datasource.\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1491,16 +1487,16 @@ class MTManager(object):
 
     def get_data_source(self, dsid):
         query = 'SELECT DISTINCT *  WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + dsid + '> <' + mtonto + 'url> ?url .\n' \
-                '  <' + dsid + '> <' + mtonto + 'dataSourceType> ?dstype .\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'name> ?name }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'version> ?version }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'keywords> ?keywords }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'organization> ?organization }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'homepage> ?homepage }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'params> ?params }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'desc> ?desc }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + mtonto + 'triples> ?triples }\n' \
+                '  <' + dsid + '> <' + MT_ONTO + 'url> ?url .\n' \
+                '  <' + dsid + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'name> ?name }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'version> ?version }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'keywords> ?keywords }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'organization> ?organization }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'homepage> ?homepage }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'params> ?params }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
+                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
         limit = 1000
         offset = 0
@@ -1564,11 +1560,11 @@ class MTManager(object):
 
     def get_rdfmts_by_preds(self, preds):
         query = 'SELECT DISTINCT ?rid WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  ?rid a <' + mtonto + 'RDFMT> .\n'
+                '  ?rid a <' + MT_ONTO + 'RDFMT> .\n'
         i = 0
         for p in preds:
-            query += '  ?rid <' + mtonto + 'hasProperty> ?mtp' + str(i) + '.\n' \
-                     '  ?mtp' + str(i) + ' <' + mtonto + 'predicate> <' + p + '> .\n'
+            query += '  ?rid <' + MT_ONTO + 'hasProperty> ?mtp' + str(i) + '.\n' \
+                     '  ?mtp' + str(i) + ' <' + MT_ONTO + 'predicate> <' + p + '> .\n'
             i += 1
 
         query += '}}'
@@ -1588,9 +1584,9 @@ class MTManager(object):
             filter = ' || '.join(['?pred=<' + p + '> ' for p in props])
 
         query = 'SELECT DISTINCT ?rid ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  ?rid a <' + mtonto + 'RDFMT> .\n' \
-                '  ?rid <' + mtonto + 'hasProperty> ?mtp .\n' \
-                '  ?mtp <' + mtonto + 'predicate> ?pred .\n'
+                '  ?rid a <' + MT_ONTO + 'RDFMT> .\n' \
+                '  ?rid <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
+                '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n'
         if len(filter) > 0:
             query += '  FILTER (' + filter + ')\n'
         query += '}}'
