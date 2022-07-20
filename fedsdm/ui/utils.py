@@ -136,8 +136,5 @@ def get_federation_stats():
             '  }}}\n' \
             '} GROUP BY ?fed ?name'
 
-    from fedsdm import get_logger
-    logger = get_logger(__name__)
-    logger.info(query)
     res, _ = mdb.query(query)
     return res
