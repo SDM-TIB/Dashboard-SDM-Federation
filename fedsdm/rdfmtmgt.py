@@ -175,7 +175,6 @@ def get_rdfmt_details(fed, mt):
     res = reslist
     print(len(res), 'results found')
     if len(reslist) > 0:
-        card = len(reslist)
         nodes = {}
         edges = []
         nodeids = {}
