@@ -4,9 +4,9 @@ from flask import (
     Blueprint, g, render_template, session, Response, request
 )
 
-from fedsdm.auth import login_required
-from fedsdm.db import get_db
-from fedsdm.ui.utils import get_federations
+from FedSDM.auth import login_required
+from FedSDM.db import get_db
+from FedSDM.ui.utils import get_federations
 
 bp = Blueprint('feedback', __name__, url_prefix='/feedback')
 

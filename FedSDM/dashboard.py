@@ -2,7 +2,7 @@ from flask import (
     Blueprint, g, session, render_template
 )
 
-from fedsdm.ui.utils import (
+from FedSDM.ui.utils import (
     get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
 )
 

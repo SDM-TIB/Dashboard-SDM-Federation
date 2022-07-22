@@ -1,6 +1,6 @@
 __author__ = 'Kemele M. Endris'
 
-from fedsdm.rdfmt import MTManager
+from FedSDM.rdfmt import MTManager
 
 
 class ConfigSimpleStore(object):

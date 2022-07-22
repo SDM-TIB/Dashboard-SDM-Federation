@@ -6,12 +6,12 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, session, Response, request, url_for, abort
 )
 
-from fedsdm import get_logger
-from fedsdm.auth import login_required
-from fedsdm.db import get_db, get_mdb
-from fedsdm.rdfmt import RDFMTMgr
-from fedsdm.rdfmt.model import *
-from fedsdm.ui.utils import (
+from FedSDM import get_logger
+from FedSDM.auth import login_required
+from FedSDM.db import get_db, get_mdb
+from FedSDM.rdfmt import RDFMTMgr
+from FedSDM.rdfmt.model import *
+from FedSDM.ui.utils import (
     get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
 )
 

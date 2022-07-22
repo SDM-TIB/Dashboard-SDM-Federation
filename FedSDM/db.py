@@ -7,8 +7,8 @@ from multiprocessing import Queue
 import requests
 from flask import current_app, g
 
-from fedsdm import get_logger
-from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
+from FedSDM import get_logger
+from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
 
 logger = get_logger('mtupdate', file="{0}/{1}.log".format('.', 'ontario-update-log'))
 

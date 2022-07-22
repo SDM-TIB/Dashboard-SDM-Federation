@@ -4,7 +4,7 @@ from multiprocessing import Queue
 
 import requests
 
-from fedsdm import get_logger
+from FedSDM import get_logger
 
 logger = get_logger('mtupdate', './ontario-update-log.log', True)
 

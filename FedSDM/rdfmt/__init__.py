@@ -4,10 +4,10 @@ from multiprocessing import Queue, Process
 from multiprocessing.queues import Empty
 from pprint import pprint
 
-from fedsdm import get_logger
-from fedsdm.rdfmt.model import *
-from fedsdm.rdfmt.prefixes import *
-from fedsdm.rdfmt.utils import contactRDFSource, updateRDFSource
+from FedSDM import get_logger
+from FedSDM.rdfmt.model import *
+from FedSDM.rdfmt.prefixes import *
+from FedSDM.rdfmt.utils import contactRDFSource, updateRDFSource
 
 logger = get_logger('rdfmts', './ontario-rdfmts-log.log', True)
 

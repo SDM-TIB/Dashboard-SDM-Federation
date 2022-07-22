@@ -2,8 +2,8 @@ import datetime
 import urllib.parse as urlparse
 from enum import Enum
 
-from fedsdm.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
-from fedsdm.rdfmt.utils import contactRDFSource
+from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
+from FedSDM.rdfmt.utils import contactRDFSource
 
 
 class RDFMT(object):

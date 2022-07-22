@@ -2,7 +2,7 @@ import shutil
 from flask import Flask
 from flask_assets import Environment, Bundle
 
-app = Flask(__name__, root_path='fedsdm/')
+app = Flask(__name__, root_path='FedSDM/')
 assets = Environment(app)
 
 NPM_PATH = '../../node_modules/'
@@ -83,8 +83,8 @@ for name, bundle in bundles.items():
     bundle.build(force=True)
 
 # copy webfonts from Fontawesome
-shutil.rmtree('fedsdm/static/webfonts')
-shutil.copytree('node_modules/@fortawesome/fontawesome-free/webfonts', 'fedsdm/static/webfonts', dirs_exist_ok=True)
+shutil.rmtree('FedSDM/static/webfonts')
+shutil.copytree('node_modules/@fortawesome/fontawesome-free/webfonts', 'FedSDM/static/webfonts', dirs_exist_ok=True)
 
 # remove webassets cache
-shutil.rmtree('fedsdm/static/.webassets-cache')
+shutil.rmtree('FedSDM/static/.webassets-cache')

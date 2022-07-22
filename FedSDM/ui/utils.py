@@ -1,6 +1,6 @@
 from flask import g
 
-from fedsdm.db import get_mdb
+from FedSDM.db import get_mdb
 
 
 def _process_numeric_result(mdb, query):
