@@ -8,8 +8,6 @@ FedSDM is a semantic data manager for federations of RDF datasets.
 ## Running the Example
 **Prerequisites:**
 * make 4.1 or newer
-* Python3 (including pip) 3.6 or newer
-* npm 3.5 or newer
 * Docker 20.10 or newer
 * docker-compose 1.25 or newer
 
