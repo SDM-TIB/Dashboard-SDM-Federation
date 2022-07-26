@@ -10,8 +10,7 @@ from flask import (
 )
 from flask.json import jsonify
 
-from DeTrusty.Decomposer.Decomposer import Decomposer
-from DeTrusty.Decomposer.Planner import Planner
+from DeTrusty import Decomposer, Planner
 from DeTrusty.Wrapper.RDFWrapper import contact_source
 from FedSDM import get_logger
 from FedSDM.auth import login_required
