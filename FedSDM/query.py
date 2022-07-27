@@ -20,7 +20,7 @@ from FedSDM.ui.utils import get_federations
 
 bp = Blueprint('query', __name__, url_prefix='/query')
 
-logger = get_logger(__name__)
+logger = get_logger('query')
 
 
 @bp.route('/query')

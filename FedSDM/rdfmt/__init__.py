@@ -9,7 +9,7 @@ from FedSDM.rdfmt.model import *
 from FedSDM.rdfmt.prefixes import *
 from FedSDM.rdfmt.utils import contactRDFSource, updateRDFSource
 
-logger = get_logger('rdfmts', './ontario-rdfmts-log.log', True)
+logger = get_logger('rdfmts', './rdfmts.log', True)
 
 metas = ['http://www.w3.org/ns/sparql-service-description',
          'http://www.openlinksw.com/schemas/virtrdf#',

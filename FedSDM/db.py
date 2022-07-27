@@ -10,7 +10,7 @@ from flask import current_app, g
 from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
 
-logger = get_logger('mtupdate', file="{0}/{1}.log".format('.', 'ontario-update-log'))
+logger = get_logger('mtupdate', './mt-update.log')
 
 
 class MetadataDB:

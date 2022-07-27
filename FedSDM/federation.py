@@ -17,7 +17,7 @@ from FedSDM.ui.utils import (
 
 bp = Blueprint('federation', __name__, url_prefix='/federation')
 
-logger = get_logger(__name__)
+logger = get_logger('federation')
 
 
 @bp.route('/')

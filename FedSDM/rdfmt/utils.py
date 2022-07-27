@@ -6,7 +6,7 @@ import requests
 
 from FedSDM import get_logger
 
-logger = get_logger('mtupdate', './ontario-update-log.log', True)
+logger = get_logger('mtupdate', './mt-update.log', True)
 
 
 def contactRDFSource(query, endpoint, outputqueue=Queue(), format='application/sparql-results+json'):
