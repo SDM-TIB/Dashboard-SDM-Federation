@@ -658,7 +658,7 @@ def compute_graph_properties(nodes, edges):
     graph.add_edges_from(edges)
     deg = dict(graph.degree())
     sum_of_edges = sum(deg.values())
-    avg_neighbours = sum_of_edges / nx.number_of_nodes(graph)
+    avg_neighbors = sum_of_edges / nx.number_of_nodes(graph)
     density = nx.density(graph)
     n = nx.number_of_nodes(graph)
     e = nx.number_of_edges(graph)
@@ -679,7 +679,7 @@ def compute_graph_properties(nodes, edges):
         ['Avg. Clustering', c],
         ['Transitivity', t],
         # [6, 'Avg. Node Connectivity', x],
-        ['Avg. Neighbours', avg_neighbours]
+        ['Avg. Neighbors', avg_neighbors]
     ]
     print(res)
     return res
