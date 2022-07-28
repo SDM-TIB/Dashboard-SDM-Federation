@@ -71,10 +71,6 @@ def get_rdfmt_stats(graph=None):
         else:
             data = []
             i = 0
-            # if len(res) > 1000:
-            #     print('a total of ', len(res), ' was found!')
-            #     res = res[:1001]
-            #     print('result reduced to 1000 for performance reasons')
             for r in res:
                 dd = [i + 1]
                 nid = r['subject']
@@ -321,8 +317,6 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
                 '  ?mtp mt:linkedTo ?mtrange .\n' \
                 '  ?mtrange mt:rdfmt ?mt .\n' \
                 '}'
-    # group by ?subject ?name ?datasource ?pred ?mt ?mtrangesource ?mtr
-    # res, card = contactSource(query, sparql_endpoint)
 
     limit = 5000
     offset = 0
@@ -405,8 +399,6 @@ def get_rdfmt_nodes(graph=None):
                 '  ?source mt:name ?datasource .\n' \
                 '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '}'
-    # group by ?subject ?name  ?datasource ?pred ?mt ?mtrangesource ?mtr
-    # res, card = contactSource(query, sparql_endpoint)
 
     limit = 9000
     offset = 0
@@ -443,9 +435,6 @@ def get_rdfmt_nodes(graph=None):
 
             for r in res:
                 nid = r['subject']
-                # val = [True for m in meta if m in nid]
-                # if True in val:
-                #     continue
                 if 'name' in r:
                     nlabel = r['name']
                 else:
@@ -520,8 +509,6 @@ def get_rdfmt_links(graph=None):
                 '    }' \
                 '  }' \
                 '}'
-    # group by ?subject ?name  ?datasource ?pred ?mt ?mtrangesource ?mtr
-    # res, card = contactSource(query, sparql_endpoint)
 
     limit = 100
     offset = 0
@@ -692,7 +679,7 @@ def get_graph_stat(graph=None, source=None):
                 '    }\n' \
                 '  }\n' \
                 '}'
-    # res, card = contactSource(query, sparql_endpoint)
+
     limit = 5000
     offset = 0
     reslist = []
