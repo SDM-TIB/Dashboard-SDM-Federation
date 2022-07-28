@@ -332,7 +332,6 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
         else:
             edges = []
             edgeskey = []
-            i = 0
             for r in res:
                 nid = r['subject']
                 if 'mt' in r:
