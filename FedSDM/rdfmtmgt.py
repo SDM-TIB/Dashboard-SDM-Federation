@@ -1,4 +1,5 @@
 import json
+import time
 
 import networkx as nx
 from flask import (
@@ -320,7 +321,6 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
                 '  ?mtrange mt:rdfmt ?mt .\n' \
                 '}'
 
-    import time
     start = time.time()
     res = _iterative_query(query, mdb, 5000)
     processtime = time.time()
@@ -382,7 +382,6 @@ def get_rdfmt_nodes(graph=None):
                 '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '}'
 
-    import time
     start = time.time()
     res = _iterative_query(query, mdb, 9000)
     processtime = time.time()
@@ -628,7 +627,6 @@ def get_graph_stat(graph=None, source=None):
                 '  }\n' \
                 '}'
 
-    import time
     start = time.time()
     res = _iterative_query(query, mdb, 5000)
     processtime = time.time()
