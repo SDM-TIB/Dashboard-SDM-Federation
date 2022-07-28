@@ -116,8 +116,7 @@ def get_next_result():
     except Exception as e:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        emsg = repr(traceback.format_exception(exc_type, exc_value,
-                                               exc_traceback))
+        emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
         logger.error('Exception while returning incremental results .. ' + emsg)
         print('Exception: ')
         import pprint
@@ -174,8 +173,7 @@ def sparql():
         except Exception as e:
             import sys
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            emsg = repr(traceback.format_exception(exc_type, exc_value,
-                                                   exc_traceback))
+            emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
             logger.error('Exception while semantifying: ' + emsg)
             print('Exception: ', e)
             import pprint
