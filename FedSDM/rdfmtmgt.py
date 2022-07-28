@@ -129,6 +129,25 @@ def api_rdfmtdetails():
     return Response(json.dumps(res), mimetype='application/json')
 
 
+def _iterative_query(query, mdb, limit=10000, offset=0):
+    res_list = []
+    while True:
+        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
+        res, card = mdb.query(query_copy)
+        if card == -2:
+            limit = limit // 2
+            limit = int(limit)
+            if limit < 1:
+                break
+            continue
+        if card > 0:
+            res_list.extend(res)
+        if card < limit:
+            break
+        offset += limit
+    return res_list
+
+
 def get_rdfmt_details(fed, mt):
     mdb = get_mdb()
     print(fed, mt, 'get_rdfmt_details')
@@ -151,26 +170,9 @@ def get_rdfmt_details(fed, mt):
             '  }\n' \
             '}}'
 
-    limit = 10000
-    offset = 0
-    reslist = []
-    while True:
-        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-        res, card = mdb.query(query_copy)
-        if card == -2:
-            limit = limit // 2
-            limit = int(limit)
-            if limit < 1:
-                break
-            continue
-        if card > 0:
-            reslist.extend(res)
-        if card < limit:
-            break
-        offset += limit
-    res = reslist
+    res = _iterative_query(query, mdb)
     print(len(res), 'results found')
-    if len(reslist) > 0:
+    if len(res) > 0:
         nodes = {}
         edges = []
         nodeids = {}
@@ -318,33 +320,13 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
                 '  ?mtrange mt:rdfmt ?mt .\n' \
                 '}'
 
-    limit = 5000
-    offset = 0
-    reslist = []
     import time
     start = time.time()
-    while True:
-        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-        res, card = mdb.query(query_copy)
-        if card == -2:
-            limit = limit // 2
-            limit = int(limit)
-            if limit < 1:
-                break
-            continue
-        if card > 0:
-            reslist.extend(res)
-        if card < limit:
-            break
-        print(offset)
-        if offset > 6000:
-            break
-        offset += limit
-    res = reslist
-    print('Query edges time:', (time.time() - start))
+    res = _iterative_query(query, mdb, 5000)
     processtime = time.time()
-    if len(reslist) > 0:
-        card = len(reslist)
+    print('Query edges time:', (processtime - start))
+    if len(res) > 0:
+        card = len(res)
         if card == 1 and 'subject' not in res[0]:
             return {'links': []}
         else:
@@ -400,30 +382,13 @@ def get_rdfmt_nodes(graph=None):
                 '  OPTIONAL { ?subject mt:name ?name . }\n' \
                 '}'
 
-    limit = 9000
-    offset = 0
-    reslist = []
     import time
     start = time.time()
-    while True:
-        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-        res, card = mdb.query(query_copy)
-        if card == -2:
-            limit = limit // 2
-            limit = int(limit)
-            if limit < 1:
-                break
-            continue
-        if card > 0:
-            reslist.extend(res)
-        if card < limit:
-            break
-        offset += limit
-    res = reslist
-    print('query time:', (time.time() - start))
+    res = _iterative_query(query, mdb, 9000)
     processtime = time.time()
-    if len(reslist) > 0:
-        card = len(reslist)
+    print('query time:', (processtime - start))
+    if len(res) > 0:
+        card = len(res)
         if card == 1 and 'subject' not in res[0]:
             return {'nodes': [], 'sources': []}, {}
         else:
@@ -510,27 +475,10 @@ def get_rdfmt_links(graph=None):
                 '  }' \
                 '}'
 
-    limit = 100
-    offset = 0
-    reslist = []
-    while True:
-        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-        res, card = mdb.query(query_copy)
-        if card == -2:
-            limit = limit // 2
-            limit = int(limit)
-            if limit < 1:
-                break
-            continue
-        if card > 0:
-            reslist.extend(res)
-        if card < limit:
-            break
-        offset += limit
-    res = reslist
+    res = _iterative_query(query, mdb, 100)
     print(len(res))
-    if len(reslist) > 0:
-        card = len(reslist)
+    if len(res) > 0:
+        card = len(res)
         if card == 1 and 'subject' not in res[0]:
             return {'nodes': [], 'links': [], 'sources': []}
         else:
@@ -680,30 +628,13 @@ def get_graph_stat(graph=None, source=None):
                 '  }\n' \
                 '}'
 
-    limit = 5000
-    offset = 0
-    reslist = []
     import time
     start = time.time()
-    while True:
-        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-        res, card = mdb.query(query_copy)
-        if card == -2:
-            limit = limit // 2
-            limit = int(limit)
-            if limit < 1:
-                break
-            continue
-        if card > 0:
-            reslist.extend(res)
-        if card < limit:
-            break
-        offset += limit
-    res = reslist
-    print('Graph analysis query time:', (time.time() - start))
+    res = _iterative_query(query, mdb, 5000)
     processtime = time.time()
-    if len(reslist) > 0:
-        card = len(reslist)
+    print('Graph analysis query time:', (processtime - start))
+    if len(res) > 0:
+        card = len(res)
         if card == 1 and 'subject' not in res[0]:
             return []
         else:
