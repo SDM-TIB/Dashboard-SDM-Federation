@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Flask, send_from_directory, redirect
+from flask import Flask, redirect
 
 
 def get_logger(name, file=None, file_and_console=False):
