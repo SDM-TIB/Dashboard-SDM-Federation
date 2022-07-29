@@ -6,6 +6,7 @@ from multiprocessing import Queue
 
 import requests
 from flask import current_app, g
+from flask.app import Flask
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
@@ -15,7 +16,8 @@ logger = get_logger('mtupdate', './mt-update.log')
 
 class MetadataDB:
 
-    def __init__(self, query_endpoint, update_endpoint=None, username='', password=''):
+    def __init__(self, query_endpoint: str, update_endpoint: str = None,
+                 username: str = '', password: str = ''):
         self.query_endpoint = query_endpoint
         if update_endpoint is not None:
             self.update_endpoint = update_endpoint
@@ -43,7 +45,7 @@ class MetadataDB:
                         'PREFIX mt: <' + MT_ONTO + '>\n' \
                         'PREFIX mtres: <' + MT_RESOURCE + '>\n'
 
-    def query(self, query, outputqueue=Queue(), format='application/sparql-results+json'):
+    def query(self, query: str, outputqueue: Queue = Queue(), format: str = 'application/sparql-results+json'):
         # Build the query and header.
         query = self.prefixes + query
         params = urlparse.urlencode({'query': query, 'format': format, 'timeout': 10000000})
@@ -104,7 +106,7 @@ class MetadataDB:
 
         return None, -2
 
-    def update(self, insertquery):
+    def update(self, insertquery: str):
         # Build the header.
         insertquery = self.prefixes + insertquery
         headers = {'Accept': '*/*',
@@ -182,6 +184,6 @@ def init_db():
             db.executescript(f.read().decode('utf8'))
 
 
-def init_app(app):
+def init_app(app: Flask):
     app.teardown_appcontext(close_db)
     init_db()
