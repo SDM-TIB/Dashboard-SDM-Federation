@@ -4,7 +4,7 @@ import os
 from flask import Flask, redirect
 
 
-def get_logger(name, file=None, file_and_console=False):
+def get_logger(name: str, file: str = None, file_and_console: bool = False):
     log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
