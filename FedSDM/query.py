@@ -82,7 +82,7 @@ def feedback():
     return Response(json.dumps({}), mimetype='application/json')
 
 
-def finalize(processqueue):
+def finalize(processqueue: Queue):
     p = processqueue.get()
     while p != 'EOF':
         try:
@@ -183,7 +183,7 @@ def sparql():
         return jsonify({'result': [], 'error': 'Invalid HTTP method used. Use GET '})
 
 
-def execute_query(graph, query, output=Queue()):
+def execute_query(graph: str, query: str, output: Queue = Queue()):
     mdb = get_mdb()
     config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
     # pprint.pprint(configuration.metadata)
