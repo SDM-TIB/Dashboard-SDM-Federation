@@ -7,7 +7,7 @@ from flask import (
 )
 
 from FedSDM.auth import login_required
-from FedSDM.db import get_mdb
+from FedSDM.db import get_mdb, MetadataDB
 from FedSDM.ui.utils import get_federations
 
 bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
@@ -38,7 +38,7 @@ def rdfmtstats():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def get_rdfmt_stats(graph=None):
+def get_rdfmt_stats(graph: str = None):
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -130,7 +130,7 @@ def api_rdfmtdetails():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def _iterative_query(query, mdb, limit=10000, offset=0):
+def _iterative_query(query: str, mdb: MetadataDB, limit: int = 10000, offset: int = 0):
     res_list = []
     while True:
         query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
@@ -149,7 +149,7 @@ def _iterative_query(query, mdb, limit=10000, offset=0):
     return res_list
 
 
-def get_rdfmt_details(fed, mt):
+def get_rdfmt_details(fed: str, mt: str):
     mdb = get_mdb()
     print(fed, mt, 'get_rdfmt_details')
     query = 'SELECT DISTINCT ?datasource ?endpoint ?mtp ?preddatasource ?mtrdatasource ?card ?pred ?mtr ' \
@@ -305,7 +305,7 @@ def api_rdfmts():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def get_rdfmt_edges(rdfmtsources, graph=None):
+def get_rdfmt_edges(rdfmtsources, graph: str = None):
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -361,7 +361,7 @@ def get_rdfmt_edges(rdfmtsources, graph=None):
         return {'links': []}
 
 
-def get_rdfmt_nodes(graph=None):
+def get_rdfmt_nodes(graph: str = None):
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -439,7 +439,7 @@ def get_rdfmt_nodes(graph=None):
         return {'nodes': [], 'sources': []}, {}
 
 
-def get_rdfmt_links(graph=None):
+def get_rdfmt_links(graph: str = None):
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -591,7 +591,7 @@ def api_rdfmtanalysis():
     return Response(json.dumps({'data': res}), mimetype='application/json')
 
 
-def get_graph_stat(graph=None, source=None):
+def get_graph_stat(graph: str = None, source: str = None):
     mdb = get_mdb()
     if source is None:
         source = ' ?name '
@@ -652,7 +652,7 @@ def get_graph_stat(graph=None, source=None):
         return []
 
 
-def compute_graph_properties(nodes, edges):
+def compute_graph_properties(nodes: list, edges: list):
     graph = nx.Graph()
     graph.add_nodes_from(nodes)
     graph.add_edges_from(edges)
