@@ -53,7 +53,7 @@ def stats():
     return Response(json.dumps({'data': stats}), mimetype='application/json')
 
 
-def get_stats(graph):
+def get_stats(graph: str):
     stats = {}
     datasources = get_datasources(graph)
     for datasource in list(datasources.keys()):
@@ -187,7 +187,7 @@ def api_add_source():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def add_data_source(federation, datasource):
+def add_data_source(federation: str, datasource: DataSource):
     """
      0 - data source added but not accessible to create MTS
      1 - data source added and MTs are being created
@@ -292,7 +292,7 @@ def api_findlinks():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def findlinks(federation, datasource):
+def findlinks(federation: str, datasource: str):
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     outqueue = Queue()
@@ -315,7 +315,7 @@ def api_recreatemts():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def recreatemts(federation, ds):
+def recreatemts(federation: str, ds: str):
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     outqueue = Queue()
@@ -341,7 +341,7 @@ def recreatemts(federation, ds):
     return {'status': -1}, None
 
 
-def get_federation(id, check_owner=True):
+def get_federation(id: str, check_owner: bool = True):
     federation = get_db().execute(
         'SELECT f.id, name, description, created, username, owner_id'
         ' FROM federation f JOIN user u ON f.owner_id = u.id'
@@ -357,7 +357,7 @@ def get_federation(id, check_owner=True):
     return federation
 
 
-def create_federation(name, desc, is_public):
+def create_federation(name: str, desc: str, is_public: bool):
     mdb = get_mdb()
     prefix = 'http://ontario.tib.eu/federation/g/'
     uri = prefix + urlparse.quote(name.replace(' ', '-'), safe='/:')
@@ -381,7 +381,7 @@ def create_federation(name, desc, is_public):
         return None
 
 
-def get_datasource(graph=None, dstype=None):
+def get_datasource(graph: str = None, dstype=None):
     mdb = get_mdb()
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
