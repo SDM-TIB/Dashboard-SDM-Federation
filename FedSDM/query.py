@@ -209,7 +209,7 @@ def execute_query(graph: str, query: str, output: Queue = Queue()):
     first = time() - start
 
     if r == 'EOF':
-        print('END of results ....')
+        print('END of results...')
         first = 0
     else:
         if len(variables) == 0 or (len(variables) == 1 and variables[0] == '*'):
