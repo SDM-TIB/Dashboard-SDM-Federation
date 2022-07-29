@@ -76,20 +76,4 @@ def create_app():
     def index():
         return redirect('dashboard/')
 
-    @app.route('/js/<path:path>')
-    def send_js(path):
-        return send_from_directory('static/js', path)
-
-    @app.route('/css/<path:path>')
-    def send_css(path):
-        return send_from_directory('static/css', path)
-
-    @app.route('/webfonts/<path:path>')
-    def send_webfonts(path):
-        return send_from_directory('static/webfonts', path)
-
-    @app.route('/images/<path:path>')
-    def send_images(path):
-        return send_from_directory('static/css/images', path)
-
     return app
