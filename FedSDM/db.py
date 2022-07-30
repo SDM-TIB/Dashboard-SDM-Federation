@@ -164,11 +164,14 @@ def get_mdb():
     return g.mdb
 
 
-def close_db(e=None):
+def close_db(exception: Exception = None):
     db = g.pop('db', None)
 
     if db is not None:
         db.close()
+
+    if exception:
+        raise exception
 
 
 def init_db():
