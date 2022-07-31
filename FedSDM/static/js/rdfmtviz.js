@@ -75,7 +75,6 @@ $(function() {
     // The largest node for each cluster.
 
     var default_node_color = '#ccc';
-    //var default_node_color = 'rgb(3,190,100)';
     var default_link_color = '#888';
     var nominal_base_node_size = 8;
     var nominal_text_size = 10;
@@ -132,7 +131,7 @@ $(function() {
             url: '/rdfmts/api/mtdetails?mt=' + url + '&fed=' + federation,
             dataType: 'json',
             crossDomain: true,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 console.log(url)
                 console.log('detail returned:', data);
                 sources = data.sources;
@@ -181,7 +180,7 @@ $(function() {
                 draw_details();
                 // drawRDFMTS(nodes, links);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
                 console.log(jqXHR.responseText);
                 console.log(textStatus);
@@ -546,8 +545,6 @@ $(function() {
     $('#startforce').on('click', function() {
         if (force) {
             linkdistance += 10;
-            //ncharge -= 10;
-            // ngravity -=0.5;
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
@@ -785,20 +782,17 @@ $(function() {
         }
 
         svg.style('cursor','move');
-        // d3.json('graph.json', function(error, graph) {
         var linkedByIndex = {};
         links.forEach(function(d) {
             linkedByIndex[d.source + ',' + d.target] = true;
         });
 
-        //var ctx = svg.getContext("2d");
         var fit = Math.sqrt(nodes.length / (width * height));
         var charge = (-1 / fit);
         var gravity = (8 * fit);
         ngravity = gravity;
         ncharge = charge;
         if (force) force.stop()
-        //data = {nodes:nodes, links:links}
         net = network(data, net, getGroup, expand);
         console.log('network:', net, expand)
         force = d3.layout.force()
@@ -844,13 +838,11 @@ $(function() {
 //            .style('stroke', function(d) {
 //                   return color(d.datasource);
 //            });
-        var dr = 3;
         node = g.selectAll('.node').data(net.nodes, nodeid);
         node.exit().remove();
         node.enter().append('g')
             .attr('class', function(d) {
                 return 'node' + (d.size ? '' :' leaf'); })
-            //.attr('r', function(d) {console.log(d.size, dr); return d.size ? d.size + dr : 3; })
             .attr('cx', function(d) { return d.x; })
             .attr('cy', function(d) { return d.y; })
             .on('dblclick', function(d) {
@@ -970,7 +962,6 @@ $(function() {
                     return v;}) //size(d.weight)
                 .type(function(d) { return d.size? 'circle':  d.type; })
             );
-            //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
             if (!text_center) {
                 text.attr('dx', function(d) {
                     return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
@@ -988,7 +979,6 @@ $(function() {
         svg.call(zoom);
 
         resize();
-        //window.focus();
         d3.select(window).on('resize', resize).on('keydown', keydown);
         var centroids = {};
         for (var i = 0; i < max_score; i += 3) {
@@ -1047,50 +1037,6 @@ $(function() {
             var quadtree = d3.geom.quadtree(nodes);
             return function(d) { };
         }
-
-        // select nodes of the group, retrieve its positions
-        // and return the convex hull of the specified points
-        // (3 points as minimum, otherwise returns null)
-//        var polygonGenerator = function(groupId) {
-//          var node_coords = node
-//            .filter(function(d) { return d.datasource == groupId; })
-//            .data()
-//            .map(function(d) { return [d.x, d.y]; });
-//
-//          if (node_coords.length < 3){
-//             return null;
-//          }
-//          return d3.polygonHull(node_coords);
-//        };
-
-//          // count members of each group. Groups with less
-//          // than 3 member will not be considered (creating
-//          // a convex hull need 3 points at least)
-//        var groupIds = d3.set(nodes.map(function(n) { return +n.datasource; }))
-//            .values()
-//            .map( function(groupId) {
-//              return {
-//                groupId : groupId,
-//                count : nodes.filter(function(n) { return +n.datasource == groupId; }).length
-//              };
-//            })
-//            .filter( function(group) { return group.count > 0;})
-//            .map( function(group) { return group.groupId; });
-//
-//        function updateGroups() {
-//
-//          groupIds.forEach(function(groupId) {
-//                //gnodes = nodes.filter(function(d) { return d.datasource == groupId;})
-//                polygon = polygonGenerator(groupId);
-//                if (polygon !== null){
-//                    centroid = d3.polygonCentroid(polygon);
-//                    centroids[groupId] = {x: centroid[0], y: centroid[1]};
-//                }else{
-//                    centroids[groupId] = null;
-//                }
-//
-//          });
-//        }
 
         function isConnected(a, b) {
             return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index == b.index;
@@ -1275,13 +1221,10 @@ $(function() {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr('href') // activated tab
         if (target == '#visualize') {
-            //get_rdfmts(federation);
             tabvisible = '#visualize';
         } else if (target == '#analysis') {
-            //get_rdfmts_graph_analys(federation, 'All');
             tabvisible = '#analysis';
         } else {
-            //get_rdfmts_stats(federation);
             tabvisible = '#home';
         }
     });
@@ -1415,9 +1358,6 @@ $(function() {
 
     // Draws nodes with tooltips
     function drawNodes(nodes) {
-        // used to assign nodes color by group
-        // var color = d3.scale.category20();
-
         circularnode = d3.select('#plot').selectAll('.node')
             .data(nodes)
             .enter()
@@ -1587,7 +1527,6 @@ $(function() {
         }
 
         //update graph (called when needed)
-        //function restart() {
         // path (link) group
         path = path.data(links);
 
@@ -1650,32 +1589,7 @@ $(function() {
                 d3.select(this).attr('transform', 'translate(' + (d.x = d3.event.x) + ','
                     + (d.y = d3.event.y) + ')');
             })
-        // .call(drag);
 
-//         function dragged(d) {
-//            d.x = d3.event.x, d.y = d3.event.y;
-//            d3.select(this).attr('cx', d.x).attr('cy', d.y);
-//            path.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
-//            path.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
-//          }
-        //.call(d3.behavior.drag()
-        /*
-         .on('start', dragstarted)
-         .on('drag', dragged)
-         .on('end', dragended));*/
-        /*function dragstarted(d) {
-            console.log('drag start');
-          d3.select(this).raise().classed('active', true);
-        }
-
-        function dragged(d) {
-          d3.select(this).attr('cx', d.x = d3.event.x).attr('cy', d.y = d3.event.y);
-        }
-
-        function dragended(d) {
-          d3.select(this).classed('active', false);
-        }
-*/
         function dragstarted(d) {
             d3.select(this).classed('dragging', true);
             if (!d3.event.active)
@@ -1712,32 +1626,6 @@ $(function() {
 
         // set the graph in motion
         force.start();
-        /*var node_drag = d3.behavior.drag()
-                .on('dragstart', dragstart)
-                .on('drag', dragmove)
-                .on('dragend', dragend);
-
-        function dragstart(d, i) {
-            console.log('drag start');
-            force.stop() // stops the force auto positioning before you start dragging
-        }
-
-        function dragmove(d, i) {
-        console.log('drag move');
-            d.px += d3.event.dx;
-            d.py += d3.event.dy;
-            d.x += d3.event.dx;
-            d.y += d3.event.dy;
-            tick(); // this is the key to make it work together with updating both px,py,x,y on d !
-        }
-
-        function dragend(d, i) {
-        console.log('drag end');
-            d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
-            tick();
-            force.resume();
-        }
-    */
     }
 
     function getdata() {
@@ -1811,7 +1699,6 @@ $(function() {
                     j++;
                 }
             }
-            //drawWhyDAG(nodes, links);
             data = {nodes:nodes, links: links};
             //setSize(data);
             drawWhyDAG(nodes, links);
@@ -1954,7 +1841,6 @@ $(function() {
         }
 
         //update graph (called when needed)
-        //function restart() {
         // path (link) group
         path = simulation.force('link').links(data.links);
 
