@@ -1,14 +1,18 @@
 $(function() {
     const graph_container = $('#graph'),
-          graph_legend = $('#legend');
+          graph_legend = $('#legend'),
+          federation_list = $('#federations-list'),
+          data_sources = $('#datasources'),
+          mt_details = $('#mtdetails'),
+          mt_viz = $('#mtviz');
 
-    $('#datasources').prop('disabled', true);
-    $('#mtdetails').prop('disabled', true);
-    $('#mtviz').hide();
+    data_sources.prop('disabled', true);
+    mt_details.prop('disabled', true);
+    mt_viz.hide();
     graph_legend.hide();
 
     let stats = null,
-        federation =  $('#federations-list').val(),
+        federation =  federation_list.val(),
         tabvisible = '#home',
         width, height, h = 960, w = 760, chartWidth, chartHeight;
     window.jsdata = [];
@@ -17,7 +21,7 @@ $(function() {
         load_data(federation);
     }
 
-    $('#federations-list').on('change', function() {
+    federation_list.on('change', function() {
         load_data($(this).val());
     });
 
@@ -25,7 +29,7 @@ $(function() {
         $('#fedName').html(fed);
         $('#vfedName').html(fed);
         $('#afedName').html(fed);
-        $('#datasources').empty();
+        data_sources.empty();
         graph_container.empty()
             .html('<h1> Loading ... !</h1>');
         $('#vdsname').html('');
@@ -117,9 +121,9 @@ $(function() {
     var msourcenodes = [],
         msourcelinks = [];
 
-    $('#mtdetails').on('click', function() {
+    mt_details.on('click', function() {
         $('#listofrdfmts').hide();
-        $('#mtdetails').hide();
+        mt_details.hide();
         $('#backtotable').show();
         var url = encodeURIComponent(selectedRow[0][2]);
         console.log('url:', url);
@@ -190,15 +194,15 @@ $(function() {
 
     function draw_details() {
         data = {nodes: manodes, links: malinks};
-        $('#mtviz').html('<h1> Please select data source!</h1>');
+        mt_viz.html('<h1> Please select data source!</h1>');
         drawRDFMTS(manodes, malinks, 'mtviz');
     }
 
     $('#backtotable').on('click', function() {
         $('#backtotable').hide();
-        $('#mtviz').hide();
+        mt_viz.hide();
         $('#listofrdfmts').show();
-        $('#mtdetails').show();
+        mt_details.show();
     });
 
     function get_rdfmts_stats(fed) {
@@ -233,13 +237,13 @@ $(function() {
                 console.log('selected row:', selectedRow)
                 $('#editds').prop('disabled', false);
                 $('#removeds').prop('disabled', false);
-                $('#mtdetails').prop('disabled', false);
+                mt_details.prop('disabled', false);
                 $('#backtotable').hide();
             }).on('deselect', function(e, dt, type, indexes) {
                 var rowData = statstable.rows(indexes).data().toArray();
                 $('#editds').prop('disabled', true);
                 $('#removeds').prop('disabled', true);
-                $('#mtdetails').prop('disabled', true);
+                mt_details.prop('disabled', true);
                 $('#backtotable').hide();
                 selectedRow = null;
             });
@@ -270,7 +274,7 @@ $(function() {
             sourcescard = sources.length;
             max_score = sourcescard;
             var legend= '';
-            $('#datasources').empty();
+            data_sources.empty();
             $('#gadatasources').empty();
             var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources:', sources.length);
@@ -286,8 +290,8 @@ $(function() {
                         .html(legend);
 
             $('#gadatasources').html(datasources);
-            $('#datasources').html(datasources);
-            $('#datasources').prop('disabled', false)
+            data_sources.html(datasources)
+                        .prop('disabled', false);
             graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
                 $('#datasourcesbtn').val($(this).text())
@@ -753,12 +757,12 @@ $(function() {
             height = 980;
             canv = 'graph'
         } else {
-            $('#mtviz').empty();
+            mt_viz.empty();
             svg = d3.select('#mtviz').append('svg');
-            width = $('#mtviz').width();
+            width = mt_viz.width();
             height = 980;
             console.log('showing ...')
-            $('#mtviz').show();
+            mt_viz.show();
             canv = 'mtviz'
         }
         var chartLayer = svg.append('g').classed('chartLayer', true);
