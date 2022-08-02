@@ -7,9 +7,11 @@
 <div class="row row-header">
     {% set feds_all = true %}
     {% include 'federations-list.html' %}
-    <div style="width: auto; margin-left: auto; padding-right: 15px;">
-        <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed" data-bs-toggle="modal" data-bs-target="#federationModal"> Create New Federation </button>
-    </div>
+    {% if g.user %}
+        <div style="width: auto; margin-left: auto; padding-right: 15px;">
+            <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed" data-bs-toggle="modal" data-bs-target="#federationModal"> Create New Federation </button>
+        </div>
+    {% endif %}
 </div>
 
 <div class="row">
@@ -29,11 +31,13 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="form-group" style="text-align: right">
-                            <button type="button" class="btn btn-success" name="AddFed" id="AddFed" data-bs-toggle="modal" data-bs-target="#federationModal">Add</button>
-                            <button class="btn btn-warning" name="editfd" id="editfd" disabled>Edit</button>
-                            <button class="btn btn-danger" name="removefd" id="removefd" disabled>Remove</button>
-                        </div>
+                        {% if g.user %}
+                            <div class="form-group" style="text-align: right">
+                                <button type="button" class="btn btn-success" name="AddFed" id="AddFed" data-bs-toggle="modal" data-bs-target="#federationModal">Add</button>
+                                <button class="btn btn-warning" name="editfd" id="editfd" disabled>Edit</button>
+                                <button class="btn btn-danger" name="removefd" id="removefd" disabled>Remove</button>
+                            </div>
+                        {% endif %}
                         <div class="row">
                             <!-- /.col-lg-8 (nested) -->
                             <div class="col-lg-12">
@@ -107,14 +111,16 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="form-group" style="text-align: right">
-                            <button type="button" class="btn btn-success" name="add" id="addds" data-bs-toggle="modal" data-bs-target="#addSourceModal">Add</button>
-                            <button class="btn btn-warning" name="edit" id="editds" disabled data-bs-toggle="modal" data-bs-target="#editSourceModal">Edit</button>
-                            <button class="btn btn-danger" name="remove" id="removeds" disabled>Remove</button>
-                            <button class="btn btn-primary" name="mapping" id="recomputemts" disabled>Re-create MTs</button>
-                            <button class="btn btn-primary" name="findlinks" id="findlinks" disabled>Find Connection</button>
-                            <button class="btn btn-primary" name="findalllinks" id="findalllinks">Find All Connections</button>
-                        </div>
+                        {% if g.user %}
+                            <div class="form-group" style="text-align: right">
+                                <button type="button" class="btn btn-success" name="add" id="addds" data-bs-toggle="modal" data-bs-target="#addSourceModal">Add</button>
+                                <button class="btn btn-warning" name="edit" id="editds" disabled data-bs-toggle="modal" data-bs-target="#editSourceModal">Edit</button>
+                                <button class="btn btn-danger" name="remove" id="removeds" disabled>Remove</button>
+                                <button class="btn btn-primary" name="mapping" id="recomputemts" disabled>Re-create MTs</button>
+                                <button class="btn btn-primary" name="findlinks" id="findlinks" disabled>Find Connection</button>
+                                <button class="btn btn-primary" name="findalllinks" id="findalllinks">Find All Connections</button>
+                            </div>
+                        {% endif %}
                         <table style="width: 100%" class="table table-bordered table-hover table-striped" id="datasources">
                             <thead>
                             <tr>
