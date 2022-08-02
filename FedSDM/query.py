@@ -186,7 +186,6 @@ def sparql():
 def execute_query(graph: str, query: str, output: Queue = Queue()):
     mdb = get_mdb()
     config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
-    # pprint.pprint(configuration.metadata)
     start = time()
     decomposer = Decomposer(query, config)
     decomposed_query = decomposer.decompose()
