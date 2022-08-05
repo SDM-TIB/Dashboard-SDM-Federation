@@ -84,12 +84,9 @@ class MetadataDB:
                         return reslist, len(reslist)
                     else:
                         outputqueue.put(res['boolean'])
-
                         return res['boolean'], 1
-
             else:
                 print('Endpoint->', self.query_endpoint, resp.reason, resp.status_code, query)
-
         except Exception as e:
             print('Exception during query execution to', self.query_endpoint, ':', e)
 
