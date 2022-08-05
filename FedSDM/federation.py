@@ -422,42 +422,15 @@ def get_datasource(graph: str = None, dstype=None):
     if card > 0:
         data = []
         for r in res:
-            dd = [r['id'], r['name'], r['endpoint']]
-            if 'dstype' in r:
-                dst = r['dstype']
-                dd.append(dst[dst.rfind('/') + 1:])
-            else:
-                dd.append(' ')
-
-            if 'keywords' in r:
-                dd.append(r['keywords'])
-            else:
-                dd.append(' ')
-
-            if 'homepage' in r:
-                dd.append(r['homepage'])
-            else:
-                dd.append(' ')
-
-            if 'organization' in r:
-                dd.append(r['organization'])
-            else:
-                dd.append(' ')
-
-            if 'desc' in r:
-                dd.append(r['desc'])
-            else:
-                dd.append(' ')
-
-            if 'version' in r:
-                dd.append(r['version'])
-            else:
-                dd.append(' ')
-
-            if 'params' in r:
-                dd.append(r['params'])
-            else:
-                dd.append(' ')
+            dd = [
+                r['id'],
+                r['name'],
+                r['endpoint'],
+                r['dstype'][r['dstype'].rfind('/') + 1:] if 'dstype' in r else '',
+                r['keywords'] if 'keywords' in r else '', r['homepage'] if 'homepage' in r else '',
+                r['organization'] if 'organization' in r else '', r['desc'] if 'desc' in r else '',
+                r['version'] if 'version' in r else '', r['params'] if 'params' in r else ''
+            ]
             data.append(dd)
         return data
     else:
