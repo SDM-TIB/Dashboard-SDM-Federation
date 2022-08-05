@@ -64,10 +64,6 @@ def create_app():
     from . import query
     app.register_blueprint(query.bp)
 
-    # Register the mappings blueprint
-    # from . import mapping
-    # app.register_blueprint(mapping.bp)
-
     # Register the feedback blueprint
     from . import feedback
     app.register_blueprint(feedback.bp)
