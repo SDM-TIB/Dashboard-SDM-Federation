@@ -386,24 +386,24 @@ def get_datasource(graph: str = None, dstype=None):
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
         if dstype is None:
-            query += 'OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
+            query += '  OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
         elif isinstance(dstype, list) and len(dstype) > 0:
-            query += '?id mt:dataSourceType ?dstype .\n'
+            query += '  ?id mt:dataSourceType ?dstype .\n'
             filters = []
             for dt in dstype:
-                filters.append(' ?dstype=<' + MT_RESOURCE + 'DatasourceType/' + str(dt.value) + '> ')
-            query += ' FILTER (' + ' || '.join(filters) + ')\n'
+                filters.append('?dstype=<' + MT_RESOURCE + 'DatasourceType/' + str(dt.value) + '>')
+            query += '  FILTER (' + ' || '.join(filters) + ')\n'
         else:
-            query += 'OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
-        query += '?id a mt:DataSource .\n' \
-                 '?id mt:name ?name .\n' \
-                 '?id mt:url ?endpoint .\n' \
-                 'OPTIONAL { ?id mt:homepage ?homepage . }\n' \
-                 'OPTIONAL { ?id mt:version ?version . }\n' \
-                 'OPTIONAL { ?id mt:keywords ?keywords . }\n' \
-                 'OPTIONAL { ?id mt:params ?params . }\n' \
-                 'OPTIONAL { ?id mt:desc ?desc . }\n' \
-                 'OPTIONAL { ?id mt:organization ?organization . }\n' \
+            query += '  OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
+        query += '  ?id a mt:DataSource .\n' \
+                 '  ?id mt:name ?name .\n' \
+                 '  ?id mt:url ?endpoint .\n' \
+                 '  OPTIONAL { ?id mt:homepage ?homepage . }\n' \
+                 '  OPTIONAL { ?id mt:version ?version . }\n' \
+                 '  OPTIONAL { ?id mt:keywords ?keywords . }\n' \
+                 '  OPTIONAL { ?id mt:params ?params . }\n' \
+                 '  OPTIONAL { ?id mt:desc ?desc . }\n' \
+                 '  OPTIONAL { ?id mt:organization ?organization . }\n' \
                  '}}'
     else:
         query = 'SELECT DISTINCT * WHERE {\n' \
