@@ -19,25 +19,14 @@ class MetadataDB:
     def __init__(self, query_endpoint: str, update_endpoint: str = None,
                  username: str = '', password: str = ''):
         self.query_endpoint = query_endpoint
-        if update_endpoint is not None:
-            self.update_endpoint = update_endpoint
-        else:
-            self.update_endpoint = query_endpoint
+        self.update_endpoint = update_endpoint if update_endpoint is not None else query_endpoint
 
-        if 'https' in query_endpoint:
-            server = query_endpoint.split('https://')[1]
-        else:
-            server = query_endpoint.split('http://')[1]
-
+        server = self.query_endpoint.split('https://')[1] if 'https' in self.query_endpoint else self.query_endpoint.split('http://')[1]
         (server, path) = server.split('/', 1)
         self.query_server = server
         self.query_path = path
 
-        if 'https' in self.update_endpoint:
-            server = self.update_endpoint.split('https://')[1]
-        else:
-            server = self.update_endpoint.split('http://')[1]
-
+        server = self.update_endpoint.split('https://')[1] if 'https' in self.update_endpoint else self.update_endpoint.split('http://')[1]
         (server, path) = server.split('/', 1)
         self.update_server = server
         self.update_path = path
@@ -156,11 +145,7 @@ def get_mdb():
 
     if 'mdb' not in g:
         g.mdb = MetadataDB(meta_endpoint)
-
-        if 'DEFAULT_GRAPH' in os.environ:
-            g.default_graph = os.environ['DEFAULT_GRAPH']
-        else:
-            g.default_graph = 'http://ontario.tib.eu'
+        g.default_graph = os.environ['DEFAULT_GRAPH'] if 'DEFAULT_GRAPH' in os.environ else 'http://ontario.tib.eu'
     return g.mdb
 
 
