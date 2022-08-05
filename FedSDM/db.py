@@ -107,7 +107,7 @@ class MetadataDB:
             else:
                 print('Update Endpoint->', self.update_endpoint, resp.reason, resp.status_code, insertquery)
                 logger.error('______/_________/________/________/______________')
-                logger.error(self.update_endpoint + " - " + str(resp.reason) + " - " + str(resp.status_code))
+                logger.error(self.update_endpoint + ' - ' + str(resp.reason) + ' - ' + str(resp.status_code))
                 logger.error('ERROR ON: ' + insertquery)
                 logger.error('________________________________________________')
         except Exception as e:
@@ -135,7 +135,7 @@ def get_mdb():
     import os
     if 'METADATA_ENDPOINT' in os.environ and \
             os.environ['METADATA_ENDPOINT'] is not None and \
-            os.environ['METADATA_ENDPOINT'] != "":
+            os.environ['METADATA_ENDPOINT'] != '':
         meta_endpoint = os.environ['METADATA_ENDPOINT']
     else:
         meta_endpoint = 'http://localhost:9000/sparql'
