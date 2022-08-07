@@ -51,31 +51,31 @@ def feedback():
     columns = e.getlist('columns[]')
     query = e['query']
     desc = e['desc']
-    selectedrow = {}
+    selected_row = {}
     for c, v in zip(columns, row):
-        selectedrow[c] = v
-    print(fed, pred, query, selectedrow, desc)
+        selected_row[c] = v
+    print(fed, pred, query, selected_row, desc)
 
-    userid = session.get('user_id')
+    user_id = session.get('user_id')
 
     db = get_db()
     db.execute(
         'INSERT INTO feedbackreport (userID, federationID, issueDesc, issueQuery)'
         ' VALUES (?, ?, ?, ?)',
-        (userid, fed, desc, query)
+        (user_id, fed, desc, query)
     )
     db.commit()
     fdb = db.execute(
         'SELECT id'
         ' FROM feedbackreport '
-        ' where userID=' + str(userid) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query + '"'
+        ' where userID=' + str(user_id) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query + '"'
     ).fetchone()
-    dsid = fdb['id']
-    print('Last inserted row selected: ', dsid)
+    ds_id = fdb['id']
+    print('Last inserted row selected: ', ds_id)
     db.execute(
         'INSERT INTO feedbackdata (reportID, projVar, projPred, rowData)'
         ' VALUES (?, ?, ?, ?)',
-        (dsid, ','.join(list(selectedrow.keys())), pred, str(json.dumps(selectedrow)))
+        (ds_id, ','.join(list(selected_row.keys())), pred, str(json.dumps(selected_row)))
     )
     db.commit()
 
