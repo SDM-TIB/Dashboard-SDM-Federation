@@ -111,35 +111,8 @@ def datasources():
 
     if graph == 'All':
         graph = None
-    if ds_type is not None:
-        if 'SPARQL_Endpoint' in ds_type:
-            ds_type = DataSourceType.SPARQL_ENDPOINT
-        elif 'MongoDB' in ds_type:
-            ds_type = DataSourceType.MONGODB
-        elif 'Neo4j' in ds_type:
-            ds_type = DataSourceType.NEO4J
-        elif 'SPARK_CSV' in ds_type:
-            ds_type = DataSourceType.SPARK_CSV
-        elif 'SPARK_XML' in ds_type:
-            ds_type = DataSourceType.SPARK_XML
-        elif 'SPARK_JSON' in ds_type:
-            ds_type = DataSourceType.SPARK_JSON
-        elif 'SPARK_TSV' in ds_type:
-            ds_type = DataSourceType.SPARK_TSV
-        elif 'REST' in ds_type:
-            ds_type = DataSourceType.REST_SERVICE
-        elif 'LOCAL_CSV' in ds_type:
-            ds_type = DataSourceType.LOCAL_CSV
-        elif 'LOCAL_TSV' in ds_type:
-            ds_type = DataSourceType.LOCAL_TSV
-        elif 'LOCAL_JSON' in ds_type:
-            ds_type = DataSourceType.LOCAL_JSON
-        elif 'LOCAL_XML' in ds_type:
-            ds_type = DataSourceType.LOCAL_XML
-        elif 'MySQL' in ds_type:
-            ds_type = DataSourceType.MYSQL
-        else:
-            ds_type = DataSourceType.SPARQL_ENDPOINT
+
+    ds_type = DataSourceType.from_str(ds_type)
 
     if graph is not None:
         session['fed'] = graph
