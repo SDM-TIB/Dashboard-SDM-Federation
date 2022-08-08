@@ -246,7 +246,7 @@ def api_edit_source():
 
 
 @bp.route('/api/findlinks', methods=['GET', 'POST'])
-def api_findlinks():
+def api_find_links():
     try:
         fed = request.args.get('fed', None)
         ds = request.args.get('datasource', None)
