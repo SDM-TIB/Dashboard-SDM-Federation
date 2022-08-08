@@ -241,11 +241,20 @@ class DataSourceType(Enum):
     SPARK_TSV = 'SPARK_TSV'
     SPARK_JSON = 'SPARK_JSON'
     SPARK_XML = 'SPARK_XML'
-    REST_SERVICE = 'REST_Service'
+    REST_SERVICE = 'REST'
     LOCAL_CSV = 'LOCAL_CSV'
     LOCAL_TSV = 'LOCAL_TSV'
     LOCAL_JSON = 'LOCAL_JSON'
     LOCAL_XML = 'LOCAL_XML'
+
+    @staticmethod
+    def from_str(value: str):
+        if value is None:
+            return None
+        try:
+            return DataSourceType(value)
+        except KeyError:
+            return DataSourceType.SPARQL_ENDPOINT
 
 
 class ACPolicy(object):
