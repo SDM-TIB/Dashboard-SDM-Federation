@@ -100,10 +100,6 @@ def create():
 def datasources():
     try:
         graph = request.args['graph']
-        if 'dstype' in request.args:
-            ds_type = request.args['dstype']
-        else:
-            ds_type = None
 
     except KeyError:
         print('KeyError:', request.args)
@@ -112,7 +108,7 @@ def datasources():
     if graph == 'All':
         graph = None
 
-    ds_type = DataSourceType.from_str(ds_type)
+    ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
 
     if graph is not None:
         session['fed'] = graph
