@@ -166,7 +166,7 @@ def add_data_source(federation: str, datasource: DataSource):
     mdb = get_mdb()
     # username and password are optional
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
-    outqueue = Queue()
+    out_queue = Queue()
     logger.info(datasource.ds_type)
     if datasource.ds_type == DataSourceType.SPARQL_ENDPOINT:
         if not datasource.is_accessible():
@@ -181,10 +181,10 @@ def add_data_source(federation: str, datasource: DataSource):
         data = datasource.to_rdf()
         insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
         rr = mdb.update(insertquery)
-        p = Process(target=mgr.create, args=(datasource, outqueue, [], ))
+        p = Process(target=mgr.create, args=(datasource, out_queue, [], ))
         p.start()
         logger.info('Collecting RDF-MTs started')
-        return {'status': 1}, outqueue
+        return {'status': 1}, out_queue
     else:
         data = datasource.to_rdf()
         insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
@@ -235,11 +235,11 @@ def api_edit_source():
         else:
             # TODO: Is it a good idea to re-create the MTs here?
             mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', fed)
-            outqueue = Queue()
-            p = Process(target=mgr.create, args=(ds, outqueue, [],))
+            out_queue = Queue()
+            p = Process(target=mgr.create, args=(ds, out_queue, [],))
             p.start()
             logger.info('Collecting RDF-MTs started')
-            return {'status': 1}, outqueue
+            return {'status': 1}, out_queue
     except KeyError:
         logger.error('KeyError: ' + str(request.form.keys()))
         return Response(json.dumps({}), mimetype='application/json')
@@ -262,10 +262,10 @@ def api_findlinks():
 def findlinks(federation: str, datasource: str):
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
-    outqueue = Queue()
-    p = Process(target=mgr.create_inter_ds_links, args=(datasource, outqueue,))
+    out_queue = Queue()
+    p = Process(target=mgr.create_inter_ds_links, args=(datasource, out_queue,))
     p.start()
-    return {'status': 1}, outqueue
+    return {'status': 1}, out_queue
 
 
 @bp.route('/api/recreatemts')
@@ -285,7 +285,7 @@ def api_recreatemts():
 def recreatemts(federation: str, ds: str):
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
-    outqueue = Queue()
+    out_queue = Queue()
     datasource = mgr.get_source(ds)
     if len(datasource) > 0:
         datasource = datasource[0]
@@ -302,9 +302,9 @@ def recreatemts(federation: str, ds: str):
             organization=datasource['organization'] if 'organization' in datasource else '',
             ontology_graph=datasource['ontology_graph'] if 'ontology_graph' in datasource else None
         )
-        p = Process(target=mgr.create, args=(datasource, outqueue, [], True,))
+        p = Process(target=mgr.create, args=(datasource, out_queue, [], True,))
         p.start()
-        return {'status': 1}, outqueue
+        return {'status': 1}, out_queue
     return {'status': -1}, None
 
 
