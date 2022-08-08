@@ -224,12 +224,12 @@ class DataSourceType(Enum):
 
 class ACPolicy(object):
 
-    def __init__(self, authorizedBy, operations, authorizedTo, validFrom=None, validUntil=None, desc=''):
-        self.authorizedBy = authorizedBy
-        self.authorizedTo = authorizedTo
+    def __init__(self, authorized_by, operations, authorized_to, valid_from=None, valid_until=None, desc=''):
+        self.authorized_by = authorized_by
+        self.authorized_to = authorized_to
         self.operations = operations
-        self.validFrom = validFrom
-        self.validUntil = validUntil
+        self.valid_from = valid_from
+        self.valid_until = valid_until
         self.desc = desc
 
 
