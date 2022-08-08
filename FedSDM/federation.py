@@ -100,7 +100,6 @@ def create():
 def datasources():
     try:
         graph = request.args['graph']
-
     except KeyError:
         print('KeyError:', request.args)
         return Response(json.dumps({}), mimetype='application/json')
