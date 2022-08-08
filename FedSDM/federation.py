@@ -348,16 +348,16 @@ def create_federation(name: str, desc: str, is_public: bool):
         return None
 
 
-def get_datasource(graph: str = None, dstype=None):
+def get_datasource(graph: str = None, ds_type=None):
     mdb = get_mdb()
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
-        if dstype is None:
+        if ds_type is None:
             query += '  OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
-        elif isinstance(dstype, list) and len(dstype) > 0:
+        elif isinstance(ds_type, list) and len(ds_type) > 0:
             query += '  ?id mt:dataSourceType ?dstype .\n'
             filters = []
-            for dt in dstype:
+            for dt in ds_type:
                 filters.append('?dstype=<' + MT_RESOURCE + 'DatasourceType/' + str(dt.value) + '>')
             query += '  FILTER (' + ' || '.join(filters) + ')\n'
         else:
