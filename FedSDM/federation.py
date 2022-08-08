@@ -269,7 +269,7 @@ def find_links(federation: str, datasource: str):
 
 
 @bp.route('/api/recreatemts')
-def api_recreatemts():
+def api_recreate_mts():
     try:
         fed = request.args.get('fed', None)
         ds = request.args.get('datasource', None)
