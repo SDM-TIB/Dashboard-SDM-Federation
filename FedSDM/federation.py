@@ -107,11 +107,10 @@ def datasources():
     if graph == 'All':
         graph = None
 
-    ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
-
     if graph is not None:
         session['fed'] = graph
 
+    ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
     res = get_datasource(graph, ds_type)
 
     # print(json.dumps({'data': res}, indent=True))
