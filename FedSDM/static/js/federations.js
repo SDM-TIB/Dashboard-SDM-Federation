@@ -223,7 +223,7 @@ $(function() {
                 select: true,
                 defaultContent: '<i>Not set</i>',
                 columnDefs: [{ target: 0, visible: false, searchable: false }],
-                ajax: '/federation/datasources?graph=' + federation + '&dstype=All'
+                ajax: '/federation/datasources?graph=' + federation
             });
             // Data source table select action
             table.on('select', function(e, dt, type, indexes) {
