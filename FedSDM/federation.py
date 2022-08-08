@@ -101,7 +101,7 @@ def datasources():
     try:
         graph = request.args['graph']
     except KeyError:
-        print('KeyError:', request.args)
+        logger.error("Key 'graph' not found in the parameters of the request. List of parameters: " + str(request.args))
         return Response(json.dumps({}), mimetype='application/json')
 
     if graph == 'All':
