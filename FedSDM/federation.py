@@ -412,7 +412,7 @@ def update(id):
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
-        ispublic = 'public' in request.form
+        is_public = 'public' in request.form
         error = None
 
         if not name:
@@ -425,7 +425,7 @@ def update(id):
             db.execute(
                 'UPDATE federation SET name = ?, description = ?, is_public = ? '
                 ' WHERE id = ?',
-                (name, description, ispublic, g.user['id'])
+                (name, description, is_public, g.user['id'])
             )
             db.commit()
             return redirect(url_for('federation.index'))
