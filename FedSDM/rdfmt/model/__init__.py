@@ -129,11 +129,11 @@ class Source(object):
 
 class DataSource(object):
 
-    def __init__(self, rid, url, dstype, name=None, desc='', params=None, keywords='', homepage='', version='',
+    def __init__(self, rid, url, ds_type, name=None, desc='', params=None, keywords='', homepage='', version='',
                  organization='', ontology_graph=None, triples=-1):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.url = url
-        self.dstype = dstype if isinstance(dstype, DataSourceType) else DataSourceType.from_str(dstype)
+        self.ds_type = ds_type if isinstance(ds_type, DataSourceType) else DataSourceType.from_str(ds_type)
         self.name = self.url if name is None else name.replace('"', "'")
         self.desc = desc
         self.params = {} if params is None else params
@@ -148,7 +148,7 @@ class DataSource(object):
         ask = 'ASK {?s ?p ?o}'
         e = self.url
         referer = e
-        if self.dstype == DataSourceType.SPARQL_ENDPOINT:
+        if self.ds_type == DataSourceType.SPARQL_ENDPOINT:
             print('checking endpoint accessibility', e)
             val, c = contactRDFSource(ask, referer)
             if c == -2:
@@ -162,7 +162,7 @@ class DataSource(object):
 
     def to_rdf(self, update=False):
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'DataSource> ',
-                '<' + self.rid + '> <' + MT_ONTO + 'dataSourceType> <' + MT_RESOURCE + 'DatasourceType/' + str(self.dstype.value) + '> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'dataSourceType> <' + MT_RESOURCE + 'DatasourceType/' + str(self.ds_type.value) + '> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'url> "' + urlparse.quote(self.url, safe='/:') + '" ']
         if self.name is not None and self.name != '':
             self.name = self.name.replace('"', "'").replace('\n', ' ')
@@ -192,7 +192,7 @@ class DataSource(object):
         return '{' + \
                '\trid: ' + self.rid +\
                ',\turl: ' + self.url + \
-               ',\tdstype: ' + str(self.dstype) + \
+               ',\tdstype: ' + str(self.ds_type) + \
                ',\tparams: ' + str(self.params) + \
                '}'
 

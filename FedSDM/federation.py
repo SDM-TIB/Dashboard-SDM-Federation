@@ -167,8 +167,8 @@ def add_data_source(federation: str, datasource: DataSource):
     # username and password are optional
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     outqueue = Queue()
-    logger.info(datasource.dstype)
-    if datasource.dstype == DataSourceType.SPARQL_ENDPOINT:
+    logger.info(datasource.ds_type)
+    if datasource.ds_type == DataSourceType.SPARQL_ENDPOINT:
         if not datasource.isAccessible():
             data = datasource.to_rdf()
             insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
