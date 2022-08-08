@@ -134,12 +134,7 @@ class DataSource(object):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.url = url
         self.dstype = dstype if isinstance(dstype, DataSourceType) else DataSourceType.from_str(dstype)
-
-        if name is None:
-            self.name = self.url
-        else:
-            self.name = name.replace('"', "'")
-
+        self.name = self.url if name is None else name.replace('"', "'")
         self.desc = desc
         self.params = {} if params is None else params
         self.keywords = keywords
