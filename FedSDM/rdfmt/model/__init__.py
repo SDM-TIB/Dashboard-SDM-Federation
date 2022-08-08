@@ -133,37 +133,7 @@ class DataSource(object):
                  organization='', ontology_graph=None, triples=-1):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.url = url
-        if isinstance(dstype, DataSourceType):
-            self.dstype = dstype
-        else:
-            if 'SPARQL_Endpoint' in dstype:
-                self.dstype = DataSourceType.SPARQL_ENDPOINT
-            elif 'MongoDB' in dstype:
-                self.dstype = DataSourceType.MONGODB
-            elif 'Neo4j' in dstype:
-                self.dstype = DataSourceType.NEO4J
-            elif 'SPARK_CSV' in dstype:
-                self.dstype = DataSourceType.SPARK_CSV
-            elif 'SPARK_XML' in dstype:
-                self.dstype = DataSourceType.SPARK_XML
-            elif 'SPARK_JSON' in dstype:
-                self.dstype = DataSourceType.SPARK_JSON
-            elif 'SPARK_TSV' in dstype:
-                self.dstype = DataSourceType.SPARK_TSV
-            elif 'REST' in dstype:
-                self.dstype = DataSourceType.REST_SERVICE
-            elif 'LOCAL_CSV' in dstype:
-                self.dstype = DataSourceType.LOCAL_CSV
-            elif 'LOCAL_TSV' in dstype:
-                self.dstype = DataSourceType.LOCAL_TSV
-            elif 'LOCAL_JSON' in dstype:
-                self.dstype = DataSourceType.LOCAL_JSON
-            elif 'LOCAL_XML' in dstype:
-                self.dstype = DataSourceType.LOCAL_XML
-            elif 'MySQL' in dstype:
-                self.dstype = DataSourceType.MYSQL
-            else:
-                self.dstype = DataSourceType.SPARQL_ENDPOINT
+        self.dstype = dstype if isinstance(dstype, DataSourceType) else DataSourceType.from_str(dstype)
 
         if name is None:
             self.name = self.url
