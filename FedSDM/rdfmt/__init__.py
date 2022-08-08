@@ -1,8 +1,8 @@
 import hashlib
 import time
 from multiprocessing import Queue, Process
-from multiprocessing.queues import Empty
 from pprint import pprint
+from queue import Empty
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.model import *
