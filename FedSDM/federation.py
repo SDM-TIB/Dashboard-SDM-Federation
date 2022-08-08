@@ -75,7 +75,7 @@ def get_stats(graph: str):
 def create():
     name = request.form['name']
     description = request.form['description']
-    ispublic = 'public' in request.form
+    is_public = 'public' in request.form
     error = None
 
     if not name:
@@ -84,7 +84,7 @@ def create():
     if error is not None:
         flash(error)
     else:
-        inserted = create_federation(name, description, ispublic)
+        inserted = create_federation(name, description, is_public)
 
         if inserted is None:
             error = 'Cannot insert new federation to endpoint.'
