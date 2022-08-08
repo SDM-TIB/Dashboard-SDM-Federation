@@ -169,7 +169,7 @@ def add_data_source(federation: str, datasource: DataSource):
     outqueue = Queue()
     logger.info(datasource.ds_type)
     if datasource.ds_type == DataSourceType.SPARQL_ENDPOINT:
-        if not datasource.isAccessible():
+        if not datasource.is_accessible():
             data = datasource.to_rdf()
             insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
             rr = mdb.update(insertquery)
@@ -227,7 +227,7 @@ def api_edit_source():
                       '    ?p != mt:triples )\n}'
         rr = mdb.update('WITH GRAPH <' + fed + '>\n' + delete_query + '\n' + insert_query + '\n' + where_query)
 
-        if not ds.isAccessible():
+        if not ds.is_accessible():
             if rr:
                 return {'status': -1}, None
             else:

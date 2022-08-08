@@ -144,7 +144,7 @@ class DataSource(object):
         self.triples = triples
         self.ontology_graph = ontology_graph
 
-    def isAccessible(self):
+    def is_accessible(self):
         ask = 'ASK {?s ?p ?o}'
         e = self.url
         referer = e
