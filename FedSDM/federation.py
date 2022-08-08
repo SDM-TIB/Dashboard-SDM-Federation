@@ -254,12 +254,12 @@ def api_find_links():
         return Response(json.dumps({}),  mimetype='application/json')
     if fed is None:
         return Response(json.dumps({}), mimetype='application/json')
-    res, queue = findlinks(fed, ds)
+    res, queue = find_links(fed, ds)
 
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def findlinks(federation: str, datasource: str):
+def find_links(federation: str, datasource: str):
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     out_queue = Queue()
