@@ -228,8 +228,8 @@ class RDFMTMgr(object):
                 else:
                     plab = ''
 
-                predsouce = Source(propsourceURI, e, pred_card)
-                mtprop = MTProperty(mtpredicateURI, pred, [predsouce], ranges=ranges, label=plab)
+                pred_source = Source(propsourceURI, e, pred_card)
+                mtprop = MTProperty(mtpredicateURI, pred, [pred_source], ranges=ranges, label=plab)
                 rdf_properties.append(mtprop)
 
                 results.append(rn)
