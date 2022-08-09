@@ -186,15 +186,15 @@ class RDFMTMgr(object):
                 mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
                 propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
-                predcard = self.get_cardinality(endpoint, t, prop=pred)
-                if isinstance(predcard, str) and '^^' in predcard:
-                    predcard = predcard[:predcard.find('^^')]
+                pred_card = self.get_cardinality(endpoint, t, prop=pred)
+                if isinstance(pred_card, str) and '^^' in pred_card:
+                    pred_card = pred_card[:pred_card.find('^^')]
                 else:
-                    predcard = str(predcard)
+                    pred_card = str(pred_card)
 
-                print(pred, predcard)
+                print(pred, pred_card)
                 rn['p'] = pred
-                rn['predcard'] = predcard
+                rn['predcard'] = pred_card
 
                 # Get range of this predicate from this RDF-MT t
                 rn['range'] = self.get_rdfs_ranges(referer, pred)
@@ -228,7 +228,7 @@ class RDFMTMgr(object):
                 else:
                     plab = ''
 
-                predsouce = Source(propsourceURI, e, predcard)
+                predsouce = Source(propsourceURI, e, pred_card)
                 mtprop = MTProperty(mtpredicateURI, pred, [predsouce], ranges=ranges, label=plab)
                 rdf_properties.append(mtprop)
 
