@@ -164,8 +164,8 @@ class RDFMTMgr(object):
             else:
                 mcard = str(card)
 
-            sourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
-            source = Source(sourceURI, e, mcard)
+            source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
+            source = Source(source_uri, e, mcard)
             # GEt subclasses:
             subc = self.get_subclasses(endpoint, t)
             subclasses = []
