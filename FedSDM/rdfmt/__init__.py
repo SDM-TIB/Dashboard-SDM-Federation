@@ -129,7 +129,7 @@ class RDFMTMgr(object):
         """
         endpoint = e.url
         referer = endpoint
-        if len(types) == 0:
+        if types is None or len(types) == 0:
             #  'Optional {?t  <' + RDFS + 'label> ?label} .  'Optional {?t  <' + RDFS + 'comment> ?desc} .
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
