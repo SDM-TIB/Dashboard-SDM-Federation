@@ -64,10 +64,10 @@ def _iterative_query(query: str, server: str, limit: int = 10000, max_tries: int
 
 class RDFMTMgr(object):
 
-    def __init__(self, query_url, updateurl, user, passwd, graph):
+    def __init__(self, query_url, update_url, user, passwd, graph):
         self.graph = graph
         self.queryendpoint = query_url
-        self.updateendpoint = updateurl
+        self.updateendpoint = update_url
         self.user = user
         self.passwd = passwd
 
