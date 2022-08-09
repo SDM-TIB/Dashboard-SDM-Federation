@@ -130,11 +130,9 @@ class RDFMTMgr(object):
         endpoint = e.url
         referer = endpoint
         if types is None or len(types) == 0:
-            #  'Optional {?t  <' + RDFS + 'label> ?label} .  'Optional {?t  <' + RDFS + 'comment> ?desc} .
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
                     '  OPTIONAL { ?t  <' + RDFS + 'label> ?label }\n}'
-                    # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
             reslist, _ = _iterative_query(query, endpoint, limit=100)
             to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
             for r in to_remove:
