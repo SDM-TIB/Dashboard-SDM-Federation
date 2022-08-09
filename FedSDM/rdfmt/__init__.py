@@ -244,8 +244,8 @@ class RDFMTMgr(object):
         return results
 
     def get_rdfs_ranges(self, referer, p):
-        RDFS_RANGES = 'SELECT DISTINCT ?range WHERE { <' + p + '> <' + RDFS + 'range> ?range . }'
-        res_list, _ = _iterative_query(RDFS_RANGES, referer, limit=100)
+        query = 'SELECT DISTINCT ?range WHERE { <' + p + '> <' + RDFS + 'range> ?range . }'
+        res_list, _ = _iterative_query(query, referer, limit=100)
 
         ranges = []
         for r in res_list:
