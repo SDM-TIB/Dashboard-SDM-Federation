@@ -253,10 +253,10 @@ class RDFMTMgr(object):
                 '  ?s a <' + t + '> .\n' \
                 '  ?s <' + p + '> ?pt .\n' \
                 '  ?pt a ?range .\n}'
-        reslist, _ = _iterative_query(query, referer, limit=50)
+        res_list, _ = _iterative_query(query, referer, limit=50)
 
         ranges = []
-        for r in reslist:
+        for r in res_list:
             skip = False
             for m in metas:
                 if m in r['r']:
