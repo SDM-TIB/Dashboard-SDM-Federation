@@ -254,18 +254,7 @@ class RDFMTMgr(object):
                 '  ?s <' + p + '> ?pt .\n' \
                 '  ?pt a ?range .\n}'
         res_list, _ = _iterative_query(query, referer, limit=50)
-
-        ranges = []
-        for r in res_list:
-            skip = False
-            for m in metas:
-                if m in r['r']:
-                    skip = True
-                    break
-            if not skip:
-                ranges.append(r['r'])
-
-        return ranges
+        return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
     def get_predicates(self, referer, t, limit=-1):
         """
