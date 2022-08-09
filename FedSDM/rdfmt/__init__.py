@@ -258,7 +258,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, referer, limit=50)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
-    def get_predicates(self, referer, t, limit=-1):
+    def get_predicates(self, referer, t):
         """
         Get list of predicates of a class t
 
@@ -266,7 +266,6 @@ class RDFMTMgr(object):
         :param server: server address of an endpoint
         :param path:  path in an endpoint (after server url)
         :param t: RDF class Concept extracted from an endpoint
-        :param limit:
         :return:
         """
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
