@@ -277,12 +277,12 @@ def api_recreate_mts():
         return Response(json.dumps({}), mimetype='application/json')
     if fed is None or ds is None:
         return Response(json.dumps({}), mimetype='application/json')
-    res, queue = recreatemts(fed, ds)
+    res, queue = recreate_mts(fed, ds)
 
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def recreatemts(federation: str, ds: str):
+def recreate_mts(federation: str, ds: str):
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     out_queue = Queue()
