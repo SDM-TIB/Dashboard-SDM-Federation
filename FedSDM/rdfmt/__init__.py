@@ -175,14 +175,14 @@ class RDFMTMgr(object):
             rdf_properties = []
             # Get predicates of the molecule t
             predicates = self.get_predicates(referer, t)
-            propertiesprocessed = []
+            properties_processed = []
             for p in predicates:
                 rn = {'t': t, 'cardinality': mcard, 'subclasses': subclasses}
                 pred = p['p']
-                if pred in propertiesprocessed:
+                if pred in properties_processed:
                     continue
 
-                propertiesprocessed.append(pred)
+                properties_processed.append(pred)
 
                 mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
                 propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t + pred).encode()).hexdigest())
