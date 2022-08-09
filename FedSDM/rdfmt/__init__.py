@@ -246,18 +246,7 @@ class RDFMTMgr(object):
     def get_rdfs_ranges(self, referer, p):
         query = 'SELECT DISTINCT ?range WHERE { <' + p + '> <' + RDFS + 'range> ?range . }'
         res_list, _ = _iterative_query(query, referer, limit=100)
-
-        ranges = []
-        for r in res_list:
-            skip = False
-            for m in metas:
-                if m in r['range']:
-                    skip = True
-                    break
-            if not skip:
-                ranges.append(r['range'])
-
-        return ranges
+        return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
     def find_instance_range(self, referer, t, p, limit=-1):
         INSTANCE_RANGES = 'SELECT DISTINCT ?r WHERE {\n' \
