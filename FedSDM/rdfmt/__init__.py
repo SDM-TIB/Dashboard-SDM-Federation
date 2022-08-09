@@ -119,7 +119,7 @@ class RDFMTMgr(object):
 
         return rdf_molecules
 
-    def get_typed_concepts(self, e, limit=-1, types=[]):
+    def get_typed_concepts(self, e, limit=-1, types=None):
         """
         Entry point for extracting RDF-MTs of an endpoint.
         Extracts list of rdf:Class concepts and predicates of an endpoint
