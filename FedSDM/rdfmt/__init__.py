@@ -71,14 +71,14 @@ class RDFMTMgr(object):
         self.user = user
         self.passwd = passwd
 
-    def create(self, ds, out_queue=Queue(), types=None, isupdate=False):
+    def create(self, ds, out_queue=Queue(), types=None, is_update=False):
         if types is None:
             types = []
 
         endpoint = ds.url
         logger.info('----------------------' + endpoint + '-------------------------------------')
 
-        if not isupdate:
+        if not is_update:
             # Get #triples of a dataset
             triples = self.get_cardinality(endpoint)
             if isinstance(triples, str) and '^' in triples:
