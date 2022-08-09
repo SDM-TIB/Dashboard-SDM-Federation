@@ -71,7 +71,7 @@ class RDFMTMgr(object):
         self.user = user
         self.passwd = passwd
 
-    def create(self, ds, outqueue=Queue(), types=None, isupdate=False):
+    def create(self, ds, out_queue=Queue(), types=None, isupdate=False):
         if types is None:
             types = []
 
@@ -95,7 +95,7 @@ class RDFMTMgr(object):
 
         results = self.get_rdfmts(ds, types)
         # self.create_inter_ds_links(datasource=ds)
-        outqueue.put('EOF')
+        out_queue.put('EOF')
 
         return results
 
