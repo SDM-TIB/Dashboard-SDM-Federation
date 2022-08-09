@@ -103,7 +103,7 @@ class RDFMTMgr(object):
         return self.extractMTLs(ds, types)
 
     def extractMTLs(self, datasource, types=None):
-        rdfmolecules = {}
+        rdf_molecules = {}
         endpoint = datasource.url
 
         if datasource.ontology_graph is None:
@@ -111,13 +111,13 @@ class RDFMTMgr(object):
         else:
             results = self.get_mts_from_owl(datasource, datasource.ontology_graph, -1, types)
 
-        rdfmolecules[endpoint] = results
+        rdf_molecules[endpoint] = results
 
         pprint(results)
         logger.info('*****' + endpoint + ' ***********')
         logger.info('*************finished *********************' )
 
-        return rdfmolecules
+        return rdf_molecules
 
     def get_typed_concepts(self, e, limit=-1, types=[]):
         """
