@@ -145,16 +145,16 @@ class RDFMTMgr(object):
         pprint(res_list)
 
         results = []
-        alreadyprocessed = []
+        already_processed = []
         for r in res_list:
             t = r['t']
             if '^^' in t:
                 continue
-            if t in alreadyprocessed:
+            if t in already_processed:
                 continue
             print(t)
             print('---------------------------------------')
-            alreadyprocessed.append(t)
+            already_processed.append(t)
             card = self.get_cardinality(endpoint, t)
             if isinstance(card, str) and '^' in card:
                 card = int(card[:card.find('^^')])
