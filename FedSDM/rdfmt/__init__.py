@@ -174,9 +174,9 @@ class RDFMTMgr(object):
 
             rdf_properties = []
             # Get predicates of the molecule t
-            preds = self.get_predicates(referer, t)
+            predicates = self.get_predicates(referer, t)
             propertiesprocessed = []
-            for p in preds:
+            for p in predicates:
                 rn = {'t': t, 'cardinality': mcard, 'subclasses': subclasses}
                 pred = p['p']
                 if pred in propertiesprocessed:
