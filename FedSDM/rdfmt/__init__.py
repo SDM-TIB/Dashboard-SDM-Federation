@@ -159,7 +159,6 @@ class RDFMTMgr(object):
             if isinstance(card, str) and '^' in card:
                 card = int(card[:card.find('^^')])
 
-            # molecules[m]['wrappers'][0]['cardinality'] = card
             if isinstance(card, str) and '^^' in card:
                 mcard = card[:card.find('^^')]
             else:
