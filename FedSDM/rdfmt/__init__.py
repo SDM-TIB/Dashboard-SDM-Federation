@@ -249,7 +249,8 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, referer, limit=100)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
-    def find_instance_range(self, referer, t, p):
+    @staticmethod
+    def find_instance_range(referer, t, p):
         query = 'SELECT DISTINCT ?range WHERE {\n' \
                 '  ?s a <' + t + '> .\n' \
                 '  ?s <' + p + '> ?pt .\n' \
