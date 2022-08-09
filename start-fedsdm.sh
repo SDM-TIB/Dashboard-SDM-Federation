@@ -14,7 +14,7 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:$VIRT_HT
 done
 echo -e '\nVirtuoso is up and running'
 
-export FLASK_ENV=development
+export FLASK_DEBUG=True
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 export FLASK_APP=FedSDM
