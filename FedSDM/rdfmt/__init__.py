@@ -107,7 +107,7 @@ class RDFMTMgr(object):
         endpoint = datasource.url
 
         if datasource.ontology_graph is None:
-            results = self.get_typed_concepts(datasource, -1, types)
+            results = self.get_typed_concepts(datasource, types)
         else:
             results = self.get_mts_from_owl(datasource, datasource.ontology_graph, -1, types)
 
@@ -119,12 +119,12 @@ class RDFMTMgr(object):
 
         return rdf_molecules
 
-    def get_typed_concepts(self, e, limit=-1, types=None):
+    def get_typed_concepts(self, e, types=None):
         """
         Entry point for extracting RDF-MTs of an endpoint.
         Extracts list of rdf:Class concepts and predicates of an endpoint
         :param endpoint:
-        :param limit:
+        :param types:
         :return:
         """
         endpoint = e.url
