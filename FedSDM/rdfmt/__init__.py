@@ -32,6 +32,36 @@ metas = ['http://www.w3.org/ns/sparql-service-description',
          'nodeID://']
 
 
+def _iterative_query(query: str, server: str, limit: int = 10000, max_tries: int = -1, max_answers: int = -1):
+    offset = 0
+    res_list = []
+    status = 0
+    num_requests = 0
+
+    while True:
+        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
+        num_requests += 1
+        res, card = contactRDFSource(query_copy, server)
+
+        # if receiving the answer fails, try with a decreasing limit
+        if card == -2:
+            limit = limit // 2
+            if limit < 1:
+                status = -1
+                break
+            continue
+        # results returned from the endpoint are appended to the result list
+        if card > 0:
+            res_list.extend(res)
+        # stop if all results are retrieved or the maximum number of tries is reached
+        if card < limit or (0 < max_answers <= len(res_list)) or num_requests >= max_tries:
+            break
+
+        offset += limit
+        time.sleep(.5)
+    return res_list, status
+
+
 class RDFMTMgr(object):
 
     def __init__(self, queryurl, updateurl, user, passwd, graph):
@@ -101,36 +131,13 @@ class RDFMTMgr(object):
         """
         endpoint = e.url
         referer = endpoint
-        reslist = []
         if len(types) == 0:
             #  'Optional {?t  <' + RDFS + 'label> ?label} .  'Optional {?t  <' + RDFS + 'comment> ?desc} .
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
                     '  OPTIONAL { ?t  <' + RDFS + 'label> ?label }\n}'
                     # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
-            if limit == -1:
-                limit = 100
-                offset = 0
-                numrequ = 0
-                while True:
-                    query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                    res, card = contactRDFSource(query_copy, referer)
-                    numrequ += 1
-                    if card == -2:
-                        limit = limit // 2
-                        limit = int(limit)
-                        if limit < 1:
-                            break
-                        continue
-                    if card > 0:
-                        reslist.extend(res)
-                    if card < limit:
-                        break
-                    offset += limit
-                    time.sleep(5)
-            else:
-                reslist, card = contactRDFSource(query, referer)
-
+            reslist, _ = _iterative_query(query, endpoint, limit=100)
             to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
             for r in to_remove:
                 reslist.remove(r)
@@ -246,34 +253,9 @@ class RDFMTMgr(object):
         RDFS_RANGES = 'SELECT DISTINCT ?range WHERE {\n' \
                       '  <' + p + '> <' + RDFS + 'range> ?range .\n}'
         # filter (regex(str(?range), 'http://dbpedia.org/ontology', 'i'))
-
-        reslist = []
-        if limit == -1:
-            limit = 100
-            offset = 0
-            numrequ = 0
-            while True:
-                query_copy = RDFS_RANGES + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                res, card = contactRDFSource(query_copy, referer)
-                numrequ += 1
-                if card == -2:
-                    limit = limit // 2
-                    limit = int(limit)
-                    # print 'setting limit to: ', limit
-                    if limit < 1:
-                        break
-                    continue
-                if card > 1:
-                    reslist.extend(res)
-                if card < limit:
-                    break
-                offset += limit
-                time.sleep(2)
-        else:
-            reslist, card = contactRDFSource(RDFS_RANGES, referer)
+        reslist, _ = _iterative_query(RDFS_RANGES, referer, limit=100)
 
         ranges = []
-
         for r in reslist:
             skip = False
             for m in metas:
@@ -291,33 +273,9 @@ class RDFMTMgr(object):
                           '  ?s <' + p + '> ?pt .\n' \
                           '  ?pt a ?r .\n}'
         # filter (regex(str(?r), 'http://dbpedia.org/ontology', 'i'))
-        reslist = []
-        if limit == -1:
-            limit = 50
-            offset = 0
-            numrequ = 0
-            while True:
-                query_copy = INSTANCE_RANGES + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                res, card = contactRDFSource(query_copy, referer)
-                numrequ += 1
-                if card == -2:
-                    limit = limit // 2
-                    limit = int(limit)
-                    # print 'setting limit to: ', limit
-                    if limit < 1:
-                        break
-                    continue
-                if card > 0:
-                    reslist.extend(res)
-                if card < limit:
-                    break
-                offset += limit
-                time.sleep(2)
-        else:
-            reslist, card = contactRDFSource(INSTANCE_RANGES, referer)
+        reslist, _ = _iterative_query(INSTANCE_RANGES, referer, limit=50)
 
         ranges = []
-
         for r in reslist:
             skip = False
             for m in metas:
@@ -344,39 +302,16 @@ class RDFMTMgr(object):
                 '  ?s a <' + t + '> .\n' \
                 '  ?s ?p ?pt .\n' \
                 '  OPTIONAL { ?p  <' + RDFS + 'label> ?label }\n}'
-        reslist = []
-        if limit == -1:
-            limit = 50
-            offset = 0
-            numrequ = 0
-            logger.info(t)
-            while True:
-                query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                res, card = contactRDFSource(query_copy, referer)
-                numrequ += 1
-                # print 'predicates card:', card
-                if card == -2:
-                    limit = limit // 2
-                    limit = int(limit)
-                    # print 'setting limit to: ', limit
-                    if limit < 1:
-                        print('giving up on ' + query)
-                        print('trying instances .....')
-                        rand_inst_res = self.get_preds_of_random_instances(referer, t)
-                        existingpreds = [r['p'] for r in reslist]
-                        for r in rand_inst_res:
-                            if r not in existingpreds:
-                                reslist.append({'p': r})
-                        break
-                    continue
-                if card > 0:
-                    reslist.extend(res)
-                if card < limit:
-                    break
-                offset += limit
-                time.sleep(2)
-        else:
-            reslist, card = contactRDFSource(query, referer)
+        reslist, status = _iterative_query(query, referer, limit=50)
+        existingpreds = [r['p'] for r in reslist]
+
+        if status == -1:  # fallback - get predicates from randomly selected instances of the type
+            print('giving up on ' + query)
+            print('trying instances .....')
+            rand_inst_res = self.get_preds_of_random_instances(referer, t)
+            for r in rand_inst_res:
+                if r not in existingpreds:
+                    reslist.append({'p': r})
 
         return reslist
 
@@ -392,39 +327,17 @@ class RDFMTMgr(object):
         :return:
         """
         query = 'SELECT DISTINCT ?s WHERE{ ?s a <' + t + '> . }'
+        res_instances, _ = _iterative_query(query, referer, limit=50, max_tries=100)
         reslist = []
-        if limit == -1:
-            limit = 50
-            offset = 0
-            numrequ = 0
-            while True:
-                query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                res, card = contactRDFSource(query_copy, referer)
-                numrequ += 1
-                # print 'rand predicates card:', card
-                if card == -2:
-                    limit = limit // 2
-                    limit = int(limit)
-                    # print 'setting limit to: ', limit
-                    if limit < 1:
-                        break
-                    continue
-                if numrequ == 100:
-                    break
-                if card > 0:
-                    import random
-                    rand = random.randint(0, card - 1)
-                    inst = res[rand]
-                    inst_res = self.get_preds_of_instance(referer, inst['s'])
-                    inst_res = [r['p'] for r in inst_res]
-                    reslist.extend(inst_res)
-                    reslist = list(set(reslist))
-                if card < limit:
-                    break
-                offset += limit
-                time.sleep(5)
-        else:
-            reslist, card = contactRDFSource(query, referer)
+        card = len(res_instances)
+        if card > 0:
+            import random
+            rand = random.randint(0, card - 1)
+            inst = res_instances[rand]
+            inst_res = self.get_preds_of_instance(referer, inst['s'])
+            inst_res = [r['p'] for r in inst_res]
+            reslist.extend(inst_res)
+            reslist = list(set(reslist))
 
         return reslist
 
@@ -432,67 +345,20 @@ class RDFMTMgr(object):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + inst + '> ?p ?pt .\n' \
                 '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
-        reslist = []
-        if limit == -1:
-            limit = 1000
-            offset = 0
-            numrequ = 0
-            while True:
-                query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                res, card = contactRDFSource(query_copy, referer)
-                numrequ += 1
-                # print 'inst predicates card:', card
-                if card == -2:
-                    limit = limit // 2
-                    limit = int(limit)
-                    # print 'setting limit to: ', limit
-                    if limit < 1:
-                        break
-                    continue
-                if card > 0:
-                    reslist.extend(res)
-                if card < limit:
-                    break
-                offset += limit
-                time.sleep(2)
-        else:
-            reslist, card = contactRDFSource(query, referer)
+        reslist, _ = _iterative_query(query, referer, limit=1000)
 
         return reslist
 
     def get_mts_from_owl(self, e, graph, limit=-1, types=[]):
         endpoint = e.url
         referer = endpoint
-        reslist = []
         query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
                 '  ?p <' + RDFS + 'domain> ?t .\n' \
                 '  OPTIONAL { ?p <' + RDFS + 'range> ?range }\n' \
                 '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
                 '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
                 '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
-        if limit == -1:
-            limit = 50
-            offset = 0
-            numrequ = 0
-            while True:
-                query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                res, card = contactRDFSource(query_copy, referer)
-                numrequ += 1
-                if card == -2:
-                    limit = limit // 2
-                    limit = int(limit)
-                    if limit < 1:
-                        break
-                    continue
-                if card > 0:
-                    reslist.extend(res)
-                if card < limit:
-                    break
-                print(limit, offset)
-                offset += limit
-                time.sleep(5)
-        else:
-            reslist, card = contactRDFSource(query, referer)
+        reslist, _ = _iterative_query(query, endpoint, limit=50)
 
         to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
         for r in to_remove:
@@ -669,25 +535,7 @@ class RDFMTMgr(object):
                 '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
-            time.sleep(5)
-
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         return reslist
 
     def get_source(self, dsid):
@@ -703,24 +551,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
-
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         return reslist
 
     def get_ds_rdfmts(self, datasource):
@@ -730,25 +561,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { ?source <' + MT_ONTO + 'cardinality> ?card }\n' \
                 '  ?source <' + MT_ONTO + 'datasource> <' + datasource + '> .\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
-            time.sleep(5)
-
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         return reslist
 
     def create_inter_ds_links(self, datasource=None, outputqueue=Queue()):
@@ -883,26 +696,8 @@ class RDFMTMgr(object):
         print('linking DONE!', did)
 
     def getPredicates(self, query, endpoint):
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, endpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend([r['p'] for r in res])
-            if card < limit:
-                break
-
-            offset += limit
-
-        return reslist
+        reslist, _ = _iterative_query(query, endpoint, limit=1000)
+        return [r['p'] for r in reslist]
 
     def get_inter_ds_links_bn(self, s, srdfmts, t, trdfmts, queue=Queue()):
         endpoint1 = s['url']
@@ -919,28 +714,8 @@ class RDFMTMgr(object):
                         '  ?s a <' + m1 + '> .\n' \
                         '  ?s <' + p + '> ?t .\n' \
                         '  FILTER (isURI(?t))\n}'
-                limit = 500
-                offset = 0
-
-                while True:
-                    query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-                    res, card = contactRDFSource(query_copy, endpoint1)
-                    if card == -2:
-                        limit = limit // 2
-                        limit = int(limit)
-                        if limit < 1:
-                            break
-                        continue
-                    if card > 0:
-                        reslist.setdefault(p, []).extend([r['t'] for r in res])
-                        if len(reslist[p]) >= 500:
-                            break
-                    if card < limit:
-                        break
-
-                    offset += limit
-
-                    time.sleep(5)
+                res, _ = _iterative_query(query, endpoint1, limit=500, max_answers=500)
+                reslist.setdefault(p, []).extend([r['t'] for r in res])
 
             typesfound = self.get_links_bn_ds(reslist, trdfmts, endpoint2)
             for link in typesfound:
@@ -1053,27 +828,8 @@ class RDFMTMgr(object):
         return reslist
 
     def get_results(self, query, endpoint):
-        reslist = []
-        limit = 1000
-        offset = 0
-
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, endpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend([r['t'] for r in res])
-            if card < limit:
-                break
-            offset += limit
-            time.sleep(5)
-
-        return reslist
+        res, _ = _iterative_query(query, endpoint, limit=1000)
+        return [r['t'] for r in res]
 
     def create_from_mapping(self, ds, outqueue=Queue(), types=[], isupdate=False):
         endpoint = ds.url
@@ -1206,24 +962,7 @@ class MTManager(object):
                 '  ?rid a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?rid <' + MT_ONTO + 'url> ?endpoint .\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
-
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         return reslist
 
     def get_rdfmt_links(self, rdfclass, preds=None):
@@ -1241,24 +980,7 @@ class MTManager(object):
                 '  ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
                 '  ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n  ' \
                 + preds + '\n}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         results = {}
         for r in reslist:
             r['rid'] = rdfclass
@@ -1330,23 +1052,7 @@ class MTManager(object):
                 '    ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n' \
                 '  }\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         results = {}
         for r in reslist:
             if r['rid'] not in results:
@@ -1410,23 +1116,7 @@ class MTManager(object):
                 '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
                 '  ?source <' + MT_ONTO + 'datasource> ?datasource.\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         results = {}
         for r in reslist:
             r['rid'] = rdfclass
@@ -1497,23 +1187,7 @@ class MTManager(object):
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        limit = 1000
-        offset = 0
-        reslist = []
-        while True:
-            query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-            res, card = contactRDFSource(query_copy, self.queryendpoint)
-            if card == -2:
-                limit = limit // 2
-                limit = int(limit)
-                if limit < 1:
-                    break
-                continue
-            if card > 0:
-                reslist.extend(res)
-            if card < limit:
-                break
-            offset += limit
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
         if len(reslist) > 0:
             e = reslist[0]
             ds = DataSource(dsid,
@@ -1567,7 +1241,7 @@ class MTManager(object):
             i += 1
 
         query += '}}'
-        reslist = query_endpoint(self.queryendpoint, query)
+        reslist, _ = _iterative_query(self.queryendpoint, query, limit=1000)
 
         results = {}
         for r in reslist:
@@ -1589,32 +1263,10 @@ class MTManager(object):
         if len(filter) > 0:
             query += '  FILTER (' + filter + ')\n'
         query += '}}'
-        reslist = query_endpoint(self.queryendpoint, query)
+        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
 
         results = {}
         for r in reslist:
             results.setdefault(r['pred'], []).append(r['rid'])
         results = {r: list(set(results[r])) for r in results}
         return results
-
-
-def query_endpoint(endpoint, query):
-    limit = 1000
-    offset = 0
-    reslist = []
-    while True:
-        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
-        res, card = contactRDFSource(query_copy, endpoint)
-        if card == -2:
-            limit = limit // 2
-            limit = int(limit)
-            if limit < 1:
-                break
-            continue
-        if card > 0:
-            reslist.extend(res)
-        if card < limit:
-            break
-        offset += limit
-
-    return reslist
