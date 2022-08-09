@@ -66,7 +66,7 @@ class RDFMTMgr(object):
 
     def __init__(self, query_url, update_url, user, passwd, graph):
         self.graph = graph
-        self.queryendpoint = query_url
+        self.query_endpoint = query_url
         self.updateendpoint = update_url
         self.user = user
         self.passwd = passwd
@@ -535,7 +535,7 @@ class RDFMTMgr(object):
                 '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return reslist
 
     def get_source(self, dsid):
@@ -551,7 +551,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return reslist
 
     def get_ds_rdfmts(self, datasource):
@@ -561,7 +561,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { ?source <' + MT_ONTO + 'cardinality> ?card }\n' \
                 '  ?source <' + MT_ONTO + 'datasource> <' + datasource + '> .\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return reslist
 
     def create_inter_ds_links(self, datasource=None, outputqueue=Queue()):
@@ -863,7 +863,7 @@ class RDFMTMgr(object):
             '  }\n' \
             '}}'
         print(mtquery)
-        res, card = contactRDFSource(mtquery, self.queryendpoint)
+        res, card = contactRDFSource(mtquery, self.query_endpoint)
         results = []
         data = []
         if card > 0:
