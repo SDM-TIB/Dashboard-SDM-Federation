@@ -67,7 +67,7 @@ class RDFMTMgr(object):
     def __init__(self, query_url, update_url, user, passwd, graph):
         self.graph = graph
         self.query_endpoint = query_url
-        self.updateendpoint = update_url
+        self.update_endpoint = update_url
         self.user = user
         self.passwd = passwd
 
@@ -465,11 +465,11 @@ class RDFMTMgr(object):
             else:
                 updatequery = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:i + 49]) + '} }'
             logger.info(updatequery)
-            updateRDFSource(updatequery, self.updateendpoint)
+            updateRDFSource(updatequery, self.update_endpoint)
         if i < len(data) + 49:
             updatequery = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
             logger.info(updatequery)
-            updateRDFSource(updatequery, self.updateendpoint)
+            updateRDFSource(updatequery, self.update_endpoint)
 
     def delete_insert_data(self, delete, insert, where=[]):
         i = 0
@@ -485,14 +485,14 @@ class RDFMTMgr(object):
                                'INSERT {' + ' . \n'.join(insert[i:i + 49]) + '} ' \
                                'WHERE {' + ' . \n'.join(where[i:i + 49]) + '}'
             logger.info(updatequery)
-            updateRDFSource(updatequery, self.updateendpoint)
+            updateRDFSource(updatequery, self.update_endpoint)
         updatequery = 'WITH <' + self.graph + '> DELETE {'
         if i < len(delete) + 49:
             updatequery += ' . \n'.join(delete[i:]) + '} ' \
                            'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
                            'WHERE {' + ' . \n'.join(where[i:]) + '}'
             logger.info(updatequery)
-            updateRDFSource(updatequery, self.updateendpoint)
+            updateRDFSource(updatequery, self.update_endpoint)
 
     def get_cardinality(self, endpoint, mt=None, prop=None, mr=None, mrtype=None):
         if mt is None:
