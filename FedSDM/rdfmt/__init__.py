@@ -172,7 +172,7 @@ class RDFMTMgr(object):
             if subc is not None:
                 subclasses = [r['subc'] for r in subc]
 
-            rdfpropteries = []
+            rdf_properties = []
             # Get predicates of the molecule t
             preds = self.get_predicates(referer, t)
             propertiesprocessed = []
@@ -231,14 +231,14 @@ class RDFMTMgr(object):
 
                 predsouce = Source(propsourceURI, e, predcard)
                 mtprop = MTProperty(mtpredicateURI, pred, [predsouce], ranges=ranges, label=plab)
-                rdfpropteries.append(mtprop)
+                rdf_properties.append(mtprop)
 
                 results.append(rn)
 
             name = r['label'] if 'label' in r else t
             desc = r['desc'] if 'desc' in r else None
 
-            mt = RDFMT(t, name, properties=rdfpropteries, desc=desc, sources=[source], subClassOf=subclasses)
+            mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subClassOf=subclasses)
             data = mt.to_rdf()
             self.updateGraph(data)
 
