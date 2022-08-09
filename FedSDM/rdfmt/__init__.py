@@ -181,7 +181,6 @@ class RDFMTMgr(object):
                 pred = p['p']
                 if pred in properties_processed:
                     continue
-
                 properties_processed.append(pred)
 
                 mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
