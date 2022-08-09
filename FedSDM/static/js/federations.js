@@ -586,7 +586,7 @@ $(function() {
                         $('#fedName').html(name);
                         $('#newfedform').hide();
                         // select new federation and go to the 'manage data sources' tab
-                        federation = prefix + name;
+                        federation = prefix + name.replaceAll(' ', '-');
                         federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
                         showFederations(federation);
                         let aTab = '#manage';
