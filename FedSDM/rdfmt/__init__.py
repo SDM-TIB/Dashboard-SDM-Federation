@@ -100,9 +100,7 @@ class RDFMTMgr(object):
         return results
 
     def get_rdfmts(self, ds, types=[]):
-        results = self.extractMTLs(ds, types)
-
-        return results
+        return self.extractMTLs(ds, types)
 
     def extractMTLs(self, datasource, types=[]):
         rdfmolecules = {}
