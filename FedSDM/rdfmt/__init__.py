@@ -133,20 +133,20 @@ class RDFMTMgr(object):
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
                     '  OPTIONAL { ?t  <' + RDFS + 'label> ?label }\n}'
-            reslist, _ = _iterative_query(query, endpoint, limit=100)
-            to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
+            res_list, _ = _iterative_query(query, endpoint, limit=100)
+            to_remove = [r for m in metas for r in res_list if m in str(r['t'])]
             for r in to_remove:
-                reslist.remove(r)
+                res_list.remove(r)
         else:
-            reslist = [{'t': t} for t in types]
+            res_list = [{'t': t} for t in types]
 
         logger.info(endpoint)
-        logger.info(reslist)
-        pprint(reslist)
+        logger.info(res_list)
+        pprint(res_list)
 
         results = []
         alreadyprocessed = []
-        for r in reslist:
+        for r in res_list:
             t = r['t']
             if '^^' in t:
                 continue
