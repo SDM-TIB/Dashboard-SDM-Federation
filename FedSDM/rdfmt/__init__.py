@@ -99,7 +99,7 @@ class RDFMTMgr(object):
 
         return results
 
-    def get_rdfmts(self, ds, types=[]):
+    def get_rdfmts(self, ds, types=None):
         return self.extractMTLs(ds, types)
 
     def extractMTLs(self, datasource, types=[]):
