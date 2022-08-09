@@ -253,7 +253,6 @@ class RDFMTMgr(object):
                           '  ?s a <' + t + '> .\n' \
                           '  ?s <' + p + '> ?pt .\n' \
                           '  ?pt a ?r .\n}'
-        # filter (regex(str(?r), 'http://dbpedia.org/ontology', 'i'))
         reslist, _ = _iterative_query(INSTANCE_RANGES, referer, limit=50)
 
         ranges = []
