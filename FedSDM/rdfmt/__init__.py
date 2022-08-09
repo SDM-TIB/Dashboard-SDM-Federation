@@ -102,7 +102,7 @@ class RDFMTMgr(object):
     def get_rdfmts(self, ds, types=None):
         return self.extractMTLs(ds, types)
 
-    def extractMTLs(self, datasource, types=[]):
+    def extractMTLs(self, datasource, types=None):
         rdfmolecules = {}
         endpoint = datasource.url
 
