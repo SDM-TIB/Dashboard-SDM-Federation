@@ -431,15 +431,15 @@ class RDFMTMgr(object):
         # Virtuoso supports only 49 triples at a time.
         for i in range(0, len(data), 49):
             if i + 49 > len(data):
-                updatequery = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
+                update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
             else:
-                updatequery = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:i + 49]) + '} }'
-            logger.info(updatequery)
-            updateRDFSource(updatequery, self.update_endpoint)
+                update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:i + 49]) + '} }'
+            logger.info(update_query)
+            updateRDFSource(update_query, self.update_endpoint)
         if i < len(data) + 49:
-            updatequery = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
-            logger.info(updatequery)
-            updateRDFSource(updatequery, self.update_endpoint)
+            update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
+            logger.info(update_query)
+            updateRDFSource(update_query, self.update_endpoint)
 
     def delete_insert_data(self, delete, insert, where=[]):
         i = 0
