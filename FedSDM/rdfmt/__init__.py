@@ -496,7 +496,8 @@ class RDFMTMgr(object):
 
         return -1
 
-    def get_subclasses(self, endpoint, root):
+    @staticmethod
+    def get_subclasses(endpoint, root):
         referer = endpoint
         query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + RDFS + 'subClassOf> ?subc }'
         res, card = contactRDFSource(query, referer)
