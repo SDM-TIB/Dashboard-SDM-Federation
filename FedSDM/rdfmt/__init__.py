@@ -321,11 +321,11 @@ class RDFMTMgr(object):
     def get_mts_from_owl(self, e, graph, types=None):
         endpoint = e.url
         if types is None or len(types) == 0:
-            query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
+            query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE { GRAPH <' + graph + '> {\n' \
                     '  ?p <' + RDFS + 'domain> ?t .\n' \
                     '  OPTIONAL { ?p <' + RDFS + 'range> ?range }\n' \
                     '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
-                    '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
+                    '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel . FILTER langMatches(?tlabel, 'EN') }\n" \
                     '}}'
             res_list, _ = _iterative_query(query, endpoint, limit=50)
 
