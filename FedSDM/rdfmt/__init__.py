@@ -511,18 +511,18 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def get_source(self, dsid):
+    def get_source(self, ds_id):
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + dsid + '> <' + MT_ONTO + 'url> ?url .\n' \
-                '  <' + dsid + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'name> ?name }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'version> ?version }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'keywords> ?keywords }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'organization> ?organization }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'homepage> ?homepage }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'params> ?params }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
-                '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
+                '  <' + ds_id + '> <' + MT_ONTO + 'url> ?url .\n' \
+                '  <' + ds_id + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'name> ?name }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'version> ?version }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'keywords> ?keywords }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'organization> ?organization }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'homepage> ?homepage }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'params> ?params }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'desc> ?desc }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
