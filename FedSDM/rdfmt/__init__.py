@@ -298,7 +298,7 @@ class RDFMTMgr(object):
         """
         query = 'SELECT DISTINCT ?s WHERE{ ?s a <' + t + '> . }'
         res_instances, _ = _iterative_query(query, referer, limit=50, max_tries=100)
-        reslist = []
+        res_list = []
         card = len(res_instances)
         if card > 0:
             import random
@@ -306,10 +306,10 @@ class RDFMTMgr(object):
             inst = res_instances[rand]
             inst_res = self.get_preds_of_instance(referer, inst['s'])
             inst_res = [r['p'] for r in inst_res]
-            reslist.extend(inst_res)
-            reslist = list(set(reslist))
+            res_list.extend(inst_res)
+            res_list = list(set(res_list))
 
-        return reslist
+        return res_list
 
     def get_preds_of_instance(self, referer, inst, limit=-1):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
