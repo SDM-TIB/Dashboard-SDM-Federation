@@ -507,8 +507,8 @@ class RDFMTMgr(object):
                 '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
-        return reslist
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        return res_list
 
     def get_source(self, dsid):
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
