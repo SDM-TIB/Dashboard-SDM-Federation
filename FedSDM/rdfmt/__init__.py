@@ -574,7 +574,6 @@ class RDFMTMgr(object):
                 p = Process(target=self.get_inter_ds_links_bn, args=(s, rdfmts[si], t, rdfmts[ti], queue,))
                 p.start()
                 processes[ti] = p
-                # self.get_inter_ds_links_bn(s, rdfmts[s], t, rdfmts[t], graph)
                 if len(queues) > 2:
                     to_remove = []
                     while len(queues) > 0:
