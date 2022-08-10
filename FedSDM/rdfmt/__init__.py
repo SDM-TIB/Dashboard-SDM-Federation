@@ -315,9 +315,9 @@ class RDFMTMgr(object):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + inst + '> ?p ?pt .\n' \
                 '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
-        reslist, _ = _iterative_query(query, referer, limit=1000)
+        res_list, _ = _iterative_query(query, referer, limit=1000)
 
-        return reslist
+        return res_list
 
     def get_mts_from_owl(self, e, graph, limit=-1, types=[]):
         endpoint = e.url
