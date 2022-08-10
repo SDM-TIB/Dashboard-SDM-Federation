@@ -327,20 +327,20 @@ class RDFMTMgr(object):
                     '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
                     '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
                     '}}'
-            reslist, _ = _iterative_query(query, endpoint, limit=50)
+            res_list, _ = _iterative_query(query, endpoint, limit=50)
 
-            to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
+            to_remove = [r for m in metas for r in res_list if m in str(r['t'])]
             for r in to_remove:
-                reslist.remove(r)
+                res_list.remove(r)
         else:
-            reslist = [{'t': t} for t in types]
+            res_list = [{'t': t} for t in types]
 
         logger.info(endpoint)
-        logger.info(reslist)
+        logger.info(res_list)
         results = []
         alreadyprocessed = {}
         mts = {}
-        for r in reslist:
+        for r in res_list:
             t = r['t']
             if '^^' in t:
                 continue
