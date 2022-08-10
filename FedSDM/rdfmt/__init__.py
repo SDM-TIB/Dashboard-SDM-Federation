@@ -338,7 +338,7 @@ class RDFMTMgr(object):
         logger.info(endpoint)
         logger.info(res_list)
         results = []
-        alreadyprocessed = {}
+        already_processed = {}
         mts = {}
         for r in res_list:
             t = r['t']
@@ -346,7 +346,7 @@ class RDFMTMgr(object):
                 continue
 
             subclasses = []
-            if t not in alreadyprocessed:
+            if t not in already_processed:
                 # card = self.get_cardinality(endpoint, t)
                 # if isinstance(card, str) and '^' in card:
                 #     card = int(card[:card.find('^^')])
@@ -360,7 +360,7 @@ class RDFMTMgr(object):
                 print(t)
                 sourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint + t).encode()).hexdigest())
                 source = Source(sourceURI, e, mcard)
-                alreadyprocessed[t] = mcard
+                already_processed[t] = mcard
                 subc = self.get_subclasses(endpoint, t)
                 subclasses = [r['subc'] for r in subc]
                 name = r['tlabel'] if 'tlabel' in r else t
@@ -368,7 +368,7 @@ class RDFMTMgr(object):
                 mts[t] = {'name': name, 'properties': [], 'desc':desc, 'sources':[source], 'subClassOf':subclasses}
 
             else:
-                mcard = alreadyprocessed[t]
+                mcard = already_processed[t]
 
             pred = r['p']
             print(pred)
