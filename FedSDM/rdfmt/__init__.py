@@ -320,7 +320,6 @@ class RDFMTMgr(object):
 
     def get_mts_from_owl(self, e, graph, types=None):
         endpoint = e.url
-        referer = endpoint
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
                     '  ?p <' + RDFS + 'domain> ?t .\n' \
