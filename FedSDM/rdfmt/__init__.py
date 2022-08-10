@@ -326,7 +326,7 @@ class RDFMTMgr(object):
                     '  OPTIONAL { ?p <' + RDFS + 'range> ?range }\n' \
                     '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
                     '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
-                    '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
+                    '}}'
             reslist, _ = _iterative_query(query, endpoint, limit=50)
 
             to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
