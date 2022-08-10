@@ -524,8 +524,8 @@ class RDFMTMgr(object):
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
-        return reslist
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        return res_list
 
     def get_ds_rdfmts(self, datasource):
         query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> {\n' \
