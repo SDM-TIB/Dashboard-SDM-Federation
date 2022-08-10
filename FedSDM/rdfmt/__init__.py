@@ -321,17 +321,20 @@ class RDFMTMgr(object):
     def get_mts_from_owl(self, e, graph, limit=-1, types=[]):
         endpoint = e.url
         referer = endpoint
-        query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
-                '  ?p <' + RDFS + 'domain> ?t .\n' \
-                '  OPTIONAL { ?p <' + RDFS + 'range> ?range }\n' \
-                '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
-                '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
-                '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
-        reslist, _ = _iterative_query(query, endpoint, limit=50)
+        if types is None or len(types) == 0:
+            query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE{ graph <' + graph + '>{\n' \
+                    '  ?p <' + RDFS + 'domain> ?t .\n' \
+                    '  OPTIONAL { ?p <' + RDFS + 'range> ?range }\n' \
+                    '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
+                    '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel. FILTER langMatches(?tlabel, 'EN') }\n" \
+                    '}}'  # filter (regex(str(?t), 'http://dbpedia.org/ontology', 'i'))
+            reslist, _ = _iterative_query(query, endpoint, limit=50)
 
-        to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
-        for r in to_remove:
-            reslist.remove(r)
+            to_remove = [r for m in metas for r in reslist if m in str(r['t'])]
+            for r in to_remove:
+                reslist.remove(r)
+        else:
+            reslist = [{'t': t} for t in types]
 
         logger.info(endpoint)
         logger.info(reslist)
