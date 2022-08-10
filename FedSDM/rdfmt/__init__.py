@@ -365,7 +365,7 @@ class RDFMTMgr(object):
                 subclasses = [r['subc'] for r in subc]
                 name = r['tlabel'] if 'tlabel' in r else t
                 desc = r['tdesc'] if 'tdesc' in r else None
-                mts[t] = {'name': name, 'properties': [], 'desc':desc, 'sources':[source], 'subClassOf':subclasses}
+                mts[t] = {'name': name, 'properties': [], 'desc': desc, 'sources': [source], 'subClassOf': subclasses}
             else:
                 mcard = already_processed[t]
 
