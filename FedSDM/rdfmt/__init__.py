@@ -285,7 +285,7 @@ class RDFMTMgr(object):
 
         return res_list
 
-    def get_preds_of_random_instances(self, referer, t, limit=-1):
+    def get_preds_of_random_instances(self, referer, t):
         """
         get a union of predicated from 'randomly' selected 10 entities from the first 100 subjects returned
 
