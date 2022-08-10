@@ -441,7 +441,9 @@ class RDFMTMgr(object):
             logger.info(update_query)
             updateRDFSource(update_query, self.update_endpoint)
 
-    def delete_insert_data(self, delete, insert, where=[]):
+    def delete_insert_data(self, delete, insert, where=None):
+        if where is None:
+            where = []
         i = 0
         updatequery = 'WITH <' + self.graph + '> DELETE {'
         # Virtuoso supports only 49 triples at a time.
