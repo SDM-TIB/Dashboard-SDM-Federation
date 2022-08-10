@@ -311,7 +311,7 @@ class RDFMTMgr(object):
 
         return res_list
 
-    def get_preds_of_instance(self, referer, inst, limit=-1):
+    def get_preds_of_instance(self, referer, inst):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + inst + '> ?p ?pt .\n' \
                 '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
