@@ -273,14 +273,14 @@ class RDFMTMgr(object):
                 '  ?s ?p ?pt .\n' \
                 '  OPTIONAL { ?p  <' + RDFS + 'label> ?label }\n}'
         res_list, status = _iterative_query(query, referer, limit=50)
-        existingpreds = [r['p'] for r in res_list]
+        existing_predicates = [r['p'] for r in res_list]
 
         if status == -1:  # fallback - get predicates from randomly selected instances of the type
             print('giving up on ' + query)
             print('trying instances .....')
             rand_inst_res = self.get_preds_of_random_instances(referer, t)
             for r in rand_inst_res:
-                if r not in existingpreds:
+                if r not in existing_predicates:
                     res_list.append({'p': r})
 
         return res_list
