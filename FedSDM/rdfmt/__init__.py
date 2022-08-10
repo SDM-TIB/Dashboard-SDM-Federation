@@ -109,7 +109,7 @@ class RDFMTMgr(object):
         if datasource.ontology_graph is None:
             results = self.get_typed_concepts(datasource, types)
         else:
-            results = self.get_mts_from_owl(datasource, datasource.ontology_graph, -1, types)
+            results = self.get_mts_from_owl(datasource, datasource.ontology_graph, types)
 
         rdf_molecules[endpoint] = results
 
@@ -318,7 +318,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, referer, limit=1000)
         return res_list
 
-    def get_mts_from_owl(self, e, graph, limit=-1, types=[]):
+    def get_mts_from_owl(self, e, graph, types=[]):
         endpoint = e.url
         referer = endpoint
         if types is None or len(types) == 0:
