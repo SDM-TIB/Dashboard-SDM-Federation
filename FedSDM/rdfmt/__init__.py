@@ -318,7 +318,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, referer, limit=1000)
         return res_list
 
-    def get_mts_from_owl(self, e, graph, types=[]):
+    def get_mts_from_owl(self, e, graph, types=None):
         endpoint = e.url
         referer = endpoint
         if types is None or len(types) == 0:
