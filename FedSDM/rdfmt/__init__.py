@@ -534,8 +534,8 @@ class RDFMTMgr(object):
                 '  OPTIONAL { ?source <' + MT_ONTO + 'cardinality> ?card }\n' \
                 '  ?source <' + MT_ONTO + 'datasource> <' + datasource + '> .\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
-        return reslist
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        return res_list
 
     def create_inter_ds_links(self, datasource=None, outputqueue=Queue()):
         sources = self.get_sources()
