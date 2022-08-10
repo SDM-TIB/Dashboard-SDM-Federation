@@ -537,11 +537,11 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def create_inter_ds_links(self, datasource=None, outputqueue=Queue()):
+    def create_inter_ds_links(self, datasource=None, output_queue=Queue()):
         sources = self.get_sources()
         rdfmts = {}
         if len(sources) == 0:
-            outputqueue.put('EOF')
+            output_queue.put('EOF')
             return
 
         sourcemaps = {s['subject']: s for s in sources}
@@ -556,7 +556,7 @@ class RDFMTMgr(object):
         else:
             self.find_all_links(rdfmts, sourcemaps)
 
-        outputqueue.put('EOF')
+        output_queue.put('EOF')
 
     def find_all_links(self, rdfmts, sourcemaps):
         queues = {}
