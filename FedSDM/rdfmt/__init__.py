@@ -316,7 +316,6 @@ class RDFMTMgr(object):
                 '  <' + inst + '> ?p ?pt .\n' \
                 '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
         res_list, _ = _iterative_query(query, referer, limit=1000)
-
         return res_list
 
     def get_mts_from_owl(self, e, graph, limit=-1, types=[]):
