@@ -445,26 +445,26 @@ class RDFMTMgr(object):
         if where is None:
             where = []
         i = 0
-        updatequery = 'WITH <' + self.graph + '> DELETE {'
+        update_query = 'WITH <' + self.graph + '> DELETE {'
         # Virtuoso supports only 49 triples at a time.
         for i in range(0, len(delete), 49):
             if i + 49 > len(delete):
-                updatequery += ' . \n'.join(delete[i:]) + '} ' \
-                               'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
-                               'WHERE {' + ' . \n'.join(where[i:]) + '}'
+                update_query += ' . \n'.join(delete[i:]) + '} ' \
+                                'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
+                                'WHERE {' + ' . \n'.join(where[i:]) + '}'
             else:
-                updatequery += ' . \n'.join(delete[i:i + 49]) + '} ' \
-                               'INSERT {' + ' . \n'.join(insert[i:i + 49]) + '} ' \
-                               'WHERE {' + ' . \n'.join(where[i:i + 49]) + '}'
-            logger.info(updatequery)
-            updateRDFSource(updatequery, self.update_endpoint)
-        updatequery = 'WITH <' + self.graph + '> DELETE {'
+                update_query += ' . \n'.join(delete[i:i + 49]) + '} ' \
+                                'INSERT {' + ' . \n'.join(insert[i:i + 49]) + '} ' \
+                                'WHERE {' + ' . \n'.join(where[i:i + 49]) + '}'
+            logger.info(update_query)
+            updateRDFSource(update_query, self.update_endpoint)
+        update_query = 'WITH <' + self.graph + '> DELETE {'
         if i < len(delete) + 49:
-            updatequery += ' . \n'.join(delete[i:]) + '} ' \
+            update_query += ' . \n'.join(delete[i:]) + '} ' \
                            'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
                            'WHERE {' + ' . \n'.join(where[i:]) + '}'
-            logger.info(updatequery)
-            updateRDFSource(updatequery, self.update_endpoint)
+            logger.info(update_query)
+            updateRDFSource(update_query, self.update_endpoint)
 
     def get_cardinality(self, endpoint, mt=None, prop=None, mr=None, mrtype=None):
         if mt is None:
