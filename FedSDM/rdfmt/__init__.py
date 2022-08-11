@@ -840,8 +840,8 @@ class RDFMTMgr(object):
                         continue
 
             for t in res_list:
-                sourceURI = MT_RESOURCE + str(hashlib.md5(str(ds.url + t).encode()).hexdigest())
-                source = Source(sourceURI, ds)
+                source_uri = MT_RESOURCE + str(hashlib.md5(str(ds.url + t).encode()).hexdigest())
+                source = Source(source_uri, ds)
 
                 rdfpropteries = []
                 preds = res_list[t]
