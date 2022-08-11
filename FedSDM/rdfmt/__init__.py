@@ -675,16 +675,16 @@ class RDFMTMgr(object):
             pred_query = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
             res_pred_query, _ = _iterative_query(pred_query, endpoint1, limit=1000)
             predicates = [r['p'] for r in res_pred_query]
-            reslist = {}
+            res_list = {}
             for p in predicates:
                 query = 'SELECT DISTINCT ?t WHERE {\n' \
                         '  ?s a <' + m1 + '> .\n' \
                         '  ?s <' + p + '> ?t .\n' \
                         '  FILTER (isURI(?t))\n}'
                 res, _ = _iterative_query(query, endpoint1, limit=500, max_answers=500)
-                reslist.setdefault(p, []).extend([r['t'] for r in res])
+                res_list.setdefault(p, []).extend([r['t'] for r in res])
 
-            typesfound = self.get_links_bn_ds(reslist, trdfmts, endpoint2)
+            typesfound = self.get_links_bn_ds(res_list, trdfmts, endpoint2)
             for link in typesfound:
                 data = []
                 if 'Movie' in m1:
