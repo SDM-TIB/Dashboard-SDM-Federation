@@ -779,11 +779,9 @@ class RDFMTMgr(object):
 
     def create_from_mapping(self, ds, out_queue=Queue(), types=None):
         logger.info('----------------------' + ds.url + '-------------------------------------')
-
         results = self.get_rdfmts(ds, types)
         # self.create_inter_ds_links(datasource=ds)
         out_queue.put('EOF')
-
         return results
 
     def get_rdfmts_from_mapping(self, ds, types=None):
