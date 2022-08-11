@@ -717,13 +717,13 @@ class RDFMTMgr(object):
         results = {}
         for p in res_list:
             print(p)
-            rdfmts_found = self.get_mts_matches(res_list[p], e2, p)
+            rdfmts_found = self.get_mts_matches(res_list[p], e2)
             results[p] = [r for r in rdfmts_found if r in trdfmts]
             print(results[p])
             print('=-=-=-=-=-=-')
         return results
 
-    def get_mts_matches(self, results, e, p):
+    def get_mts_matches(self, results, e):
         i = 0
         j = 0
         reslist = []
