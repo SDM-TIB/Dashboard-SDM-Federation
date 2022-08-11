@@ -674,9 +674,9 @@ class RDFMTMgr(object):
             print('--------------------------------------------------')
             pred_query = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
             res_pred_query, _ = _iterative_query(pred_query, endpoint1, limit=1000)
-            preds = [r['p'] for r in res_pred_query]
+            predicates = [r['p'] for r in res_pred_query]
             reslist = {}
-            for p in preds:
+            for p in predicates:
                 query = 'SELECT DISTINCT ?t WHERE {\n' \
                         '  ?s a <' + m1 + '> .\n' \
                         '  ?s <' + p + '> ?t .\n' \
