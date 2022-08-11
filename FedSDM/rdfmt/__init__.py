@@ -735,25 +735,25 @@ class RDFMTMgr(object):
         return {}
 
     def get_links_bn_ds_prefixed(self, res_list, m2, e2):
-        resdict = {}
+        res_dict = {}
         results = {}
         prefixes = {}
         for r in res_list:
-            if r['p'] in resdict:
-                resdict[r['p']].append(r['t'])
+            if r['p'] in res_dict:
+                res_dict[r['p']].append(r['t'])
             else:
-                resdict[r['p']] = [r['t']]
+                res_dict[r['p']] = [r['t']]
 
             obj = r['t']
             if r['p'] in prefixes:
                 prefixes[r['p']].append(obj[:obj.rfind('/')])
             else:
                 prefixes[r['p']] = [obj[:obj.rfind('/')]]
-        print('linking properties:', resdict.keys())
-        for p in resdict:
+        print('linking properties:', res_dict.keys())
+        for p in res_dict:
             prefs = list(set(prefixes[p]))
             res_list = self.get_if_prefix_matches(m2, prefs, e2)
-            e1res = resdict[p]
+            e1res = res_dict[p]
             matching = list(set(res_list).intersection(set(e1res)))
             if len(matching) > 0:
                 results[p] = len(matching)
