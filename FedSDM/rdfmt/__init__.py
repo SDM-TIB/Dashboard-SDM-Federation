@@ -668,7 +668,6 @@ class RDFMTMgr(object):
     def get_inter_ds_links_bn(self, s, srdfmts, t, trdfmts, queue=Queue()):
         endpoint1 = s['url']
         endpoint2 = t['url']
-        # print('Linking between ', s['subject'], ' and (to) ', t['subject'])
         for m1 in srdfmts:
             print(m1)
             print('--------------------------------------------------')
