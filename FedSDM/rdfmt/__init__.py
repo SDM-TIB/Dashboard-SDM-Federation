@@ -777,12 +777,12 @@ class RDFMTMgr(object):
         res, _ = _iterative_query(query, endpoint, limit=1000)
         return [r['t'] for r in res]
 
-    def create_from_mapping(self, ds, outqueue=Queue(), types=None):
+    def create_from_mapping(self, ds, out_queue=Queue(), types=None):
         logger.info('----------------------' + ds.url + '-------------------------------------')
 
         results = self.get_rdfmts(ds, types)
         # self.create_inter_ds_links(datasource=ds)
-        outqueue.put('EOF')
+        out_queue.put('EOF')
 
         return results
 
