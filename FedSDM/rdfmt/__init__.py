@@ -715,7 +715,6 @@ class RDFMTMgr(object):
 
     def get_links_bn_ds(self, res_list, trdfmts, e2):
         results = {}
-
         for p in res_list:
             print(p)
             rdfmts_found = self.get_mts_matches(res_list[p], e2, p)
