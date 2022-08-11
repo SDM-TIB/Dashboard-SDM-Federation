@@ -672,8 +672,8 @@ class RDFMTMgr(object):
         for m1 in srdfmts:
             print(m1)
             print('--------------------------------------------------')
-            predquery = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
-            res_pred_query, _ = _iterative_query(predquery, endpoint1, limit=1000)
+            pred_query = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
+            res_pred_query, _ = _iterative_query(pred_query, endpoint1, limit=1000)
             preds = [r['p'] for r in res_pred_query]
             reslist = {}
             for p in preds:
