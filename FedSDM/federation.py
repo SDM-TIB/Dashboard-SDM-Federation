@@ -287,25 +287,11 @@ def recreate_mts(federation: str, ds: str):
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     out_queue = Queue()
     datasource = mgr.get_source(ds)
-    if len(datasource) > 0:
-        datasource = datasource[0]
-        datasource = DataSource(
-            ds,
-            datasource['url'],
-            datasource['dstype'],
-            name=datasource['name'],
-            desc=datasource['desc'] if 'desc' in datasource else '',
-            params=datasource['params'] if 'params' in datasource else {},
-            keywords=datasource['keywords'] if 'keywords' in datasource else '',
-            version=datasource['version'] if 'version' in datasource else '',
-            homepage=datasource['homepage'] if 'homepage' in datasource else '',
-            organization=datasource['organization'] if 'organization' in datasource else '',
-            ontology_graph=datasource['ontology_graph'] if 'ontology_graph' in datasource else None
-        )
-        p = Process(target=mgr.create, args=(datasource, out_queue, [], True,))
-        p.start()
-        return {'status': 1}, out_queue
-    return {'status': -1}, None
+    if datasource is None:
+        return {'status': -1}, None
+    p = Process(target=mgr.create, args=(datasource, out_queue, [], True,))
+    p.start()
+    return {'status': 1}, out_queue
 
 
 def get_federation(id: str, check_owner: bool = True):

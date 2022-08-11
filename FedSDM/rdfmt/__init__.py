@@ -511,7 +511,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def get_source(self, ds_id):
+    def get_source(self, ds_id: str) -> DataSource | None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'url> ?url .\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
@@ -524,8 +524,22 @@ class RDFMTMgr(object):
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
-        return res_list
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1, max_answers=1)
+        if len(res_list) > 0:
+            res = res_list[0]
+            return DataSource(
+                ds_id,
+                res['url'],
+                res['dstype'],
+                name=res['name'] if 'name' in res else '',
+                desc=res['desc'] if 'desc' in res else '',
+                params=res['params'] if 'params' in res else {},
+                keywords=res['keywords'] if 'keywords' in res else '',
+                version=res['version'] if 'version' in res else '',
+                homepage=res['homepage'] if 'homepage' in res else '',
+                organization=res['organization'] if 'organization' in res else ''
+            )
+        return None
 
     def get_ds_rdfmts(self, datasource):
         query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> {\n' \
@@ -600,27 +614,11 @@ class RDFMTMgr(object):
             did = datasource.rid
             ds = sourcemaps[datasource.rid]
         else:
-            ds = datasource
             datasource = self.get_source(datasource)
-            if len(datasource) > 0:
-                datasource = datasource[0]
-                datasource = DataSource(ds,
-                                        datasource['url'],
-                                        datasource['dstype'],
-                                        name=datasource['name'],
-                                        desc=datasource['desc'] if 'desc' in datasource else '',
-                                        params=datasource['params'] if 'params' in datasource else {},
-                                        keywords=datasource['keywords'] if 'keywords' in datasource else '',
-                                        version=datasource['version'] if 'version' in datasource else '',
-                                        homepage=datasource['homepage'] if 'homepage' in datasource else '',
-                                        organization=datasource['organization'] if 'organization' in datasource else '',
-                                        ontology_graph=datasource[
-                                            'ontology_graph'] if 'ontology_graph' in datasource else None
-                                        )
-                ds = sourcemaps[datasource.rid]
-                did = datasource.rid
-            else:
-                did = datasource
+            if datasource is None:
+                return
+            ds = sourcemaps[datasource.rid]
+            did = datasource.rid
 
         today = str(datetime.datetime.now())
         data = ['<' + datasource.rid + '> <http://purl.org/dc/terms/modified> "' + today + '"']
