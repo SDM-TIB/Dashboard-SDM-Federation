@@ -763,7 +763,7 @@ class RDFMTMgr(object):
         return results
 
     def get_if_prefix_matches(self, m2, prefixes, e):
-        reslist = []
+        res_list = []
         i = 0
         j = 0
         for i in range(10, len(prefixes), 10):
@@ -771,15 +771,15 @@ class RDFMTMgr(object):
             # Check if there are subjects with prefixes matching
             tquery = 'SELECT DISTINCT * WHERE {\n  ?t a <' + m2 + '> .\n  FILTER (' + ' || '.join(prefs) + ')\n}'
             print(tquery)
-            reslist.extend(self.get_results(tquery, e))
+            res_list.extend(self.get_results(tquery, e))
             j += 10
 
         if i < len(prefixes):
             prefs = [" regex(str(?t), '" + p + "', 'i') " for p in prefixes[i:]]
             tquery = 'SELECT DISTINCT * WHERE {\n  ?t a <' + m2 + '> .\n  FILTER (' + ' || '.join(prefs) + ')\n}'
-            reslist.extend(self.get_results(tquery, e))
+            res_list.extend(self.get_results(tquery, e))
 
-        return reslist
+        return res_list
 
     def get_results(self, query, endpoint):
         res, _ = _iterative_query(query, endpoint, limit=1000)
