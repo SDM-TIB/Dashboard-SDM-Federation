@@ -861,8 +861,8 @@ class RDFMTMgr(object):
                                 ran = PropRange(mrpid, mr, rds, range_type=rtype, cardinality=-1)
                                 ranges.append(ran)
 
-                    predsouce = Source(propsourceURI, ds, -1)
-                    mtprop = MTProperty(mtpredicateURI, p, [predsouce], ranges=ranges, label=p)
+                    pred_source = Source(propsourceURI, ds, -1)
+                    mtprop = MTProperty(mtpredicateURI, p, [pred_source], ranges=ranges, label=p)
                     rdf_properties.append(mtprop)
 
                     results.append(rn)
@@ -871,8 +871,8 @@ class RDFMTMgr(object):
                 mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
                 propsourceURI = MT_RESOURCE + str(hashlib.md5(str(ds.url + t + p).encode()).hexdigest())
 
-                predsouce = Source(propsourceURI, ds, -1)
-                mtprop = MTProperty(mtpredicateURI, p, [predsouce], ranges=[], label='RDF type')
+                pred_source = Source(propsourceURI, ds, -1)
+                mtprop = MTProperty(mtpredicateURI, p, [pred_source], ranges=[], label='RDF type')
                 rdf_properties.append(mtprop)
 
                 name = t
