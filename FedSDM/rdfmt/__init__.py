@@ -734,11 +734,11 @@ class RDFMTMgr(object):
                 return res
         return {}
 
-    def get_links_bn_ds_prefixed(self, reslist, m2, e2):
+    def get_links_bn_ds_prefixed(self, res_list, m2, e2):
         resdict = {}
         results = {}
         prefixes = {}
-        for r in reslist:
+        for r in res_list:
             if r['p'] in resdict:
                 resdict[r['p']].append(r['t'])
             else:
@@ -752,9 +752,9 @@ class RDFMTMgr(object):
         print('linking properties:', resdict.keys())
         for p in resdict:
             prefs = list(set(prefixes[p]))
-            reslist = self.get_if_prefix_matches(m2, prefs, e2)
+            res_list = self.get_if_prefix_matches(m2, prefs, e2)
             e1res = resdict[p]
-            matching = list(set(reslist).intersection(set(e1res)))
+            matching = list(set(res_list).intersection(set(e1res)))
             if len(matching) > 0:
                 results[p] = len(matching)
                 print(len(matching), ' links out of 10000 subject found for', p, m2, 'in', e2)
