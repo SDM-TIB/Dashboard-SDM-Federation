@@ -713,12 +713,12 @@ class RDFMTMgr(object):
         print('get_inter_ds_links_bn Done!')
         queue.put('EOF')
 
-    def get_links_bn_ds(self, reslist, trdfmts, e2):
+    def get_links_bn_ds(self, res_list, trdfmts, e2):
         results = {}
 
-        for p in reslist:
+        for p in res_list:
             print(p)
-            rdfmtsfound = self.get_mts_matches(reslist[p], e2, p)
+            rdfmtsfound = self.get_mts_matches(res_list[p], e2, p)
             results[p] = [r for r in rdfmtsfound if r in trdfmts]
             print(results[p])
             print('=-=-=-=-=-=-')
