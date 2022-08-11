@@ -843,7 +843,7 @@ class RDFMTMgr(object):
                 source_uri = MT_RESOURCE + str(hashlib.md5(str(ds.url + t).encode()).hexdigest())
                 source = Source(source_uri, ds)
 
-                rdfpropteries = []
+                rdf_properties = []
                 preds = res_list[t]
 
                 for p in preds:
@@ -863,7 +863,7 @@ class RDFMTMgr(object):
 
                     predsouce = Source(propsourceURI, ds, -1)
                     mtprop = MTProperty(mtpredicateURI, p, [predsouce], ranges=ranges, label=p)
-                    rdfpropteries.append(mtprop)
+                    rdf_properties.append(mtprop)
 
                     results.append(rn)
                 # add rdf:type property
@@ -873,11 +873,11 @@ class RDFMTMgr(object):
 
                 predsouce = Source(propsourceURI, ds, -1)
                 mtprop = MTProperty(mtpredicateURI, p, [predsouce], ranges=[], label='RDF type')
-                rdfpropteries.append(mtprop)
+                rdf_properties.append(mtprop)
 
                 name = t
                 desc = None
-                mt = RDFMT(t, name, properties=rdfpropteries, desc=desc, sources=[source], subClassOf=[])
+                mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subClassOf=[])
                 mtd = mt.to_rdf()
                 data.extend(mtd)
                 data = list(set(data))
