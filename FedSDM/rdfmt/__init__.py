@@ -683,15 +683,15 @@ class RDFMTMgr(object):
                 res, _ = _iterative_query(query, endpoint1, limit=500, max_answers=500)
                 res_list.setdefault(p, []).extend([r['t'] for r in res])
 
-            typesfound = self.get_links_bn_ds(res_list, trdfmts, endpoint2)
-            for link in typesfound:
+            types_found = self.get_links_bn_ds(res_list, trdfmts, endpoint2)
+            for link in types_found:
                 data = []
                 if 'Movie' in m1:
                     print(m1, ' ====== ', link)
-                if len(typesfound[link]) > 0:
-                    print(len(typesfound[link]), 'links found')
+                if len(types_found[link]) > 0:
+                    print(len(types_found[link]), 'links found')
                     try:
-                        for m2 in typesfound[link]:
+                        for m2 in types_found[link]:
                             val = str(endpoint2 + m1 + link + m2).encode()
                             mrpid = MT_RESOURCE + str(hashlib.md5(val).hexdigest())
 
@@ -707,7 +707,7 @@ class RDFMTMgr(object):
                         print('Exception : ', e)
                         logger.error('Exception while collecting data' + str(e))
                         logger.error(m1 + ' --- Vs --- ' + 'in [' + endpoint2 + ']')
-                        logger.error(typesfound)
+                        logger.error(types_found)
                         logger.error(data)
 
         print('get_inter_ds_links_bn Done!')
