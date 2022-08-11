@@ -665,10 +665,6 @@ class RDFMTMgr(object):
                             del processes[r]
         print('linking DONE!', did)
 
-    def getPredicates(self, query, endpoint):
-        res_list, _ = _iterative_query(query, endpoint, limit=1000)
-        return [r['p'] for r in res_list]
-
     def get_inter_ds_links_bn(self, s, srdfmts, t, trdfmts, queue=Queue()):
         endpoint1 = s['url']
         endpoint2 = t['url']
@@ -677,7 +673,8 @@ class RDFMTMgr(object):
             print(m1)
             print('--------------------------------------------------')
             predquery = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
-            preds = self.getPredicates(predquery, endpoint1)
+            res_pred_query, _ = _iterative_query(predquery, endpoint1, limit=1000)
+            preds = [r['p'] for r in res_pred_query]
             reslist = {}
             for p in preds:
                 query = 'SELECT DISTINCT ?t WHERE {\n' \
