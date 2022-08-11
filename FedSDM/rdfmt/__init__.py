@@ -724,26 +724,15 @@ class RDFMTMgr(object):
         return results
 
     def get_mts_matches(self, results, e):
-        i = 0
-        j = 0
-        reslist = []
-        for i in range(50, len(results), 50):
-            subjs = ['?s=<' + r + '>' for r in results[j:i]]
-
-            # Check if there are subjects with prefixes matching
-            tquery = 'SELECT DISTINCT ?t WHERE {\n  ?s a ?t .\n  FILTER (' + ' || '.join(subjs) + ')\n}'
+        # Checks if there are subjects with prefixes matching
+        batches = [results[i:i+50] for i in range(0, len(results), 50)]
+        for batch in batches:
+            subjects = ['?s=<' + r + '>' for r in batch]
+            tquery = 'SELECT DISTINCT ?t WHERE {\n  ?s a ?t .\n  FILTER (' + ' || '.join(subjects) + ')\n}'
             res = self.get_results(tquery, e)
-            reslist.extend(res)
             if len(res) > 0:
-                break
-            j += 50
-
-        if i < len(reslist):
-            subjs = ['?s=<' + r + '>' for r in results[:-50]]
-            tquery = 'SELECT DISTINCT ?t WHERE {\n  ?s a ?t .\n  FILTER (' + ' || '.join(subjs) + ')\n}'
-            reslist.extend(self.get_results(tquery, e))
-
-        return reslist
+                return res
+        return {}
 
     def get_links_bn_ds_prefixed(self, reslist, m2, e2):
         resdict = {}
