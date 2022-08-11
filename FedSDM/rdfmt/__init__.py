@@ -777,7 +777,7 @@ class RDFMTMgr(object):
         res, _ = _iterative_query(query, endpoint, limit=1000)
         return [r['t'] for r in res]
 
-    def create_from_mapping(self, ds, outqueue=Queue(), types=[], isupdate=False):
+    def create_from_mapping(self, ds, outqueue=Queue(), types=[]):
         endpoint = ds.url
         logger.info('----------------------' + endpoint + '-------------------------------------')
 
