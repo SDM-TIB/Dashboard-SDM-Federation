@@ -763,22 +763,14 @@ class RDFMTMgr(object):
         return results
 
     def get_if_prefix_matches(self, m2, prefixes, e):
+        # Checks if there are subjects with prefixes matching
         res_list = []
-        i = 0
-        j = 0
-        for i in range(10, len(prefixes), 10):
-            prefs = [" regex(str(?t), '" + p + "', 'i') " for p in prefixes[j:i]]
-            # Check if there are subjects with prefixes matching
+        batches = [prefixes[i:i+10] for i in range(0, len(prefixes), 10)]
+        for batch in batches:
+            prefs = [" regex(str(?t), '" + p + "', 'i') " for p in batch]
             tquery = 'SELECT DISTINCT * WHERE {\n  ?t a <' + m2 + '> .\n  FILTER (' + ' || '.join(prefs) + ')\n}'
             print(tquery)
             res_list.extend(self.get_results(tquery, e))
-            j += 10
-
-        if i < len(prefixes):
-            prefs = [" regex(str(?t), '" + p + "', 'i') " for p in prefixes[i:]]
-            tquery = 'SELECT DISTINCT * WHERE {\n  ?t a <' + m2 + '> .\n  FILTER (' + ' || '.join(prefs) + ')\n}'
-            res_list.extend(self.get_results(tquery, e))
-
         return res_list
 
     def get_results(self, query, endpoint):
