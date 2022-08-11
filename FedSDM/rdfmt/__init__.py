@@ -666,8 +666,8 @@ class RDFMTMgr(object):
         print('linking DONE!', did)
 
     def getPredicates(self, query, endpoint):
-        reslist, _ = _iterative_query(query, endpoint, limit=1000)
-        return [r['p'] for r in reslist]
+        res_list, _ = _iterative_query(query, endpoint, limit=1000)
+        return [r['p'] for r in res_list]
 
     def get_inter_ds_links_bn(self, s, srdfmts, t, trdfmts, queue=Queue()):
         endpoint1 = s['url']
