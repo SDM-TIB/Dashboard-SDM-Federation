@@ -893,9 +893,9 @@ class MTManager(object):
     """
     Used in Config to access RDF-MTs in the data lake
     """
-    def __init__(self, queryurl, user, passwd, graph):
+    def __init__(self, query_url, user, passwd, graph):
         self.graph = graph
-        self.queryendpoint = queryurl
+        self.queryendpoint = query_url
         self.user = user
         self.passwd = passwd
 
