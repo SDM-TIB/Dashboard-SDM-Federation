@@ -809,42 +809,42 @@ class RDFMTMgr(object):
         results = []
         data = []
         if card > 0:
-            reslist = {}
+            res_list = {}
             for r in res:
                 t = r['t']
                 p = r['p']
-                if t in reslist:
-                    if p in reslist[t]:
+                if t in res_list:
+                    if p in res_list[t]:
                         if 'r' in r:
-                            if r['r'] in reslist[t][p]:
-                                if r['rds'] in reslist[t][p][r['r']]:
+                            if r['r'] in res_list[t][p]:
+                                if r['rds'] in res_list[t][p][r['r']]:
                                     continue
                                 else:
-                                    reslist[t][p][r['r']].append(r['rds'])
+                                    res_list[t][p][r['r']].append(r['rds'])
                             else:
-                                reslist[t][p][r['r']] = [r['rds']]
+                                res_list[t][p][r['r']] = [r['rds']]
                         else:
                             continue
                     else:
-                        reslist[t][p] = {}
+                        res_list[t][p] = {}
                         if 'r' in r:
-                            reslist[t][p][r['r']] = [r['rds']]
+                            res_list[t][p][r['r']] = [r['rds']]
                         else:
                             continue
                 else:
-                    reslist[t] = {}
-                    reslist[t][p] = {}
+                    res_list[t] = {}
+                    res_list[t][p] = {}
                     if 'r' in r:
-                        reslist[t][p][r['r']] = [r['rds']]
+                        res_list[t][p][r['r']] = [r['rds']]
                     else:
                         continue
 
-            for t in reslist:
+            for t in res_list:
                 sourceURI = MT_RESOURCE + str(hashlib.md5(str(ds.url + t).encode()).hexdigest())
                 source = Source(sourceURI, ds)
 
                 rdfpropteries = []
-                preds = reslist[t]
+                preds = res_list[t]
 
                 for p in preds:
                     rn = {'t': t, 'cardinality': -1, 'subclasses': [], 'p': p, 'predcard': -1, 'range': preds[p].keys()}
