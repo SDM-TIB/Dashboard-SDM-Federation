@@ -1185,10 +1185,7 @@ class MTManager(object):
         return results
 
     def get_preds_mt(self, predicates=None):
-        filter = ''
-        if predicates is not None:
-            filter = ' || '.join(['?pred=<' + p + '> ' for p in predicates])
-
+        filter = ' || '.join(['?pred=<' + p + '> ' for p in predicates]) if predicates is not None else ''
         query = 'SELECT DISTINCT ?rid ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'RDFMT> .\n' \
                 '  ?rid <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
