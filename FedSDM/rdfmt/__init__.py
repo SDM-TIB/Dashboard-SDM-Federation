@@ -1121,9 +1121,9 @@ class MTManager(object):
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
-        if len(reslist) > 0:
-            e = reslist[0]
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        if len(res_list) > 0:
+            e = res_list[0]
             ds = DataSource(ds_id,
                             e['url'],
                             e['dstype'],
