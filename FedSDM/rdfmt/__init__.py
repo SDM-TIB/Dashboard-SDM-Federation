@@ -907,12 +907,12 @@ class MTManager(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def get_rdfmt_links(self, rdf_class, preds=None):
-        if preds is None:
-            preds = ''
+    def get_rdfmt_links(self, rdf_class, predicates=None):
+        if predicates is None:
+            predicates = []
         else:
-            filters = ['?pred=<' + p +'> ' for p in preds]
-            preds = 'FILTER (' + (' || '.join(filters)) + ')'
+            filters = ['?pred=<' + p +'> ' for p in predicates]
+            predicates = 'FILTER (' + (' || '.join(filters)) + ')'
 
         query = 'SELECT DISTINCT ?datasource  ?pred ?mtr WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  <' + rdf_class + '> <' + MT_ONTO + 'source> ?source .\n' \
@@ -921,7 +921,7 @@ class MTManager(object):
                 '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
                 '  ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
                 '  ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n  ' \
-                + preds + '\n}}'
+                + predicates + '\n}}'
         reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in reslist:
