@@ -911,7 +911,7 @@ class MTManager(object):
         if predicates is None:
             predicates = []
         else:
-            filters = ['?pred=<' + p +'> ' for p in predicates]
+            filters = ['?pred=<' + p + '>' for p in predicates]
             predicates = 'FILTER (' + (' || '.join(filters)) + ')'
 
         query = 'SELECT DISTINCT ?datasource  ?pred ?mtr WHERE { GRAPH <' + self.graph + '> {\n' \
