@@ -922,9 +922,9 @@ class MTManager(object):
                 '  ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
                 '  ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n  ' \
                 + predicates + '\n}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
-        for r in reslist:
+        for r in res_list:
             r['rid'] = rdf_class
             if r['rid'] not in results:
                 results[r['rid']] = {
