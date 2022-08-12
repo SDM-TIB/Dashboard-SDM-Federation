@@ -1029,13 +1029,13 @@ class MTManager(object):
                         'predicate': r['pred'],
                         'range': [r['mtr']] if 'mtr' in r else []
                     })
-                wfound = False
+                wrapper_found = False
                 for w in results[r['rid']]['wrappers']:
                     if w['url'] == r['datasource']:  # TODO: is this correct due to the changes
-                        wfound = True
+                        wrapper_found = True
                         w['predicates'].append(r['pred'])
                         w['predicates'] = list(set(w['predicates']))
-                if not wfound:
+                if not wrapper_found:
                     results[r['rid']]['wrappers'].append({
                         'url': self.get_data_source(r['datasource']).url,
                         'predicates': [
