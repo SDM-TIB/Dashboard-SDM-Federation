@@ -1142,27 +1142,26 @@ class MTManager(object):
             return None
 
     def get_mappings(self, ds_id):
-        prefix = 'prefix rr: <http://www.w3.org/ns/r2rml#> ' \
-                 'prefix rml: <http://semweb.mmlab.be/ns/rml#>'
-        mtquery = prefix + \
-            'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> {\n' \
-            '  ?tm rml:logicalSource ?ls .\n' \
-            '  ?ls rml:source <' + ds_id + '> .\n' \
-            '  ?tm rr:subjectMap ?sm .\n' \
-            '  ?sm rr:class ?t .\n' \
-            '  ?tm rr:predicateObjectMap ?pom .\n' \
-            '  ?pom rr:predicate ?p .\n' \
-            '  ?pom rr:objectMap ?om .\n' \
-            '  OPTIONAL {\n' \
-            '    ?om rr:parentTriplesMap ?pt .\n' \
-            '    ?pt rr:subjectMap ?ptsm .\n' \
-            '    ?ptsm rr:class ?r .\n' \
-            '    ?pt rml:logicalSource ?ptls .\n' \
-            '    ?ptls rml:source ?rds .\n' \
-            '  }\n' \
-            '}}'
-        print(mtquery)
-        res, card = contactRDFSource(mtquery, self.query_endpoint)
+        mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \
+                   'PREFIX rml: <http://semweb.mmlab.be/ns/rml#>' \
+                   'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> {\n' \
+                   '  ?tm rml:logicalSource ?ls .\n' \
+                   '  ?ls rml:source <' + ds_id + '> .\n' \
+                   '  ?tm rr:subjectMap ?sm .\n' \
+                   '  ?sm rr:class ?t .\n' \
+                   '  ?tm rr:predicateObjectMap ?pom .\n' \
+                   '  ?pom rr:predicate ?p .\n' \
+                   '  ?pom rr:objectMap ?om .\n' \
+                   '  OPTIONAL {\n' \
+                   '    ?om rr:parentTriplesMap ?pt .\n' \
+                   '    ?pt rr:subjectMap ?ptsm .\n' \
+                   '    ?ptsm rr:class ?r .\n' \
+                   '    ?pt rml:logicalSource ?ptls .\n' \
+                   '    ?ptls rml:source ?rds .\n' \
+                   '  }\n' \
+                   '}}'
+        print(mt_query)
+        res, card = contactRDFSource(mt_query, self.query_endpoint)
         return res
 
     def get_rdfmts_by_preds(self, preds):
