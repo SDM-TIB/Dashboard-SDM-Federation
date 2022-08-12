@@ -1193,10 +1193,10 @@ class MTManager(object):
         if len(filter) > 0:
             query += '  FILTER (' + filter + ')\n'
         query += '}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
 
         results = {}
-        for r in reslist:
+        for r in res_list:
             results.setdefault(r['pred'], []).append(r['rid'])
         results = {r: list(set(results[r])) for r in results}
         return results
