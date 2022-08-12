@@ -895,7 +895,7 @@ class MTManager(object):
     """
     def __init__(self, query_url, user, passwd, graph):
         self.graph = graph
-        self.queryendpoint = query_url
+        self.query_endpoint = query_url
         self.user = user
         self.passwd = passwd
 
@@ -904,7 +904,7 @@ class MTManager(object):
                 '  ?rid a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?rid <' + MT_ONTO + 'url> ?endpoint .\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return reslist
 
     def get_rdfmt_links(self, rdfclass, preds=None):
@@ -922,7 +922,7 @@ class MTManager(object):
                 '  ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
                 '  ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n  ' \
                 + preds + '\n}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in reslist:
             r['rid'] = rdfclass
@@ -994,7 +994,7 @@ class MTManager(object):
                 '    ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n' \
                 '  }\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in reslist:
             if r['rid'] not in results:
@@ -1058,7 +1058,7 @@ class MTManager(object):
                 '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
                 '  ?source <' + MT_ONTO + 'datasource> ?datasource.\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in reslist:
             r['rid'] = rdfclass
@@ -1129,7 +1129,7 @@ class MTManager(object):
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + dsid + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         if len(reslist) > 0:
             e = reslist[0]
             ds = DataSource(dsid,
@@ -1170,7 +1170,7 @@ class MTManager(object):
             '  }\n' \
             '}}'
         print(mtquery)
-        res, card = contactRDFSource(mtquery, self.queryendpoint)
+        res, card = contactRDFSource(mtquery, self.query_endpoint)
         return res
 
     def get_rdfmts_by_preds(self, preds):
@@ -1183,7 +1183,7 @@ class MTManager(object):
             i += 1
 
         query += '}}'
-        reslist, _ = _iterative_query(self.queryendpoint, query, limit=1000)
+        reslist, _ = _iterative_query(self.query_endpoint, query, limit=1000)
 
         results = {}
         for r in reslist:
@@ -1205,7 +1205,7 @@ class MTManager(object):
         if len(filter) > 0:
             query += '  FILTER (' + filter + ')\n'
         query += '}}'
-        reslist, _ = _iterative_query(query, self.queryendpoint, limit=1000)
+        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
 
         results = {}
         for r in reslist:
