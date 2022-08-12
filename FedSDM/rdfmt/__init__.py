@@ -907,7 +907,7 @@ class MTManager(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def get_rdfmt_links(self, rdfclass, preds=None):
+    def get_rdfmt_links(self, rdf_class, preds=None):
         if preds is None:
             preds = ''
         else:
@@ -915,9 +915,9 @@ class MTManager(object):
             preds = 'FILTER (' + (' || '.join(filters)) + ')'
 
         query = 'SELECT DISTINCT ?datasource  ?pred ?mtr WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + rdfclass + '> <' + MT_ONTO + 'source> ?source .\n' \
+                '  <' + rdf_class + '> <' + MT_ONTO + 'source> ?source .\n' \
                 '  ?source <' + MT_ONTO + 'datasource> ?datasource .\n' \
-                '  <' + rdfclass + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
+                '  <' + rdf_class + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
                 '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
                 '  ?mtp <' + MT_ONTO + 'linkedTo> ?mtrange .\n' \
                 '  ?mtrange <' + MT_ONTO + 'rdfmt> ?mtr .\n  ' \
@@ -925,7 +925,7 @@ class MTManager(object):
         reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in reslist:
-            r['rid'] = rdfclass
+            r['rid'] = rdf_class
             if r['rid'] not in results:
                 results[r['rid']] = {
                     'rootType': r['rid'],
@@ -977,7 +977,7 @@ class MTManager(object):
                         'urlparam': '',
                         'wrapperType': 'SPARQLEndpoint'
                     })
-        res = results[rdfclass] if rdfclass in results else {}
+        res = results[rdf_class] if rdf_class in results else {}
 
         return res
 
