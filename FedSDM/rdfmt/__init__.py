@@ -1124,20 +1124,20 @@ class MTManager(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         if len(res_list) > 0:
             e = res_list[0]
-            ds = DataSource(ds_id,
-                            e['url'],
-                            e['dstype'],
-                            name=e['name'],
-                            desc=e['desc'] if 'desc' in e else '',
-                            params=e['params'] if 'params' in e else {},
-                            keywords=e['keywords'] if 'keywords' in e else '',
-                            version=e['version'] if 'version' in e else '',
-                            homepage=e['homepage'] if 'homepage' in e else '',
-                            organization=e['organization'] if 'organization' in e else '',
-                            triples=e['triples'] if 'triples' in e else -1,
-                            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None
-                            )
-            return ds
+            return DataSource(
+                ds_id,
+                e['url'],
+                e['dstype'],
+                name=e['name'],
+                desc=e['desc'] if 'desc' in e else '',
+                params=e['params'] if 'params' in e else {},
+                keywords=e['keywords'] if 'keywords' in e else '',
+                version=e['version'] if 'version' in e else '',
+                homepage=e['homepage'] if 'homepage' in e else '',
+                organization=e['organization'] if 'organization' in e else '',
+                triples=e['triples'] if 'triples' in e else -1,
+                ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None
+            )
         else:
             return None
 
