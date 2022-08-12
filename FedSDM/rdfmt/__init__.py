@@ -1174,10 +1174,10 @@ class MTManager(object):
             i += 1
 
         query += '}}'
-        reslist, _ = _iterative_query(self.query_endpoint, query, limit=1000)
+        res_list, _ = _iterative_query(self.query_endpoint, query, limit=1000)
 
         results = {}
-        for r in reslist:
+        for r in res_list:
             res = self.get_rdfmt(r['rid'])
             if len(res) > 0:
                 results[r['rid']] = res
