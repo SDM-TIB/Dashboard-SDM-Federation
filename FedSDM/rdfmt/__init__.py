@@ -904,8 +904,8 @@ class MTManager(object):
                 '  ?rid a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?rid <' + MT_ONTO + 'url> ?endpoint .\n' \
                 '}}'
-        reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
-        return reslist
+        res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
+        return res_list
 
     def get_rdfmt_links(self, rdfclass, preds=None):
         if preds is None:
