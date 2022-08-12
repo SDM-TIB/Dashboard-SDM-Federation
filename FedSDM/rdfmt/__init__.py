@@ -1078,14 +1078,14 @@ class MTManager(object):
                 if 'mtr' in r:
                     results[r['rid']]['linkedTo'].append(r['mtr'])
                     results[r['rid']]['linkedTo'] = list(set(results[r['rid']]['linkedTo']))
-                pfound = False
+                pred_found = False
                 for p in results[r['rid']]['predicates']:
                     if p['predicate'] == r['pred']:
                         if 'mtr' in r:
                             p['range'].append(r['mtr'])
-                        pfound = True
+                        pred_found = True
 
-                if not pfound:
+                if not pred_found:
                     results[r['rid']]['predicates'].append({
                         'predicate': r['pred'],
                         'range': [r['mtr']] if 'mtr' in r else []
