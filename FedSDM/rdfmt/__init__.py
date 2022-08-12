@@ -1047,17 +1047,17 @@ class MTManager(object):
 
         return results
 
-    def get_rdfmt(self, rdfclass):
+    def get_rdfmt(self, rdf_class):
         query = 'SELECT DISTINCT ?datasource ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
-                '  <' + rdfclass + '> <' + MT_ONTO + 'source> ?source .\n' \
-                '  <' + rdfclass + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
+                '  <' + rdf_class + '> <' + MT_ONTO + 'source> ?source .\n' \
+                '  <' + rdf_class + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
                 '  ?mtp <' + MT_ONTO + 'predicate> ?pred .\n' \
                 '  ?source <' + MT_ONTO + 'datasource> ?datasource.\n' \
                 '}}'
         reslist, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in reslist:
-            r['rid'] = rdfclass
+            r['rid'] = rdf_class
             if r['rid'] not in results:
                 results[r['rid']] = {
                             'rootType': r['rid'],
@@ -1110,7 +1110,7 @@ class MTManager(object):
                         'wrapperType': 'SPARQLEndpoint'
                     })
 
-        return results[rdfclass] if rdfclass in results else {}
+        return results[rdf_class] if rdf_class in results else {}
 
     def get_data_source(self, dsid):
         query = 'SELECT DISTINCT *  WHERE { GRAPH <' + self.graph + '> {\n' \
