@@ -1060,24 +1060,20 @@ class MTManager(object):
             r['rid'] = rdf_class
             if r['rid'] not in results:
                 results[r['rid']] = {
-                            'rootType': r['rid'],
-                            'linkedTo': [r['mtr']] if 'mtr' in r else [],
-                            'wrappers': [
-                                {
-                                    'url': self.get_data_source(r['datasource']).url,
-                                    'predicates': [
-                                        r['pred']
-                                         ],
-                                    'urlparam': '',
-                                    'wrapperType': 'SPARQLEndpoint'
-                                }
-                            ],
-                            'predicates': [
-                                {'predicate': r['pred'],
-                                 'range':[r['mtr']] if 'mtr' in r else []}
-                                ],
-                            'subclass': []
-                            }
+                    'rootType': r['rid'],
+                    'linkedTo': [r['mtr']] if 'mtr' in r else [],
+                    'wrappers': [{
+                        'url': self.get_data_source(r['datasource']).url,
+                        'predicates': [r['pred']],
+                        'urlparam': '',
+                        'wrapperType': 'SPARQLEndpoint'
+                    }],
+                    'predicates': [{
+                        'predicate': r['pred'],
+                        'range':[r['mtr']] if 'mtr' in r else []
+                    }],
+                    'subclass': []
+                }
             else:
                 if 'mtr' in r:
                     results[r['rid']]['linkedTo'].append(r['mtr'])
