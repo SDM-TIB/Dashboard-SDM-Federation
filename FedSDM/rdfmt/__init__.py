@@ -1164,11 +1164,11 @@ class MTManager(object):
         res, card = contactRDFSource(mt_query, self.query_endpoint)
         return res
 
-    def get_rdfmts_by_preds(self, preds):
+    def get_rdfmts_by_preds(self, predicates):
         query = 'SELECT DISTINCT ?rid WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'RDFMT> .\n'
         i = 0
-        for p in preds:
+        for p in predicates:
             query += '  ?rid <' + MT_ONTO + 'hasProperty> ?mtp' + str(i) + '.\n' \
                      '  ?mtp' + str(i) + ' <' + MT_ONTO + 'predicate> <' + p + '> .\n'
             i += 1
