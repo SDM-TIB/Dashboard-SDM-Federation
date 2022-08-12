@@ -1184,10 +1184,10 @@ class MTManager(object):
 
         return results
 
-    def get_preds_mt(self, props=None):
+    def get_preds_mt(self, predicates=None):
         filter = ''
-        if props is not None:
-            filter = ' || '.join(['?pred=<' + p + '> ' for p in props])
+        if predicates is not None:
+            filter = ' || '.join(['?pred=<' + p + '> ' for p in predicates])
 
         query = 'SELECT DISTINCT ?rid ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'RDFMT> .\n' \
