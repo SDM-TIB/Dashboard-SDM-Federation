@@ -1141,13 +1141,13 @@ class MTManager(object):
         else:
             return None
 
-    def get_mappings(self, dsid):
+    def get_mappings(self, ds_id):
         prefix = 'prefix rr: <http://www.w3.org/ns/r2rml#> ' \
                  'prefix rml: <http://semweb.mmlab.be/ns/rml#>'
         mtquery = prefix + \
             'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> {\n' \
             '  ?tm rml:logicalSource ?ls .\n' \
-            '  ?ls rml:source <' + dsid + '> .\n' \
+            '  ?ls rml:source <' + ds_id + '> .\n' \
             '  ?tm rr:subjectMap ?sm .\n' \
             '  ?sm rr:class ?t .\n' \
             '  ?tm rr:predicateObjectMap ?pom .\n' \
