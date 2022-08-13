@@ -144,8 +144,8 @@ def sparql():
                 return jsonify({'result': [], 'error': 'cannot read query'})
 
             output = Queue()
-            variables, res, start, total, first, i, processqueue, alltriplepatterns = execute_query(federation, query, output)
-            result_queues[session['hashquery']] = {'output': output, 'process': processqueue}
+            variables, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query, output)
+            result_queues[session['hashquery']] = {'output': output, 'process': process_queue}
             if res is None or len(res) == 0:
                 del result_queues[session['hashquery']]
                 del session['hashquery']
@@ -161,15 +161,15 @@ def sparql():
             session['vars'] = variables
             session['first'] = first
             session['fed'] = federation
-            processqueue.put('EOF')
-            triplepatterns = []
-            for t in alltriplepatterns:
-                triplepatterns.append({
+            process_queue.put('EOF')
+            triple_patterns = []
+            for t in all_triple_patterns:
+                triple_patterns.append({
                     's': t.subject.name,
                     'p': t.predicate.name,
                     'o': t.theobject.name
                 })
-            return jsonify(vars=variables, querytriples=triplepatterns, result=res, execTime=total, firstResult=first, totalRows=i)
+            return jsonify(vars=variables, querytriples=triple_patterns, result=res, execTime=total, firstResult=first, totalRows=i)
         except Exception as e:
             import sys
             exc_type, exc_value, exc_traceback = sys.exc_info()
