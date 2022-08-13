@@ -217,6 +217,8 @@ class DataSourceType(Enum):
         if value is None:
             return None
         try:
+            if MT_RESOURCE in value:
+                value = value.split(MT_RESOURCE + 'DatasourceType/')[1]
             return DataSourceType(value)
         except KeyError:
             return DataSourceType.SPARQL_ENDPOINT
