@@ -195,8 +195,8 @@ def execute_query(graph: str, query: str, output: Queue = Queue()):
 
     res = []
     logger.info(plan)
-    processqueue = Queue()
-    plan.execute(output, processqueue)
+    process_queue = Queue()
+    plan.execute(output, process_queue)
 
     i = 0
     r = output.get()
@@ -213,4 +213,4 @@ def execute_query(graph: str, query: str, output: Queue = Queue()):
         res.append(r)
         i += 1
     total = time() - start
-    return variables, res, start, total, first, i, processqueue, decomposer.alltriplepatterns
+    return variables, res, start, total, first, i, process_queue, decomposer.alltriplepatterns
