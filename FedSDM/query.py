@@ -37,7 +37,7 @@ def query():
     return render_template('query/index.html', federations=g.federations)
 
 
-resqueues = {}
+result_queues = {}
 
 
 @bp.route('/feedback', methods=['POST'])
@@ -98,9 +98,9 @@ def get_next_result():
     vars = session['vars']
     start = session['start']
     first = session['first']
-    if 'hashquery' in session and session['hashquery'] in resqueues:
-        output = resqueues[session['hashquery']]['output']
-        process = resqueues[session['hashquery']]['process']
+    if 'hashquery' in session and session['hashquery'] in result_queues:
+        output = result_queues[session['hashquery']]['output']
+        process = result_queues[session['hashquery']]['process']
     else:
         total = time() - start
         return jsonify(execTime=total, firstResult=first, totalRows=1, result='EOF', error='Already finished')
@@ -109,7 +109,7 @@ def get_next_result():
         total = time() - start
         if r == 'EOF':
             finalize(process)
-            del resqueues[session['hashquery']]
+            del result_queues[session['hashquery']]
             del session['hashquery']
 
         return jsonify(vars=vars, result=r, execTime=total, firstResult=first, totalRows=1)
@@ -145,15 +145,15 @@ def sparql():
 
             output = Queue()
             variables, res, start, total, first, i, processqueue, alltriplepatterns = execute_query(federation, query, output)
-            resqueues[session['hashquery']] = {'output': output, 'process': processqueue}
+            result_queues[session['hashquery']] = {'output': output, 'process': processqueue}
             if res is None or len(res) == 0:
-                del resqueues[session['hashquery']]
+                del result_queues[session['hashquery']]
                 del session['hashquery']
                 return jsonify(vars=variables, result=[], execTime=total, firstResult=first, totalRows=1)
 
             if variables is None:
                 print('no results during decomposition', query)
-                del resqueues[session['hashquery']]
+                del result_queues[session['hashquery']]
                 return jsonify({'result': [],
                                 'error': 'cannot execute query on this federation. No matching molecules found'})
 
