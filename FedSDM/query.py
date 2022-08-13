@@ -82,15 +82,15 @@ def feedback():
     return Response(json.dumps({}), mimetype='application/json')
 
 
-def finalize(processqueue: Queue):
-    p = processqueue.get()
+def finalize(process_queue: Queue):
+    p = process_queue.get()
     while p != 'EOF':
         try:
             os.kill(p, 9)
         except OSError as ex:
             print(ex)
             pass
-        p = processqueue.get()
+        p = process_queue.get()
 
 
 @bp.route('/nextresult', methods=['POST', 'GET'])
