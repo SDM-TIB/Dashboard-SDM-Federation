@@ -162,13 +162,9 @@ def sparql():
             session['first'] = first
             session['fed'] = federation
             process_queue.put('EOF')
-            triple_patterns = []
-            for t in all_triple_patterns:
-                triple_patterns.append({
-                    's': t.subject.name,
-                    'p': t.predicate.name,
-                    'o': t.theobject.name
-                })
+            triple_patterns = [
+                {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in all_triple_patterns
+            ]
             return jsonify(vars=variables, querytriples=triple_patterns, result=res, execTime=total, firstResult=first, totalRows=i)
         except Exception as e:
             import sys
