@@ -15,6 +15,14 @@ class ConfigSimpleStore(object):
         self.metadata = self.mgr.get_rdfmts()
         self.predidx = {}
 
+    def getEndpointToken(self, endpoint):
+        """
+        DeTrusty v0.6.0 implements the use of private endpoints.
+        The dashboard currently does not but this method is needed for DeTrusty to run.
+        """
+        # TODO: implement private endpoints in the dashboard?
+        return None
+
     def createPredicateIndex(self):
         pidx = {}
         for m in self.metadata:
