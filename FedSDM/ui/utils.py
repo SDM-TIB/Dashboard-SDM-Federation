@@ -31,18 +31,12 @@ def get_federations():
 
 def get_datasources(graph: str = None):
     mdb = get_mdb()
-    if graph is not None:
-        query = 'SELECT DISTINCT ?uri ?source ?triples WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?uri a mt:DataSource .\n' \
-                '  ?uri  mt:name ?source .\n' \
-                '  OPTIONAL { ?uri mt:triples ?triples . }\n' \
-                '}}'
-    else:
-        query = 'SELECT DISTINCT ?uri ?source ?triples WHERE {\n' \
-                '  ?uri a mt:DataSource .\n' \
-                '  ?uri mt:name ?source .\n' \
-                '  ?uri mt:triples ?triples .\n' \
-                '}'
+    graph_clause = '' if graph is None else ' GRAPH <' + graph + '> {'
+    closing_brackets = '}' if graph is None else '}}'
+    query = 'SELECT DISTINCT ?uri ?source ?triples WHERE {' + graph_clause + '\n' \
+            '  ?uri a mt:DataSource .\n' \
+            '  ?uri  mt:name ?source .\n' \
+            '  OPTIONAL { ?uri mt:triples ?triples . }\n' + closing_brackets
     res, card = mdb.query(query)
     if card > 0:
         return {d['uri']: d for d in res}
