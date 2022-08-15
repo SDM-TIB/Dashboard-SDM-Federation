@@ -34,7 +34,7 @@ class MetadataDB:
                         'PREFIX mt: <' + MT_ONTO + '>\n' \
                         'PREFIX mtres: <' + MT_RESOURCE + '>\n'
 
-    def query(self, query: str, outputqueue: Queue = Queue(), format: str = 'application/sparql-results+json'):
+    def query(self, query: str, output_queue: Queue = Queue(), format: str = 'application/sparql-results+json'):
         # Build the query and header.
         query = self.prefixes + query
         params = urlparse.urlencode({'query': query, 'format': format, 'timeout': 10000000})
@@ -44,7 +44,7 @@ class MetadataDB:
             resp = requests.get(self.query_endpoint, params=params, headers=headers)
             if resp.status_code == HTTPStatus.OK:
                 res = resp.text
-                reslist = []
+                res_list = []
                 if format != 'application/sparql-results+json':
                     return res
 
@@ -78,12 +78,12 @@ class MetadataDB:
 
                                 if isinstance(x[key], bytes):
                                     x[key] = x[key].decode('utf-8')
-                            outputqueue.put(x)
-                            reslist.append(x)
+                            output_queue.put(x)
+                            res_list.append(x)
                         # reslist = res['results']['bindings']
-                        return reslist, len(reslist)
+                        return res_list, len(res_list)
                     else:
-                        outputqueue.put(res['boolean'])
+                        output_queue.put(res['boolean'])
                         return res['boolean'], 1
             else:
                 print('Endpoint->', self.query_endpoint, resp.reason, resp.status_code, query)
@@ -92,29 +92,29 @@ class MetadataDB:
 
         return None, -2
 
-    def update(self, insertquery: str):
+    def update(self, insert_query: str):
         # Build the header.
-        insertquery = self.prefixes + insertquery
+        insert_query = self.prefixes + insert_query
         headers = {'Accept': '*/*',
                    'Referer': self.update_endpoint,
                    'Host': self.update_server,
                    'Content-type': 'application/sparql-update'}
 
         try:
-            resp = requests.post(self.update_endpoint, data=insertquery, headers=headers)
+            resp = requests.post(self.update_endpoint, data=insert_query, headers=headers)
             if resp.status_code == HTTPStatus.OK or resp.status_code == HTTPStatus.ACCEPTED or resp.status_code == HTTPStatus.NO_CONTENT:
                 return True
             else:
-                print('Update Endpoint->', self.update_endpoint, resp.reason, resp.status_code, insertquery)
+                print('Update Endpoint->', self.update_endpoint, resp.reason, resp.status_code, insert_query)
                 logger.error('______/_________/________/________/______________')
                 logger.error(self.update_endpoint + ' - ' + str(resp.reason) + ' - ' + str(resp.status_code))
-                logger.error('ERROR ON: ' + insertquery)
+                logger.error('ERROR ON: ' + insert_query)
                 logger.error('________________________________________________')
         except Exception as e:
-            print('Exception during update query execution to', self.update_endpoint, ':', e, insertquery)
+            print('Exception during update query execution to', self.update_endpoint, ':', e, insert_query)
             logger.error('______/_________/________/________/______________')
             logger.error('Exception on update: ' + self.update_endpoint + ' ' + str(e))
-            logger.error('EXCEPTION ON: ' + insertquery)
+            logger.error('EXCEPTION ON: ' + insert_query)
             logger.error('________________________________________________')
 
         return False
