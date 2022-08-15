@@ -16,7 +16,6 @@ def _process_numeric_result(mdb: MetadataDB, query: str):
 
 def get_federations():
     mdb = get_mdb()
-
     query = 'SELECT DISTINCT ?uri ?name WHERE { GRAPH <' + g.default_graph + '> {\n' \
             '  ?uri a mt:Federation .\n' \
             '  ?uri mt:name ?name .\n' \
