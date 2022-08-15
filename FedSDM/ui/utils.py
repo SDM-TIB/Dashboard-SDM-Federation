@@ -104,6 +104,5 @@ def get_federation_stats():
             '    ?ds mt:triples ?ds_triples .\n' \
             '  }}}\n' \
             '} GROUP BY ?fed ?name'
-
     res, _ = mdb.query(query)
     return res
