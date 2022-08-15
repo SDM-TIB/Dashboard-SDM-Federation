@@ -57,12 +57,12 @@ def get_stats(graph: str):
     stats = {}
     datasources = get_datasources(graph)
     for datasource in list(datasources.keys()):
-        nummts = get_num_rdfmts(graph, datasource)
+        num_mts = get_num_rdfmts(graph, datasource)
         props = get_num_properties(graph, datasource)
-        linkss = get_mtconns(graph, datasource)
+        num_links = get_mtconns(graph, datasource)
         stat = {
-            'rdfmts': nummts,
-            'links': linkss,
+            'rdfmts': num_mts,
+            'links': num_links,
             'triples': datasources[datasource]['triples'] if 'triples' in datasources[datasource] else -1,
             'properties': props,
             'ds': datasources[datasource]['source']
@@ -171,24 +171,24 @@ def add_data_source(federation: str, datasource: DataSource):
     if datasource.ds_type == DataSourceType.SPARQL_ENDPOINT:
         if not datasource.is_accessible():
             data = datasource.to_rdf()
-            insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
-            rr = mdb.update(insertquery)
+            insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
+            rr = mdb.update(insert_query)
             logger.info(datasource.url, 'endpoints cannot be accessed. Please check if you write URLs properly!')
             if rr:
                 return {'status': -1}, None
             else:
                 return {'status': -2}, None
         data = datasource.to_rdf()
-        insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
-        rr = mdb.update(insertquery)
+        insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
+        mdb.update(insert_query)
         p = Process(target=mgr.create, args=(datasource, out_queue, [], ))
         p.start()
         logger.info('Collecting RDF-MTs started')
         return {'status': 1}, out_queue
     else:
         data = datasource.to_rdf()
-        insertquery = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
-        rr = mdb.update(insertquery)
+        insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
+        rr = mdb.update(insert_query)
         if rr:
             logger.info('non triple store source added')
             return {'status': 0}, None
@@ -294,15 +294,15 @@ def recreate_mts(federation: str, ds: str):
     return {'status': 1}, out_queue
 
 
-def get_federation(id: str, check_owner: bool = True):
+def get_federation(id_: str, check_owner: bool = True):
     federation = get_db().execute(
         'SELECT f.id, name, description, created, username, owner_id'
         ' FROM federation f JOIN user u ON f.owner_id = u.id'
-        ' WHERE f.id = ?', (id,)
+        ' WHERE f.id = ?', (id_,)
     ).fetchone()
 
     if federation is None:
-        abort(404, 'Federation id {0} does not exist.'.format(id))
+        abort(404, 'Federation id {0} does not exist.'.format(id_))
 
     if check_owner and federation['owner_id'] != g.user['id']:
         abort(403)
@@ -326,7 +326,7 @@ def create_federation(name: str, desc: str, is_public: bool):
     ]
 
     insert_query = 'INSERT DATA { GRAPH <' + g.default_graph + '> {\n' + ' . \n'.join(data) + '}}'
-    res = mdb.update(insert_query)
+    mdb.update(insert_query)
     res = mdb.update('CREATE GRAPH <' + uri + '>')
     if res:
         return uri
@@ -392,9 +392,8 @@ def get_datasource(graph: str = None, ds_type=None):
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
-def update(id):
-    federation = get_federation(id)
-
+def update(id_):
+    federation = get_federation(id_)
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
@@ -421,9 +420,9 @@ def update(id):
 
 @bp.route('/<int:id>/delete', methods=['POST'])
 @login_required
-def delete(id):
-    federation = get_federation(id)
+def delete(id_):
+    federation = get_federation(id_)
     db = get_db()
-    db.execute('DELETE FROM federation WHERE id = ?', (id,))
+    db.execute('DELETE FROM federation WHERE id = ?', (id_,))
     db.commit()
     return redirect(url_for('federation.index'))
