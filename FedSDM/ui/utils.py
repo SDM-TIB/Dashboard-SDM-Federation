@@ -67,22 +67,13 @@ def get_mtconns(graph: str, datasource: str = None):
 
 def get_num_properties(graph: str, datasource: str = None):
     mdb = get_mdb()
-    if datasource is not None:
-        query = 'SELECT (COUNT (DISTINCT ?mtp) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?mt a mt:RDFMT .\n' \
-                '  ?mt mt:source  ?mtsource .\n' \
-                '  ?mt mt:hasProperty ?mtp .\n' \
-                '  ?mtsource mt:datasource <' + datasource + '> .\n' \
-                '}}'
-
-    else:
-        query = 'SELECT (COUNT (DISTINCT ?mtp) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?mt a mt:RDFMT .\n' \
-                '  ?mt mt:source  ?mtsource .\n' \
-                '  ?mt mt:hasProperty ?mtp .\n' \
-                '  ?mtsource mt:datasource ?ds .\n' \
-                '}}'
-
+    source = '?ds' if datasource is None else '<' + datasource + '>'
+    query = 'SELECT (COUNT (DISTINCT ?mtp) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
+            '  ?mt a mt:RDFMT .\n' \
+            '  ?mt mt:source  ?mtsource .\n' \
+            '  ?mt mt:hasProperty ?mtp .\n' \
+            '  ?mtsource mt:datasource ' + source + ' .\n' \
+            '}}'
     return _process_numeric_result(mdb, query)
 
 
