@@ -56,19 +56,12 @@ def get_num_rdfmts(graph: str, datasource: str = None):
 
 def get_mtconns(graph: str, datasource: str = None):
     mdb = get_mdb()
-    if datasource is not None:
-        query = 'SELECT (COUNT(DISTINCT ?d) as ?count) WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?d a mt:PropRange .\n' \
-                '  ?d mt:name ?mt .\n' \
-                '  ?d mt:datasource <' + datasource + '> .\n' \
-                '}}'
-    else:
-        query = 'SELECT (COUNT(DISTINCT ?d) as ?count) WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?d a mt:PropRange .\n' \
-                '  ?d mt:name ?mt .\n' \
-                '  ?d mt:datasource ?ds .\n' \
-                '}}'
-
+    source = '?ds' if datasource is None else '<' + datasource + '>'
+    query = 'SELECT (COUNT(DISTINCT ?d) as ?count) WHERE { GRAPH <' + graph + '> {\n' \
+            '  ?d a mt:PropRange .\n' \
+            '  ?d mt:name ?mt .\n' \
+            '  ?d mt:datasource ' + source + ' .\n' \
+            '}}'
     return _process_numeric_result(mdb, query)
 
 
