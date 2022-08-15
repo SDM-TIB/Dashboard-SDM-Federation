@@ -45,20 +45,12 @@ def get_datasources(graph: str = None):
 
 def get_num_rdfmts(graph: str, datasource: str = None):
     mdb = get_mdb()
-    if datasource is not None:
-        query = 'SELECT (COUNT (DISTINCT ?mt) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?mt a mt:RDFMT .\n' \
-                '  ?mt  mt:source  ?mtsource .\n'\
-                '  ?mtsource mt:datasource <' + datasource + '> .\n' \
-                '}}'
-
-    else:
-        query = 'SELECT (COUNT (DISTINCT ?mt) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
-                '  ?mt a mt:RDFMT .\n' \
-                '  ?mt  mt:source  ?mtsource .\n' \
-                '  ?mtsource mt:datasource ?ds .\n' \
-                '}}'
-
+    source = '?ds' if datasource is None else '<' + datasource + '>'
+    query = 'SELECT (COUNT (DISTINCT ?mt) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
+            '  ?mt a mt:RDFMT .\n' \
+            '  ?mt  mt:source  ?mtsource .\n'\
+            '  ?mtsource mt:datasource ' + source + ' .\n' \
+            '}}'
     return _process_numeric_result(mdb, query)
 
 
