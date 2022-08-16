@@ -125,11 +125,11 @@ def load_logged_in_user():
         g.user = get_db().execute('SELECT * FROM user WHERE id = ?', (user_id, )).fetchone()
 
 
-# Logout
 @bp.route('/logout')
 def logout():
     """
-    To log out, you need to remove the user id from the session. Then load_logged_in_user will not load a user on subsequent requests.
+    To log out, you need to remove the user id from the session.
+    Then load_logged_in_user will not load a user on subsequent requests.
     :return:
     """
     session.clear()
