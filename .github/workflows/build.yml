@@ -27,6 +27,6 @@ jobs:
       - name: Bundle dependencies
         run: python3 bundle-assets.py
       - name: Build the Docker image based on Alpine Linux
-        run: docker build -f Dockerfile.alpine . -t fedsdm:alpine-latest
-      - name: Build the Docker image baded on Debian/Ubuntu
-        run: docker build -f Dockerfile . -t fedsdm:alpine-latest
+        run: docker build -f Dockerfile-alpine . -t fedsdm:alpine-latest
+      - name: Build the Docker image based on Debian/Ubuntu
+        run: docker build -f Dockerfile . -t fedsdm:latest

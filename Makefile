@@ -19,7 +19,7 @@ bundle:
 	python3 bundle-assets.py
 
 rebuild:
-	docker build -f Dockerfile.alpine . -t fedsdm:latest
+	docker build -f Dockerfile-alpine . -t fedsdm:latest
 
 build: install bundle rebuild
 

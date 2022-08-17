@@ -1,7 +1,7 @@
 venv/
 example/
 Dockerfile
-Dockerfile.alpine
+Dockerfile-alpine
 .git/
 .idea/
 node_modules
