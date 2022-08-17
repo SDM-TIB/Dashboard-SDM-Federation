@@ -3,7 +3,7 @@ from flask import (
 )
 
 from FedSDM.ui.utils import (
-    get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
+    get_num_mt_links, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
 )
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
@@ -29,7 +29,7 @@ def get_all_stats():
         source_ids.extend(list(dss.keys()))
         mts = get_num_rdfmts(graph)
         rdfmts += mts
-        lks = get_mtconns(graph)
+        lks = get_num_mt_links(graph)
         links += lks
         stats[f['uri']] = []
         for s in list(dss.keys()):
@@ -37,7 +37,7 @@ def get_all_stats():
             datasources[s]['rdfmts'] = num_mts
             props = get_num_properties(graph, s)
             datasources[s]['properties'] = props
-            links_ = get_mtconns(graph, s)
+            links_ = get_num_mt_links(graph, s)
             datasources[s]['links'] = links_
             stat = {
                 'rdfmts': num_mts,

@@ -12,7 +12,7 @@ from FedSDM.db import get_db, get_mdb
 from FedSDM.rdfmt import RDFMTMgr
 from FedSDM.rdfmt.model import *
 from FedSDM.ui.utils import (
-    get_mtconns, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
+    get_num_mt_links, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
 )
 
 bp = Blueprint('federation', __name__, url_prefix='/federation')
@@ -59,7 +59,7 @@ def get_stats(graph: str):
     for datasource in list(datasources.keys()):
         num_mts = get_num_rdfmts(graph, datasource)
         props = get_num_properties(graph, datasource)
-        num_links = get_mtconns(graph, datasource)
+        num_links = get_num_mt_links(graph, datasource)
         stat = {
             'rdfmts': num_mts,
             'links': num_links,
