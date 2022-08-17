@@ -8,7 +8,7 @@ from flask import (
 
 from FedSDM.auth import login_required
 from FedSDM.db import get_mdb, MetadataDB
-from FedSDM.ui import get_federations
+from FedSDM.util import get_federations
 
 bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
 

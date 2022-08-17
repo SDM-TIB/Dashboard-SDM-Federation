@@ -11,7 +11,7 @@ from FedSDM.auth import login_required
 from FedSDM.db import get_db, get_mdb
 from FedSDM.rdfmt import RDFMTMgr
 from FedSDM.rdfmt.model import *
-from FedSDM.ui import (
+from FedSDM.util import (
     get_num_mt_links, get_num_properties, get_num_rdfmts, get_datasources, get_federations, get_federation_stats
 )
 

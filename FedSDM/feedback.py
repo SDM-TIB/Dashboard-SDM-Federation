@@ -6,7 +6,7 @@ from flask import (
 
 from FedSDM.auth import login_required
 from FedSDM.db import get_db
-from FedSDM.ui import get_federations
+from FedSDM.util import get_federations
 
 bp = Blueprint('feedback', __name__, url_prefix='/feedback')
 
