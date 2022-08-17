@@ -3,7 +3,7 @@ from flask import g
 from FedSDM.db import get_mdb, MetadataDB
 
 
-def _process_numeric_result(mdb: MetadataDB, query: str):
+def _process_numeric_result(mdb: MetadataDB, query: str) -> int:
     res, card = mdb.query(query)
     if card > 0:
         card = res[0]['count']
@@ -14,7 +14,7 @@ def _process_numeric_result(mdb: MetadataDB, query: str):
         return 0
 
 
-def get_federations():
+def get_federations() -> list:
     mdb = get_mdb()
     query = 'SELECT DISTINCT ?uri ?name WHERE { GRAPH <' + g.default_graph + '> {\n' \
             '  ?uri a mt:Federation .\n' \
@@ -28,7 +28,7 @@ def get_federations():
         return []
 
 
-def get_datasources(graph: str = None):
+def get_datasources(graph: str = None) -> dict:
     mdb = get_mdb()
     graph_clause = '' if graph is None else ' GRAPH <' + graph + '> {'
     closing_brackets = '}' if graph is None else '}}'
@@ -43,7 +43,7 @@ def get_datasources(graph: str = None):
         return {}
 
 
-def get_num_rdfmts(graph: str, datasource: str = None):
+def get_num_rdfmts(graph: str, datasource: str = None) -> int:
     mdb = get_mdb()
     source = '?ds' if datasource is None else '<' + datasource + '>'
     query = 'SELECT (COUNT (DISTINCT ?mt) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
@@ -54,7 +54,7 @@ def get_num_rdfmts(graph: str, datasource: str = None):
     return _process_numeric_result(mdb, query)
 
 
-def get_num_mt_links(graph: str, datasource: str = None):
+def get_num_mt_links(graph: str, datasource: str = None) -> int:
     mdb = get_mdb()
     source = '?ds' if datasource is None else '<' + datasource + '>'
     query = 'SELECT (COUNT(DISTINCT ?d) as ?count) WHERE { GRAPH <' + graph + '> {\n' \
@@ -65,7 +65,7 @@ def get_num_mt_links(graph: str, datasource: str = None):
     return _process_numeric_result(mdb, query)
 
 
-def get_num_properties(graph: str, datasource: str = None):
+def get_num_properties(graph: str, datasource: str = None) -> int:
     mdb = get_mdb()
     source = '?ds' if datasource is None else '<' + datasource + '>'
     query = 'SELECT (COUNT (DISTINCT ?mtp) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
@@ -77,7 +77,7 @@ def get_num_properties(graph: str, datasource: str = None):
     return _process_numeric_result(mdb, query)
 
 
-def get_federation_stats():
+def get_federation_stats() -> list:
     mdb = get_mdb()
     query = 'SELECT DISTINCT ?fed ?name (COUNT(DISTINCT ?ds) AS ?sources) (SUM(COALESCE(?count_mts, 0)) AS ?rdfmts) ' \
             '(SUM(COALESCE(?count_links, 0)) AS ?links) (SUM(COALESCE(?count_prop, 0)) AS ?properties) ' \
