@@ -71,5 +71,3 @@ class ConfigSimpleStore(object):
             return self.metadata[rdfclass]
         rdfmt = self.mgr.get_rdfmt(rdfclass)
         return rdfmt
-
-    # def findMolecules(self, preds):
