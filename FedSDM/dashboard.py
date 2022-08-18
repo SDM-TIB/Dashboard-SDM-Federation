@@ -11,14 +11,16 @@ bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 @bp.route('/')
 def get_all_stats():
-    """
-    Serves the landing page of FedSDM, i.e., '/dashboard'.
+    """Serves the landing page of FedSDM, i.e., '/dashboard'.
 
     It makes use of several utility methods in order to get all the different statistics
     for all federations and datasources available to the instance of FedSDM.
 
-    :return: Rendered template of the landing page with all statistics set.
-    :rtype: str
+    Returns
+    -------
+    str
+        Rendered template of the landing page with all statistics set.
+
     """
     feds = get_federations()
     g.federations = feds
