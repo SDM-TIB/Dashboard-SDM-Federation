@@ -66,7 +66,7 @@ def get_datasources(graph: str = None) -> dict:
 
     Parameters
     ----------
-    graph : str
+    graph : str, optional
         The URI of the federation all datasources should be returned for.
         None by default which means all federations will be considered.
 
@@ -101,7 +101,7 @@ def get_num_rdfmts(graph: str, datasource: str = None) -> int:
     ----------
     graph : str
         The URI of the federation the number of RDF Molecule Templates should be returned for.
-    datasource : str
+    datasource : str, optional
         The URI of the datasource of interest. None by default which means all datasources of the federation.
 
     Returns
@@ -131,7 +131,7 @@ def get_num_mt_links(graph: str, datasource: str = None) -> int:
     ----------
     graph : str
         The URI of the federation the number of links between RDF Molecule Templates should be returned for.
-    datasource : str
+    datasource : str, optional
         The URI of the datasource of interest. None by default which means all datasources of the federation.
 
     Returns
@@ -161,7 +161,7 @@ def get_num_properties(graph: str, datasource: str = None) -> int:
     ----------
     graph : str
         The URI of the federation the number of properties should be returned for.
-    datasource : str
+    datasource : str, optional
         The URI of the datasource of interest. None by default which means all datasources of the federation.
 
     Returns
