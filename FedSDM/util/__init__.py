@@ -4,17 +4,22 @@ from FedSDM.db import get_mdb, MetadataDB
 
 
 def _process_numeric_result(mdb: MetadataDB, query: str) -> int:
-    """
-    Executes a SPARQL query and returns the result as an integer.
+    """Executes a SPARQL query and returns the result as an integer.
 
     The method assumes that the SPARQL query will return at most one result with a variable called *count*.
 
-    :param mdb: An instance of *MetadataDB* used for executing the SPARQL query against a SPARQL endpoint
-    :type mdb: MetadataDB
-    :param query: The SPARQL query as string; see above for the assumptions made
-    :type query: str
-    :return: Integer value of the query result
-    :rtype: int
+    Parameters
+    ----------
+    mdb : FedSDM.db.MetadataDB
+        An instance of *MetadataDB* used for executing the SPARQL query against a SPARQL endpoint.
+    query : str
+        The SPARQL query as string; see above for the assumptions made.
+
+    Returns
+    -------
+    int
+        Integer value of the query result.
+
     """
     res, card = mdb.query(query)
     if card > 0:
@@ -27,15 +32,17 @@ def _process_numeric_result(mdb: MetadataDB, query: str) -> int:
 
 
 def get_federations() -> list:
-    """
-    Gets the identifier and human-readable name for all available federations.
+    """Gets the identifier and human-readable name for all available federations.
 
     This method uses the *MetadataDB* to retrieve information about all federations available.
     Each query result will include the identifier of the federation in the variable *uri* and
     the human-readable name in the variable *name*.
 
-    :return: A list containing information about all federations available.
-    :rtype: list
+    Returns
+    -------
+    list
+        A list containing information about all federations available.
+
     """
     mdb = get_mdb()
     query = 'SELECT DISTINCT ?uri ?name WHERE { GRAPH <' + g.default_graph + '> {\n' \
@@ -51,17 +58,23 @@ def get_federations() -> list:
 
 
 def get_datasources(graph: str = None) -> dict:
-    """
-    Gets all datasources belonging to a particular federation; or all of them.
+    """Gets all datasources belonging to a particular federation; or all of them.
 
     Makes use of *MetadataDB* to retrieve the metadata about the datasource of a
     particular federation. The federation is specified as its identifier (URI).
     If no federation is given to the method, all datasources are retrieved.
 
-    :param graph: The URI of the federation all datasources should be returned for.
-    :type graph: str
-    :return: A dictionary with the metadata about the datasources, their identifiers are the keys.
-    :rtype: dict
+    Parameters
+    ----------
+    graph : str
+        The URI of the federation all datasources should be returned for.
+        None by default which means all federations will be considered.
+
+    Returns
+    -------
+    dict
+        A dictionary with the metadata about the datasources, their identifiers are the keys.
+
     """
     mdb = get_mdb()
     graph_clause = '' if graph is None else ' GRAPH <' + graph + '> {'
@@ -78,19 +91,24 @@ def get_datasources(graph: str = None) -> dict:
 
 
 def get_num_rdfmts(graph: str, datasource: str = None) -> int:
-    """
-    Gets the number of RDF Molecule Templates of a federation; or a datasource in that federation.
+    """Gets the number of RDF Molecule Templates of a federation; or a datasource in that federation.
 
     Uses *MetadataDB* to retrieve the number of RDF Molecule Templates of the specified federation.
     If a datasource was passed as well, the number of RDF Molecule Templates of that datasource in
     the mentioned federation is retrieved.
 
-    :param graph: The URI of the federation the number of RDF Molecule Templates should be returned for.
-    :type graph: str
-    :param datasource: The URI of the datasource of interest.
-    :type datasource: str
-    :return: The number of RDF Molecule Templates in the federation (or the datasource).
-    :rtype: int
+    Parameters
+    ----------
+    graph : str
+        The URI of the federation the number of RDF Molecule Templates should be returned for.
+    datasource : str
+        The URI of the datasource of interest. None by default which means all datasources of the federation.
+
+    Returns
+    -------
+    int
+        The number of RDF Molecule Templates in the federation (or the datasource).
+
     """
     mdb = get_mdb()
     source = '?ds' if datasource is None else '<' + datasource + '>'
@@ -103,19 +121,24 @@ def get_num_rdfmts(graph: str, datasource: str = None) -> int:
 
 
 def get_num_mt_links(graph: str, datasource: str = None) -> int:
-    """
-    Gets the number of links between RDF Molecule Templates in a federation; or a datasource in that federation.
+    """Gets the number of links between RDF Molecule Templates in a federation; or a datasource in that federation.
 
     Uses the *MetadataDB* to retrieve th number of links between RDF Molecule Templates in the specified federation.
     If a datasource is passed as well, the number of links within that datasource of the specified federation
     is returned instead.
 
-    :param graph: The URI of the federation the number of links between RDF Molecule Templates should be returned for.
-    :type graph: str
-    :param datasource: The URI of the datasource of interest.
-    :type datasource: str
-    :return: The number of links between RDF Molecule Templates in the federation (or the datasource).
-    :rtype: int
+    Parameters
+    ----------
+    graph : str
+        The URI of the federation the number of links between RDF Molecule Templates should be returned for.
+    datasource : str
+        The URI of the datasource of interest. None by default which means all datasources of the federation.
+
+    Returns
+    -------
+    int
+        The number of links between RDF Molecule Templates in the federation (or the datasource).
+
     """
     mdb = get_mdb()
     source = '?ds' if datasource is None else '<' + datasource + '>'
@@ -128,19 +151,24 @@ def get_num_mt_links(graph: str, datasource: str = None) -> int:
 
 
 def get_num_properties(graph: str, datasource: str = None) -> int:
-    """
-    Gets the number of predicates (properties) within a particular federation; or datasource in that federation.
+    """Gets the number of predicates (properties) within a particular federation; or datasource in that federation.
 
     Makes use of *MetadataDB* to count the number of distinct predicates (properties) within the
     specified federation. If a datasource is passed, the number of distinct predicates (properties)
     of that datasource in the specified federation is returned instead.
 
-    :param graph: The URI of the federation the number of properties should be returned for.
-    :type graph: str
-    :param datasource: The URI of the datasource of interest.
-    :type datasource: str
-    :return: The number of properties in the federation (or the datasource).
-    :rtype: int
+    Parameters
+    ----------
+    graph : str
+        The URI of the federation the number of properties should be returned for.
+    datasource : str
+        The URI of the datasource of interest. None by default which means all datasources of the federation.
+
+    Returns
+    -------
+    int
+        The number of properties in the federation (or the datasource).
+
     """
     mdb = get_mdb()
     source = '?ds' if datasource is None else '<' + datasource + '>'
@@ -154,16 +182,18 @@ def get_num_properties(graph: str, datasource: str = None) -> int:
 
 
 def get_federation_stats() -> list:
-    """
-    Gets detailed statistics about the available federations.
+    """Gets detailed statistics about the available federations.
 
     Uses *MetadataDB* to retrieve detailed statistics about the available federations.
     These statistics include the number of datasources (*sources*), number of RDF
     Molecule Templates (*rdfmts*), number of links between RDF Molecule Templates (*links*),
     number of predicates (*properties*), and the number of triples (*triples*).
 
-    :return: A list including the above-mentioned statistics for all available federations.
-    :rtype: list
+    Returns
+    -------
+    list
+        A list including the above-mentioned statistics for all available federations.
+
     """
     mdb = get_mdb()
     query = 'SELECT DISTINCT ?fed ?name (COUNT(DISTINCT ?ds) AS ?sources) (SUM(COALESCE(?count_mts, 0)) AS ?rdfmts) ' \
