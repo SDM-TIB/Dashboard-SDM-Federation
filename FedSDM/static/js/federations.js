@@ -321,8 +321,6 @@ $(function() {
                 Accept : 'application/json'
             },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
-            data: {'query': 'all'},
-            dataType: 'json',
             crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) {
@@ -346,7 +344,6 @@ $(function() {
                 Accept : 'application/json'
             },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
-            dataType: 'json',
             crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) {
