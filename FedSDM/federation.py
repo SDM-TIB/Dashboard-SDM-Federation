@@ -444,17 +444,16 @@ def api_find_links():
     -------
     flask.Response
         A JSON response indicating that the process has been started.
+        The response will be empty if the parameter 'fed' was not present.
 
     """
     try:
-        fed = request.args.get('fed', None)
+        fed = request.args.get('fed')
         ds = request.args.get('datasource', None)
     except KeyError:
         return Response(json.dumps({}),  mimetype='application/json')
-    if fed is None:
-        return Response(json.dumps({}), mimetype='application/json')
-    res, queue = find_links(fed, ds)
 
+    res, _ = find_links(fed, ds)
     return Response(json.dumps(res), mimetype='application/json')
 
 
@@ -506,14 +505,12 @@ def api_recreate_mts():
 
     """
     try:
-        fed = request.args.get('fed', None)
-        ds = request.args.get('datasource', None)
+        fed = request.args.get('fed')
+        ds = request.args.get('datasource')
     except KeyError:
         return Response(json.dumps({}), mimetype='application/json')
-    if fed is None or ds is None:
-        return Response(json.dumps({}), mimetype='application/json')
-    res, queue = recreate_mts(fed, ds)
 
+    res, _ = recreate_mts(fed, ds)
     return Response(json.dumps(res), mimetype='application/json')
 
 
