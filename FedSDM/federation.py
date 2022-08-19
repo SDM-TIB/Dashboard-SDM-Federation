@@ -218,7 +218,7 @@ def datasources():
         session['fed'] = graph
 
     ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
-    res = get_datasource(graph, ds_type)
+    res = get_datasources(graph, ds_type)
 
     # print(json.dumps({'data': res}, indent=True))
     return Response(json.dumps({'data': res}), mimetype='application/json')
@@ -613,7 +613,7 @@ def create_federation(name: str, desc: str, is_public: bool):
         return None
 
 
-def get_datasource(graph: str = None, ds_type=None):
+def get_datasources(graph: str = None, ds_type=None):
     """Gets all datasources of a specified federation and datasource type with their metadata.
 
     This method provides the following metadata for all datasources in the specified federation:
