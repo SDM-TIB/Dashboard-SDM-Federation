@@ -31,7 +31,6 @@ def get_all_stats() -> str:
     datasources = {}
     rdfmts = 0
     links = 0
-    stats = {}
 
     for f in feds:
         graph = f['uri']
@@ -42,7 +41,6 @@ def get_all_stats() -> str:
         rdfmts += mts
         lks = get_num_mt_links(graph)
         links += lks
-        stats[f['uri']] = []
         for s in list(dss.keys()):
             num_mts = get_num_rdfmts(graph, s)
             datasources[s]['rdfmts'] = num_mts
@@ -50,14 +48,6 @@ def get_all_stats() -> str:
             datasources[s]['properties'] = props
             links_ = get_num_mt_links(graph, s)
             datasources[s]['links'] = links_
-            stat = {
-                'rdfmts': num_mts,
-                'links': links_,
-                'triples': datasources[s]['triples'] if 'triples' in datasources[s] else -1,
-                'properties': props,
-                'source': datasources[s]['source']
-            }
-            stats[f['uri']].append(stat)
 
     stat = {
         'rdfmts': rdfmts,
@@ -68,7 +58,5 @@ def get_all_stats() -> str:
 
     datasource_stats = list(datasources.values())
     federation_stats = get_federation_stats()
-
-    g.stats = stats
 
     return render_template('dashboard/index.html', dsStats=datasource_stats, fedStats=federation_stats, stats=stat)
