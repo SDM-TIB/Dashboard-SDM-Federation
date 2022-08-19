@@ -1,6 +1,7 @@
 import datetime as dtime
 import json
 from multiprocessing import Process, Queue
+from typing import Optional, Tuple
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, Response, request, url_for, abort
@@ -287,7 +288,7 @@ def api_add_source() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def add_data_source(federation: str, datasource: DataSource) -> (dict, Queue | None):
+def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Optional[Queue]]:
     """Adds a new datasource to the metadata knowledge graph.
 
     The given DataSource object is transformed to RDF triples and added to the
@@ -347,7 +348,7 @@ def add_data_source(federation: str, datasource: DataSource) -> (dict, Queue | N
 
 
 @bp.route('/editsource', methods=['POST'])
-def api_edit_source() -> Response | (dict, Queue | None):
+def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
     """Serves requests to '/federation/editsource'.
 
     This method edits an existing datasource based on the provided data.
@@ -457,7 +458,7 @@ def api_find_links() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def find_links(federation: str, datasource: str) -> (dict, Queue):
+def find_links(federation: str, datasource: str) -> Tuple[dict, Queue]:
     """Starts the process of finding the links between datasources.
 
     Starts the process to search for links between the RDF Molecule Templates
@@ -514,7 +515,7 @@ def api_recreate_mts() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def recreate_mts(federation: str, ds: str) -> (dict, Queue | None):
+def recreate_mts(federation: str, ds: str) -> Tuple[dict, Optional[Queue]]:
     """Starts the process of recreating the RDF Molecule Templates for a datasource.
 
     Starts the process to recreate the RDF Molecule Templates for the datasource
@@ -564,7 +565,7 @@ def get_federation(id_: str, check_owner: bool = True):
     return federation
 
 
-def create_federation(name: str, desc: str, is_public: bool) -> str | None:
+def create_federation(name: str, desc: str, is_public: bool) -> Optional[str]:
     """Creates a new federation based on the provided data.
 
     Uses :class:`FedSDM.db.MetadataDB` to register a new federation with the data provided to the method.
