@@ -1,6 +1,8 @@
 [![build](https://github.com/SDM-TIB/Dashboard-SDM-Federation/actions/workflows/build.yml/badge.svg)](https://github.com/SDM-TIB/Dashboard-SDM-Federation/actions/workflows/build.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
+![Python version](https://img.shields.io/badge/python-v3.10-blue)
+
 # FedSDM: Semantic Data Manager for Federations of RDF Datasets
 
 FedSDM is a semantic data manager for federations of RDF datasets.
@@ -27,7 +29,7 @@ make stop-example
 ## Building from Source
 **Prerequisites:**
 * make 4.1 or newer
-* Python3 (including pip) 3.6 or newer
+* Python3 (including pip) 3.10 or newer
 * npm 3.5 or newer
 * Docker 20.10 or newer
 * docker-compose 1.25 or newer
