@@ -220,7 +220,6 @@ def datasources():
     ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
     res = get_datasources(graph, ds_type)
 
-    # print(json.dumps({'data': res}, indent=True))
     return Response(json.dumps({'data': res}), mimetype='application/json')
 
 
@@ -284,7 +283,6 @@ def api_add_source():
     if res['status'] == 1:
         if 'mtcreation' not in session:
             session['mtcreation'] = [ds.name]
-        # statusqueues[ds.name] = queue
 
     return Response(json.dumps(res), mimetype='application/json')
 
