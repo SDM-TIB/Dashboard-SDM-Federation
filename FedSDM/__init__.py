@@ -4,7 +4,31 @@ import os
 from flask import Flask, redirect
 
 
-def get_logger(name: str, file: str = None, file_and_console: bool = False):
+def get_logger(name: str, file: str = None, file_and_console: bool = False) -> logging.Logger:
+    """Gets a logger defined based on the provided parameters.
+
+    This method is a convenience method to easily set up the loggers of
+    different modules without the need of duplicating the setup code.
+    By default, output will be logged to stdout. But also file loggers
+    or stdout and file can be configured.
+
+    Parameters
+    ----------
+    name : str
+        The name to assign to the logger.
+    file : str, optional
+        The name (or path) of the log file assigned to the logger.
+        None by default which will result in logging to stdout only.
+    file_and_console : bool, optional
+        Indicates whether the logger should log to file and stdout.
+        The logger will only log to stdout if no file is set.
+
+    Returns
+    -------
+    logging.Logger
+        The logger created based on the provided parameters.
+
+    """
     log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
