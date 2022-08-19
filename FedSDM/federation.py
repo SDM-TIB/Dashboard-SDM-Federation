@@ -21,7 +21,7 @@ logger = get_logger('federation')
 
 
 @bp.route('/')
-def index():
+def index() -> str:
     """Serves the page '/federation'.
 
     This route serves the federation page of the dashboard. It contains statistics about the
@@ -46,7 +46,7 @@ def index():
 
 @bp.route('/stats')
 @login_required
-def stats():
+def stats() -> Response:
     """Serves requests send to '/federation/stats'.
 
     This route provides statistics about the federation(s). Those statistics include the number of
@@ -86,7 +86,7 @@ def stats():
     return Response(json.dumps({'data': stats}), mimetype='application/json')
 
 
-def get_stats(graph: str):
+def get_stats(graph: str) -> dict:
     """Gets the statistics for all datasources in the specified federation.
 
     This method provides the following statistics for each datasource in the federation:
@@ -127,7 +127,7 @@ def get_stats(graph: str):
 
 
 @bp.route('/create', methods=['POST'])
-def create():
+def create() -> Response:
     """Serves requests to '/federation/create'.
 
     This method creates a new federation based on the provided data.
@@ -171,7 +171,7 @@ def create():
 
 @bp.route('/datasources', methods=['GET'])
 @login_required
-def datasources():
+def datasources() -> Response:
     """Serves requests send to '/federation/datasources'.
 
     This method provides the following metadata for all datasources in the specified federation:
@@ -224,7 +224,7 @@ def datasources():
 
 
 @bp.route('/addsource', methods=['POST'])
-def api_add_source():
+def api_add_source() -> Response:
     """Serves requests to '/federation/addsource'.
 
     This method creates new datasource based on the provided data.
@@ -287,7 +287,7 @@ def api_add_source():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def add_data_source(federation: str, datasource: DataSource):
+def add_data_source(federation: str, datasource: DataSource) -> (dict, Queue | None):
     """Adds a new datasource to the metadata knowledge graph.
 
     The given DataSource object is transformed to RDF triples and added to the
@@ -347,7 +347,7 @@ def add_data_source(federation: str, datasource: DataSource):
 
 
 @bp.route('/editsource', methods=['POST'])
-def api_edit_source():
+def api_edit_source() -> Response | (dict, Queue | None):
     """Serves requests to '/federation/editsource'.
 
     This method edits an existing datasource based on the provided data.
@@ -431,7 +431,7 @@ def api_edit_source():
 
 
 @bp.route('/api/findlinks', methods=['GET', 'POST'])
-def api_find_links():
+def api_find_links() -> Response:
     """Serves requests to '/federation/api/findlinks'.
 
     This method finds links between the RDF Molecule Templates of a datasource.
@@ -457,7 +457,7 @@ def api_find_links():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def find_links(federation: str, datasource: str):
+def find_links(federation: str, datasource: str) -> (dict, Queue):
     """Starts the process of finding the links between datasources.
 
     Starts the process to search for links between the RDF Molecule Templates
@@ -489,7 +489,7 @@ def find_links(federation: str, datasource: str):
 
 
 @bp.route('/api/recreatemts')
-def api_recreate_mts():
+def api_recreate_mts() -> Response:
     """Serves requests to '/federation/api/recreatemts'.
 
     This method recreates the RDF Molecule Templates of a datasource.
@@ -514,7 +514,7 @@ def api_recreate_mts():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def recreate_mts(federation: str, ds: str):
+def recreate_mts(federation: str, ds: str) -> (dict, Queue | None):
     """Starts the process of recreating the RDF Molecule Templates for a datasource.
 
     Starts the process to recreate the RDF Molecule Templates for the datasource
@@ -564,7 +564,7 @@ def get_federation(id_: str, check_owner: bool = True):
     return federation
 
 
-def create_federation(name: str, desc: str, is_public: bool):
+def create_federation(name: str, desc: str, is_public: bool) -> str | None:
     """Creates a new federation based on the provided data.
 
     Uses :class:`FedSDM.db.MetadataDB` to register a new federation with the data provided to the method.
@@ -608,7 +608,7 @@ def create_federation(name: str, desc: str, is_public: bool):
         return None
 
 
-def get_datasources(graph: str = None, ds_type=None):
+def get_datasources(graph: str = None, ds_type=None) -> list:
     """Gets all datasources of a specified federation and datasource type with their metadata.
 
     This method provides the following metadata for all datasources in the specified federation:
