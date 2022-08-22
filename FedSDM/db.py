@@ -14,8 +14,35 @@ logger = get_logger('mtupdate', './mt-update.log')
 
 
 class MetadataDB:
+    """Provides an abstract way to query and update the metadata knowledge graph.
+
+    The *MetadataDB* is a knowledge graph containing the information about the
+    available federations, datasources, and their metadata. This class provides
+    an abstract way to query and update said knowledge graph.
+
+    """
 
     def __init__(self, query_endpoint: str, update_endpoint: str = None, username: str = '', password: str = ''):
+        """Creates a new *MetadataDB* object.
+
+        The *MetadataDB* object can be used to query and update a specific instance
+        of a knowledge graph containing the metadata for FedSDM.
+
+        Parameters
+        ----------
+        query_endpoint : str
+            The URL used for querying the knowledge graph containing the metadata.
+        update_endpoint : str, optional
+            The URL used for updating the knowledge graph containing the metadata.
+            If None, the query endpoint will be used for updates as well.
+        username : str, optional
+            The username required to authenticate for updating the endpoint.
+            Due to the implementation of Virtuoso, this is currently unused.
+        password : str, optional
+            The password required to authenticate for updating the endpoint.
+            Due to the implementation of Virtuoso, this is currently unused.
+
+        """
         self.query_endpoint = query_endpoint
         self.update_endpoint = update_endpoint if update_endpoint is not None else query_endpoint
 
@@ -33,6 +60,30 @@ class MetadataDB:
                         'PREFIX mtres: <' + MT_RESOURCE + '>\n'
 
     def query(self, query: str, output_queue: Queue = Queue(), format: str = 'application/sparql-results+json'):
+        """Executes a SPARQL query over the query endpoint of the instance.
+
+        Executes the given SPARQL query over the query endpoint belonging
+        to the instance of *MetadataDB*.
+
+        Parameters
+        ----------
+        query : str
+            The SPARQL query to be executed.
+        output_queue :  multiprocessing.Queue, optional
+            If an output queue is given, results can be consumed from the queue
+            as soon as they are retrieved. Otherwise, the result can only be
+            used in a blocking fashion from the return value.
+        format : str, optional
+            Accepted return format to be included in the body of the request to the query endpoint.
+
+        Returns
+        -------
+        (list | None, int)
+            A tuple containing the query result as a list as well as the cardinality of
+            the query result. The first part of the tuple is None if there was an error
+            during the execution. In that case, the cardinality will be marked as -2.
+
+        """
         # Build the query and header.
         query = self.prefixes + query
         params = urlparse.urlencode({'query': query, 'format': format, 'timeout': 10000000})
@@ -90,7 +141,23 @@ class MetadataDB:
 
         return None, -2
 
-    def update(self, insert_query: str):
+    def update(self, insert_query: str) -> bool:
+        """Executes a SPARQL UPDATE query over the update endpoint of the instance.
+
+        Executed the given SPARQL UPDATE query over the update endpoint
+        belonging to the instance of *MetadataDB*.
+
+        Parameters
+        ----------
+        insert_query : str
+            The SPARQL UPDATE query to be executed.
+
+        Returns
+        -------
+        bool
+            Indicating whether executing the update was successful.
+
+        """
         # Build the header.
         insert_query = self.prefixes + insert_query
         headers = {'Accept': '*/*',
@@ -118,7 +185,19 @@ class MetadataDB:
         return False
 
 
-def get_db():
+def get_db() -> sqlite3.Connection:
+    """Gets the connection to the relational database with the user information.
+
+    If the connection has not yet been set up for the running instance
+    of FedSDM, the database connection will be configured. Otherwise,
+    the already existing connection is returned.
+
+    Returns
+    -------
+    sqlite3.Connection
+        The connection to the relational database storing the user information.
+
+    """
     if 'db' not in g:
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],
@@ -129,7 +208,21 @@ def get_db():
     return g.db
 
 
-def get_mdb():
+def get_mdb() -> MetadataDB:
+    """Gets the database holding all the metadata.
+
+    The metadata DB holds information about the available federations,
+    datasources, RDF Molecule Templates, etc. If the metadata DB has
+    not yet been configured for the running instance of FedSDM, it
+    will be configured when this method is called. Otherwise, the
+    existing :class:`MetadataDB` object is returned.
+
+    Returns
+    -------
+    MetadataDB
+        The :class:`MetadataDB` object used to connect to the metadata DB.
+
+    """
     import os
     if 'METADATA_ENDPOINT' in os.environ and \
             os.environ['METADATA_ENDPOINT'] is not None and \
@@ -145,6 +238,23 @@ def get_mdb():
 
 
 def close_db(exception: Exception = None):
+    """Closes the connection to the relational database.
+
+    If a connection to the relational database is still open,
+    it will be closed by calling this method.
+    This method is called during the app teardown context.
+
+    Parameters
+    ----------
+    exception : Exception
+        Any exception that occurred during the teardown of the app.
+
+    Raises
+    ------
+    Exception
+        The exception that was passed to the method is simply raised again.
+
+    """
     db = g.pop('db', None)
 
     if db is not None:
@@ -155,6 +265,12 @@ def close_db(exception: Exception = None):
 
 
 def init_db():
+    """Initialized the user database.
+
+    If the database file does not exist, the schema of the user database
+    will be created and saved in the app's database file.
+
+    """
     db_nonexistent = False
     if not os.path.isfile(current_app.config['DATABASE']):
         db_nonexistent = True
@@ -167,5 +283,16 @@ def init_db():
 
 
 def init_app(app: Flask):
+    """Initialized the Flask application of FedSDM.
+
+    The method closing the connection to the relational database is added to
+    the teardown context of the application and the database is initialized.
+
+    Parameters
+    ----------
+    flask.Flask
+        The Flask application of FedSDM for which the database will be configured.
+
+    """
     app.teardown_appcontext(close_db)
     init_db()
