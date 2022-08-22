@@ -45,7 +45,22 @@ def get_logger(name: str, file: str = None, file_and_console: bool = False) -> l
     return logger
 
 
-def create_app():
+def create_app() -> Flask:
+    """Sets up the Flask application for FedSDM.
+
+    This method creates a Flask application and configures it to serve FedSDM.
+    Configuring includes:
+        - Setting application configuration values like the path to the database file
+        - Registering the routes in order to serve the Web content
+        - Creating an instance directory for working files
+        - Adding a redirect from '/' to '/dashboard'
+
+    Returns
+    -------
+    flask.Flask
+        A Flask application configured to serve FedSDM.
+
+    """
     app = Flask(__name__)
     app.debug = True
 
