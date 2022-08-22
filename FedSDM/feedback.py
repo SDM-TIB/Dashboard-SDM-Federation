@@ -13,7 +13,21 @@ bp = Blueprint('feedback', __name__, url_prefix='/feedback')
 
 @bp.route('/')
 @login_required
-def feedback_overview():
+def feedback_overview() -> str:
+    """Serves requests to '/feedback'.
+
+    Serves the feedback page with all available federations loaded.
+
+    Note
+    ----
+    The request is only served for logged-in users.
+
+    Returns
+    -------
+    str
+        Rendered template of the feedback page with all available federations.
+
+    """
     federations = get_federations()
     g.federations = federations
     if 'fed' in session:
@@ -24,7 +38,30 @@ def feedback_overview():
 
 @bp.route('/issues')
 @login_required
-def feedback_list():
+def feedback_list() -> Response:
+    """Serves requests to '/feedback/issues'.
+
+    This route provides all the issues that have been raised for a certain federation.
+    The federation needs to be included in the parameter 'fed' of the request.
+
+    Note
+    ----
+    The request is only served for logged-in users.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response including all raised issues for the given federation.
+        The following data is provided for each issue:
+            - id -- the ID of the issue
+            - fed -- the federation for which the issue was raised
+            - user -- the user who raised the issue
+            - query -- the query for which the issue was raised
+            - desc -- the description provided for the issue
+            - status -- the current state of the issue
+            - created -- the date the issue was raised
+
+    """
     try:
         fed = request.args['fed']
     except KeyError:
@@ -62,7 +99,29 @@ def feedback_list():
 
 @bp.route('/details')
 @login_required
-def feedback_details():
+def feedback_details() -> Response:
+    """Serves requests to '/feedback/details'.
+
+    Provides more details about the issue in question. In order to do so, the
+    ID of the issue must be included in the parameter 'id' of the request.
+
+    Note
+    ----
+    The request is only served for logged-in users.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response including detailed information about the issue.
+        The following information is provided for the issue:
+            - var -- the variable in the query to which the problematic value is mapped
+            - pred -- the predicate from the query which is involved in the issue
+            - row -- the problematic query result (row)
+
+        The response will include an empty JSON object if no ID was given or there
+        are no details to be returned for the issue with the provided ID.
+
+    """
     try:
         iid = request.args['id']
     except KeyError:
@@ -83,5 +142,6 @@ def feedback_details():
         data = {
             'var': feedback_data['projVar'],
             'pred': feedback_data['projPred'],
-            'row': json.loads(feedback_data['rowData'])}
+            'row': json.loads(feedback_data['rowData'])
+        }
         return Response(json.dumps(data), mimetype='application/json')
