@@ -5,8 +5,7 @@ from http import HTTPStatus
 from multiprocessing import Queue
 
 import requests
-from flask import current_app, g
-from flask.app import Flask
+from flask import Flask, current_app, g
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
@@ -16,8 +15,7 @@ logger = get_logger('mtupdate', './mt-update.log')
 
 class MetadataDB:
 
-    def __init__(self, query_endpoint: str, update_endpoint: str = None,
-                 username: str = '', password: str = ''):
+    def __init__(self, query_endpoint: str, update_endpoint: str = None, username: str = '', password: str = ''):
         self.query_endpoint = query_endpoint
         self.update_endpoint = update_endpoint if update_endpoint is not None else query_endpoint
 
