@@ -117,66 +117,68 @@ def get_next_result():
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
         emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
-        logger.error('Exception while returning incremental results .. ' + emsg)
+        logger.error('Exception while returning incremental results... ' + emsg)
         print('Exception: ')
         import pprint
         pprint.pprint(emsg)
         total = time() - start
-        return jsonify(execTime=total, firstResult=first, totalRows=1, result= [], error= str(emsg))
+        return jsonify(execTime=total, firstResult=first, totalRows=1, result=[], error=str(emsg))
 
 
 @bp.route('/sparql', methods=['POST', 'GET'])
 def sparql():
-    if request.method == 'GET' or request.method == 'POST':
-        try:
-            query = request.args.get('query', '')
-            federation = request.args.get('federation', None)
-            session['fed'] = federation
+    try:
+        query = request.args.get('query', '')
+        federation = request.args.get('federation', None)
+        session['fed'] = federation
 
-            query = query.replace('\n', ' ').replace('\r', ' ')
-            print('federation:', federation)
-            print('query:', query)
-            logger.info(query)
-            session['hashquery'] = str(hashlib.md5(query.encode()).hexdigest())
-            if federation is None or len(federation) < 6:
-                return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
-            if query is None or len(query) == 0:
-                return jsonify({'result': [], 'error': 'cannot read query'})
+        query = query.replace('\n', ' ').replace('\r', ' ')
+        print('federation:', federation)
+        print('query:', query)
+        logger.info(query)
+        session['hashquery'] = str(hashlib.md5(query.encode()).hexdigest())
+        if federation is None or len(federation) < 6:
+            return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
+        if query is None or len(query) == 0:
+            return jsonify({'result': [], 'error': 'cannot read query'})
 
-            output = Queue()
-            variables, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query, output)
-            result_queues[session['hashquery']] = {'output': output, 'process': process_queue}
-            if res is None or len(res) == 0:
-                del result_queues[session['hashquery']]
-                del session['hashquery']
-                return jsonify(vars=variables, result=[], execTime=total, firstResult=first, totalRows=1)
+        output = Queue()
+        variables, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query, output)
+        result_queues[session['hashquery']] = {'output': output, 'process': process_queue}
+        if res is None or len(res) == 0:
+            del result_queues[session['hashquery']]
+            del session['hashquery']
+            return jsonify(vars=variables, result=[], execTime=total, firstResult=first, totalRows=1)
 
-            if variables is None:
-                print('no results during decomposition', query)
-                del result_queues[session['hashquery']]
-                return jsonify({'result': [],
-                                'error': 'cannot execute query on this federation. No matching molecules found'})
+        if variables is None:
+            print('no results during decomposition', query)
+            del result_queues[session['hashquery']]
+            return jsonify({'result': [],
+                            'error': 'Cannot execute query on this federation. No matching molecules found'})
 
-            session['start'] = start
-            session['vars'] = variables
-            session['first'] = first
-            session['fed'] = federation
-            process_queue.put('EOF')
-            triple_patterns = [
-                {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in all_triple_patterns
-            ]
-            return jsonify(vars=variables, querytriples=triple_patterns, result=res, execTime=total, firstResult=first, totalRows=i)
-        except Exception as e:
-            import sys
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
-            logger.error('Exception while semantifying: ' + emsg)
-            print('Exception: ', e)
-            import pprint
-            pprint.pprint(emsg)
-            return jsonify({'result': [], 'error': str(emsg)})
-    else:
-        return jsonify({'result': [], 'error': 'Invalid HTTP method used. Use GET '})
+        session['start'] = start
+        session['vars'] = variables
+        session['first'] = first
+        session['fed'] = federation
+        process_queue.put('EOF')
+        triple_patterns = [
+            {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in all_triple_patterns
+        ]
+        return jsonify(vars=variables,
+                       querytriples=triple_patterns,
+                       result=res,
+                       execTime=total,
+                       firstResult=first,
+                       totalRows=i)
+    except Exception as e:
+        import sys
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
+        logger.error('Exception while semantifying: ' + emsg)
+        print('Exception: ', e)
+        import pprint
+        pprint.pprint(emsg)
+        return jsonify({'result': [], 'error': str(emsg)})
 
 
 def execute_query(graph: str, query: str, output: Queue = Queue()):
