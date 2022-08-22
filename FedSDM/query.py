@@ -25,7 +25,24 @@ logger = get_logger('query')
 
 @bp.route('/query')
 @login_required
-def query():
+def query() -> str:
+    """Serves requests to '/query/query'.
+
+    This route serves the main page of the querying functionality of FedSDM.
+    The query page includes a drop-down menu with all available federations
+    as well as a query editor and space for the query result. Additionally,
+    a list of example queries is provided on the right-hand side.
+
+    Note
+    ----
+    The request is only served for logged-in users.
+
+    Returns
+    -------
+    str
+        Rendered template of the query page with all available federations.
+
+    """
     if 'federations' not in g:
         federations = get_federations()
         g.federations = federations
@@ -42,7 +59,32 @@ result_queues = {}
 
 @bp.route('/feedback', methods=['POST'])
 @login_required
-def feedback():
+def feedback() -> Response:
+    """Serves requests to '/query/feedback'.
+
+    This route receives the content from the feedback form and stores
+    it in a database to be checked, confirmed, and solved later.
+    The request needs to have the argument 'fed' identifying the federation
+    the query in question was executed against. The payload of the request
+    should include the following:
+        - pred -- the predicate for which the object seems to be wrong
+        - row[] -- the query result (row) which seems to be wrong
+        - column[] -- a list with the columns from the query result
+        - query -- the query in question
+        - desc -- a short text describing what the problem is
+
+    Note
+    ----
+    This route only accepts POST requests.
+
+    The request is only served for logged-in users.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response with an empty JSON object.
+
+    """
     fed = request.args.get('fed', -1)
     e = request.form
     print(e)
@@ -83,6 +125,16 @@ def feedback():
 
 
 def finalize(process_queue: Queue):
+    """Stops all processes in a queue.
+
+    Empties a queue holding processes and stops all processes in that queue.
+
+    Parameters
+    ----------
+    process_queue : multiprocessing.Queue
+        The queue holding the processes to stop.
+
+    """
     p = process_queue.get()
     while p != 'EOF':
         try:
@@ -94,7 +146,28 @@ def finalize(process_queue: Queue):
 
 
 @bp.route('/nextresult', methods=['POST', 'GET'])
-def get_next_result():
+def get_next_result() -> Response:
+    """Serves requests to '/query/nextresult'.
+
+    This method retrieves the next result from a previously started query.
+    Session cookies are used to figure out which of the running queries
+    need to be served for the request.
+    If there is another result available, the response will include the
+    following information:
+        - vars -- a list with the variables occurring in the query
+        - result -- a dictionary with the next result for the query
+        - execTime -- time elapsed until now since the query was started
+        - firstResult -- time elapsed between starting the query and retrieving the first result
+        - totalRows -- set to 1 since only a single result will be returned
+
+    Returns
+    -------
+    flask.Response
+        A JSON response including the next query result. If an error
+        occurred, then the key 'error' will be added with the appropriate
+        value to tell the user what happened.
+
+    """
     vars = session['vars']
     start = session['start']
     first = session['first']
@@ -126,7 +199,28 @@ def get_next_result():
 
 
 @bp.route('/sparql', methods=['POST', 'GET'])
-def sparql():
+def sparql() -> Response:
+    """Serves requests to '/query/sparql'.
+
+    Starts the execution of a SPARQL query using `DeTrusty`_.
+    The request needs to include the following parameters:
+        - query -- the SPARQL query to be executed
+        - federation -- the federation to execute the query against
+
+    Returns
+    -------
+    flask.Response
+        A JSON response including the variables of the query, the triple
+        patterns of the query, the first result(s), current time since
+        the start of the execution time, time to the first result, and
+        the total number of results. The response might not include all
+        the previously mentioned fields if an error occurred. In that case,
+        the response will include an error message instead.
+
+    .. _DeTrusty:
+        https://github.com/SDM-TIB/DeTrusty
+
+    """
     try:
         query = request.args.get('query', '')
         federation = request.args.get('federation', None)
@@ -182,6 +276,40 @@ def sparql():
 
 
 def execute_query(graph: str, query: str, output: Queue = Queue()):
+    """Executes a SPARQL query using DeTrusty.
+
+    Executes a SPARQL query using the federated query engine `DeTrusty`_.
+    The configuration of DeTrusty is retrieved from the :class:`FedSDM.db.MetadataDB`.
+
+    Parameters
+    ----------
+    graph : str
+        Identifier of the federation to be queried.
+    query : str
+        The SPARQL query to be executed.
+    output : multiprocessing.Queue, optional
+        If an output queue is given, the results of the query can be
+        retrieved incrementally from the queue. Otherwise, the result
+        can also be taken from the return value but in a blocking fashion.
+
+    Returns
+    -------
+    (list | None, list | None, float, float, float, int, multiprocessing.Queue | None, list)
+        A tuple with different information about the query execution:
+            1. A list of variables occurring in the query; None when an error occurred
+            2. A list of all the results to the query, each result is a dictionary
+               with the variables being the key and t; None instead of a list when an error occurred
+            3. The time when the query execution was started; 1 if an error occurred
+            4. The time elapsed between starting the execution and retrieving the first result; 1 if an error occurred
+            5. The time elapsed between starting the execution and retrieving the last result; 1 if an error occurred
+            6. The number of results; if an error occurs, the value is 0
+            7. A queue holding all the processes started during the query execution; None if an error occurred
+            8. A list of all triple patterns in the query; if an error occurs, the list will be empty
+
+    .. _DeTrusty:
+        https://github.com/SDM-TIB/DeTrusty
+
+    """
     mdb = get_mdb()
     config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
     start = time()
