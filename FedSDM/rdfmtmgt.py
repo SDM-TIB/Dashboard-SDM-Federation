@@ -16,6 +16,24 @@ bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
 @bp.route('/rdfmt')
 @login_required
 def rdfmt():
+    """Serves requests to '/rdfmts/rdfmt'.
+
+    This route serves the RDF Molecule Template page of FedSDM. The page provides
+    the means to display statistics about the RDF Molecule Templates of the different
+    federations available to FedSDM including statistics from network analysis.
+    Additionally, the page allows to visualize the Molecule Templates and their
+    connections to each other.
+
+    Note
+    ----
+    The request is only served for logged-in users.
+
+    Returns
+    -------
+    str
+        Rendered template of the RDF Molecule Template page with all available federations.
+
+    """
     federations = get_federations()
     g.federations = federations
     if 'fed' in session:
@@ -26,6 +44,27 @@ def rdfmt():
 
 @bp.route('/api/rdfmtstats')
 def rdfmtstats():
+    """Serves requests to '/rdfmts/api/rdfmtstats'.
+
+    This route provides statistics about the RDF Molecule Templates of the federation
+    provided with the request, i.e., the request has to include the parameter 'graph'
+    which is the identifier of the federation of interest. If the parameter value is
+    set to 'All', then the statistics are retrieved for all available federations.
+    The statistics include the following data:
+        - An ID for sorting
+        - The name of the RDF Molecule Template
+        - The URI of the class associated with the Molecule Template
+        - The number of instances belonging to the Molecule Template
+        - The number of properties in the Molecule Template
+
+    Returns
+    -------
+    flask.Response
+        A JSON response with the statistics about the RDF Molecule
+        Templates of the specified federation. If no federation was
+        given, the response contains an empty JSON object.
+
+    """
     try:
         graph = request.args['graph']
     except KeyError:
@@ -39,6 +78,30 @@ def rdfmtstats():
 
 
 def get_rdfmt_stats(graph: str = None):
+    """Retrieves statistics about the RDF Molecule Templates of a federation.
+
+    This method collects statistics about the RDF Molecule Templates of a federation.
+    The :class:`FedSDM.db.MetadataDB` is utilized in order to retrieve those statistics.
+    The statistics include the following data:
+        - An ID for sorting
+        - The name of the RDF Molecule Template
+        - The URI of the class associated with the Molecule Template
+        - The number of instances belonging to the Molecule Template
+        - The number of properties in the Molecule Template
+
+    Parameters
+    ----------
+    graph : str, optional
+        The identifier of the federation for which to return the statistics about the RDF Molecule Templates.
+        If no identifier is given, all federations available to FedSDM are considered.
+
+    Returns
+    -------
+    dict
+        A dictionary with the statistics about the RDF Molecule Templates for the provided federation.
+        The dictionary is empty if no data could be retrieved from the :class:`FedSDM.db.MetadataDB`.
+
+    """
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -68,7 +131,7 @@ def get_rdfmt_stats(graph: str = None):
     res, card = mdb.query(query)
     if card > 0:
         if card == 1 and 'subject' not in res[0]:
-            return []
+            return {}
         else:
             data = []
             i = 0
@@ -112,11 +175,28 @@ def get_rdfmt_stats(graph: str = None):
                 data.append(dd)
             return {'data': data, 'draw': 1, 'recordsTotal': len(res), 'recordsFiltered': 100}
     else:
-        return []
+        return {}
 
 
 @bp.route('/api/mtdetails')
 def api_rdfmtdetails():
+    """Serves requests to '/rdfmts/api/mtdetails'.
+
+    This route is used to retrieve details about a single RDF Molecule
+    Template. The request requires the parameters:
+        - 'fed' -- the identifier of the federation to which the RDF Molecule Template belongs
+        - 'mt' -- the identifier of the Molecule Template of interest
+
+    The details about the RDF Molecule Template are used to visualize it and its connectivity.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response including the details of the RDF Molecule Template.
+        The response contains an empty JSON object if one of the parameters
+        was not present in the request.
+
+    """
     try:
         fed = request.args['fed']
         mt = request.args['mt']
@@ -131,6 +211,31 @@ def api_rdfmtdetails():
 
 
 def _iterative_query(query: str, mdb: MetadataDB, limit: int = 10000, offset: int = 0):
+    """Executes a SPARQL query iteratively.
+
+    This method utilizes :class:`FedSDM.db.MetadataDB` to execute SPARQL queries
+    over the metadata knowledge graph. Answers are retrieved iteratively, i.e.,
+    in blocks of the size `limit`.
+
+    Parameters
+    ----------
+    query : str
+        The SPARQL query to be executed.
+    mdb : FedSDM.db.MetadataDB
+        The :class:`FedSDM.db.MetadataDB` instance used to retrieve metadata.
+    limit : int, optional
+        The maximum amount of answers to be retrieved in one block.
+        Default value is 10,000.
+    offset : int, optional
+        Offset defines the offset with which to retrieve results. A value greater
+        than 0 means that the first *n* answers are omitted. The default is 0.
+
+    Returns
+    -------
+    list
+        A list with the query result.
+
+    """
     res_list = []
     while True:
         query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
@@ -150,6 +255,24 @@ def _iterative_query(query: str, mdb: MetadataDB, limit: int = 10000, offset: in
 
 
 def get_rdfmt_details(fed: str, mt: str):
+    """Gets the details about a specific RDF Molecule Template.
+
+    The details are used to visualize the RDF Molecule Template and its connections.
+
+    Parameters
+    ----------
+    fed : str
+        The identifier of the federation to which the RDF Molecule Template belongs.
+    mt : str
+        The identifier of the Molecule Template of interest.
+
+    Returns
+    -------
+    dict
+        A dictionary with nodes, edges, and sources to visualize the RDF
+        Molecule Template and its connections within the federation.
+
+    """
     mdb = get_mdb()
     print(fed, mt, 'get_rdfmt_details')
     query = 'SELECT DISTINCT ?datasource ?endpoint ?mtp ?preddatasource ?mtrdatasource ?card ?pred ?mtr ' \
@@ -287,11 +410,25 @@ def get_rdfmt_details(fed: str, mt: str):
             'sources': sources
         }
     else:
-        return {'nodes': [], 'links': [], 'sources': []}
+        return {'nodes': {}, 'links': {}, 'sources': {}}
 
 
 @bp.route('/api/rdfmts')
 def api_rdfmts():
+    """Serves requests to '/rdfmts/api/rdfmts'.
+
+    This method is used to retrieve information about the RDF Molecule
+    Templates of a federation in order to visualize them and their
+    connectivity. The request requires the parameter 'graph' which
+    is the identifier of the federation of interest. If the value
+    is 'all', then all available federations are considered.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response with the requested data.
+
+    """
     try:
         graph = request.args['graph']
     except KeyError:
@@ -306,6 +443,30 @@ def api_rdfmts():
 
 
 def get_rdfmt_edges(rdfmtsources, graph: str = None):
+    """Gets the connections between RDF Molecule Templates of a federation.
+
+    Makes use of :class:`FedSDM.db.MetadataDB` to retrieve the links between
+    RDF Molecule Templates in the federation `graph`. The connections are then
+    filtered by the RDF Molecule Templates in `rdfmtsources`, i.e., if the range
+    of an RDF Molecule Template is not in `rdfmtsources`, then it will not be
+    added to the result.
+
+    Parameters
+    ----------
+    rdfmtsources : dict
+        Information about the sources of interest, i.e., connections to
+        which source should be considered for the result.
+    graph : str, optional
+        The identifier of the federation for which the links between
+        RDF Molecule Templates should be searched. If no value is
+        passed, all available federations are considered.
+
+    Returns
+    -------
+    dict
+        A dictionary with the requested data in the key 'links'.
+
+    """
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -362,6 +523,27 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None):
 
 
 def get_rdfmt_nodes(graph: str = None):
+    """Gets all RDF Molecule Templates of a federation and to which source they belong.
+
+    Makes use of :class:`FedSDM.db.MetadataDB` to retrieve the RDF Molecule Templates
+    of a federation and the information to which source they belong.
+    This method is one out of two that need to be called in order to retrieve the
+    necessary data to visualize the RDF Molecule Templates of a federation.
+
+    Parameters
+    ----------
+    graph : str
+        The identifier of the federation of interest. If no value is
+        passed, all available federations are considered.
+
+    Returns
+    -------
+    (dict, dict)
+        The first dictionary includes information about the nodes and sources in
+        order to visualize the RDF Molecule Templates. The second dictionary keeps
+        information about the RDF Molecule Templates and to which source they belong.
+
+    """
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -440,6 +622,7 @@ def get_rdfmt_nodes(graph: str = None):
 
 
 def get_rdfmt_links(graph: str = None):
+    """This method is currently unused and needs checking."""
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
@@ -575,6 +758,22 @@ def get_rdfmt_links(graph: str = None):
 
 @bp.route('/api/rdfmtanalysis')
 def api_rdfmtanalysis():
+    """Serves requests to '/rdfmts/api/rdfmtanalysis'.
+
+    This route performs a network analysis of the RDF Molecule Templates
+    of a datasource. The request requires the following parameters:
+        - 'graph' -- the identifier of the federation to which the source belongs
+        - 'source' -- the datasource of interest
+
+    If the value for a parameter is 'All', all available federations and/or
+    sources are considered.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response with the results from the network analysis.
+
+    """
     try:
         graph = request.args['graph']
         source = request.args['source']
@@ -592,6 +791,36 @@ def api_rdfmtanalysis():
 
 
 def get_graph_stat(graph: str = None, source: str = None):
+    """Gets graph statistics about the RDF Molecule Templates in a specific source.
+
+    This method performs a network analysis on the RDF Molecule Templates of the
+    specified federation and datasource. The reported metrics are:
+        - Density
+        - Number of nodes
+        - Number of edges
+        - Number of connected components
+        - Average clustering
+        - Transitivity
+        - Average number of neighbors
+
+    An instance of :class:`FedSDM.db.MetadataDB` is used to retrieve the necessary
+    metadata from the metadata knowledge graph. The retrieved data is then prepared
+    in a way such that the method :func:`~FedSDM.rdfmtmgt.compute_graph_properties`
+    can perform the actual network analysis.
+
+    Parameters
+    ----------
+    graph : str, optional
+        The identifier of the federation of interest. If None, then all federations are considered.
+    source : str, optional
+        The identifier of the datasource of interest. If None, then all source are considered.
+
+    Returns
+    -------
+    list
+        A list with the above-mentioned metrics from network analysis.
+
+    """
     mdb = get_mdb()
     if source is None:
         source = ' ?name '
@@ -653,6 +882,31 @@ def get_graph_stat(graph: str = None, source: str = None):
 
 
 def compute_graph_properties(nodes: list, edges: list):
+    """Performs a network analysis based on the given nodes and edges.
+
+    This method performs a network analysis over the given nodes and edges.
+    The reported metrics are:
+        - Density
+        - Number of nodes
+        - Number of edges
+        - Number of connected components
+        - Average clustering
+        - Transitivity
+        - Average number of neighbors
+
+    Parameters
+    ----------
+    nodes : list
+        The nodes in the network to be analyzed.
+    edges : list
+        The edges in the network to be analyzed.
+
+    Returns
+    -------
+    list
+        A list with the above-mentioned metrics from network analysis.
+
+    """
     graph = nx.Graph()
     graph.add_nodes_from(nodes)
     graph.add_edges_from(edges)
@@ -693,3 +947,4 @@ meta = [
     'http://www.ebusiness-unibw.org/ontologies/eclass',
     'http://bio2rdf.org/bio2rdf.dataset_vocabulary:Dataset'
 ]
+"""list: Commonly used prefixes of classes that should not be considered in RDF Molecule Templates."""
