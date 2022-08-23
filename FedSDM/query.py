@@ -16,7 +16,7 @@ from FedSDM import get_logger
 from FedSDM.auth import login_required
 from FedSDM.config import ConfigSimpleStore
 from FedSDM.db import get_db, get_mdb
-from FedSDM.util import get_federations
+from FedSDM.utils import get_federations
 
 bp = Blueprint('query', __name__, url_prefix='/query')
 
