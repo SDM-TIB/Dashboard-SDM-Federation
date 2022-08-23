@@ -1,5 +1,6 @@
 import json
 import time
+from typing import Tuple
 
 import networkx as nx
 from flask import (
@@ -15,7 +16,7 @@ bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
 
 @bp.route('/rdfmt')
 @login_required
-def rdfmt():
+def rdfmt() -> str:
     """Serves requests to '/rdfmts/rdfmt'.
 
     This route serves the RDF Molecule Template page of FedSDM. The page provides
@@ -43,7 +44,7 @@ def rdfmt():
 
 
 @bp.route('/api/rdfmtstats')
-def rdfmtstats():
+def rdfmtstats() -> Response:
     """Serves requests to '/rdfmts/api/rdfmtstats'.
 
     This route provides statistics about the RDF Molecule Templates of the federation
@@ -77,7 +78,7 @@ def rdfmtstats():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def get_rdfmt_stats(graph: str = None):
+def get_rdfmt_stats(graph: str = None) -> dict:
     """Retrieves statistics about the RDF Molecule Templates of a federation.
 
     This method collects statistics about the RDF Molecule Templates of a federation.
@@ -179,7 +180,7 @@ def get_rdfmt_stats(graph: str = None):
 
 
 @bp.route('/api/mtdetails')
-def api_rdfmtdetails():
+def api_rdfmtdetails() -> Response:
     """Serves requests to '/rdfmts/api/mtdetails'.
 
     This route is used to retrieve details about a single RDF Molecule
@@ -210,7 +211,7 @@ def api_rdfmtdetails():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def _iterative_query(query: str, mdb: MetadataDB, limit: int = 10000, offset: int = 0):
+def _iterative_query(query: str, mdb: MetadataDB, limit: int = 10000, offset: int = 0) -> list:
     """Executes a SPARQL query iteratively.
 
     This method utilizes :class:`FedSDM.db.MetadataDB` to execute SPARQL queries
@@ -254,7 +255,7 @@ def _iterative_query(query: str, mdb: MetadataDB, limit: int = 10000, offset: in
     return res_list
 
 
-def get_rdfmt_details(fed: str, mt: str):
+def get_rdfmt_details(fed: str, mt: str) -> dict:
     """Gets the details about a specific RDF Molecule Template.
 
     The details are used to visualize the RDF Molecule Template and its connections.
@@ -414,7 +415,7 @@ def get_rdfmt_details(fed: str, mt: str):
 
 
 @bp.route('/api/rdfmts')
-def api_rdfmts():
+def api_rdfmts() -> Response:
     """Serves requests to '/rdfmts/api/rdfmts'.
 
     This method is used to retrieve information about the RDF Molecule
@@ -442,7 +443,7 @@ def api_rdfmts():
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def get_rdfmt_edges(rdfmtsources, graph: str = None):
+def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
     """Gets the connections between RDF Molecule Templates of a federation.
 
     Makes use of :class:`FedSDM.db.MetadataDB` to retrieve the links between
@@ -522,7 +523,7 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None):
         return {'links': []}
 
 
-def get_rdfmt_nodes(graph: str = None):
+def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
     """Gets all RDF Molecule Templates of a federation and to which source they belong.
 
     Makes use of :class:`FedSDM.db.MetadataDB` to retrieve the RDF Molecule Templates
@@ -757,7 +758,7 @@ def get_rdfmt_links(graph: str = None):
 
 
 @bp.route('/api/rdfmtanalysis')
-def api_rdfmtanalysis():
+def api_rdfmtanalysis() -> Response:
     """Serves requests to '/rdfmts/api/rdfmtanalysis'.
 
     This route performs a network analysis of the RDF Molecule Templates
@@ -790,7 +791,7 @@ def api_rdfmtanalysis():
     return Response(json.dumps({'data': res}), mimetype='application/json')
 
 
-def get_graph_stat(graph: str = None, source: str = None):
+def get_graph_stat(graph: str = None, source: str = None) -> list:
     """Gets graph statistics about the RDF Molecule Templates in a specific source.
 
     This method performs a network analysis on the RDF Molecule Templates of the
@@ -881,7 +882,7 @@ def get_graph_stat(graph: str = None, source: str = None):
         return []
 
 
-def compute_graph_properties(nodes: list, edges: list):
+def compute_graph_properties(nodes: list, edges: list) -> list:
     """Performs a network analysis based on the given nodes and edges.
 
     This method performs a network analysis over the given nodes and edges.
