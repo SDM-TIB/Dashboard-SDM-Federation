@@ -3,7 +3,7 @@ import urllib.parse as urlparse
 from enum import Enum
 
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
-from FedSDM.rdfmt.utils import contactRDFSource
+from FedSDM.rdfmt.utils import contact_rdf_source
 
 
 class RDFMT(object):
@@ -150,7 +150,7 @@ class DataSource(object):
         referer = e
         if self.ds_type == DataSourceType.SPARQL_ENDPOINT:
             print('checking endpoint accessibility', e)
-            val, c = contactRDFSource(ask, referer)
+            val, c = contact_rdf_source(ask, referer)
             if c == -2:
                 print(e, '-> is not accessible. Hence, will not be included in the federation!')
             if val:

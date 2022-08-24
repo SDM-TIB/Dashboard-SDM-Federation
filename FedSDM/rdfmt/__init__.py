@@ -8,7 +8,7 @@ from typing import Optional, List, Tuple
 from FedSDM import get_logger
 from FedSDM.rdfmt.model import *
 from FedSDM.rdfmt.prefixes import *
-from FedSDM.rdfmt.utils import contactRDFSource, updateRDFSource
+from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source
 
 logger = get_logger('rdfmts', './rdfmts.log', True)
 
@@ -48,7 +48,7 @@ def _iterative_query(query: str,
     while True:
         query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
         num_requests += 1
-        res, card = contactRDFSource(query_copy, server)
+        res, card = contact_rdf_source(query_copy, server)
 
         # if receiving the answer fails, try with a decreasing limit
         if card == -2:
@@ -399,11 +399,11 @@ class RDFMTMgr(object):
             else:
                 update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:i + 49]) + '} }'
             logger.info(update_query)
-            updateRDFSource(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint)
         if i < len(data) + 49:
             update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
             logger.info(update_query)
-            updateRDFSource(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint)
 
     def delete_insert_data(self, delete: list, insert: list, where: list = None) -> None:
         if where is None:
@@ -421,14 +421,14 @@ class RDFMTMgr(object):
                                 'INSERT {' + ' . \n'.join(insert[i:i + 49]) + '} ' \
                                 'WHERE {' + ' . \n'.join(where[i:i + 49]) + '}'
             logger.info(update_query)
-            updateRDFSource(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint)
         update_query = 'WITH <' + self.graph + '> DELETE {'
         if i < len(delete) + 49:
             update_query += ' . \n'.join(delete[i:]) + '} ' \
                            'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
                            'WHERE {' + ' . \n'.join(where[i:]) + '}'
             logger.info(update_query)
-            updateRDFSource(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint)
 
     @staticmethod
     def get_cardinality(endpoint: str,
@@ -459,7 +459,7 @@ class RDFMTMgr(object):
                             '  FILTER((datatype(?o))=<' + mr + '>)\n' \
                             '}'
 
-        res, _ = contactRDFSource(query, endpoint)
+        res, _ = contact_rdf_source(query, endpoint)
         if res is not None and len(res) > 0 and len(res[0]['count']) > 0:
             card = res[0]['count']
             if isinstance(card, str) and '^^' in card:
@@ -473,7 +473,7 @@ class RDFMTMgr(object):
     @staticmethod
     def get_subclasses(endpoint_url: str, root: str) -> list:
         query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + RDFS + 'subClassOf> ?subc }'
-        res, _ = contactRDFSource(query, endpoint_url)
+        res, _ = contact_rdf_source(query, endpoint_url)
         return res
 
     def get_sources(self) -> list:
@@ -742,7 +742,7 @@ class RDFMTMgr(object):
                    '  }\n' \
                    '}}'
         print(mt_query)
-        res, card = contactRDFSource(mt_query, self.query_endpoint)
+        res, card = contact_rdf_source(mt_query, self.query_endpoint)
         results = []
         data = []
         if card > 0:
@@ -983,7 +983,7 @@ class MTManager(object):
                    '  }\n' \
                    '}}'
         print(mt_query)
-        res, card = contactRDFSource(mt_query, self.query_endpoint)
+        res, card = contact_rdf_source(mt_query, self.query_endpoint)
         return res
 
     def get_rdfmts_by_preds(self, predicates: list) -> dict:

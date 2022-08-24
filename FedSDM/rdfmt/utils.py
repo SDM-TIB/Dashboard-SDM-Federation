@@ -10,10 +10,10 @@ from FedSDM import get_logger
 logger = get_logger('mtupdate', './mt-update.log', True)
 
 
-def contactRDFSource(query: str,
-                     endpoint: str,
-                     output_queue: Queue = Queue(),
-                     format_: str = 'application/sparql-results+json') -> str | Tuple[list | str | None, int]:
+def contact_rdf_source(query: str,
+                       endpoint: str,
+                       output_queue: Queue = Queue(),
+                       format_: str = 'application/sparql-results+json') -> str | Tuple[list | str | None, int]:
     # Build the query and header.
     params = urlparse.urlencode({'query': query, 'format': format_, 'timeout': 600})
     headers = {'Accept': format_}
@@ -71,7 +71,7 @@ def contactRDFSource(query: str,
     return None, -2
 
 
-def updateRDFSource(update_query: str, endpoint: str) -> bool:
+def update_rdf_source(update_query: str, endpoint: str) -> bool:
     headers = {'Accept': '*/*', 'Content-type': 'application/sparql-update'}
     try:
         resp = requests.post(endpoint, data=update_query, headers=headers)
