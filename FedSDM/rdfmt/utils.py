@@ -1,6 +1,7 @@
 import urllib.parse as urlparse
 from http import HTTPStatus
 from multiprocessing import Queue
+from typing import Tuple
 
 import requests
 
@@ -9,25 +10,20 @@ from FedSDM import get_logger
 logger = get_logger('mtupdate', './mt-update.log', True)
 
 
-def contactRDFSource(query, endpoint, outputqueue=Queue(), format='application/sparql-results+json'):
-    if 'https' in endpoint:
-        server = endpoint.split('https://')[1]
-    else:
-        server = endpoint.split('http://')[1]
-
-    (server, path) = server.split('/', 1)
-    # Formats of the response.
-    json = format
+def contactRDFSource(query: str,
+                     endpoint: str,
+                     output_queue: Queue = Queue(),
+                     format_: str = 'application/sparql-results+json') -> str | Tuple[list | str | None, int]:
     # Build the query and header.
-    params = urlparse.urlencode({'query': query, 'format': json, 'timeout': 10000000})
-    headers = {'Accept': '*/*', 'Referer': endpoint, 'Host': server}
+    params = urlparse.urlencode({'query': query, 'format': format_, 'timeout': 600})
+    headers = {'Accept': format_}
 
     try:
         resp = requests.get(endpoint, params=params, headers=headers)
         if resp.status_code == HTTPStatus.OK:
             res = resp.text
-            reslist = []
-            if format != 'application/sparql-results+json':
+            res_list = []
+            if format_ != 'application/sparql-results+json':
                 return res
 
             try:
@@ -45,11 +41,11 @@ def contactRDFSource(query, endpoint, outputqueue=Queue(), format='application/s
                             suffix = ''
                             if props['type'] == 'typed-literal':
                                 if isinstance(props['datatype'], bytes):
-                                    suffix = '' # '^^<' + props['datatype'].decode('utf-8') + '>'
+                                    suffix = ''  # '^^<' + props['datatype'].decode('utf-8') + '>'
                                 else:
-                                    suffix = '' # '^^<' + props['datatype'] + '>'
+                                    suffix = ''  # '^^<' + props['datatype'] + '>'
                             elif 'xml:lang' in props:
-                                suffix = '' # '@' + props['xml:lang']
+                                suffix = ''  # '@' + props['xml:lang']
                             try:
                                 if isinstance(props['value'], bytes):
                                     x[key] = props['value'].decode('utf-8') + suffix
@@ -60,45 +56,36 @@ def contactRDFSource(query, endpoint, outputqueue=Queue(), format='application/s
 
                             if isinstance(x[key], bytes):
                                 x[key] = x[key].decode('utf-8')
-                        outputqueue.put(x)
-                        reslist.append(x)
+                        output_queue.put(x)
+                        res_list.append(x)
                     # reslist = res['results']['bindings']
-                    return reslist, len(reslist)
+                    return res_list, len(res_list)
                 else:
-                    outputqueue.put(res['boolean'])
-
+                    output_queue.put(res['boolean'])
                     return res['boolean'], 1
-
         else:
             print('Endpoint->', endpoint, resp.reason, resp.status_code, query)
-
     except Exception as e:
         print('Exception during query execution to', endpoint, ': ', e)
 
     return None, -2
 
 
-def updateRDFSource(update, endpoint):
-    if 'https' in endpoint:
-        server = endpoint.split('https://')[1]
-    else:
-        server = endpoint.split('http://')[1]
-
-    (server, path) = server.split('/', 1)
-    # Build the header.
-    headers = {'Accept': '*/*', 'Referer': endpoint, 'Host': server, 'Content-type': 'application/sparql-update'}
-
+def updateRDFSource(update_query: str, endpoint: str) -> bool:
+    headers = {'Accept': '*/*', 'Content-type': 'application/sparql-update'}
     try:
-        resp = requests.post(endpoint, data=update, headers=headers)
-        if resp.status_code == HTTPStatus.OK or resp.status_code == HTTPStatus.ACCEPTED or resp.status_code == HTTPStatus.NO_CONTENT:
+        resp = requests.post(endpoint, data=update_query, headers=headers)
+        if resp.status_code == HTTPStatus.OK or \
+                resp.status_code == HTTPStatus.ACCEPTED or \
+                resp.status_code == HTTPStatus.NO_CONTENT:
             return True
         else:
-            print('Update Endpoint->', endpoint, resp.reason, resp.status_code, update)
-            logger.error(endpoint+' - ' + str(resp.reason) + ' - '+ str(resp.status_code))
-            logger.error('ERROR ON: ' + update)
+            print('Update Endpoint->', endpoint, resp.reason, resp.status_code, update_query)
+            logger.error(endpoint+' - ' + str(resp.reason) + ' - ' + str(resp.status_code))
+            logger.error('ERROR ON: ' + update_query)
     except Exception as e:
-        print('Exception during update query execution to', endpoint, ': ', e, update)
+        print('Exception during update query execution to', endpoint, ': ', e, update_query)
         logger.error('Exception on update: ' + endpoint + ' ' + str(e))
-        logger.error('EXCEPTION ON: ' + update)
+        logger.error('EXCEPTION ON: ' + update_query)
 
     return False
