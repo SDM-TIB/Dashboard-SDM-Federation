@@ -3,6 +3,7 @@ import time
 from multiprocessing import Queue, Process
 from pprint import pprint
 from queue import Empty
+from typing import Optional, List, Tuple
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.model import *
@@ -34,7 +35,11 @@ metas = [
 ]
 
 
-def _iterative_query(query: str, server: str, limit: int = 10000, max_tries: int = -1, max_answers: int = -1):
+def _iterative_query(query: str,
+                     server: str,
+                     limit: int = 10000,
+                     max_tries: int = -1,
+                     max_answers: int = -1) -> Tuple[list, int]:
     offset = 0
     res_list = []
     status = 0
@@ -66,14 +71,14 @@ def _iterative_query(query: str, server: str, limit: int = 10000, max_tries: int
 
 class RDFMTMgr(object):
 
-    def __init__(self, query_url, update_url, user, passwd, graph):
+    def __init__(self, query_url: str, update_url: str, user: str, passwd: str, graph: str):
         self.graph = graph
         self.query_endpoint = query_url
         self.update_endpoint = update_url
         self.user = user
         self.passwd = passwd
 
-    def create(self, ds, out_queue=Queue(), types=None, is_update=False):
+    def create(self, ds: DataSource, out_queue: Queue = Queue(), types: list = None, is_update: bool = False) -> dict:
         if types is None:
             types = []
 
@@ -83,12 +88,9 @@ class RDFMTMgr(object):
         if not is_update:
             # Get #triples of a dataset
             triples = self.get_cardinality(endpoint)
-            if isinstance(triples, str) and '^' in triples:
-                triples = int(triples[:triples.find('^^')])
             ds.triples = triples
-
             data = '<' + ds.rid + '> <' + MT_ONTO + 'triples> ' + triples
-            self.updateGraph([data])
+            self.update_graph([data])
         else:
             today = str(datetime.datetime.now())
             data = ['<' + ds.rid + '> <http://purl.org/dc/terms/modified> "' + today + '"']
@@ -100,10 +102,10 @@ class RDFMTMgr(object):
         out_queue.put('EOF')
         return results
 
-    def get_rdfmts(self, ds, types=None):
-        return self.extractMTLs(ds, types)
+    def get_rdfmts(self, datasource: DataSource, types: list = None) -> dict:
+        return self.extractMTLs(datasource, types)
 
-    def extractMTLs(self, datasource, types=None):
+    def extractMTLs(self, datasource: DataSource, types: list = None) -> dict:
         rdf_molecules = {}
         endpoint = datasource.url
 
@@ -115,11 +117,11 @@ class RDFMTMgr(object):
         rdf_molecules[endpoint] = results
 
         pprint(results)
-        logger.info('*****' + endpoint + ' ***********')
-        logger.info('*************finished *********************' )
+        logger.info('*********** ' + endpoint + ' ***********')
+        logger.info('*********** finished ***********')
         return rdf_molecules
 
-    def get_typed_concepts(self, endpoint, types=None):
+    def get_typed_concepts(self, endpoint: DataSource, types: list = None) -> List[dict]:
         """
         Entry point for extracting RDF-MTs of an endpoint.
         Extracts list of rdf:Class concepts and predicates of an endpoint
@@ -152,28 +154,19 @@ class RDFMTMgr(object):
             print('---------------------------------------')
             already_processed.append(t)
             card = self.get_cardinality(endpoint_url, t)
-            if isinstance(card, str) and '^' in card:
-                card = int(card[:card.find('^^')])
-
-            if isinstance(card, str) and '^^' in card:
-                mcard = card[:card.find('^^')]
-            else:
-                mcard = str(card)
 
             source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t).encode()).hexdigest())
-            source = Source(source_uri, endpoint, mcard)
+            source = Source(source_uri, endpoint, card)
             # Get subclasses
             subc = self.get_subclasses(endpoint_url, t)
-            subclasses = []
-            if subc is not None:
-                subclasses = [r['subc'] for r in subc]
+            subclasses = [r['subc'] for r in subc] if subc is not None else []
 
             rdf_properties = []
             # Get predicates of the molecule t
             predicates = self.get_predicates(endpoint_url, t)
             properties_processed = []
             for p in predicates:
-                rn = {'t': t, 'cardinality': mcard, 'subclasses': subclasses}
+                rn = {'t': t, 'cardinality': str(card), 'subclasses': subclasses}
                 pred = p['p']
                 if pred in properties_processed:
                     continue
@@ -182,12 +175,7 @@ class RDFMTMgr(object):
                 mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
                 propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
-                pred_card = self.get_cardinality(endpoint_url, t, prop=pred)
-                if isinstance(pred_card, str) and '^^' in pred_card:
-                    pred_card = pred_card[:pred_card.find('^^')]
-                else:
-                    pred_card = str(pred_card)
-
+                pred_card = str(self.get_cardinality(endpoint_url, t, prop=pred))
                 print(pred, pred_card)
                 rn['p'] = pred
                 rn['predcard'] = pred_card
@@ -212,11 +200,7 @@ class RDFMTMgr(object):
                         rcard = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mr_datatype=True)
                         rtype = 1
 
-                    if isinstance(rcard, str) and '^^' in rcard:
-                        rcard = rcard[:rcard.find('^^')]
-                    else:
-                        rcard = str(rcard)
-                    ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=rcard)
+                    ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=str(rcard))
                     ranges.append(ran)
                 if 'label' in p:
                     plab = p['label']
@@ -234,18 +218,18 @@ class RDFMTMgr(object):
 
             mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subClassOf=subclasses)
             data = mt.to_rdf()
-            self.updateGraph(data)
+            self.update_graph(data)
 
         return results
 
     @staticmethod
-    def get_rdfs_ranges(endpoint_url, predicate):
+    def get_rdfs_ranges(endpoint_url: str, predicate: str) -> list:
         query = 'SELECT DISTINCT ?range WHERE { <' + predicate + '> <' + RDFS + 'range> ?range . }'
         res_list, _ = _iterative_query(query, endpoint_url, limit=100)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
     @staticmethod
-    def find_instance_range(endpoint_url, type_, predicate):
+    def find_instance_range(endpoint_url: str, type_: str, predicate: str) -> list:
         query = 'SELECT DISTINCT ?range WHERE {\n' \
                 '  ?s a <' + type_ + '> .\n' \
                 '  ?s <' + predicate + '> ?pt .\n' \
@@ -253,7 +237,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, endpoint_url, limit=50)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
-    def get_predicates(self, endpoint_url, type_):
+    def get_predicates(self, endpoint_url: str, type_: str) -> list:
         """
         Get list of predicates of a class t
         """
@@ -273,7 +257,7 @@ class RDFMTMgr(object):
                     res_list.append({'p': r})
         return res_list
 
-    def get_preds_of_random_instances(self, endpoint_url, type_):
+    def get_preds_of_random_instances(self, endpoint_url: str, type_: str) -> list:
         """
         get a union of predicated from 'randomly' selected 10 entities from the first 100 subjects returned
         """
@@ -292,14 +276,14 @@ class RDFMTMgr(object):
         return res_list
 
     @staticmethod
-    def get_preds_of_instance(endpoint_url, instance):
+    def get_preds_of_instance(endpoint_url: str, instance: str) -> list:
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + instance + '> ?p ?pt .\n' \
                 '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
         res_list, _ = _iterative_query(query, endpoint_url, limit=1000)
         return res_list
 
-    def get_mts_from_owl(self, endpoint, graph, types=None):
+    def get_mts_from_owl(self, endpoint: DataSource, graph: str, types: list = None) -> List[dict]:
         endpoint_url = endpoint.url
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE { GRAPH <' + graph + '> {\n' \
@@ -403,10 +387,10 @@ class RDFMTMgr(object):
         for t in mts:
             mt = RDFMT(t, mts[t]['name'], mts[t]['properties'], mts[t]['desc'], mts[t]['sources'], mts[t]['subClassOf'])
             data = mt.to_rdf()
-            self.updateGraph(data)
+            self.update_graph(data)
         return results
 
-    def updateGraph(self, data):
+    def update_graph(self, data: list) -> None:
         i = 0
         # Virtuoso supports only 49 triples at a time.
         for i in range(0, len(data), 49):
@@ -421,7 +405,7 @@ class RDFMTMgr(object):
             logger.info(update_query)
             updateRDFSource(update_query, self.update_endpoint)
 
-    def delete_insert_data(self, delete, insert, where=None):
+    def delete_insert_data(self, delete: list, insert: list, where: list = None) -> None:
         if where is None:
             where = []
         i = 0
@@ -447,7 +431,11 @@ class RDFMTMgr(object):
             updateRDFSource(update_query, self.update_endpoint)
 
     @staticmethod
-    def get_cardinality(endpoint, mt=None, prop=None, mr=None, mr_datatype=False):
+    def get_cardinality(endpoint: str,
+                        mt: str = None,
+                        prop: str = None,
+                        mr: str = None,
+                        mr_datatype: bool = False) -> int:
         if mt is None:
             query = 'SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }'
         elif prop is None:
@@ -471,19 +459,24 @@ class RDFMTMgr(object):
                             '  FILTER((datatype(?o))=<' + mr + '>)\n' \
                             '}'
 
-        res, card = contactRDFSource(query, endpoint)
+        res, _ = contactRDFSource(query, endpoint)
         if res is not None and len(res) > 0 and len(res[0]['count']) > 0:
-            return res[0]['count']
+            card = res[0]['count']
+            if isinstance(card, str) and '^^' in card:
+                card = int(card[:card.find('^^')])
+            else:
+                card = int(card)
+            return card
         else:
             return -1
 
     @staticmethod
-    def get_subclasses(endpoint_url, root):
+    def get_subclasses(endpoint_url: str, root: str) -> list:
         query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + RDFS + 'subClassOf> ?subc }'
-        res, card = contactRDFSource(query, endpoint_url)
+        res, _ = contactRDFSource(query, endpoint_url)
         return res
 
-    def get_sources(self):
+    def get_sources(self) -> list:
         query = 'SELECT DISTINCT ?subject ?url WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
@@ -491,7 +484,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def get_source(self, ds_id: str) -> DataSource | None:
+    def get_source(self, ds_id: str) -> Optional[DataSource]:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'url> ?url .\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
@@ -521,7 +514,7 @@ class RDFMTMgr(object):
             )
         return None
 
-    def get_ds_rdfmts(self, datasource):
+    def get_ds_rdfmts(self, datasource: str) -> list:
         query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?subject a <' + MT_ONTO + 'RDFMT> .\n' \
                 '  ?subject <' + MT_ONTO + 'source> ?source .\n' \
@@ -531,7 +524,7 @@ class RDFMTMgr(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def create_inter_ds_links(self, datasource=None, output_queue=Queue()):
+    def create_inter_ds_links(self, datasource: DataSource | str = None, output_queue: Queue = Queue()) -> None:
         sources = self.get_sources()
         rdfmts = {}
         if len(sources) == 0:
@@ -552,7 +545,7 @@ class RDFMTMgr(object):
 
         output_queue.put('EOF')
 
-    def find_all_links(self, rdfmts, sourcemaps):
+    def find_all_links(self, rdfmts: dict, sourcemaps: dict) -> None:
         queues = {}
         processes = {}
 
@@ -587,7 +580,7 @@ class RDFMTMgr(object):
                                 processes[r].terminate()
                                 del processes[r]
 
-    def update_links(self, rdfmts, sourcemaps, datasource):
+    def update_links(self, rdfmts, sourcemaps, datasource: DataSource | str) -> None:
         queues = {}
         processes = {}
         if isinstance(datasource, DataSource):
@@ -645,7 +638,12 @@ class RDFMTMgr(object):
                             del processes[r]
         print('linking DONE!', did)
 
-    def get_inter_ds_links_bn(self, endpoint1, rdfmts_endpoint1, endpoint2, rdfmts_endpoint2, queue=Queue()):
+    def get_inter_ds_links_bn(self,
+                              endpoint1: dict,
+                              rdfmts_endpoint1: dict,
+                              endpoint2: dict,
+                              rdfmts_endpoint2: dict,
+                              queue: Queue = Queue()) -> None:
         url_endpoint1 = endpoint1['url']
         url_endpoint2 = endpoint2['url']
         for m1 in rdfmts_endpoint1:
@@ -682,7 +680,7 @@ class RDFMTMgr(object):
                             mtpid = MT_RESOURCE + str(hashlib.md5(str(m1 + link).encode()).hexdigest())
                             data.append('<' + mtpid + '> <' + MT_ONTO + 'linkedTo> <' + mrpid + '> ')
                         if len(data) > 0:
-                            self.updateGraph(data)
+                            self.update_graph(data)
                     except Exception as e:
                         print('Exception : ', e)
                         logger.error('Exception while collecting data' + str(e))
@@ -693,7 +691,7 @@ class RDFMTMgr(object):
         print('get_inter_ds_links_bn Done!')
         queue.put('EOF')
 
-    def get_links_bn_ds(self, predicate_instance_list, rdfmts, endpoint):
+    def get_links_bn_ds(self, predicate_instance_list: dict, rdfmts: dict, endpoint: str) -> dict:
         results = {}
         for pred in predicate_instance_list:
             print(pred)
@@ -704,7 +702,7 @@ class RDFMTMgr(object):
         return results
 
     @staticmethod
-    def get_mts_matches(instances, endpoint):
+    def get_mts_matches(instances: list, endpoint: str) -> list:
         # Checks if there are subjects with prefixes matching
         batches = [instances[i:i+50] for i in range(0, len(instances), 50)]
         for batch in batches:
@@ -714,16 +712,16 @@ class RDFMTMgr(object):
             res = [r['t'] for r in res_list]
             if len(res) > 0:
                 return res
-        return {}
+        return []
 
-    def create_from_mapping(self, datasource, out_queue=Queue(), types=None):
+    def create_from_mapping(self, datasource: DataSource, out_queue: Queue = Queue(), types: list = None) -> list:
         logger.info('----------------------' + datasource.url + '-------------------------------------')
         results = self.get_rdfmts_from_mapping(datasource, types)
         # self.create_inter_ds_links(datasource=ds)
         out_queue.put('EOF')
         return results
 
-    def get_rdfmts_from_mapping(self, datasource, types=None):
+    def get_rdfmts_from_mapping(self, datasource: DataSource, types: list = None) -> list:
         if types is None:
             types = []
         mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \
@@ -829,7 +827,7 @@ class RDFMTMgr(object):
                 data = list(set(data))
 
         if len(data) > 0:
-            self.updateGraph(data)
+            self.update_graph(data)
         return results
 
 
@@ -837,13 +835,13 @@ class MTManager(object):
     """
     Used in Config to access RDF-MTs in the data lake
     """
-    def __init__(self, query_url, user, passwd, graph):
+    def __init__(self, query_url: str, user: str, passwd: str, graph: str):
         self.graph = graph
         self.query_endpoint = query_url
         self.user = user
         self.passwd = passwd
 
-    def get_data_sources(self):
+    def get_data_sources(self) -> list:
         query = 'SELECT DISTINCT ?rid ?endpoint WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?rid <' + MT_ONTO + 'url> ?endpoint .\n' \
@@ -851,7 +849,7 @@ class MTManager(object):
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         return res_list
 
-    def get_rdfmts(self):
+    def get_rdfmts(self) -> dict:
         query = 'SELECT DISTINCT ?rid ?datasource ?pred ?mtr ?mtrange WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'RDFMT> .\n' \
                 '  ?rid <' + MT_ONTO + 'source> ?source .\n' \
@@ -865,7 +863,7 @@ class MTManager(object):
                 '}}'
         return self.prepare_rdfmts_from_query(query)
 
-    def get_rdfmt(self, rdf_class):
+    def get_rdfmt(self, rdf_class: str) -> dict:
         query = 'SELECT DISTINCT ?datasource ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  <' + rdf_class + '> <' + MT_ONTO + 'source> ?source .\n' \
                 '  <' + rdf_class + '> <' + MT_ONTO + 'hasProperty> ?mtp .\n' \
@@ -874,7 +872,7 @@ class MTManager(object):
                 '}}'
         return self.prepare_rdfmts_from_query(query, rdf_class)
 
-    def prepare_rdfmts_from_query(self, query, rdf_class=None):
+    def prepare_rdfmts_from_query(self, query: str, rdf_class: str = None) -> dict:
         res_list, _ = _iterative_query(query, self.query_endpoint, limit=1000)
         results = {}
         for r in res_list:
@@ -932,7 +930,7 @@ class MTManager(object):
         else:
             return results
 
-    def get_data_source(self, ds_id):
+    def get_data_source(self, ds_id: str) -> Optional[DataSource]:
         query = 'SELECT DISTINCT *  WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'url> ?url .\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
@@ -965,7 +963,7 @@ class MTManager(object):
         else:
             return None
 
-    def get_mappings(self, ds_id):
+    def get_mappings(self, ds_id: str) -> list:
         mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \
                    'PREFIX rml: <http://semweb.mmlab.be/ns/rml#>' \
                    'SELECT DISTINCT ?t ?p ?r ?rds WHERE { GRAPH <' + self.graph + '> {\n' \
@@ -988,7 +986,7 @@ class MTManager(object):
         res, card = contactRDFSource(mt_query, self.query_endpoint)
         return res
 
-    def get_rdfmts_by_preds(self, predicates):
+    def get_rdfmts_by_preds(self, predicates: list) -> dict:
         query = 'SELECT DISTINCT ?rid WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'RDFMT> .\n'
         i = 0
@@ -1007,7 +1005,7 @@ class MTManager(object):
                 results[r['rid']] = res
         return results
 
-    def get_preds_mt(self, predicates=None):
+    def get_preds_mt(self, predicates: list = None) -> dict:
         filters = ' || '.join(['?pred=<' + p + '> ' for p in predicates]) if predicates is not None else ''
         query = 'SELECT DISTINCT ?rid ?pred WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?rid a <' + MT_ONTO + 'RDFMT> .\n' \
