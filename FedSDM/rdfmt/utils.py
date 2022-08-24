@@ -8,12 +8,48 @@ import requests
 from FedSDM import get_logger
 
 logger = get_logger('mtupdate', './mt-update.log', True)
+"""Logger for this module. It logs to the file 'mt-update.log' as well as to stdout."""
 
 
 def contact_rdf_source(query: str,
                        endpoint: str,
                        output_queue: Queue = Queue(),
                        format_: str = 'application/sparql-results+json') -> str | Tuple[list | str | None, int]:
+    """Executes a SPARQL query over an RDF datasource.
+
+    The provided SPARQL query is executed over the specified endpoint.
+    The results can be fetched from a queue in an incremental manner
+    or retrieved as a list once all results are retrieved, i.e., in
+    a blocking fashion.
+
+    Parameters
+    ----------
+    query : str
+        The SPARQL query to be executed.
+    endpoint : str
+        The URL of the SPARQL endpoint to which the query should be sent.
+    output_queue : multiprocessing.Queue, optional
+        The queue to use for fetching the result in an incremental manner.
+        If no queue is passed, a new one will be created. However, it is
+        then not possible to retrieve the results from the queue.
+    format_ : str, optional
+        The result format to be requested from the endpoint. If the
+        format is different from the default SPARQL JSON result,
+        the raw result will be returned.
+
+    Returns
+    -------
+    str | (list | str | None, int)
+        The query result retrieved from the endpoint when executing the provided
+        SPARQL query. The raw answer will be returned if the requested format
+        differs from SPARQL JSON result. Otherwise, the return value is a tuple
+        containing the query result and the cardinality. The query result is a
+        list for regular queries. In the case of an ASK query, the Boolean return
+        value in form of a string will be returned. If an error occurred during
+        the query execution, the query result will be None and the cardinality
+        is set to -2 to signal the error.
+
+    """
     # Build the query and header.
     params = urlparse.urlencode({'query': query, 'format': format_, 'timeout': 600})
     headers = {'Accept': format_}
@@ -72,6 +108,25 @@ def contact_rdf_source(query: str,
 
 
 def update_rdf_source(update_query: str, endpoint: str) -> bool:
+    """Updates a SPARQL endpoint using a SPARQL update query.
+
+    The provided SPARQL endpoint is updated by executing the SPARQL update query.
+    The server's response is analyzed in order to indicate the success of the update.
+
+    Parameters
+    ----------
+    update_query : str
+        The SPARQL update query that needs to be executed for the intended update.
+    endpoint : str
+        The URL of the SPARQL endpoint that should be updated.
+
+    Returns
+    -------
+    bool
+        A Boolean indicating the success of the update. Obviously, true
+        means that the update was successful while false indicates otherwise.
+
+    """
     headers = {'Accept': '*/*', 'Content-type': 'application/sparql-update'}
     try:
         resp = requests.post(endpoint, data=update_query, headers=headers)
