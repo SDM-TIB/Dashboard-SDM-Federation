@@ -216,7 +216,7 @@ class RDFMTMgr(object):
             name = r['label'] if 'label' in r else t
             desc = r['desc'] if 'desc' in r else None
 
-            mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subClassOf=subclasses)
+            mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subclass_of=subclasses)
             data = mt.to_rdf()
             self.update_graph(data)
 
@@ -821,7 +821,7 @@ class RDFMTMgr(object):
 
                 name = t
                 desc = None
-                mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subClassOf=[])
+                mt = RDFMT(t, name, properties=rdf_properties, desc=desc, sources=[source], subclass_of=[])
                 mtd = mt.to_rdf()
                 data.extend(mtd)
                 data = list(set(data))

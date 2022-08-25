@@ -1,6 +1,9 @@
+from __future__ import annotations  # Python 3.10 still has issues with typing when using classes from the same module
+
 import datetime
 import urllib.parse as urlparse
 from enum import Enum
+from typing import List, Optional
 
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
 from FedSDM.rdfmt.utils import contact_rdf_source
@@ -8,20 +11,27 @@ from FedSDM.rdfmt.utils import contact_rdf_source
 
 class RDFMT(object):
 
-    def __init__(self, rid, name, mt_type=0, sources=None, subClassOf=None, properties=None, desc=''):
+    def __init__(self,
+                 rid: str,
+                 name: str = None,
+                 mt_type: int = 0,
+                 sources: list = None,
+                 subclass_of: list = None,
+                 properties: List[MTProperty] = None,
+                 desc: str = None):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.sources = [] if sources is None else sources
-        self.subClassOf = [] if subClassOf is None else subClassOf
+        self.subClassOf = [] if subclass_of is None else subclass_of
         self.properties = [] if properties is None else properties
         if desc is not None and '^^' in desc:
             desc = desc[:desc.find('^^')]
         if name is not None and '^^' in name:
             name = name[:name.find('^^')]
-        self.name = name
-        self.desc = desc
+        self.name = name if name is not None else rid
+        self.desc = desc if desc is not None else ''
         self.mt_type = mt_type
 
-    def to_rdf(self):
+    def to_rdf(self) -> List[str]:
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'RDFMT> ']
         if self.mt_type == 0:
             data.append('<' + self.rid + '> a <' + MT_ONTO + 'TypedRDFMT> ')
@@ -46,13 +56,19 @@ class RDFMT(object):
         today = str(datetime.datetime.now())
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/created> "' + today + '"')
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/modified> "' + today + '"')
-
         return data
 
 
 class MTProperty(object):
 
-    def __init__(self, rid, predicate, sources, cardinality=-1, ranges=None, policies=None, label=''):
+    def __init__(self,
+                 rid: str,
+                 predicate: str,
+                 sources: List[DataSource],
+                 cardinality: int = -1,
+                 ranges: List[PropRange] = None,
+                 policies: list = None,
+                 label: str = None):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.predicate = urlparse.quote(predicate, safe='/:#-')
         self.sources = sources
@@ -62,9 +78,9 @@ class MTProperty(object):
 
         if label is not None and '^^' in label:
             label = label[:label.find('^^')]
-        self.label = label
+        self.label = label if label is not None else ''
 
-    def to_rdf(self):
+    def to_rdf(self) -> List[str]:
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'MTProperty> ']
         if self.cardinality != '' and int(self.cardinality) >= 0:
             data.append('<' + self.rid + '> <' + MT_ONTO + 'cardinality> ' + str(self.cardinality))
@@ -84,20 +100,24 @@ class MTProperty(object):
         for p in self.policies:
             data.extend(p.to_rdf())
             data.append('<' + self.rid + '> <' + MT_ONTO + 'policies> <' + p.rid + '> ')
-
         return data
 
 
 class PropRange(object):
 
-    def __init__(self, rid, prange, source, range_type=0, cardinality=-1):
+    def __init__(self,
+                 rid: str,
+                 prange: str,
+                 source: DataSource,
+                 range_type: int = 0,
+                 cardinality: int = -1):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.prange = prange
         self.source = source
         self.cardinality = cardinality
         self.range_type = range_type
 
-    def to_rdf(self):
+    def to_rdf(self) -> List[str]:
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'PropRange> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'datasource> <' + self.source.rid + '> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'name> <' + self.prange + '> ']
@@ -107,44 +127,56 @@ class PropRange(object):
             data.append('<' + self.rid + '> <' + MT_ONTO + 'rdfmt> <' + self.prange + '> ')
         else:
             data.append('<' + self.rid + '> <' + MT_ONTO + 'xsdtype> <' + self.prange + '> ')
-
         return data
 
 
 class Source(object):
 
-    def __init__(self, rid, source, cardinality=-1):
+    def __init__(self,
+                 rid: str,
+                 source: DataSource,
+                 cardinality: int = -1):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.source = source
         self.cardinality = cardinality
 
-    def to_rdf(self):
+    def to_rdf(self) -> List[str]:
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'Source> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'datasource> <' + self.source.rid + '> ']
         if self.cardinality != '' and int(self.cardinality) >= 0:
             data.append('<' + self.rid + '> <' + MT_ONTO + 'cardinality> ' + str(self.cardinality))
-
         return data
 
 
 class DataSource(object):
 
-    def __init__(self, rid, url, ds_type, name=None, desc='', params=None, keywords='', homepage='', version='',
-                 organization='', ontology_graph=None, triples=-1):
+    def __init__(self,
+                 rid: str,
+                 url: str,
+                 ds_type: str | DataSourceType,
+                 name: str = None,
+                 desc: str = None,
+                 params: dict = None,
+                 keywords: str = None,
+                 homepage: str = None,
+                 version: str = None,
+                 organization: str = None,
+                 ontology_graph: str = None,
+                 triples: int = -1):
         self.rid = urlparse.quote(rid, safe='/:#-')
         self.url = url
         self.ds_type = ds_type if isinstance(ds_type, DataSourceType) else DataSourceType.from_str(ds_type)
         self.name = self.url if name is None else name.replace('"', "'")
-        self.desc = desc
+        self.desc = desc if desc is not None else ''
         self.params = {} if params is None else params
-        self.keywords = keywords
-        self.homepage = homepage
-        self.version = version
-        self.organization = organization
+        self.keywords = keywords if keywords is not None else ''
+        self.homepage = homepage if homepage is not None else ''
+        self.version = version if version is not None else ''
+        self.organization = organization if organization is not None else ''
         self.triples = triples
         self.ontology_graph = ontology_graph
 
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         ask = 'ASK {?s ?p ?o}'
         e = self.url
         referer = e
@@ -157,10 +189,9 @@ class DataSource(object):
                 return True
             else:
                 print(e, '-> is returning empty results. Hence, will not be included in the federation!')
-
         return False
 
-    def to_rdf(self, update=False):
+    def to_rdf(self, update: bool = False) -> List[str]:
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'DataSource> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'dataSourceType> <' + MT_RESOURCE + 'DatasourceType/' + str(self.ds_type.value) + '> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'url> "' + urlparse.quote(self.url, safe='/:') + '" ']
@@ -188,12 +219,12 @@ class DataSource(object):
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/modified> "' + today + '"')
         return data
 
-    def __repr__(self):
-        return '{' + \
-               '\trid: ' + self.rid +\
-               ',\turl: ' + self.url + \
-               ',\tdstype: ' + str(self.ds_type) + \
-               ',\tparams: ' + str(self.params) + \
+    def __repr__(self) -> str:
+        return '{\n' + \
+               '  rid: ' + self.rid + ',\n' \
+               '  url: ' + self.url + ',\n' \
+               '  dstype: ' + str(self.ds_type) + ',\n' \
+               '  params: ' + str(self.params) + '\n' \
                '}'
 
 
@@ -213,7 +244,7 @@ class DataSourceType(Enum):
     LOCAL_XML = 'LOCAL_XML'
 
     @staticmethod
-    def from_str(value: str):
+    def from_str(value: str) -> Optional[DataSourceType]:
         if value is None:
             return None
         try:
@@ -226,7 +257,13 @@ class DataSourceType(Enum):
 
 class ACPolicy(object):
 
-    def __init__(self, authorized_by, operations, authorized_to, valid_from=None, valid_until=None, desc=''):
+    def __init__(self,
+                 authorized_by: AppUser,
+                 operations: List[ACOperation],
+                 authorized_to: AppUser,
+                 valid_from: datetime = None,
+                 valid_until: datetime = None,
+                 desc: str = ''):
         self.authorized_by = authorized_by
         self.authorized_to = authorized_to
         self.operations = operations
@@ -237,14 +274,14 @@ class ACPolicy(object):
 
 class ACOperation(object):
 
-    def __init__(self, name, desc=''):
+    def __init__(self, name: str, desc: str = None):
         self.name = name
-        self.desc = desc
+        self.desc = '' if desc is None else desc
 
 
 class AppUser(object):
 
-    def __init__(self, name, username, passwd=None, params=None):
+    def __init__(self, name: str, username: str, passwd: str = None, params: dict = None):
         self.name = name
         self.username = username
         self.passwd = passwd
