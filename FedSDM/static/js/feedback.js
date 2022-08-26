@@ -60,9 +60,6 @@ $(function() {
 
                         $('#var').val(data['var']);
                         $('#pred').val(data['pred']);
-                        /* var obj = JSON.parse(data['row']);
-                        var pretty = JSON.stringify(obj, undefined, 4);
-                        $('#rowjson').val(pretty); */
                         $('#rowjson').val(JSON.stringify(data['row'], undefined, 4));
                         feedbackdialog.modal('show');
                     },
