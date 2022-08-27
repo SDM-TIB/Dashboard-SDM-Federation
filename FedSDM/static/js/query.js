@@ -1,20 +1,20 @@
 $(function() {
-    let yasqe = null,
-        start = false,
-        end = true,
+    const federationList = $('#federations-list'),
+          queryResultsTable = $('#queryresultstable'),
+          resultGraphDIV = $('#resultgraphdiv');
+    let federation = federationList.val(),
+        yasqe = null,
         query = null,
-        querytriples = [];
-    var vizdata = {nodes: {}, links: []};
-    var queryvars = []
-    let table = null, selectedRow = null, selectedRowData = [],
-        nodes = [], links = [];
+        queryTriples = [],
+        vizData = {nodes: {}, links: []},
+        queryVars = [],
+        table = null, selectedRow = null, selectedRowData = [];
     $('#selectfederation').prop('disabled', true);
-
-    let federation = $('#federations-list').val();
 
     if (federation != null && federation !== '') {
         $('#queryrow').show();
         $('#resultrow').hide();
+        initialize_yasqe()
     } else {
         $('#resultinfo').hide();
         $('#resstatus').hide();
@@ -22,7 +22,7 @@ $(function() {
         $('#resultrow').hide();
     }
 
-    $('#federations-list').on('change', function() {
+    federationList.on('change', function() {
         federation = $(this).val();
         $('#queryrow').show();
         $('#resultrow').hide();
@@ -31,18 +31,11 @@ $(function() {
         }
     });
 
-    if (federation !== '') {
-        initialize_yasqe()
-    }
-
     function initialize_yasqe() {
         yasqe = YASQE(document.getElementById('yasqe'), {
-            // display full query
-            viewportMargin: Infinity,
-            // grey edit window during query execution
-            backdrop: true,
-            // modify codemirror tab handling to solely use 2 spaces
-            tabSize: 2,
+            viewportMargin: Infinity,  // display full query
+            backdrop: true,            // grey edit window during query execution
+            tabSize: 2,                // modify codemirror tab handling to solely use 2 spaces
             indentUnit: 2,
             extraKeys: {
                 Tab: function(cm) {
@@ -54,7 +47,6 @@ $(function() {
                 endpoint: '/query/sparql',
                 callbacks: {
                     beforeSend: function(jqXHR, setting) {
-                        //console.log('federation to query from', federation);
                         $('#resstatus').hide();
                         $('#visualizebtn').hide();
                         $('#showtablebtn').hide();
@@ -62,20 +54,20 @@ $(function() {
                         setting.crossDomain = true;
                         setting.data ={'query': yasqe.getValue()};
                         $('#resultinfo').hide();
-                        $('#queryresultstable').empty();
+                        queryResultsTable.empty();
                     },
                     success: function(data) {
                         $('#resulttablediv').empty()
                             .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="queryresultstable"></table>')
 
                         if ('error' in data) {
-                            $('#resstatus').html('Error:' + data.error);
                             $('#resultrow').show();
-                            $('#resstatus').show();
                             $('#resultinfo').show();
+                            $('#resstatus').html('Error:' + data.error)
+                                .show();
                             return true
                         }
-                        resdrawn = false;
+                        resDrawn = false;
                         $('#frestime').html(' ' + data.firstResult + ' sec');
                         $('#exetime').html(' ' + data.execTime + ' sec');
 
@@ -90,31 +82,31 @@ $(function() {
 
                             vars = data.vars;
 
-                            var theader = '<thead><tr>';
-                            var tfooter = '<tfoot><tr>';
-                            for (var i = 0; i < vars.length; i++) {
+                            let theader = '<thead><tr>',
+                                tfooter = '<tfoot><tr>';
+                            for (let i = 0; i < vars.length; i++) {
                                 theader =  theader + '<th>' + vars[i] + '</th> ';
                                 tfooter =  tfooter + '<th>' + vars[i] + '</th> ';
-                                queryvars.push(vars[i]);
+                                queryVars.push(vars[i]);
                             }
-                            $('#queryresultstable').append(theader + '</tr></thead>')
+                            queryResultsTable.append(theader + '</tr></thead>')
                                 .append('<tbody></tbody>')
                                 .append(tfooter + '</tr></tfoot>');
 
-                            table = $('#queryresultstable').DataTable({
+                            table = queryResultsTable.DataTable({
                                 responsive: false,
                                 select: true,
                                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                                 dom: 'Blfrtip',
                                 buttons: table_buttons('sparql-results')
                             });
-                            querytriples = data.querytriples;
-                            var resmap = {}
+                            queryTriples = data.querytriples;
+                            let resmap = {}
                             for (let i = 0; i < results.length; i++) {
-                                var row = results[i];
-                                var rowml = [];
-                                for (var j = 0; j < vars.length; j++) {
-                                    var val = row[vars[j]];
+                                let row = results[i],
+                                    rowml = [];
+                                for (let j = 0; j < vars.length; j++) {
+                                    let val = row[vars[j]];
                                     if (val.indexOf('^^<') !== -1) {
                                         val = val.substring(0, val.indexOf('^^'));
                                     }
@@ -127,53 +119,50 @@ $(function() {
                                     resmap[vars[j]] = val;
                                 }
                                 table.row.add(rowml).draw(false);
-                                // append_nodes_edges(resmap, querytriples);
+                                // append_nodes_edges(resmap, queryTriples);
                             }
                             table.columns().every(function() {
-                                var column = this;
-                                var select = $('<select><option value="">All</option></select>')
-                                    .appendTo($(column.footer()).empty())
-                                    .on('change', function() {
-                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                                        console.log(val);
+                                let column = this,
+                                    select = $('<select><option value="">All</option></select>')
+                                        .appendTo($(column.footer()).empty())
+                                        .on('change', function() {
+                                            let val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                            console.log(val);
 //
-//                                var ltix = val.indexOf('&lt;');
-//                                if (ltix > 0) {
-//                                    val = val.substring(ltix + 4, val.indexOf('&gt;'));
-//                                }
-                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                    } );
+//                                          var ltix = val.indexOf('&lt;');
+//                                          if (ltix > 0) {
+//                                              val = val.substring(ltix + 4, val.indexOf('&gt;'));
+//                                          }
+                                            column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                        });
                                 //console.log(column.data().unique());
                                 column.data().unique().sort().each(function(d, j) {
-                                    var val = d;
-                                    var ltix = val.indexOf('&lt;');
-                                    if (ltix > 0) {
-                                        val = val.substring(ltix+4, val.indexOf('&gt;'));
-                                    }
+//                                    let val = d,
+//                                        ltix = val.indexOf('&lt;');
+//                                    if (ltix > 0) {
+//                                        val = val.substring(ltix+4, val.indexOf('&gt;'));
+//                                    }
                                     // console.log('data', d, val);
                                     select.append('<option value=' + d + '>' + d + '</option>');
                                 } );
                             });
                             table.on('select', function(e, dt, type, indexes) {
                                 selectedRow = table.rows( indexes ).data().toArray();
-
                                 selectedRowData = [];
-                                for (i in selectedRow[0]) {
-                                    var ltix = selectedRow[0][i].indexOf('&lt;');
+                                for (let i in selectedRow[0]) {
+                                    let ltix = selectedRow[0][i].indexOf('&lt;');
                                     if (ltix > 0) {
-                                        var value = selectedRow[0][i].substring(ltix + 4, selectedRow[0][i].indexOf('&gt;'));
+                                        let value = selectedRow[0][i].substring(ltix + 4, selectedRow[0][i].indexOf('&gt;'));
                                         selectedRowData.push(value)
                                     } else {
                                         selectedRowData.push(selectedRow[0][i])
                                     }
                                 }
-
                                 //console.log('selected row:', selectedRowData, ltix);
 
                                 $('#addfeedback').prop('disabled', false);
                             }).on('deselect', function(e, dt, type, indexes) {
-                                var rowData = table.rows(indexes).data().toArray();
+//                                var rowData = table.rows(indexes).data().toArray();
                                 $('#addfeedback').prop('disabled', true);
                                 selectedRow = null;
                             });
@@ -202,16 +191,16 @@ $(function() {
     }
 
     $('#visualizebtn').hide()
-    $('#visualizebtn').on('click', function() {
-        $('#resultgraphdiv').show();
-        $('#resulttablediv').hide();
-        $('#visualizebtn').hide();
-        $('#showtablebtn').show();
-        drawresults();
-        $('#resultgraphdiv').show();
-    });
+        .on('click', function() {
+            resultGraphDIV.show();
+            $('#resulttablediv').hide();
+            $('#visualizebtn').hide();
+            $('#showtablebtn').show();
+            drawresults();
+            resultGraphDIV.show();
+        });
     $('#showtablebtn').on('click', function() {
-        $('#resultgraphdiv').hide();
+        resultGraphDIV.hide();
         $('#resulttablediv').show();
         $('#visualizebtn').show();
         $('#showtablebtn').hide();
@@ -223,15 +212,15 @@ $(function() {
     var msourcenodes = [],
         msourcelinks = [];
     var mtcards = {'All': []};
-    var resdrawn = false;
+    var resDrawn = false;
     function drawresults() {
-        if (resdrawn === true) {
+        if (resDrawn === true) {
             return
         }
-        mlinks = vizdata.links;
-        mnodes = vizdata.nodes;
+        mlinks = vizData.links;
+        mnodes = vizData.nodes;
 
-        for (var i = 0; i < mlinks.length; ++i) {
+        for (let i = 0; i < mlinks.length; ++i) {
             o = mlinks[i];
 
             o.source = mnodes[o.source];
@@ -271,7 +260,7 @@ $(function() {
         manodes.forEach(function(d) {
             expand[d.datasource] = true;
         });
-        resdrawn = true;
+        resDrawn = true;
         drawRDFMTS(manodes, malinks, 'mtviz');
     }
 
@@ -306,7 +295,7 @@ $(function() {
             'pred': fedbackpreds.val(),
             'query': yasqe.getValue(),
             'row': selectedRowData,
-            'columns': queryvars
+            'columns': queryVars
         };
         console.log(data);
 
@@ -322,7 +311,7 @@ $(function() {
                     'pred': fedbackpreds.val(),
                     'query': yasqe.getValue(),
                     'row': selectedRowData,
-                    'columns': queryvars
+                    'columns': queryVars
                 },
                 dataType: 'json',
                 crossDomain: true,
@@ -354,8 +343,8 @@ $(function() {
     $('#addfeedback').on('click', function() {
         fedbackpreds.empty()
                     .append('<option value="-1">Select column</option>');
-        for (const d in queryvars) {
-            fedbackpreds.append('<option value=' + queryvars[d] + '> ' + queryvars[d] + '</option>');
+        for (const d in queryVars) {
+            fedbackpreds.append('<option value=' + queryVars[d] + '> ' + queryVars[d] + '</option>');
         }
         fedbackpreds.append('<option value="All">All</option>');
     });
@@ -393,7 +382,7 @@ $(function() {
 
     function setEdgeData(s, p, o) {
         // console.log(s, p, o);
-        vizdata.links.push({
+        vizData.links.push({
             'source': s,
             'target': o,
             'weight': -1,
@@ -404,7 +393,7 @@ $(function() {
     }
 
     function setNodeData(n) {
-        vizdata.nodes[n] = {
+        vizData.nodes[n] = {
             'id': n,
             'label': n,
             'datasource': 1,
@@ -429,7 +418,7 @@ $(function() {
                         // console.log('row', row);
                         if (row.length === 0 || row === 'EOF') {
                             // console.log('loop done');
-                            resdrawn = false;
+                            resDrawn = false;
                             $('#visualizebtn').show();
                             drawresults();
                             $('#exetime').html(' ' + data.execTime + ' sec');
@@ -454,7 +443,7 @@ $(function() {
                         }
 
                         table.row.add(rowml).draw(false);
-                        append_nodes_edges(resmap, querytriples);
+                        append_nodes_edges(resmap, queryTriples);
 
                         table.columns().every(function() {
                             const column = this;
