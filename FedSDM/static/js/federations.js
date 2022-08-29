@@ -48,9 +48,8 @@ $(function() {
             statsTablefed.clear().draw();
         }
 
-        for (let i in feds) {  // in JavaScript this will return the index and not the element
-            let fed = feds[i],
-                rem = [];
+        for (let fed of feds) {
+            let rem = [];
             rem.push(fed['name']);
             rem.push(fed['sources']);
             rem.push(fed['triples']);
