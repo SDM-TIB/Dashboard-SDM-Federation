@@ -1,9 +1,11 @@
+/*!
+ * ---------------------------------------------------------------------------------------------
+ * FedSDM: home.js
+ * Loads statistics about the federations, datasources, RDF-MTs, etc. and creates the bar charts
+ * ---------------------------------------------------------------------------------------------
+ */
+
 $(function() {
-    /*
-    *************************************************************************
-    ******* Load statistics about data sources, RDF-MTs and links ***********
-    *************************************************************************
-    */
     const federationSummary = $('#federation-summary'),
           dataSummary = $('#data-summary'),
           summaryRow =$('#summary-row'),
@@ -15,6 +17,11 @@ $(function() {
     let dataSummaryChart = null,
         federationSummaryChart = null;
 
+    // Given the statistics about the datasources as well as the federations,
+    // this function populates the bar charts of the landing page.
+    // It is called from the HTML template since that is the place where the data is available.
+    // The chart options defined in utils.js as well as colors defined in colors.js are used.
+    // The surrounding HTML needs to import those scripts first.
     window.setFederation = function(dataSources, federations) {
         if (dataSources != null && federations != null) {
             summaryRow.show();
@@ -124,6 +131,8 @@ $(function() {
         }
     }
 
+    // Given the main statistics about the federations, this function populates the cards of the landing page.
+    // It is called from the HTML template since that is the place where the data is available.
     window.setStats = function(stats) {
         $('#total-data-sources').html(stats.sources);
         $('#total-rdfmts').html(stats.rdfmts);
