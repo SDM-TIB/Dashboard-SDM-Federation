@@ -157,7 +157,7 @@ $(function() {
             crossDomain: true,
             success: function(data) {
                 datas = data.data;
-                let bardata = {labels:[], rdfmts:[], triples:[]};
+                let barData = {labels:[], rdfmts:[], triples:[]};
                 for (const d in datas) {
                     let rem = [];
                     //console.log(datas)
@@ -173,20 +173,20 @@ $(function() {
                     rem.push(triples);
                     statsTable.row.add(rem).draw( false );
 
-                    bardata.labels.push(datas[d].ds);
+                    barData.labels.push(datas[d].ds);
                     rdfmts = log10(rdfmts);
-                    bardata.rdfmts.push(rdfmts);
+                    barData.rdfmts.push(rdfmts);
                     triples = log10(triples);
-                    bardata.triples.push(triples);
+                    barData.triples.push(triples);
                 }
 
-                $('#sourceStatsChartContainer').height(62 + 70 * bardata.labels.length)
+                $('#sourceStatsChartContainer').height(62 + 70 * barData.labels.length)
                 if (sourceStatsChart == null) {
                     sourceStatsChart = new Chart($('#sourceStatsChart'), {
                         type: 'bar',
                         data: {
-                            labels: bardata.labels,
-                            datasets: sourceStatsToBarChart(bardata)
+                            labels: barData.labels,
+                            datasets: sourceStatsToBarChart(barData)
                         },
                         options: chartOptions
                     });
@@ -194,8 +194,8 @@ $(function() {
                     sourceStatsChart.data.labels = [];
                     sourceStatsChart.data.datasets = [];
                     sourceStatsChart.update();
-                    sourceStatsChart.data.labels = bardata.labels;
-                    sourceStatsChart.data.datasets = sourceStatsToBarChart(bardata)
+                    sourceStatsChart.data.labels = barData.labels;
+                    sourceStatsChart.data.datasets = sourceStatsToBarChart(barData)
                     sourceStatsChart.update();
                 }
             },
