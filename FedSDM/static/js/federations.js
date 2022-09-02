@@ -28,10 +28,10 @@ $(function() {
         showFederations(federation);
     });
 
-    let statsTablefed = null;
+    let statsTableFed = null;
     window.federationOverview = function(feds) {
-        if (statsTablefed == null) {
-            statsTablefed = $('#federations-statistics').DataTable({
+        if (statsTableFed == null) {
+            statsTableFed = $('#federations-statistics').DataTable({
                 order: [[ 1, 'desc' ]],
                 responsive: false,
                 defaultContent: '-1',
@@ -45,7 +45,7 @@ $(function() {
                 ]
             });
         } else {
-            statsTablefed.clear().draw();
+            statsTableFed.clear().draw();
         }
 
         for (let fed of feds) {
@@ -56,7 +56,7 @@ $(function() {
             rem.push(fed['rdfmts']);
             rem.push(fed['properties']);
             rem.push(fed['links']);
-            statsTablefed.row.add(rem).draw(false);
+            statsTableFed.row.add(rem).draw(false);
         }
     }
 
