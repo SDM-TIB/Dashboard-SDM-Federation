@@ -14,7 +14,7 @@ $(function() {
     let federation = federationList.val(),
         statsTable = null,
         sourceStatsChart = null,
-        bsloaded = 0,
+        bsLoaded = 0,
         table = null,
         selectedSource = null;
     const prefix = 'http://ontario.tib.eu/federation/g/';
@@ -205,7 +205,7 @@ $(function() {
                 console.log(textStatus);
             }
         });
-        bsloaded = 1;
+        bsLoaded = 1;
     }
 
     // basic information about data sources in a given federation
