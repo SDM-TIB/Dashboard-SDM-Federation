@@ -5,12 +5,12 @@ $(function() {
     **********************************************************
     */
     const federationList = $('#federations-list'),
-          button_add_source = $('#addds'),
-          button_edit_source = $('#editds'),
-          button_remove_source = $('#removeds'),
-          button_recompute_mts = $('#recomputemts'),
-          button_links = $('#findlinks'),
-          button_all_links = $('#findalllinks');
+          button_add_source = $('#add_ds'),
+          button_edit_source = $('#edit_ds'),
+          button_remove_source = $('#remove_ds'),
+          button_recompute_mts = $('#recompute_mts'),
+          button_links = $('#find_links'),
+          button_all_links = $('#find_all_links');
     let federation = federationList.val(),
         statsTable = null,
         sourceStatsChart = null,

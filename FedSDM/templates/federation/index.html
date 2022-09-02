@@ -113,12 +113,12 @@
                     <div class="card-body">
                         {% if g.user %}
                             <div class="form-group" style="text-align: right">
-                                <button type="button" class="btn btn-success" name="add" id="addds" data-bs-toggle="modal" data-bs-target="#addSourceModal">Add</button>
-                                <button class="btn btn-warning" name="edit" id="editds" disabled data-bs-toggle="modal" data-bs-target="#editSourceModal">Edit</button>
-                                <button class="btn btn-danger" name="remove" id="removeds" disabled>Remove</button>
-                                <button class="btn btn-primary" name="mapping" id="recomputemts" disabled>Re-create MTs</button>
-                                <button class="btn btn-primary" name="findlinks" id="findlinks" disabled>Find Connection</button>
-                                <button class="btn btn-primary" name="findalllinks" id="findalllinks">Find All Connections</button>
+                                <button type="button" class="btn btn-success" id="add_ds" data-bs-toggle="modal" data-bs-target="#addSourceModal">Add</button>
+                                <button class="btn btn-warning" id="edit_ds" disabled data-bs-toggle="modal" data-bs-target="#editSourceModal">Edit</button>
+                                <button class="btn btn-danger" id="remove_ds" disabled>Remove</button>
+                                <button class="btn btn-primary" id="recompute_mts" disabled>Re-create MTs</button>
+                                <button class="btn btn-primary" id="find_links" disabled>Find Connection</button>
+                                <button class="btn btn-primary" id="find_all_links">Find All Connections</button>
                             </div>
                         {% endif %}
                         <table style="width: 100%" class="table table-bordered table-hover table-striped" id="datasources">
