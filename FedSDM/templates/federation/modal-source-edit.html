@@ -9,30 +9,30 @@
                 <p class="validateTips">Some fields are required.</p>
                 <form>
         <fieldset>
-            <label for="ename" class="required">Name</label>
-            <input type="text" name="ename" id="ename" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" readonly>
-            <label for="edesc">Short Description</label>
-            <input type="text" name="elabel" id="edesc" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph" class="text ui-widget-content ui-corner-all">
-            <label for="edstype">Data Source Type</label>
-            <select name="edstype" id="edstype" class="form-control form-select ui-widget-content ui-corner-all" required>
+            <label for="edit_name" class="required">Name</label>
+            <input type="text" name="edit_name" id="edit_name" placeholder="DBpedia" class="text ui-widget-content ui-corner-all" readonly>
+            <label for="edit_desc">Short Description</label>
+            <input type="text" name="edit_label" id="edit_desc" placeholder="DBpedia - Towards a Public Data Infrastructure for a Large, Multilingual, Semantic Knowledge Graph" class="text ui-widget-content ui-corner-all">
+            <label for="edit_ds_type">Data Source Type</label>
+            <select name="edit_ds_type" id="edit_ds_type" class="form-control form-select ui-widget-content ui-corner-all" required>
                 <option value="SPARQL_Endpoint" selected>SPARQL Endpoint</option>
             </select>
-            <label for="eURL" class="required">URL</label>
-            <input type="url" name="eURL" required id="eURL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
-            <label for="eparams">Parameters (key-value):</label>
-            <input type="text" name="eparams" id="eparams" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
+            <label for="edit_URL" class="required">URL</label>
+            <input type="url" name="edit_URL" required id="edit_URL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
+            <label for="edit_params">Parameters (key-value):</label>
+            <input type="text" name="edit_params" id="edit_params" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
 
-            <label for="ekeywords">Keywords:</label>
-            <input type="text" name="ekeywords" id="ekeywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
+            <label for="edit_keywords">Keywords:</label>
+            <input type="text" name="edit_keywords" id="edit_keywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
 
-            <label for="ehomepage">Homepage:</label>
-            <input type="text" name="ehomepage" id="ehomepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
+            <label for="edit_homepage">Homepage:</label>
+            <input type="text" name="edit_homepage" id="edit_homepage" placeholder="Homepage of dataset" class="text ui-widget-content ui-corner-all">
 
-            <label for="eorganization">Organization:</label>
-            <input type="text" name="eorganization" id="eorganization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
+            <label for="edit_organization">Organization:</label>
+            <input type="text" name="edit_organization" id="edit_organization" placeholder="Organization name" class="text ui-widget-content ui-corner-all">
 
-            <label for="eversion">Version:</label>
-            <input type="text" name="eversion" id="eversion" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
+            <label for="edit_version">Version:</label>
+            <input type="text" name="edit_version" id="edit_version" placeholder="Dataset version" class="text ui-widget-content ui-corner-all">
 
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">

@@ -248,15 +248,15 @@ $(function() {
 
     // Edit data source click action
     button_edit_source.on('click', function() {
-        $('#ename').val(selectedSource[0][1]);
-        $('#eURL').val(selectedSource[0][2]);
-        $('#edstype').val(selectedSource[0][3]);
-        $('#ekeywords').val(selectedSource[0][4].trim());
-        $('#ehomepage').val(selectedSource[0][5].trim());
-        $('#eorganization').val(selectedSource[0][6].trim());
-        $('#elabel').val(selectedSource[0][7].trim());
-        $('#eversion').val(selectedSource[0][8].trim());
-        $('#eparams').val(selectedSource[0][9].trim());
+        $('#edit_name').val(selectedSource[0][1]);
+        $('#edit_URL').val(selectedSource[0][2]);
+        $('#edit_ds_type').val(selectedSource[0][3]);
+        $('#edit_keywords').val(selectedSource[0][4].trim());
+        $('#edit_homepage').val(selectedSource[0][5].trim());
+        $('#edit_organization').val(selectedSource[0][6].trim());
+        $('#edit_label').val(selectedSource[0][7].trim());
+        $('#edit_version').val(selectedSource[0][8].trim());
+        $('#edit_params').val(selectedSource[0][9].trim());
     });
 
     //Remove data source click action
