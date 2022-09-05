@@ -268,7 +268,7 @@ $(function() {
                 Accept : 'application/json'
             },
             url: '/federation/api/removeds',
-            data: {'ds': selectedSource[0][0], 'fed': fed},
+            data: {'ds': selectedSource[0][0], 'fed': federation},
             dataType: 'json',
             crossDomain: true,
             success: function(data) {
