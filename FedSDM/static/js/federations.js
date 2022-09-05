@@ -367,19 +367,19 @@ $(function() {
     const fedModal = $('#federationModal'),
           addSourceModal = $('#addSourceModal'),
           editSourceModal = $('#editSourceModal'),
-          crnfform = fedModal.find('form'),
-          form = addSourceModal.find('form'),
-          eform = editSourceModal.find('form'),
+          newFedForm = fedModal.find('form'),
+          addSourceForm = addSourceModal.find('form'),
+          editSourceForm = editSourceModal.find('form'),
           name = $('#name'),
           desc = $('#desc'),
-          dstype = $('#dstype'),
+          ds_type = $('#ds_type'),
           URL = $('#URL'),
           params = $('#params'),
           keywords = $('#keywords'),
           organization = $('#organization'),
           homepage = $('#homepage'),
           version = $('#version'),
-          allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
+          allFields = $([]).add(name).add(desc).add(ds_type).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
           edit_name = $('#edit_name'),
           edit_desc = $('#edit_desc'),
           edit_ds_type = $('#edit_ds_type'),
@@ -390,27 +390,27 @@ $(function() {
           edit_homepage = $('#edit_homepage'),
           edit_version = $('#edit_version'),
           allFieldsEdit = $([]).add(edit_name).add(edit_desc).add(edit_ds_type).add(edit_URL).add(edit_params).add(edit_keywords).add(edit_organization).add(edit_homepage).add(edit_version),
-          fedName = $('#namecf'),
+          fedName = $('#fed_new_name'),
           fedDesc = $('#description'),
           allFieldsFed = $([]).add(fedName).add(fedDesc);
 
-    crnfform.on('submit', function(event) {
+    newFedForm.on('submit', function(event) {
         event.preventDefault();
-        createnewfederation(true);
+        createNewFederation(true);
     });
     fedModal.on('shown.bs.modal', function() {
         fedName.trigger('focus');
     });
     fedModal.on('hidden.bs.modal', function() {
-        crnfform[0].reset();
+        newFedForm[0].reset();
         allFieldsFed.removeClass('ui-state-error');
         resetTips();
     });
     $('#create-fed-btn-create').on('click', function() {
-       createnewfederation(true);
+       createNewFederation(true);
     });
 
-    form.on('submit', function(event) {
+    addSourceForm.on('submit', function(event) {
         event.preventDefault();
         addDataSource(true);
     });
@@ -418,7 +418,7 @@ $(function() {
         name.trigger('focus');
     });
     addSourceModal.on('hidden.bs.modal', function() {
-        form[0].reset();
+        addSourceForm[0].reset();
         allFields.removeClass('ui-state-error');
         resetTips();
     });
@@ -429,7 +429,7 @@ $(function() {
        saveAndMore();
     });
 
-    eform.on('submit', function(event) {
+    editSourceForm.on('submit', function(event) {
         event.preventDefault();
         updateDS();
     });
@@ -437,7 +437,7 @@ $(function() {
         edit_desc.trigger('focus');
     });
     editSourceModal.on('hidden.bs.modal', function() {
-        eform[0].reset();
+        editSourceForm[0].reset();
         allFieldsEdit.removeClass('ui-state-error');
         resetTips();
     });
@@ -463,7 +463,7 @@ $(function() {
                 data: {
                     'name': name.val(),
                     'url': URL.val(),
-                    'dstype': dstype.val(),
+                    'dstype': ds_type.val(),
                     'keywords': keywords.val(),
                     'params': params.val(),
                     'desc': desc.val(),
@@ -501,7 +501,7 @@ $(function() {
     function saveAndMore() {
         let valid = addDataSource(false);
         if (valid) {
-            form[0].reset();
+            addSourceForm[0].reset();
             allFields.removeClass('ui-state-error');
         }
     }
@@ -518,7 +518,6 @@ $(function() {
             table.row.add([eid, edit_name.val(), edit_URL.val(), edit_ds_type.val(), edit_keywords.val(), edit_homepage.val(), edit_organization.val(), edit_desc.val(), edit_version.val(), edit_params.val(),]).draw(false);
             button_edit_source.prop('disabled', true);
             button_remove_source.prop('disabled', true);
-            $('#createmapping').prop('disabled', true);
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -560,7 +559,7 @@ $(function() {
         return valid;
     }
 
-    function createnewfederation(close) {
+    function createNewFederation(close) {
         resetTips();
         let name = fedName.val();
         let desc = fedDesc.val();
@@ -580,7 +579,6 @@ $(function() {
                     if (data != null && data.length > 0) {
                         federation = data;
                         $('#fedName').html(name);
-                        $('#newfedform').hide();
                         // select new federation and go to the 'manage data sources' tab
                         federation = prefix + name.replaceAll(' ', '-');
                         federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
