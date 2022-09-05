@@ -589,7 +589,7 @@ $(function() {
                         }
                     } else {
                         close = false;
-                        $('#errormsg').html('Error while creating the new federation! Please enter a valid name (var name).')
+                        $('#errorMsg').html('Error while creating the new federation! Please enter a valid name (var name).')
                     }
                 },
                 error: function(jqXHR, textStatus) {
