@@ -380,16 +380,16 @@ $(function() {
           homepage = $('#homepage'),
           version = $('#version'),
           allFields = $([]).add(name).add(desc).add(dstype).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
-          ename = $('#ename'),
-          edesc = $('#edesc'),
-          edstype = $('#edstype'),
-          eURL = $('#eURL'),
-          eparams = $('#eparams'),
-          ekeywords = $('#ekeywords'),
-          eorganization = $('#eorganization'),
-          ehomepage = $('#ehomepage'),
-          eversion = $('#eversion'),
-          allFieldsEdit = $([]).add(ename).add(edesc).add(edstype).add(eURL).add(eparams).add(ekeywords).add(eorganization).add(ehomepage).add(eversion),
+          edit_name = $('#edit_name'),
+          edit_desc = $('#edit_desc'),
+          edit_ds_type = $('#edit_ds_type'),
+          edit_URL = $('#edit_URL'),
+          edit_params = $('#edit_params'),
+          edit_keywords = $('#edit_keywords'),
+          edit_organization = $('#edit_organization'),
+          edit_homepage = $('#edit_homepage'),
+          edit_version = $('#edit_version'),
+          allFieldsEdit = $([]).add(edit_name).add(edit_desc).add(edit_ds_type).add(edit_URL).add(edit_params).add(edit_keywords).add(edit_organization).add(edit_homepage).add(edit_version),
           fedName = $('#namecf'),
           fedDesc = $('#description'),
           allFieldsFed = $([]).add(fedName).add(fedDesc);
@@ -434,7 +434,7 @@ $(function() {
         updateDS();
     });
     editSourceModal.on('shown.bs.modal', function() {
-        edesc.trigger('focus');
+        edit_desc.trigger('focus');
     });
     editSourceModal.on('hidden.bs.modal', function() {
         eform[0].reset();
@@ -510,12 +510,12 @@ $(function() {
         resetTips();
         allFieldsEdit.removeClass('ui-state-error');
         let eid = selectedSource[0][0];
-        const validName = checkLength(ename, 'name', 2, 169);
-        const validURL = checkLength(eURL, 'URL', 6, 100);
+        const validName = checkLength(edit_name, 'name', 2, 169);
+        const validURL = checkLength(edit_URL, 'URL', 6, 100);
         const valid = validName && validURL;
         if (valid) {
             table.row('.selected').remove().draw(false);
-            table.row.add([eid, ename.val(), eURL.val(), edstype.val(), ekeywords.val(), ehomepage.val(), eorganization.val(), edesc.val(), eversion.val(), eparams.val(),]).draw(false);
+            table.row.add([eid, edit_name.val(), edit_URL.val(), edit_ds_type.val(), edit_keywords.val(), edit_homepage.val(), edit_organization.val(), edit_desc.val(), edit_version.val(), edit_params.val(),]).draw(false);
             button_edit_source.prop('disabled', true);
             button_remove_source.prop('disabled', true);
             $('#createmapping').prop('disabled', true);
@@ -527,15 +527,15 @@ $(function() {
                 url: '/federation/editsource?fed=' + federation,
                 data: {
                     'id': eid,
-                    'name': ename.val().trim(),
-                    'url': eURL.val().trim(),
-                    'dstype': edstype.val().trim(),
-                    'keywords': ekeywords.val().trim(),
-                    'params': eparams.val().trim(),
-                    'desc': edesc.val().trim(),
-                    'version': eversion.val().trim(),
-                    'homepage': ehomepage.val().trim(),
-                    'organization': eorganization.val().trim()
+                    'name': edit_name.val().trim(),
+                    'url': edit_URL.val().trim(),
+                    'dstype': edit_ds_type.val().trim(),
+                    'keywords': edit_keywords.val().trim(),
+                    'params': edit_params.val().trim(),
+                    'desc': edit_desc.val().trim(),
+                    'version': edit_version.val().trim(),
+                    'homepage': edit_homepage.val().trim(),
+                    'organization': edit_organization.val().trim()
                 },
                 dataType: 'json',
                 crossDomain: true,
