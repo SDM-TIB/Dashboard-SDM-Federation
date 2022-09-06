@@ -1,5 +1,3 @@
-__author__ = 'Kemele M. Endris'
-
 from FedSDM.rdfmt import MTManager
 
 

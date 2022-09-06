@@ -3,7 +3,7 @@ import time
 from multiprocessing import Queue, Process
 from pprint import pprint
 from queue import Empty
-from typing import Optional, List, Tuple
+from typing import Tuple
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.model import *
