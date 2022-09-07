@@ -11,6 +11,7 @@ from FedSDM.rdfmt.prefixes import *
 from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source
 
 logger = get_logger('rdfmts', './rdfmts.log', True)
+"""Logger for this module. It logs to the file 'rdfmts.log' as well as to stdout."""
 
 metas = [
     'http://www.w3.org/ns/sparql-service-description',
@@ -33,6 +34,7 @@ metas = [
     'http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/',
     'nodeID://'
 ]
+"""Common prefixes of RDF classes and predicates that are not to be included in the metadata of the federation."""
 
 
 def _iterative_query(query: str,
