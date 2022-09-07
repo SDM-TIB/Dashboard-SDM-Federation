@@ -102,8 +102,34 @@ def _iterative_query(query: str,
 
 
 class RDFMTMgr(object):
+    """Provides an abstract way to manage the RDF Molecule Templates of a federation.
+
+    The *RDFMTMgr* allows to easily create and modify the RDF Molecule Templates of a single federation.
+    The class contains several utility functions necessary to collect the metadata or update it.
+    The managed metadata is stored in an RDF knowledge graph.
+
+    """
 
     def __init__(self, query_url: str, update_url: str, user: str, passwd: str, graph: str):
+        """Creates a new *RDFMTMgr* instance.
+
+        The *RDFMTMgr* object can be used to create and/or update the RDF Molecule Templates
+        of the federation the instance is initialized for.
+
+        Parameters
+        ----------
+        query_url : str
+            The URL of the SPARQL endpoint to be used when sending queries.
+        update_url : str
+            The URL of the SPARQL endpoint to be used when updating the metadata.
+        user : str
+            The username required in order to get the update permissions.
+        passwd : str
+            The user's password required to authenticate for update permissions.
+        graph : str
+            The graph URI used in the SPARQL endpoint for storing the metadata of the federation.
+
+        """
         self.graph = graph
         self.query_endpoint = query_url
         self.update_endpoint = update_url
@@ -111,6 +137,34 @@ class RDFMTMgr(object):
         self.passwd = passwd
 
     def create(self, ds: DataSource, out_queue: Queue = Queue(), types: list = None, is_update: bool = False) -> dict:
+        """(Re-)creates the RDF Molecule Templates of a datasource within the federation.
+
+        This method (re-)creates the RDF Molecule Templates of a single datasource within the
+        federation the :class:`RDFMTMgr` instance was initialized for.
+
+        Parameters
+        ----------
+        ds : DataSource
+            The datasource the RDF Molecule Templates should be collected for.
+        out_queue : multiprocessing.Queue, optional
+            A queue object used to transmit the results. If none is given, a new one will be created.
+            However, in that case it is not possible to retrieve the results from the queue.
+        types : list, optional
+            A list containing the types that are present in the datasource. By default, this is set to None
+            which leads to the actual extraction of the metadata from the datasource.
+        is_update : bool, optional
+            A Boolean indicating whether this is an update of the RDF Molecule Templates for this datasource.
+            By default, it is set to false which indicates the first creation of the RDF Molecule Templates
+            for the datasource. The number of triples in the dataset are recorded during the initial collection
+            of the metadata. In all subsequent updates, only the RDF Molecule Templates and the modification
+            date are changed.
+
+        Returns
+        -------
+        dict
+            A dictionary with the RDF Molecule Templates for the datasource *ds*.
+
+        """
         if types is None:
             types = []
 
@@ -135,9 +189,27 @@ class RDFMTMgr(object):
         return results
 
     def get_rdfmts(self, datasource: DataSource, types: list = None) -> dict:
+        # TODO: This method is just a wrapper and can be removed.
         return self.extractMTLs(datasource, types)
 
     def extractMTLs(self, datasource: DataSource, types: list = None) -> dict:
+        """Extracts the RDF Molecule Templates from a datasource.
+
+        Extracts the RDF Molecule Templates from a datasource.
+        This method is the entrypoint for the metadata extraction.
+        The RDF Molecule Templates are either collected from the source
+        via SPARQL queries or from the ontology graph if one is available.
+
+        Parameters
+        ---------
+        datasource : DataSource
+            The datasource from which the RDF Molecule Templates should be extracted.
+        types : list, optional
+            A list containing the types that are present in the datasource. By default,
+            this is set to None which leads to the actual extraction of the metadata
+            from the datasource.
+
+        """
         rdf_molecules = {}
         endpoint = datasource.url
 
@@ -154,9 +226,25 @@ class RDFMTMgr(object):
         return rdf_molecules
 
     def get_typed_concepts(self, endpoint: DataSource, types: list = None) -> List[dict]:
-        """
-        Entry point for extracting RDF-MTs of an endpoint.
-        Extracts list of rdf:Class concepts and predicates of an endpoint
+        """Entrypoint for extracting RDF Molecule Templates from a datasource.
+
+        The RDF Molecule Templates present in a datasource are extracted using this method.
+        Basically, it is a list of RDF class concepts and their predicates.
+
+        Parameters
+        ----------
+        endpoint : DataSource
+            The datasource from which the RDF Molecule Templates are to be extracted.
+        types : list, optional
+            A list containing the types that are present in the datasource. By default, this is
+            set to None which leads to the actual extraction of the metadata from the datasource.
+
+        Returns
+        -------
+        List[dict]
+            A list of dictionaries representing the RDF class concepts and their metadata
+            such as predicates and cardinality.
+
         """
         endpoint_url = endpoint.url
         if types is None or len(types) == 0:
@@ -256,12 +344,52 @@ class RDFMTMgr(object):
 
     @staticmethod
     def get_rdfs_ranges(endpoint_url: str, predicate: str) -> list:
+        """Extracts the range of a predicate defined using `rdfs:range`.
+
+        Extracts the range of a predicate using the predicate `range` of the RDF Schema (RDFS).
+
+        Parameters
+        ----------
+        endpoint_url : str
+            The URL of the endpoint in which to check the range of the predicate.
+        predicate : str
+            The predicate of interest.
+
+        Returns
+        -------
+        list
+            A list containing all classes and types that are defined as the range of the
+            predicate of interest via `rdfs:range`.
+
+        """
         query = 'SELECT DISTINCT ?range WHERE { <' + predicate + '> <' + RDFS + 'range> ?range . }'
         res_list, _ = _iterative_query(query, endpoint_url, limit=100)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
     @staticmethod
     def find_instance_range(endpoint_url: str, type_: str, predicate: str) -> list:
+        """Extracts the range of a predicate by checking the RDF class of the objects.
+
+        Extracts the range of a predicate using a SPARQL query to check the RDF class of
+        the objects occurring in RDF triples with this predicate. The RDF triples are
+        limited by the association of the subject to the class *type_*.
+
+        Parameters
+        ----------
+        endpoint_url : str
+            The URL of the endpoint in which to check the range of the predicate.
+        type_ : str
+            The RDF class the subject of the triples to consider belongs to.
+        predicate : str
+            The predicate of interest.
+
+        Returns
+        -------
+        list
+            A list containing all RDF classes that occur as the range of the predicate
+            in triples where the subject belongs to the class *type_*.
+
+        """
         query = 'SELECT DISTINCT ?range WHERE {\n' \
                 '  ?s a <' + type_ + '> .\n' \
                 '  ?s <' + predicate + '> ?pt .\n' \
@@ -270,8 +398,24 @@ class RDFMTMgr(object):
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
     def get_predicates(self, endpoint_url: str, type_: str) -> list:
-        """
-        Get list of predicates of a class t
+        """Gets a list of predicates associated with the specified RDF class.
+
+        Extracts all predicates that are associated with the RDF class *type_*.
+        If the initial SPARQL query fails to retrieve the data, the predicates
+        are extracted from some randomly selected instances of the class.
+
+        Parameters
+        ----------
+        endpoint_url : str
+            The URL of the endpoint from which to extract the predicates.
+        type_ : str
+            The RDF class for which all predicates should be extracted.
+
+        Returns
+        -------
+        list
+            A list containing all predicates that are associated with the RDF class *type_*.
+
         """
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  ?s a <' + type_ + '> .\n' \
@@ -290,14 +434,33 @@ class RDFMTMgr(object):
         return res_list
 
     def get_preds_of_random_instances(self, endpoint_url: str, type_: str) -> list:
-        """
-        get a union of predicated from 'randomly' selected 10 entities from the first 100 subjects returned
+        """Gets the predicates associated with randomly selected instances of a specified RDF class.
+
+        This method is used when extracting the predicates of a class failed. In order to reduce
+        the load on the endpoint, the predicates of randomly selected instances of the RDF class
+        are extracted to approximate the predicates associated with that class.
+
+        Parameters
+        ----------
+        endpoint_url : str
+            The URL of the endpoint from which to extract the predicates.
+        type_ : str
+            The RDF class for which the predicates should be extracted.
+
+        Returns
+        -------
+        list
+            A list containing all predicates that are associated with the randomly selected
+            instances of the RDF class *type_*. Note that this might only be a subset of
+            all the predicates that are associated to the RDF class.
+
         """
         query = 'SELECT DISTINCT ?s WHERE{ ?s a <' + type_ + '> . }'
         res_instances, _ = _iterative_query(query, endpoint_url, limit=50, max_tries=100)
         res_list = []
         card = len(res_instances)
         if card > 0:
+            # TODO: actually retrieve the result from more than one instance
             import random
             rand = random.randint(0, card - 1)
             inst = res_instances[rand]
@@ -309,6 +472,23 @@ class RDFMTMgr(object):
 
     @staticmethod
     def get_preds_of_instance(endpoint_url: str, instance: str) -> list:
+        """Gets all predicates that are associated with a specific instance in the data.
+
+        Extracts the predicates that occur in RDF triples where the subject is *instance*.
+
+        Parameters
+        ----------
+        endpoint_url : str
+            The URL of the endpoint from which to extract the predicates.
+        instance : str
+            The instance in the data for which to extract the predicates.
+
+        Returns
+        -------
+        list
+            A list containing all the predicates that are associated with the instance *instance*.
+
+        """
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + instance + '> ?p ?pt .\n' \
                 '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
@@ -316,6 +496,25 @@ class RDFMTMgr(object):
         return res_list
 
     def get_mts_from_owl(self, endpoint: DataSource, graph: str, types: list = None) -> List[dict]:
+        """Extracts the RDF Molecule Templates of a datasource from the associated ontology.
+
+        The RDF Molecule Templates of the datasource are extracted from the ontology.
+
+        endpoint : DataSource
+            The datasource from which the RDF Molecule Templates are to be extracted.
+        graph : str
+            The graph within the SPARQL endpoint that stores the ontology.
+        types : list, optional
+            A list containing the types that are present in the datasource. By default, this is
+            set to None which leads to the actual extraction of the metadata from the datasource.
+
+        Returns
+        -------
+        List[dict]
+            A list of dictionaries representing the RDF class concepts and their metadata
+            such as predicates and cardinality.
+
+        """
         endpoint_url = endpoint.url
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE { GRAPH <' + graph + '> {\n' \
@@ -423,6 +622,18 @@ class RDFMTMgr(object):
         return results
 
     def update_graph(self, data: list) -> None:
+        """Adds new data of the RDF Molecule Templates into the RDF knowledge graph.
+
+        This method uses INSERT queries to add new data to the RDF knowledge graph
+        containing the RDF Molecule Templates. Based on the length of the data,
+        several requests might be sent since Virtuoso only supports 49 triples at a time.
+
+        Parameters
+        ----------
+        data : list
+            A list of RDF triples to insert into the knowledge graph.
+
+        """
         i = 0
         # Virtuoso supports only 49 triples at a time.
         for i in range(0, len(data), 49):
@@ -438,6 +649,24 @@ class RDFMTMgr(object):
             update_rdf_source(update_query, self.update_endpoint)
 
     def delete_insert_data(self, delete: list, insert: list, where: list = None) -> None:
+        """Updates the RDF Molecule Templates in the RDF knowledge graph.
+
+        This method uses DELETE and INSERT statements to modify the RDF Molecule
+        Templates that are already stored in the RDF knowledge graph. Based on
+        the length of the data, several requests might be sent since Virtuoso
+        only supports 49 triples at a time.
+
+        Parameters
+        ----------
+        delete : list
+            A list of RDF triples that should be deleted from the knowledge graph.
+        insert : list
+            A list of RDF triples that should be inserted into the knowledge graph.
+        where : list
+            A list of SPARQL triple patterns stating the condition on when to delete
+            and insert the triples mentioned in the other parameters.
+
+        """
         if where is None:
             where = []
         i = 0
@@ -468,6 +697,38 @@ class RDFMTMgr(object):
                         prop: str = None,
                         mr: str = None,
                         mr_datatype: bool = False) -> int:
+        """Gets the number of triples in a datasource.
+
+        Based on the passed arguments, it is possible to retrieve the cardinality of
+        different elements, e.g., the datasource itself, the RDF Molecule Template,
+        or even a predicate.
+
+        Parameters
+        ----------
+        endpoint : str
+            The URL of the endpoint from which the cardinality is to be extracted.
+        mt : str, optional
+            The RDF class of interest for the cardinality calculation.
+        prop : str, optional
+            The predicate for which the cardinality should be returned.
+        mr : str, optional
+            The class or datatype of the object that appears together with the predicate.
+        mr_datatype : bool, optional
+            A Boolean indicating whether *mr* is a datatype. False by default, i.e., *mr* is an RDF class.
+
+        Returns
+        -------
+        int
+            The requested cardinality. If only the endpoint is specified, the cardinality
+            is the number of triples in the datasource. If *endpoint* and *mt* are passed,
+            the number of instances of RDF class *mt* is returned. If additionally a predicate
+            is present, the number of RDF triples in which the predicate appears in conjunction
+            with a subject of class *mt* is returned. In case *mr* is also passed in, the
+            cardinality represents the number of triple in *endpoint* for which the predicate
+            is *prop*, the subject belongs to the RDF class *mt*, and the object belongs to the
+            RDF class *mr*. *mr* can also be a datatype is *mr_datatype* is set to true.
+            If no cardinality with the specified parameters could be calculated, -1 is returned.
+        """
         if mt is None:
             query = 'SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }'
         elif prop is None:
@@ -504,11 +765,36 @@ class RDFMTMgr(object):
 
     @staticmethod
     def get_subclasses(endpoint_url: str, root: str) -> list:
+        """Gets the subclasses of an RDF class.
+
+        Extracts a list of all subclasses of the specified RDF class.
+
+        Parameters
+        ----------
+        endpoint_url : str
+            The URL of the endpoint from which the subclasses should be extracted.
+        root : str
+            The RDF class for which the subclasses should be extracted.
+
+        Returns
+        -------
+        list
+            A list with all subclasses extracted for the RDF class *root*.
+
+        """
         query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + RDFS + 'subClassOf> ?subc }'
         res, _ = contact_rdf_source(query, endpoint_url)
         return res
 
     def get_sources(self) -> list:
+        """Gets all sources of the federation the :class:`RDFMTMgr` instance was initialized for.
+
+        Returns
+        -------
+        list
+            A list containing the IDs and URLs of all datasources associated with the federation.
+
+        """
         query = 'SELECT DISTINCT ?subject ?url WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
@@ -517,6 +803,24 @@ class RDFMTMgr(object):
         return res_list
 
     def get_source(self, ds_id: str) -> Optional[DataSource]:
+        """Gets a single source of the federation as :class:`DataSource` instance.
+
+        This method extracts all information available about the specified datasource
+        for the federation the :class:`RDFMTMgr` instance was initialized for.
+        The extracted data is then transformed into a :class:`DataSource` object.
+
+        Parameters
+        ----------
+        ds_id : str
+            The identifier of the datasource of interest.
+
+        Returns
+        -------
+        DataSource | None
+            A :class:`DataSource` instance representing the datasource with the ID *ds_id*.
+            If no such datasource was found, None is returned.
+
+        """
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'url> ?url .\n' \
                 '  <' + ds_id + '> <' + MT_ONTO + 'dataSourceType> ?dstype .\n' \
@@ -547,6 +851,24 @@ class RDFMTMgr(object):
         return None
 
     def get_ds_rdfmts(self, datasource: str) -> list:
+        """Get the RDF Molecule Templates for a datasource.
+
+        Extracts the RDF Molecule Templates for the specified datasource
+        from the metadata knowledge graph.
+
+        Parameters
+        ----------
+        datasource : str
+            The identifier of the datasource of interest.
+
+        Returns
+        -------
+        list
+            A list containing the RDF Molecule Templates for the specified
+            datasource as returned from the metadata knowledge graph, i.e.,
+            in the form of a SPARQL query result.
+
+        """
         query = 'SELECT DISTINCT ?subject ?card WHERE { GRAPH <' + self.graph + '> {\n' \
                 '  ?subject a <' + MT_ONTO + 'RDFMT> .\n' \
                 '  ?subject <' + MT_ONTO + 'source> ?source .\n' \
@@ -557,6 +879,21 @@ class RDFMTMgr(object):
         return res_list
 
     def create_inter_ds_links(self, datasource: DataSource | str = None, output_queue: Queue = Queue()) -> None:
+        """Entrypoint for checking the interlinks between datasources in the federation.
+
+        This method serves as the entrypoint to find all interlinks between datasources
+        in the federation the :class:`RDFMTMgr` instance was initialized for.
+
+        Parameters
+        ----------
+        datasource : DataSource | str, optional
+            The datasource for which all interlinks will be searched. If none was passed,
+            the interlinks between all datasources of the federation will be investigated.
+        output_queue : multiprocessing.Queue, optional
+            A queue object used to transmit the results. If none is given, a new one will be created.
+            However, in that case it is not possible to retrieve the results from the queue.
+
+        """
         sources = self.get_sources()
         rdfmts = {}
         if len(sources) == 0:
@@ -578,6 +915,22 @@ class RDFMTMgr(object):
         output_queue.put('EOF')
 
     def find_all_links(self, rdfmts: dict, sourcemaps: dict) -> None:
+        """Searches for interlinks between all RDF Molecule Templates of a federation.
+
+        This method searches for interlinks between all RDF Molecule Templates of a
+        federation, i.e., one datasource is serving the instances belonging to the
+        RDF class associated with the RDF Molecule Template while another datasource
+        serves instances of another RDF Molecule Template that appears as object
+        in RDF triples where the subject belongs to the first RDF Molecule Template.
+
+        Parameters
+        ----------
+        rdfmts : dict
+            A dictionary with the RDF Molecule Templates of the federation.
+        sourcemaps : dict
+            A dictionary mapping the sources to the RDF Molecule Templates.
+
+        """
         queues = {}
         processes = {}
 
@@ -613,6 +966,22 @@ class RDFMTMgr(object):
                                 del processes[r]
 
     def update_links(self, rdfmts, sourcemaps, datasource: DataSource | str) -> None:
+        """Updates the interlinks of a specified datasource.
+
+        Searches for the interlinks of the datasource *datasource* within the federation
+        for which the :class:`RDFMTMgr` instance was initialized for. The previously
+        recorded interlinks are then updated based on the current findings.
+
+        Parameters
+        ----------
+        rdfmts : dict
+            A dictionary with the RDF Molecule Templates of the federation.
+        sourcemaps : dict
+            A dictionary mapping the sources to the RDF Molecule Templates.
+        datasource : DataSource | str
+            The datasource for which the interlinks should be updated.
+
+        """
         queues = {}
         processes = {}
         if isinstance(datasource, DataSource):
@@ -676,6 +1045,26 @@ class RDFMTMgr(object):
                               endpoint2: dict,
                               rdfmts_endpoint2: dict,
                               queue: Queue = Queue()) -> None:
+        """Checks whether there is an interlink between two datasources.
+
+        This method checks, based on the RDF Molecule Templates and SPARQL queries,
+        whether there is an interlink between two datasources of the federation.
+
+        Parameters
+        ----------
+        endpoint1 : dict
+            A dictionary representing the first datasource.
+        rdfmts_endpoint1 : dict
+            A dictionary of the RDF Molecule Templates associated with the first datasource.
+        endpoint2 : dict
+            A dictionary representing the second datasource.
+        rdfmts_endpoint2 : dict
+            A dictionary of the RDF Molecule Templates associated with the second datasource.
+        queue : multiprocessing.Queue, optional
+            A queue object used to transmit the results. If none is given, a new one will be created.
+            However, in that case it is not possible to retrieve the results from the queue.
+
+        """
         url_endpoint1 = endpoint1['url']
         url_endpoint2 = endpoint2['url']
         for m1 in rdfmts_endpoint1:
@@ -724,6 +1113,27 @@ class RDFMTMgr(object):
         queue.put('EOF')
 
     def get_links_bn_ds(self, predicate_instance_list: dict, rdfmts: dict, endpoint: str) -> dict:
+        """Checks based on instances whether there is a link between two datasources.
+
+        This method receives object instances from a datasource and checks whether
+        they appear as subjects in the datasource passed to this method. If so,
+        there is a link between the datasources.
+
+        Parameters
+        ----------
+        predicate_instance_list : dict
+            A dictionary mapping predicates from another datasource to their object instances.
+        rdfmts : dict
+            A dictionary representing the RDF Molecule Templates of the federation.
+        endpoint : str
+            The URL of the endpoint in which to check for the instances in subject position.
+
+        Returns
+        -------
+        dict
+            A dictionary mapping predicates of another datasource to the RDF classes in this source.
+
+        """
         results = {}
         for pred in predicate_instance_list:
             print(pred)
@@ -735,6 +1145,24 @@ class RDFMTMgr(object):
 
     @staticmethod
     def get_mts_matches(instances: list, endpoint: str) -> list:
+        """Checks whether there are RDF classes to which the instances match.
+
+        Given a list of instances, this method checks whether they appear in
+        the specified endpoint and if so to which RDF classes they belong.
+
+        Parameters
+        ----------
+        instances : list
+            A list of instances to check for their existence.
+        endpoint : str
+            The URL of the endpoint in which to check for the existence of the instances.
+
+        Returns
+        -------
+        list
+            A list of RDF classes to which the instances belong.
+
+        """
         # Checks if there are subjects with prefixes matching
         batches = [instances[i:i+50] for i in range(0, len(instances), 50)]
         for batch in batches:
@@ -747,13 +1175,34 @@ class RDFMTMgr(object):
         return []
 
     def create_from_mapping(self, datasource: DataSource, out_queue: Queue = Queue(), types: list = None) -> list:
+        # TODO: This method is just a wrapper and should be merged with the actual method
         logger.info('----------------------' + datasource.url + '-------------------------------------')
         results = self.get_rdfmts_from_mapping(datasource, types)
         # self.create_inter_ds_links(datasource=ds)
         out_queue.put('EOF')
         return results
 
-    def get_rdfmts_from_mapping(self, datasource: DataSource, types: list = None) -> list:
+    def get_rdfmts_from_mapping(self, datasource: DataSource, types: list = None) -> List[dict]:
+        """Extracts the RDF Molecule Templates of a datasource from its mappings.
+
+        If the RDF Mapping Language (RML) mappings used to create the datasource
+        are known, they can be used to extract the RDF Molecule Templates.
+
+        Parameters
+        ----------
+        datasource : DataSource
+            The datasource for which the RDF Molecule Templates should be extracted from the mappings.
+        types : list, optional
+            A list containing the types that are present in the datasource. By default, this is
+            set to None which leads to the actual extraction of the metadata from the mappings.
+
+        Returns
+        -------
+        List[dict]
+            A list of dictionaries representing the RDF class concepts and their metadata
+            such as predicates and cardinality.
+
+        """
         if types is None:
             types = []
         mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \
