@@ -1,3 +1,4 @@
+import time
 import urllib.parse as urlparse
 from http import HTTPStatus
 from multiprocessing import Queue
@@ -9,6 +10,70 @@ from FedSDM import get_logger
 
 logger = get_logger('mtupdate', './mt-update.log', True)
 """Logger for this module. It logs to the file 'mt-update.log' as well as to stdout."""
+
+
+def iterative_query(query: str,
+                    server: str,
+                    limit: int = 10000,
+                    max_tries: int = -1,
+                    max_answers: int = -1) -> Tuple[list, int]:
+    """Executes a query iteratively.
+
+    The given SPARQL query is executed iteratively, i.e., the results are retrieved in blocks of size *limit*.
+    It is also possible to specify the maximum number of results or requests made.
+
+    Parameters
+    ----------
+    query : str
+        The SPARQL query to be executed.
+    server : str
+        The URL of the SPARQL endpoint against which the query should be executed.
+    limit : int, optional
+        The number of results to be retrieved in one request.
+        If no limit is given, it will be set to 10,000 by default.
+    max_tries : int, optional
+        The maximum number of requests allowed to be sent to the server.
+        By default, it is set to -1 to disable this behavior.
+    max_answers : int, optional
+        The maximum number of answers to be retrieved. Note that all answers are returned that were
+        retrieved from the server in the block of answers that exceeds the limit.
+        By default, it is set to -1 to disable limiting the number of answers returned.
+
+    Returns
+    -------
+    (list, int)
+        The list returned as the first element of the tuple contains the query result.
+        The second element is an integer indicating the status of the query execution.
+        The status is 0 if the query was executed successfully, -1 otherwise.
+
+    """
+    offset = 0
+    res_list = []
+    status = 0
+    num_requests = 0
+
+    while True:
+        query_copy = query + ' LIMIT ' + str(limit) + ' OFFSET ' + str(offset)
+        num_requests += 1
+        res, card = contact_rdf_source(query_copy, server)
+
+        # if receiving the answer fails, try with a decreasing limit
+        if card == -2:
+            limit = limit // 2
+            if limit < 1:
+                status = -1
+                break
+            continue
+        # results returned from the endpoint are appended to the result list
+        if card > 0:
+            res_list.extend(res)
+        # stop if all results are retrieved or the maximum number of tries is reached
+        if card < limit or (0 < max_answers <= len(res_list)) or num_requests >= max_tries:
+            break
+
+        offset += limit
+        time.sleep(.5)
+    return res_list, status
 
 
 def contact_rdf_source(query: str,
