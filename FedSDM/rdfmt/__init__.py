@@ -1170,14 +1170,6 @@ class RDFMTMgr(object):
                 return res
         return []
 
-    def create_from_mapping(self, datasource: DataSource, out_queue: Queue = Queue(), types: list = None) -> list:
-        # TODO: This method is just a wrapper and should be merged with the actual method
-        logger.info('----------------------' + datasource.url + '-------------------------------------')
-        results = self.get_rdfmts_from_mapping(datasource, types)
-        # self.create_inter_ds_links(datasource=ds)
-        out_queue.put('EOF')
-        return results
-
     def get_rdfmts_from_mapping(self, datasource: DataSource, types: list = None) -> List[dict]:
         """Extracts the RDF Molecule Templates of a datasource from its mappings.
 
@@ -1199,6 +1191,7 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
+        logger.info('----------------------' + datasource.url + '-------------------------------------')
         if types is None:
             types = []
         mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \
@@ -1305,6 +1298,7 @@ class RDFMTMgr(object):
 
         if len(data) > 0:
             self.update_graph(data)
+            # self.create_inter_ds_links(datasource=ds)
         return results
 
 
