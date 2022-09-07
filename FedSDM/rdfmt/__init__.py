@@ -455,7 +455,7 @@ class RDFMTMgr(object):
             all the predicates that are associated to the RDF class.
 
         """
-        query = 'SELECT DISTINCT ?s WHERE{ ?s a <' + type_ + '> . }'
+        query = 'SELECT DISTINCT ?s WHERE { ?s a <' + type_ + '> . }'
         res_instances, _ = _iterative_query(query, endpoint_url, limit=50, max_tries=100)
         res_list = []
         card = len(res_instances)
@@ -491,7 +491,7 @@ class RDFMTMgr(object):
         """
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + instance + '> ?p ?pt .\n' \
-                '  OPTIONAL {?p  <' + RDFS + 'label> ?label}\n}'
+                '  OPTIONAL { ?p  <' + RDFS + 'label> ?label }\n}'
         res_list, _ = _iterative_query(query, endpoint_url, limit=1000)
         return res_list
 
@@ -638,13 +638,13 @@ class RDFMTMgr(object):
         # Virtuoso supports only 49 triples at a time.
         for i in range(0, len(data), 49):
             if i + 49 > len(data):
-                update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
+                update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:]) + '} }'
             else:
-                update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:i + 49]) + '} }'
+                update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:i + 49]) + '} }'
             logger.info(update_query)
             update_rdf_source(update_query, self.update_endpoint)
         if i < len(data) + 49:
-            update_query = 'INSERT DATA { GRAPH <' + self.graph + '>{ ' + ' . \n'.join(data[i:]) + '} }'
+            update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:]) + '} }'
             logger.info(update_query)
             update_rdf_source(update_query, self.update_endpoint)
 
@@ -730,26 +730,26 @@ class RDFMTMgr(object):
             If no cardinality with the specified parameters could be calculated, -1 is returned.
         """
         if mt is None:
-            query = 'SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }'
+            query = 'SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }'
         elif prop is None:
-            query = 'SELECT (COUNT(?s) as ?count) WHERE { ?s a <' + mt.replace(' ', '_') + '> }'
+            query = 'SELECT (COUNT(?s) AS ?count) WHERE { ?s a <' + mt.replace(' ', '_') + '> }'
         else:
             mt = mt.replace(' ', '_')
             if mr is None:
-                query = 'SELECT (COUNT(?s) as ?count) WHERE {\n  ?s a <' + mt + '> .\n  ?s <' + prop + '> ?o\n}'
+                query = 'SELECT (COUNT(?s) AS ?count) WHERE {\n  ?s a <' + mt + '> .\n  ?s <' + prop + '> ?o\n}'
             else:
                 mr = mr.replace(' ', '_')
                 if not mr_datatype:
-                    query = 'SELECT (COUNT(?s) as ?count) WHERE {\n' \
+                    query = 'SELECT (COUNT(?s) AS ?count) WHERE {\n' \
                             '  ?s a <' + mt + '> .\n' \
                             '  ?s <' + prop + '> ?o .\n' \
                             '  ?o a <' + mr + '>\n' \
                             '}'
                 else:
-                    query = 'SELECT (COUNT(?s) as ?count) WHERE {\n' \
+                    query = 'SELECT (COUNT(?s) AS ?count) WHERE {\n' \
                             '  ?s a <' + mt + '> .\n' \
                             '  ?s <' + prop + '> ?o .\n' \
-                            '  FILTER((datatype(?o))=<' + mr + '>)\n' \
+                            '  FILTER( datatype(?o) = <' + mr + '> )\n' \
                             '}'
 
         res, _ = contact_rdf_source(query, endpoint)
