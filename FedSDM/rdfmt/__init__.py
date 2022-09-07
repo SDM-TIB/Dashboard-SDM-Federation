@@ -189,10 +189,6 @@ class RDFMTMgr(object):
         return results
 
     def get_rdfmts(self, datasource: DataSource, types: list = None) -> dict:
-        # TODO: This method is just a wrapper and can be removed.
-        return self.extractMTLs(datasource, types)
-
-    def extractMTLs(self, datasource: DataSource, types: list = None) -> dict:
         """Extracts the RDF Molecule Templates from a datasource.
 
         Extracts the RDF Molecule Templates from a datasource.
