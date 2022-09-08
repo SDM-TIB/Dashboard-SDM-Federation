@@ -1,7 +1,8 @@
 import functools
+from types import FunctionType
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, Response
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -11,37 +12,30 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 @bp.route('/register', methods=('GET', 'POST'))
-def register():
-    """
-    Here is what the register view function is doing:
+def register() -> Response | str:
+    """Serves requests to '/auth/register'.
 
-    1. @bp.route associates the URL /register with the register view function. When Flask receives a
-        request to /auth/register, it will call the register view and use the return value as the response.
-    2. If the user submitted the form, request.method will be 'POST'. In this case, start validating the input.
-    3. request.form is a special type of dict mapping submitted form keys and values.
-        The user will input their username and password.
-    4. Validate that username and password are not empty.
-    5. Validate that username is not already registered by querying the database and checking if a result is returned.
-        db.execute takes a SQL query with ? placeholders for any user input, and a tuple of values to
-        replace the placeholders with. The database library will take care of escaping the values, so you
-        are not vulnerable to a SQL injection attack.
-        fetchone() returns one row from the query. If the query returned no results, it returns None.
-        Later, fetchall() is used, which returns a list of all results.
-    6. If validation succeeds, insert the new user data into the database.
-        For security, passwords should never be stored in the database directly.
-        Instead, generate_password_hash() is used to securely hash the password, and that hash is stored.
-        Since this query modifies data, db.commit() needs to be called afterwards to save the changes.
-    7. After storing the user, they are redirected to the login page.
-        url_for() generates the URL for the login view based on its name.
-        This is preferable to writing the URL directly as it allows you to change the URL later without
-        changing all code that links to it. redirect() generates a redirect response to the generated URL.
-    8. If validation fails, the error is shown to the user. flash() stores messages that can be retrieved
-        when rendering the template.
-    9. When the user initially navigates to auth/register, or there was a validation error, an HTML page
-        with the registration form should be shown. render_template() will render a template containing the HTML,
-        which you’ll write in the next step of the tutorial.
+    If the request method is 'GET', an HTML page with the registration form will be shown.
+    In the case of a POST request, the submitted form data will be validated. The validation
+    includes the following checks:
 
-    :return:
+        - Username is not empty
+        - Password is not empty
+        - Username is not taken (checks if the username is already in the database)
+
+    If the validation succeeds, the new user is inserted into the database. For security
+    reasons, no plain text passwords are stored in the database. After adding the new
+    user, the user is redirected to the login page.
+
+    If the validation fails, the initial registration form will be rendered including an
+    error message helping the user to update the application.
+
+    Returns
+    -------
+    flask.Response | str
+        Returns the HTML page with the registration form on GET requests or after validation
+        of the form data fails. A successful registration leads to a redirect to the login page.
+
     """
     if request.method == 'POST':
         username = request.form['username']
@@ -69,20 +63,25 @@ def register():
 
 
 @bp.route('/login', methods=('GET', "POST"))
-def login():
-    """
-    There are a few differences from the register view:
+def login() -> Response | str:
+    """Serves requests to '/auth/login'.
 
-    1. The user is queried first and stored in a variable for later use.
-    2. check_password_hash() hashes the submitted password in the same way as
-        the stored hash and securely compares them. If they match, the password is valid.
-    3. session is a dict that stores data across requests.
-        When validation succeeds, the user's id is stored in a new session.
-        The data is stored in a cookie that is sent to the browser,
-        and the browser then sends it back with subsequent requests.
-        Flask securely signs the data so that it can’t be tampered with.
+    If the request method is 'GET', an HTML page with the login form will be shown.
+    In case of a POST request, the submitted form data will be validated, i.e., it
+    will be checked against the database.
+    If the credentials can be verified, the user's ID and name are stored in the
+    session cookie, i.e., the data persists across requests. The data is securely
+    signed by Flask so that it cannot be tampered with. The user is then redirected
+    to the landing page of FedSDM.
+    If the credentials cannot be verified, the initial login form will be rendered
+    including an error message.
 
-    :return:
+    Returns
+    -------
+    flask.Response | str
+        Returns the HTML page with the login form on GET requests or after validation of
+        the credentials fails. A successful login leads to a redirect to the landing page.
+
     """
     if request.method == 'POST':
         username = request.form['username']
@@ -109,13 +108,14 @@ def login():
 
 
 @bp.before_app_request
-def load_logged_in_user():
-    """
-    bp.before_app_request() registers a function that runs before the view function, no matter what URL is requested.
-        load_logged_in_user checks if a user id is stored in the session and gets that user's data from the database,
-        storing it on g.user, which lasts for the length of the request.
-        If there is no user id, or if the id does not exist, g.user will be None.
-    :return:
+def load_logged_in_user() -> None:
+    """Loads the information about the logged-in user before the request is actually handled.
+
+    This method is executed before the actual request handlers are triggered. If a user ID is
+    stored in the session cookie, the user's data is loaded from the database and stored in
+    Flasks global variables, i.e., it is accessible as `g.user`. This variable lasts for the
+    length of the request. If no user was logged in or the user does not exist, `g.user` will be None.
+
     """
     user_id = session.get('user_id')
 
@@ -126,25 +126,41 @@ def load_logged_in_user():
 
 
 @bp.route('/logout')
-def logout():
-    """
-    To log out, you need to remove the user id from the session.
-    Then load_logged_in_user will not load a user on subsequent requests.
-    :return:
+def logout() -> Response:
+    """Serves requests to '/auth/logout'.
+
+    To log out, the user ID is removed from the session, i.e., it will not be loaded
+    by :func:`load_logged_in_user` on subsequent requests. After clearing the session
+    cookie, the user is redirected to the landing page of FedSDM.
+
+    Returns
+    -------
+    flask.Response
+        A redirect to the landing page of FedSDM.
+
     """
     session.clear()
     return redirect(url_for('index'))
 
 
-# Require Authentication in Other Views
-def login_required(view):
-    """
-    This decorator returns a new view function that wraps the original view it is applied to.
-    The new function checks if a user is loaded and redirects to the login page otherwise.
-    If a user is loaded the original view is called and continues normally.
-    You will use this decorator when writing the blog views.
-    :param view:
-    :return:
+def login_required(view: FunctionType) -> any:
+    """Provides a decorator that requires authentication in order to access a view.
+
+    This decorator wraps the view it is applied to and returns a new view function that
+    checks if a user is logged in. If no user is logged in, it redirects to the login page.
+    However, if a user is logged in, the original view is called regularly.
+
+    Parameters
+    ----------
+    view
+        The function that would handle the original request.
+
+    Returns
+    -------
+    any
+        If a user is logged in, the originally accessed page will be rendered regularly.
+        Otherwise, the user will be redirected to the login page.
+
     """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
