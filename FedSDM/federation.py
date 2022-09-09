@@ -1,7 +1,7 @@
 import datetime as dtime
 import json
 from multiprocessing import Process, Queue
-from typing import Optional, Tuple
+from typing import Tuple
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, Response, request, url_for, abort
