@@ -229,7 +229,7 @@ class RDFMTMgr(object):
                         rcard = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mr_datatype=True)
                         rtype = 1
 
-                    ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=str(rcard))
+                    ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=rcard)
                     ranges.append(ran)
                 if 'label' in p:
                     plab = p['label']
@@ -506,10 +506,6 @@ class RDFMTMgr(object):
                     rcard = -1  # self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mrtype=mr)
                     rtype = 1
 
-                if isinstance(rcard, str) and '^^' in rcard:
-                    rcard = rcard[:rcard.find('^^')]
-                else:
-                    rcard = str(rcard)
                 ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=rcard)
                 ranges.append(ran)
             if 'plabel' in r:
