@@ -213,12 +213,12 @@ class RDFMTMgr(object):
                 rn['range'] = self.get_rdfs_ranges(endpoint_url, pred)
                 if len(rn['range']) == 0:
                     rn['r'] = self.find_instance_range(endpoint_url, t, pred)
-                    mtranges = list(set(rn['range'] + rn['r']))
+                    mt_ranges = list(set(rn['range'] + rn['r']))
                 else:
-                    mtranges = rn['range']
+                    mt_ranges = rn['range']
                 ranges = []
 
-                for mr in mtranges:
+                for mr in mt_ranges:
                     if '^^' in mr:
                         continue
                     mrpid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
