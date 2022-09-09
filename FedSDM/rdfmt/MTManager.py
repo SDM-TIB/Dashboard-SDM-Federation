@@ -1,6 +1,8 @@
+from typing import Optional
+
 from FedSDM import get_logger
-from FedSDM.rdfmt.model import *
-from FedSDM.rdfmt.prefixes import *
+from FedSDM.rdfmt.model import DataSource
+from FedSDM.rdfmt.prefixes import MT_ONTO
 from FedSDM.rdfmt.utils import contact_rdf_source, iterative_query
 
 logger = get_logger('rdfmts', './rdfmts.log', True)

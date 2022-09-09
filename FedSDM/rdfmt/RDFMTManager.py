@@ -1,11 +1,13 @@
+import datetime
 import hashlib
 from multiprocessing import Queue, Process
 from pprint import pprint
 from queue import Empty
+from typing import List, Optional
 
 from FedSDM import get_logger
-from FedSDM.rdfmt.model import *
-from FedSDM.rdfmt.prefixes import RDFS, XSD, metas
+from FedSDM.rdfmt.model import RDFMT, MTProperty, PropRange, DataSource, DataSourceType, Source
+from FedSDM.rdfmt.prefixes import RDFS, XSD, metas, MT_RESOURCE, MT_ONTO
 from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source, iterative_query
 
 logger = get_logger('rdfmts', './rdfmts.log', True)
