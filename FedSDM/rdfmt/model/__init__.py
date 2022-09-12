@@ -518,7 +518,7 @@ class DataSourceType(Enum):
 
 
 class ACPolicy(object):
-    """This class is currently unused and needs to be checked."""
+    # TODO: This class is currently unused and needs to be checked.
 
     def __init__(self,
                  authorized_by: AppUser,
@@ -536,7 +536,7 @@ class ACPolicy(object):
 
 
 class ACOperation(object):
-    """This class is currently unused and needs to be checked."""
+    # TODO: This class is currently unused and needs to be checked.
 
     def __init__(self, name: str, desc: str = None):
         self.name = name
@@ -544,7 +544,7 @@ class ACOperation(object):
 
 
 class AppUser(object):
-    """This class is currently unused and needs to be checked."""
+    # TODO: This class is currently unused and needs to be checked.
 
     def __init__(self, name: str, username: str, passwd: str = None, params: dict = None):
         self.name = name

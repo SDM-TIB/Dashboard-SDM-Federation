@@ -705,7 +705,7 @@ def api_get_datasources(graph: str = None, ds_type=None) -> list:
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id_):
-    """This method is currently unused and needs checking."""
+    # TODO: This method is currently unused and needs checking.
     federation = get_federation(id_)
     if request.method == 'POST':
         name = request.form['name']
@@ -734,7 +734,7 @@ def update(id_):
 @bp.route('/<int:id>/delete', methods=['POST'])
 @login_required
 def delete(id_):
-    """This method is currently unused and needs checking."""
+    # TODO: This method is currently unused and needs checking.
     federation = get_federation(id_)
     db = get_db()
     db.execute('DELETE FROM federation WHERE id = ?', (id_,))
