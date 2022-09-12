@@ -1,9 +1,11 @@
+/*!
+ * -----------------------------------------------------------------------------------------------
+ * FedSDM: federations.js
+ * Loads statistics about the federations and datasources; creates tables and bar charts with them
+ * -----------------------------------------------------------------------------------------------
+ */
+
 $(function() {
-    /*
-    **********************************************************
-    ************ Manage data source Data Table ***************
-    **********************************************************
-    */
     const federationList = $('#federations-list'),
           button_add_source = $('#add_ds'),
           button_edit_source = $('#edit_ds'),
@@ -19,16 +21,17 @@ $(function() {
         selectedSource = null;
     const prefix = 'http://ontario.tib.eu/federation/g/';
 
-    // if federation is set from session, then trigger visualization and management data
+    // If federation is set from session, then trigger visualization and management data.
     showFederations(federation);
 
-    // Federation list dropdown change event, triggers visualization of statistics and management data
+    // Federation list dropdown change event, triggers visualization of statistics and management data.
     federationList.on('change', function() {
         federation = $(this).val();
         showFederations(federation);
     });
 
     let statsTableFed = null;
+    // Populates the table with the statistics about all available federations.
     window.federationOverview = function(feds) {
         if (statsTableFed == null) {
             statsTableFed = $('#federations-statistics').DataTable({
@@ -60,7 +63,7 @@ $(function() {
         }
     }
 
-    // check if federation name is set, and show statistics and management data
+    // Check if federation name is set, and show statistics and management data.
     function showFederations(federation) {
         if (federation != null && federation !== '') {
             $('#mfedName').html(federation);
@@ -89,14 +92,14 @@ $(function() {
         }
     }
 
-    // if no data source is selected, some action buttons will be disabled
+    // If no data source is selected, some action buttons will be disabled.
     function set_disabled_prop_ds_buttons(disabled) {
         button_edit_source.prop('disabled', disabled);
         button_remove_source.prop('disabled', disabled);
         button_recompute_mts.prop('disabled', disabled);
     }
 
-    // if no federation is selected, then all action buttons will be disabled
+    // If no federation is selected, then all action buttons will be disabled.
     function disableButtons() {
         button_add_source.prop('disabled', true);
         button_links.prop('disabled', true)
@@ -104,6 +107,8 @@ $(function() {
         set_disabled_prop_ds_buttons(true)
     }
 
+    // Turns an array with the information about the datasources, i.e., the number ot triples and
+    // the number of RDF Molecule Templates, into the representation for a bar chart using Chart.js.
     function sourceStatsToBarChart(data) {
         return [
             {
@@ -122,7 +127,7 @@ $(function() {
         ]
     }
 
-    // basic statistics and bar chart data
+    // Loads the basic statistics about datasources in a given federation and populates the table and bar chart.
     function basic_stat(fed) {
         if (statsTable == null) {
             // Construct basic statistics table
@@ -208,13 +213,14 @@ $(function() {
         bsLoaded = 1;
     }
 
-    // basic information about data sources in a given federation
+    // Sets up the management tab with information about datasources in a given federation.
+    // Additionally, adds a 'on select' method to the table.
     function manage(fed) {
         $('#mfedName').html(fed);
-        //Disable buttons before selecting item on the table
+        // disable buttons before selecting item on the table
         set_disabled_prop_ds_buttons(true);
 
-        //Construct data source management data table
+        // construct data source management data table
         if (table == null) {
             table = $('#datasources').DataTable({
                 order: [[ 1, 'desc' ]],
@@ -224,7 +230,7 @@ $(function() {
                 columnDefs: [{ target: 0, visible: false, searchable: false }],
                 ajax: '/federation/datasources?graph=' + federation
             });
-            // Data source table select action
+            // datasource table select action
             table.on('select', function(e, dt, type, indexes) {
                 selectedSource = table.rows(indexes).data().toArray();
                 set_disabled_prop_ds_buttons(false);
@@ -246,7 +252,7 @@ $(function() {
         });
     }
 
-    // Edit data source click action
+    // Edit datasource click action
     button_edit_source.on('click', function() {
         $('#edit_name').val(selectedSource[0][1]);
         $('#edit_URL').val(selectedSource[0][2]);
@@ -259,7 +265,7 @@ $(function() {
         $('#edit_params').val(selectedSource[0][9].trim());
     });
 
-    //Remove data source click action
+    // Remove datasource click action
     button_remove_source.on('click', function() {
         // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
@@ -285,7 +291,7 @@ $(function() {
         set_disabled_prop_ds_buttons(true);
     });
 
-    // Create Mappings click action
+    // Recompute RDF Molecule Templates click action
     button_recompute_mts.on('click', function() {
         console.log(selectedSource[0][0]);
         $.ajax({
@@ -312,6 +318,7 @@ $(function() {
         });
     });
 
+    // Find links click action
     button_links.on('click', function() {
         console.log(selectedSource[0][0]);
         $.ajax({
@@ -336,6 +343,7 @@ $(function() {
         });
     });
 
+    // Find all links click action
     button_all_links.on('click', function() {
         $.ajax({
             type: 'GET',
@@ -359,11 +367,7 @@ $(function() {
         });
     });
 
-    /*
-    ***************************************************
-    ***** Dialog management functions *****************
-    ***************************************************
-    */
+    // Constants used in the management dialog functions
     const fedModal = $('#federationModal'),
           addSourceModal = $('#addSourceModal'),
           editSourceModal = $('#editSourceModal'),
@@ -445,6 +449,8 @@ $(function() {
        updateDS();
     });
 
+    // Adds a new datasource using the FedSDM API. If the parameter 'close' is true, then the dialog will be closed
+    // after adding the new source. Otherwise, the dialog stays open in order to add another source to the federation.
     function addDataSource(close) {
         resetTips();
         allFields.removeClass('ui-state-error');
@@ -498,6 +504,8 @@ $(function() {
         return valid;
     }
 
+    // Submits the data to add a new datasource, keeps the dialog open, and resets the form elements after a
+    // successful request so that the user can add a second datasource without reopening the dialog.
     function saveAndMore() {
         let valid = addDataSource(false);
         if (valid) {
@@ -506,6 +514,8 @@ $(function() {
         }
     }
 
+    // Validates the form elements in the edit datasource dialog and sends the request for updating the source
+    // using the FedSDM API. On success, the dialog is closes. On fail, an error message will be shown.
     function updateDS() {
         resetTips();
         allFieldsEdit.removeClass('ui-state-error');
@@ -559,6 +569,9 @@ $(function() {
         return valid;
     }
 
+    // Sends the request to add a new federation to the FedSDM API. If the parameter 'close' is true, the
+    // dialog will be closes after the creation of the new federation. Otherwise, the dialog stays open so
+    // that the user can create another federation without reopening the dialog.
     function createNewFederation(close) {
         resetTips();
         let name = fedName.val();
