@@ -204,7 +204,7 @@ class RDFMTMgr(object):
                 mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
                 propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
-                pred_card = str(self.get_cardinality(endpoint_url, t, prop=pred))
+                pred_card = self.get_cardinality(endpoint_url, t, prop=pred)
                 print(pred, pred_card)
                 rn['p'] = pred
                 rn['predcard'] = pred_card
