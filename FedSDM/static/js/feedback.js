@@ -1,3 +1,10 @@
+/*!
+ * --------------------------------------------------------
+ * FedSDM: feedback.js
+ * Provides the functionality of displaying reported issues
+ * --------------------------------------------------------
+ */
+
 $(function() {
     const federationList = $('#federations-list'),
         editIssue = $('#editis'),
@@ -17,6 +24,9 @@ $(function() {
         load_table(federation);
     });
 
+    // Loads the data for all reported issues and populates a table with the received information.
+    // Also adds event handlers to the table, e.g., double-clicking on a row opens a dialog with
+    // more detailed information about the issue.
     function load_table() {
         //Disable buttons before selecting item on the table
         editIssue.prop('disabled', true);
@@ -106,6 +116,8 @@ $(function() {
         })
     }
 
+    // Event handler for 'on click' of the 'issue details' button.
+    // Opens a dialog with more detailed information about the selected issue.
     detailsIssue.on('click', function() {
         $.ajax({
             type: 'GET',
