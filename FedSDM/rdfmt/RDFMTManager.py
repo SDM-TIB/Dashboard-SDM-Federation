@@ -198,8 +198,8 @@ class RDFMTMgr(object):
                     continue
                 properties_processed.append(pred)
 
-                mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
-                propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
+                mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
+                property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
                 pred_card = self.get_cardinality(endpoint_url, t, prop=pred)
                 print(pred, pred_card)
@@ -218,24 +218,24 @@ class RDFMTMgr(object):
                 for mr in mt_ranges:
                     if '^^' in mr:
                         continue
-                    mrpid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
+                    mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
                     if XSD not in mr:
-                        rcard = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr)
+                        range_card = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr)
                         rtype = 0
                     else:
-                        rcard = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mr_datatype=True)
+                        range_card = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mr_datatype=True)
                         rtype = 1
 
-                    ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=rcard)
+                    ran = PropRange(mr_pid, mr, endpoint, range_type=rtype, cardinality=range_card)
                     ranges.append(ran)
                 if 'label' in p:
-                    plab = p['label']
+                    property_label = p['label']
                 else:
-                    plab = ''
+                    property_label = ''
 
-                pred_source = Source(propsourceURI, endpoint, pred_card)
-                mtprop = MTProperty(mtpredicateURI, pred, [pred_source], ranges=ranges, label=plab)
-                rdf_properties.append(mtprop)
+                pred_source = Source(property_source_uri, endpoint, pred_card)
+                mt_property = MTProperty(mt_predicate_uri, pred, [pred_source], ranges=ranges, label=property_label)
+                rdf_properties.append(mt_property)
 
                 results.append(rn)
 
@@ -449,29 +449,29 @@ class RDFMTMgr(object):
 
             subclasses = []
             if t not in already_processed:
-                mcard = -1
+                mt_card = -1
                 print(t)
                 source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t).encode()).hexdigest())
-                source = Source(source_uri, endpoint, mcard)
-                already_processed[t] = mcard
+                source = Source(source_uri, endpoint, mt_card)
+                already_processed[t] = mt_card
                 subc = self.get_subclasses(endpoint_url, t)
                 subclasses = [r['subc'] for r in subc]
                 name = r['tlabel'] if 'tlabel' in r else t
                 desc = r['tdesc'] if 'tdesc' in r else None
                 mts[t] = {'name': name, 'properties': [], 'desc': desc, 'sources': [source], 'subClassOf': subclasses}
             else:
-                mcard = already_processed[t]
+                mt_card = already_processed[t]
 
             pred = r['p']
             print(pred)
-            rn = {'t': t, 'cardinality': mcard, 'subclasses': subclasses}
-            mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
-            propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
+            rn = {'t': t, 'cardinality': mt_card, 'subclasses': subclasses}
+            mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
+            property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
             # Get cardinality of this predicate from this RDF-MT
-            predcard = -1  # self.get_cardinality(endpoint_url, t, prop=pred)
+            pred_card = -1
 
             rn['p'] = pred
-            rn['predcard'] = predcard
+            rn['predcard'] = pred_card
 
             # Get range of this predicate from this RDF-MT t
             rn['range'] = []
@@ -481,25 +481,25 @@ class RDFMTMgr(object):
                 print('range', r['range'])
                 rn['range'].append(r['range'])
                 mr = r['range']
-                mrpid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
+                mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
 
                 if XSD not in mr:
-                    rcard = -1
+                    range_card = -1
                     rtype = 0
                 else:
-                    rcard = -1
+                    range_card = -1
                     rtype = 1
 
-                ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=rcard)
+                ran = PropRange(mr_pid, mr, endpoint, range_type=rtype, cardinality=range_card)
                 ranges.append(ran)
             if 'plabel' in r:
-                plab = r['plabel']
+                property_label = r['plabel']
             else:
-                plab = ''
+                property_label = ''
 
-            predsouce = Source(propsourceURI, endpoint, predcard)
-            mtprop = MTProperty(mtpredicateURI, pred, [predsouce], ranges=ranges, label=plab)
-            mts[t]['properties'].append(mtprop)
+            pred_source = Source(property_source_uri, endpoint, pred_card)
+            mt_prop = MTProperty(mt_predicate_uri, pred, [pred_source], ranges=ranges, label=property_label)
+            mts[t]['properties'].append(mt_prop)
 
             results.append(rn)
 
@@ -980,14 +980,14 @@ class RDFMTMgr(object):
                     try:
                         for m2 in types_found[link]:
                             val = str(url_endpoint2 + m1 + link + m2).encode()
-                            mrpid = MT_RESOURCE + str(hashlib.md5(val).hexdigest())
+                            mr_pid = MT_RESOURCE + str(hashlib.md5(val).hexdigest())
 
                             card = -1
                             rs = DataSource(endpoint2['subject'], endpoint2['url'], DataSourceType.SPARQL_ENDPOINT)
-                            ran = PropRange(mrpid, m2, rs, range_type=0, cardinality=card)
+                            ran = PropRange(mr_pid, m2, rs, range_type=0, cardinality=card)
                             data.extend(ran.to_rdf())
-                            mtpid = MT_RESOURCE + str(hashlib.md5(str(m1 + link).encode()).hexdigest())
-                            data.append('<' + mtpid + '> <' + MT_ONTO + 'linkedTo> <' + mrpid + '> ')
+                            mt_pid = MT_RESOURCE + str(hashlib.md5(str(m1 + link).encode()).hexdigest())
+                            data.append('<' + mt_pid + '> <' + MT_ONTO + 'linkedTo> <' + mr_pid + '> ')
                         if len(data) > 0:
                             self.update_graph(data)
                     except Exception as e:
@@ -1084,7 +1084,7 @@ class RDFMTMgr(object):
 
         """
         logger.info('----------------------' + datasource.url + '-------------------------------------')
-        if types is None:
+        if types is None:  # TODO: shortcut if types is set
             types = []
         mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \
                    'PREFIX rml: <http://semweb.mmlab.be/ns/rml#>' \
@@ -1154,32 +1154,32 @@ class RDFMTMgr(object):
                         'predcard': -1,
                         'range': predicates[p].keys()
                     }
-                    mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
-                    propsourceURI = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p).encode()).hexdigest())
+                    mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
+                    property_source_uri = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p).encode()).hexdigest())
                     ranges = []
                     if len(predicates[p]) > 0:
                         for mr in predicates[p]:
-                            mrpid = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p + mr).encode()).hexdigest())
+                            mr_pid = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p + mr).encode()).hexdigest())
                             rtype = 0
                             for mrr in predicates[p][mr]:
                                 print(p, mr, mrr)
                                 rds = DataSource(mrr, datasource.url, DataSourceType.MONGODB)  # Only mrr is important here for the range
-                                ran = PropRange(mrpid, mr, rds, range_type=rtype, cardinality=-1)
+                                ran = PropRange(mr_pid, mr, rds, range_type=rtype, cardinality=-1)
                                 ranges.append(ran)
 
-                    pred_source = Source(propsourceURI, datasource, -1)
-                    mtprop = MTProperty(mtpredicateURI, p, [pred_source], ranges=ranges, label=p)
-                    rdf_properties.append(mtprop)
+                    pred_source = Source(property_source_uri, datasource, -1)
+                    mt_property = MTProperty(mt_predicate_uri, p, [pred_source], ranges=ranges, label=p)
+                    rdf_properties.append(mt_property)
 
                     results.append(rn)
                 # add rdf:type property
                 p = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-                mtpredicateURI = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
-                propsourceURI = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p).encode()).hexdigest())
+                mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + p).encode()).hexdigest())
+                property_source_uri = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p).encode()).hexdigest())
 
-                pred_source = Source(propsourceURI, datasource, -1)
-                mtprop = MTProperty(mtpredicateURI, p, [pred_source], ranges=[], label='RDF type')
-                rdf_properties.append(mtprop)
+                pred_source = Source(property_source_uri, datasource, -1)
+                mt_prop = MTProperty(mt_predicate_uri, p, [pred_source], ranges=[], label='RDF type')
+                rdf_properties.append(mt_prop)
 
                 name = t
                 desc = None
