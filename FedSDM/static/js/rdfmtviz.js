@@ -3,8 +3,8 @@ $(function() {
           graph_legend = $('#legend'),
           federation_list = $('#federations-list'),
           data_sources = $('#datasources'),
-          mt_details = $('#mtdetails'),
-          mt_viz = $('#mtviz');
+          mt_details = $('#mt_details'),
+          mt_viz = $('#mt_viz');
 
     data_sources.prop('disabled', true);
     mt_details.prop('disabled', true);
@@ -13,7 +13,7 @@ $(function() {
 
     let stats = null,
         federation =  federation_list.val(),
-        tabvisible = '#home',
+        tabVisible = '#home',
         width, height, h = 960, w = 760, chartWidth, chartHeight;
     window.jsdata = [];
 
@@ -27,12 +27,12 @@ $(function() {
 
     function load_data(fed) {
         $('#fedName').html(fed);
-        $('#vfedName').html(fed);
-        $('#afedName').html(fed);
+        $('#vizFedName').html(fed);
+        $('#gaFedName').html(fed);
         data_sources.empty();
         graph_container.empty()
             .html('<h1> Loading ... !</h1>');
-        $('#vdsname').html('');
+        $('#vizDsName').html('');
         loaded = 0;
         vized = 0;
         galoaded = 0;
@@ -122,9 +122,9 @@ $(function() {
         msourcelinks = [];
 
     mt_details.on('click', function() {
-        $('#listofrdfmts').hide();
+        $('#list_of_rdfmts').hide();
         mt_details.hide();
-        $('#backtotable').show();
+        $('#backToTable').show();
         var url = encodeURIComponent(selectedRow[0][2]);
         console.log('url:', url);
         $.ajax({
@@ -179,7 +179,7 @@ $(function() {
                 });
                 mnodes = flatnodes;
                 manodes = mnodes ;
-                $("#mtviz").show();
+                $("#mt_viz").show();
 
                 draw_details();
                 // drawRDFMTS(nodes, links);
@@ -195,13 +195,13 @@ $(function() {
     function draw_details() {
         data = {nodes: manodes, links: malinks};
         mt_viz.html('<h1> Please select data source!</h1>');
-        drawRDFMTS(manodes, malinks, 'mtviz');
+        drawRDFMTS(manodes, malinks, 'mt_viz');
     }
 
-    $('#backtotable').on('click', function() {
-        $('#backtotable').hide();
+    $('#backToTable').on('click', function() {
+        $('#backToTable').hide();
         mt_viz.hide();
-        $('#listofrdfmts').show();
+        $('#list_of_rdfmts').show();
         mt_details.show();
     });
 
@@ -211,12 +211,12 @@ $(function() {
             return
         }
         $('#fedName').html(fed);
-        $('#vfedName').html(fed);
-        $('#afedName').html(fed);
+        $('#vizFedName').html(fed);
+        $('#gaFedName').html(fed);
         if (stats == null || stats == 'undefined') {
-            $('#rdfmtsdataTables').empty();
-            $('#rdfmtsdataTables').append('<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>');
-            stats = $('#rdfmtsdataTables').DataTable({
+            $('#rdfmts_data_table').empty();
+            $('#rdfmts_data_table').append('<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>');
+            stats = $('#rdfmts_data_table').DataTable({
                 order: [[1, 'desc']],
                 responsive: true,
                 select: true,
@@ -227,7 +227,7 @@ $(function() {
                 ],
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                 dom: 'Blfrtip',
-                buttons: table_buttons('rdfmtsdataTables'),
+                buttons: table_buttons('rdfmts_data_table'),
                 ajax: '/rdfmts/api/rdfmtstats?graph=' + fed
             });
             loaded = 1;
@@ -235,16 +235,16 @@ $(function() {
             stats.on('select', function(e, dt, type, indexes) {
                 selectedRow = statstable.rows(indexes).data().toArray();
                 console.log('selected row:', selectedRow)
-                $('#editds').prop('disabled', false);
-                $('#removeds').prop('disabled', false);
+                $('#edit_mt').prop('disabled', false);
+                $('#remove_mt').prop('disabled', false);
                 mt_details.prop('disabled', false);
-                $('#backtotable').hide();
+                $('#backToTable').hide();
             }).on('deselect', function(e, dt, type, indexes) {
                 var rowData = statstable.rows(indexes).data().toArray();
-                $('#editds').prop('disabled', true);
-                $('#removeds').prop('disabled', true);
+                $('#edit_mt').prop('disabled', true);
+                $('#remove_mt').prop('disabled', true);
                 mt_details.prop('disabled', true);
-                $('#backtotable').hide();
+                $('#backToTable').hide();
                 selectedRow = null;
             });
         } else {
@@ -261,8 +261,8 @@ $(function() {
             return
         }
         $('#fedName').html(fed);
-        $('#afedName').html(fed);
-        $('#vfedName').html(fed);
+        $('#gaFedName').html(fed);
+        $('#vizFedName').html(fed);
 
         var j = 0;
         //list of subjects and objects for the DAG
@@ -275,7 +275,7 @@ $(function() {
             max_score = sourcescard;
             var legend= '';
             data_sources.empty();
-            $('#gadatasources').empty();
+            $('#ga_datasources').empty();
             var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources:', sources.length);
             for (var i = 0; i < sources.length; i++) {
@@ -289,15 +289,15 @@ $(function() {
             graph_legend.empty()
                         .html(legend);
 
-            $('#gadatasources').html(datasources);
+            $('#ga_datasources').html(datasources);
             data_sources.html(datasources)
                         .prop('disabled', false);
             graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
-                $('#datasourcesbtn').val($(this).text())
+                $('#datasources_btn').val($(this).text())
                 if ($(this).text() == 'All') {
-                    $('#vdsname').html('ALL');
-                    $('#gdsname').html('ALL');
+                    $('#vizDsName').html('ALL');
+                    $('#gaDsName').html('ALL');
                     source = 'All'
                     sourcemt = source;
                 } else {
@@ -305,17 +305,17 @@ $(function() {
                     sourcemt = source;
                 }
                 if (source) {
-                    $('#vdsname').html($(this).text());
-                    $('#gdsname').html($(this).text());
+                    $('#vizDsName').html($(this).text());
+                    $('#gaDsName').html($(this).text());
                 } else {
-                    $('#vdsname').html('ALL');
-                    $('#gdsname').html('ALL');
+                    $('#vizDsName').html('ALL');
+                    $('#gaDsName').html('ALL');
                 }
-                if (tabvisible == '#analysis') {
+                if (tabVisible == '#analysis') {
                     get_rdfmts_graph_analys(federation, $(this).text());
                 } else {
-                    $('#vdsname').html($(this).text());
-                    $('#gdsname').html($(this).text());
+                    $('#vizDsName').html($(this).text());
+                    $('#gaDsName').html($(this).text());
                     sourcemt = source;
                     graph_container.empty()
                         .html('<h3>Please select Vizualization type</h3>');
@@ -541,18 +541,18 @@ $(function() {
         }
     }
 
-    $('#stopforce').on('click', function() {
+    $('#stop_force').on('click', function() {
         if (force) {
             force.stop()
         }
     });
-    $('#startforce').on('click', function() {
+    $('#start_force').on('click', function() {
         if (force) {
             linkdistance += 10;
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
-    $('#resetforce').on('click', function() {
+    $('#reset_force').on('click', function() {
         if (force) {
             linkdistance = 150
             var fit = Math.sqrt(anodes.length / (width * height));
@@ -564,12 +564,12 @@ $(function() {
         }
     });
     $('#graphVizForce').on('click', function() {
-        console.log('visible tab for datasource selection:' + tabvisible, sourcemt);
+        console.log('visible tab for datasource selection:' + tabVisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'force');
         viztype = 'fgraph';
     });
     $('#graphVizCircular').on('click', function() {
-        console.log('visible tab for datasource selection:' + tabvisible, sourcemt);
+        console.log('visible tab for datasource selection:' + tabVisible, sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'circular');
         viztype = 'cgraph';
     });
@@ -1201,9 +1201,9 @@ $(function() {
             return
         }
         $('#fedName').html(fed);
-        $('#vfedName').html(fed);
-        $('#afedName').html(fed);
-        $('#adsname').html(source);
+        $('#vizFedName').html(fed);
+        $('#gaFedName').html(fed);
+        $('#gaDsName').html(source);
         gsource = source;
         if (gtable == null) {
             gtable = $('#graph-analysis').DataTable({
@@ -1225,11 +1225,11 @@ $(function() {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr('href') // activated tab
         if (target == '#visualize') {
-            tabvisible = '#visualize';
+            tabVisible = '#visualize';
         } else if (target == '#analysis') {
-            tabvisible = '#analysis';
+            tabVisible = '#analysis';
         } else {
-            tabvisible = '#home';
+            tabVisible = '#home';
         }
     });
 
@@ -1377,7 +1377,7 @@ $(function() {
             .call(d3.behavior.drag().on('drag', dragged));
     }
 
-    // Draws straight edges betw    een nodes
+    // Draws straight edges between nodes
     function drawLinks(links) {
         circularlink = d3.select('#plot').selectAll('.link')
             .data(links)
@@ -1638,7 +1638,7 @@ $(function() {
         //connection link between subject and object ->predicates
         var links = [];
         var j=0;
-        $('#rdfmtsdataTables tbody').empty();
+        $('#rdfmts_data_table tbody').empty();
         $.getJSON('iasiskg-new.json', function(data) {
             var k = 0;
             for(var i in data) {
