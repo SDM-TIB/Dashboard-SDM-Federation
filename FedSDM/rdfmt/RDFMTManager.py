@@ -452,15 +452,6 @@ class RDFMTMgr(object):
 
             subclasses = []
             if t not in already_processed:
-                # card = self.get_cardinality(endpoint_url, t)
-                # if isinstance(card, str) and '^' in card:
-                #     card = int(card[:card.find('^^')])
-                #
-                # # molecules[m]['wrappers'][0]['cardinality'] = card
-                # if isinstance(card, str) and '^^' in card:
-                #     mcard = card[:card.find('^^')]
-                # else:
-                #     mcard = str(card)
                 mcard = -1
                 print(t)
                 source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t).encode()).hexdigest())
@@ -486,7 +477,7 @@ class RDFMTMgr(object):
             rn['predcard'] = predcard
 
             # Get range of this predicate from this RDF-MT t
-            rn['range'] = []  # self.get_rdfs_ranges(referer, pred)
+            rn['range'] = []
 
             ranges = []
             if 'range' in r and XSD not in r['range']:
@@ -496,10 +487,10 @@ class RDFMTMgr(object):
                 mrpid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
 
                 if XSD not in mr:
-                    rcard = -1  # self.get_cardinality(endpoint_url, t, prop=pred, mr=mr)
+                    rcard = -1
                     rtype = 0
                 else:
-                    rcard = -1  # self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mrtype=mr)
+                    rcard = -1
                     rtype = 1
 
                 ran = PropRange(mrpid, mr, endpoint, range_type=rtype, cardinality=rcard)
@@ -512,7 +503,6 @@ class RDFMTMgr(object):
             predsouce = Source(propsourceURI, endpoint, predcard)
             mtprop = MTProperty(mtpredicateURI, pred, [predsouce], ranges=ranges, label=plab)
             mts[t]['properties'].append(mtprop)
-            # rdfpropteries.append(mtprop)
 
             results.append(rn)
 
