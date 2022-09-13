@@ -78,9 +78,6 @@ class RDFMTMgr(object):
             A dictionary with the RDF Molecule Templates for the datasource *ds*.
 
         """
-        if types is None:
-            types = []
-
         endpoint = ds.url
         logger.info('----------------------' + endpoint + '-------------------------------------')
 
