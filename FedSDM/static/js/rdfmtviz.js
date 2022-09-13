@@ -318,7 +318,7 @@ $(function() {
                     $('#gaDsName').html($(this).text());
                     sourcemt = source;
                     graph_container.empty()
-                        .html('<h3>Please select Vizualization type</h3>');
+                        .html('<h3>Please select Visualization type</h3>');
                     if (viztype == 'fgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'force');
                     } else if (viztype == 'cgraph') {
