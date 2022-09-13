@@ -481,10 +481,6 @@ class RDFMTMgr(object):
             propsourceURI = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
             # Get cardinality of this predicate from this RDF-MT
             predcard = -1  # self.get_cardinality(endpoint_url, t, prop=pred)
-            if isinstance(predcard, str) and '^^' in predcard:
-                predcard = predcard[:predcard.find('^^')]
-            else:
-                predcard = str(predcard)
 
             rn['p'] = pred
             rn['predcard'] = predcard
