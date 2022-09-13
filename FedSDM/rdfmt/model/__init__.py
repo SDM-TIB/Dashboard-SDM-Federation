@@ -22,7 +22,7 @@ class RDFMT(object):
                  rid: str,
                  name: str = None,
                  mt_type: int = 0,
-                 sources: List[DataSource] = None,
+                 sources: List[Source] = None,
                  subclass_of: list = None,
                  properties: List[MTProperty] = None,
                  desc: str = None):
@@ -39,8 +39,8 @@ class RDFMT(object):
         mt_type : int, optional
             The Molecule Template type of the RDF Molecule Template. The default value is 0 and represents a
             typed RDF Molecule Template. Currently, there are no other types available.
-        sources : List[DataSource], optional
-            A list of :class:`DataSource` instances this RDF Molecule Template was collected from.
+        sources : List[Source], optional
+            A list of :class:`Source` instances this RDF Molecule Template was collected from.
         subclass_of : list, optional
             A list containing the superclasses of the class associated with this RDF Molecule Template.
             By default, it will be set to an empty list, meaning there are no superclasses.
