@@ -7,13 +7,12 @@
 
 $(function() {
     const federationList = $('#federations-list'),
-        editIssue = $('#editis'),
-        detailsIssue = $('#issuedetails');
+        editIssue = $('#edit_issue'),
+        detailsIssue = $('#issue_details');
     let federation = federationList.val(),
         table = null,
-        feedbackdialog = $('#detailsModal'),
+        feedbackDialog = $('#detailsModal'),
         selectedRow = null;
-    $('#selectfederation').prop('disabled', true);
 
     if (federation != null && federation !== '') {
         load_table(federation);
@@ -34,16 +33,16 @@ $(function() {
 
         //Construct data source management data table
         if (table == null) {
-            table = $('#reportedissues').DataTable({
+            table = $('#reported_issues').DataTable({
                 order: [[1, 'desc']],
                 responsive: true,
                 select: true,
                 defaultContent: '<i>Not set</i>'
             });
 
-            let issuetable = table;
+            let issueTable = table;
             table.on('select', function(e, dt, type, indexes) {
-                selectedRow = issuetable.rows(indexes).data().toArray();
+                selectedRow = issueTable.rows(indexes).data().toArray();
                 editIssue.prop('disabled', false);
                 detailsIssue.prop('disabled', false);
             }).on('deselect', function() {
@@ -51,7 +50,7 @@ $(function() {
                 detailsIssue.prop('disabled', true);
                 selectedRow = null;
             }).on('dblclick', function(e, dt, type, indexes) {
-                const rowData = issuetable.rows(indexes).data().toArray();
+                const rowData = issueTable.rows(indexes).data().toArray();
                 console.log('report id', rowData[0][0]);
                 $.ajax({
                     type: 'GET',
@@ -70,8 +69,8 @@ $(function() {
 
                         $('#var').val(data['var']);
                         $('#pred').val(data['pred']);
-                        $('#rowjson').val(JSON.stringify(data['row'], undefined, 4));
-                        feedbackdialog.modal('show');
+                        $('#rowJSON').val(JSON.stringify(data['row'], undefined, 4));
+                        feedbackDialog.modal('show');
                     },
                     error: function(jqXHR, textStatus) {
                         console.log(jqXHR.status);
@@ -136,7 +135,7 @@ $(function() {
 
                 $('#var').val(data['var']);
                 $('#pred').val(data['pred']);
-                $('#rowjson').val(JSON.stringify(data['row'], undefined, 4));
+                $('#rowJSON').val(JSON.stringify(data['row'], undefined, 4));
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
