@@ -81,16 +81,16 @@ $(function() {
 
                             vars = data.vars;
 
-                            let theader = '<thead><tr>',
-                                tfooter = '<tfoot><tr>';
+                            let tableHeader = '<thead><tr>',
+                                tableFooter = '<tfoot><tr>';
                             for (let i = 0; i < vars.length; i++) {
-                                theader =  theader + '<th>' + vars[i] + '</th> ';
-                                tfooter =  tfooter + '<th>' + vars[i] + '</th> ';
+                                tableHeader =  tableHeader + '<th>' + vars[i] + '</th> ';
+                                tableFooter =  tableFooter + '<th>' + vars[i] + '</th> ';
                                 queryVars.push(vars[i]);
                             }
-                            queryResultsTable.append(theader + '</tr></thead>')
+                            queryResultsTable.append(tableHeader + '</tr></thead>')
                                 .append('<tbody></tbody>')
-                                .append(tfooter + '</tr></tfoot>');
+                                .append(tableFooter + '</tr></tfoot>');
 
                             table = queryResultsTable.DataTable({
                                 responsive: false,
@@ -100,25 +100,25 @@ $(function() {
                                 buttons: table_buttons('sparql-results')
                             });
                             queryTriples = data.querytriples;
-                            let resmap = {}
+                            let resultMap = {}
                             for (let i = 0; i < results.length; i++) {
                                 let row = results[i],
-                                    rowml = [];
+                                    row_ml = [];
                                 for (let j = 0; j < vars.length; j++) {
                                     let val = row[vars[j]];
                                     if (val.indexOf('^^<') !== -1) {
                                         val = val.substring(0, val.indexOf('^^'));
                                     }
                                     if ('http' === val.substring(0, 4)) {
-                                        // rowml.push('<a href="' + val + '"> &lt;' + val + '&gt;</a>');
-                                        rowml.push(val);
+                                        // row_ml.push('<a href="' + val + '"> &lt;' + val + '&gt;</a>');
+                                        row_ml.push(val);
                                     } else {
-                                        rowml.push(val);
+                                        row_ml.push(val);
                                     }
-                                    resmap[vars[j]] = val;
+                                    resultMap[vars[j]] = val;
                                 }
-                                table.row.add(rowml).draw(false);
-                                // append_nodes_edges(resmap, queryTriples);
+                                table.row.add(row_ml).draw(false);
+                                // append_nodes_edges(resultMap, queryTriples);
                             }
                             table.columns().every(function() {
                                 let column = this,
@@ -128,18 +128,18 @@ $(function() {
                                             let val = $.fn.dataTable.util.escapeRegex($(this).val());
                                             console.log(val);
 //
-//                                          var ltix = val.indexOf('&lt;');
-//                                          if (ltix > 0) {
-//                                              val = val.substring(ltix + 4, val.indexOf('&gt;'));
+//                                          var lt_idx = val.indexOf('&lt;');
+//                                          if (lt_idx > 0) {
+//                                              val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
 //                                          }
                                             column.search(val ? '^' + val + '$' : '', true, false).draw();
                                         });
                                 //console.log(column.data().unique());
                                 column.data().unique().sort().each(function(d, j) {
 //                                    let val = d,
-//                                        ltix = val.indexOf('&lt;');
-//                                    if (ltix > 0) {
-//                                        val = val.substring(ltix+4, val.indexOf('&gt;'));
+//                                        lt_idx = val.indexOf('&lt;');
+//                                    if (lt_idx > 0) {
+//                                        val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
 //                                    }
                                     // console.log('data', d, val);
                                     select.append('<option value=' + d + '>' + d + '</option>');
@@ -149,15 +149,15 @@ $(function() {
                                 selectedRow = table.rows( indexes ).data().toArray();
                                 selectedRowData = [];
                                 for (let i in selectedRow[0]) {
-                                    let ltix = selectedRow[0][i].indexOf('&lt;');
-                                    if (ltix > 0) {
-                                        let value = selectedRow[0][i].substring(ltix + 4, selectedRow[0][i].indexOf('&gt;'));
+                                    let lt_idx = selectedRow[0][i].indexOf('&lt;');
+                                    if (lt_idx > 0) {
+                                        let value = selectedRow[0][i].substring(lt_idx + 4, selectedRow[0][i].indexOf('&gt;'));
                                         selectedRowData.push(value)
                                     } else {
                                         selectedRowData.push(selectedRow[0][i])
                                     }
                                 }
-                                //console.log('selected row:', selectedRowData, ltix);
+                                //console.log('selected row:', selectedRowData, lt_idx);
 
                                 $('#add_feedback').prop('disabled', false);
                             }).on('deselect', function(e, dt, type, indexes) {
@@ -195,7 +195,7 @@ $(function() {
             $('#result_table_div').hide();
             $('#btnVisualize').hide();
             $('#btnShowTable').show();
-            drawresults();
+            drawResults();
             resultGraphDIV.show();
         });
     $('#btnShowTable').on('click', function() {
@@ -212,7 +212,7 @@ $(function() {
         msourcelinks = [];
     var mtcards = {'All': []};
     var resDrawn = false;
-    function drawresults() {
+    function drawResults() {
         if (resDrawn === true) {
             return
         }
@@ -268,16 +268,16 @@ $(function() {
         event.preventDefault();
         addFeedback(true);
     });
-    const feedbackdesc =  $('#feedbackdesc'),
-          fedbackpreds = $('#fedbackpreds'),
-          allfeedbackFields = $([]).add(feedbackdesc).add(fedbackpreds);
+    const feedbackDesc =  $('#feedbackDesc'),
+          feedbackPredicates = $('#feedbackPredicates'),
+          allFeedbackFields = $([]).add(feedbackDesc).add(feedbackPredicates);
 
     addFeedbackDialog.on('shown.bs.modal', function() {
-        feedbackdesc.trigger('focus');
+        feedbackDesc.trigger('focus');
     });
     addFeedbackDialog.on('hidden.bs.modal', function() {
         addFeedbackForm[0].reset();
-        allfeedbackFields.removeClass('ui-state-error');
+        allFeedbackFields.removeClass('ui-state-error');
         resetTips();
     });
     $('#add-feedback-btn').on('click', function() {
@@ -285,13 +285,13 @@ $(function() {
     });
 
     function addFeedback(close) {
-        allfeedbackFields.removeClass('ui-state-error');
-        let valid_pred = checkSelection(fedbackpreds, 'column');
-        let valid_desc = checkLength(feedbackdesc, 'description', 2, 500);
+        allFeedbackFields.removeClass('ui-state-error');
+        let valid_pred = checkSelection(feedbackPredicates, 'column');
+        let valid_desc = checkLength(feedbackDesc, 'description', 2, 500);
         const valid = valid_desc && valid_pred;
         data = {
-            'desc': feedbackdesc.val(),
-            'pred': fedbackpreds.val(),
+            'desc': feedbackDesc.val(),
+            'pred': feedbackPredicates.val(),
             'query': yasqe.getValue(),
             'row': selectedRowData,
             'columns': queryVars
@@ -306,8 +306,8 @@ $(function() {
                 },
                 url: '/query/feedback?fed=' + federation,
                 data: {
-                    'desc': feedbackdesc.val(),
-                    'pred': fedbackpreds.val(),
+                    'desc': feedbackDesc.val(),
+                    'pred': feedbackPredicates.val(),
                     'query': yasqe.getValue(),
                     'row': selectedRowData,
                     'columns': queryVars
@@ -340,12 +340,12 @@ $(function() {
     }
 
     $('#add_feedback').on('click', function() {
-        fedbackpreds.empty()
+        feedbackPredicates.empty()
                     .append('<option value="-1">Select column</option>');
         for (const d in queryVars) {
-            fedbackpreds.append('<option value=' + queryVars[d] + '> ' + queryVars[d] + '</option>');
+            feedbackPredicates.append('<option value=' + queryVars[d] + '> ' + queryVars[d] + '</option>');
         }
-        fedbackpreds.append('<option value="All">All</option>');
+        feedbackPredicates.append('<option value="All">All</option>');
     });
 
     function append_nodes_edges(rowmap, qtripl) {
@@ -419,7 +419,7 @@ $(function() {
                             // console.log('loop done');
                             resDrawn = false;
                             $('#btnVisualize').show();
-                            drawresults();
+                            drawResults();
                             $('#time_total').html(' ' + data.execTime + ' sec');
                             response = false;
                             return
@@ -456,9 +456,9 @@ $(function() {
                                 });
                             column.data().unique().sort().each(function(d, j) {
                                 let val = d;
-                                const ltix = val.indexOf('&lt;');
-                                if (ltix > 0) {
-                                    val = val.substring(ltix+4, val.indexOf('&gt;'));
+                                const lt_idx = val.indexOf('&lt;');
+                                if (lt_idx > 0) {
+                                    val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
                                 }
                                 // console.log('data', d, val);
                                 select.append('<option value=' + val + '>' + val + '</option>')
