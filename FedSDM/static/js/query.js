@@ -1,7 +1,7 @@
 $(function() {
     const federationList = $('#federations-list'),
-          queryResultsTable = $('#queryresultstable'),
-          resultGraphDIV = $('#resultgraphdiv');
+          queryResultsTable = $('#query_result_table'),
+          resultGraphDIV = $('#result_graph_div');
     let federation = federationList.val(),
         yasqe = null,
         query = null,
@@ -12,20 +12,20 @@ $(function() {
     $('#selectfederation').prop('disabled', true);
 
     if (federation != null && federation !== '') {
-        $('#queryrow').show();
-        $('#resultrow').hide();
+        $('#query_row').show();
+        $('#result_row').hide();
         initialize_yasqe()
     } else {
-        $('#resultinfo').hide();
-        $('#resstatus').hide();
-        $('#queryrow').hide();
-        $('#resultrow').hide();
+        $('#result_info').hide();
+        $('#result_status').hide();
+        $('#query_row').hide();
+        $('#result_row').hide();
     }
 
     federationList.on('change', function() {
         federation = $(this).val();
-        $('#queryrow').show();
-        $('#resultrow').hide();
+        $('#query_row').show();
+        $('#result_row').hide();
         if (yasqe == null) {
             initialize_yasqe()
         }
@@ -47,38 +47,38 @@ $(function() {
                 endpoint: '/query/sparql',
                 callbacks: {
                     beforeSend: function(jqXHR, setting) {
-                        $('#resstatus').hide();
-                        $('#visualizebtn').hide();
-                        $('#showtablebtn').hide();
+                        $('#result_status').hide();
+                        $('#btnVisualize').hide();
+                        $('#btnShowTable').hide();
                         setting.url = '/query/sparql?federation=' + federation + '&query=' + encodeURIComponent(yasqe.getValue());
                         setting.crossDomain = true;
                         setting.data ={'query': yasqe.getValue()};
-                        $('#resultinfo').hide();
+                        $('#result_info').hide();
                         queryResultsTable.empty();
                     },
                     success: function(data) {
-                        $('#resulttablediv').empty()
-                            .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="queryresultstable"></table>')
+                        $('#result_table_div').empty()
+                            .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="query_result_table"></table>')
 
                         if ('error' in data) {
-                            $('#resultrow').show();
-                            $('#resultinfo').show();
-                            $('#resstatus').html('Error:' + data.error)
+                            $('#result_row').show();
+                            $('#result_info').show();
+                            $('#result_status').html('Error:' + data.error)
                                 .show();
                             return true
                         }
                         resDrawn = false;
-                        $('#frestime').html(' ' + data.firstResult + ' sec');
-                        $('#exetime').html(' ' + data.execTime + ' sec');
+                        $('#time_first').html(' ' + data.firstResult + ' sec');
+                        $('#time_total').html(' ' + data.execTime + ' sec');
 
                         query = encodeURIComponent(yasqe.getValue());
 
                         let results = data.result,
                             vars = []
                         if (results.length > 0) {
-                            $('#resstatus').hide();
-                            $('#resultinfo').show();
-                            $('#resultrow').show();
+                            $('#result_status').hide();
+                            $('#result_info').show();
+                            $('#result_row').show();
 
                             vars = data.vars;
 
@@ -160,22 +160,22 @@ $(function() {
                                 }
                                 //console.log('selected row:', selectedRowData, ltix);
 
-                                $('#addfeedback').prop('disabled', false);
+                                $('#add_feedback').prop('disabled', false);
                             }).on('deselect', function(e, dt, type, indexes) {
 //                                var rowData = table.rows(indexes).data().toArray();
-                                $('#addfeedback').prop('disabled', true);
+                                $('#add_feedback').prop('disabled', true);
                                 selectedRow = null;
                             });
                         } else {
-                            $('#resstatus').html('No results found!')
+                            $('#result_status').html('No results found!')
                                 .show();
-                            $('#resultinfo').show();
-                            $('#resultrow').show();
+                            $('#result_info').show();
+                            $('#result_row').show();
                             response = false;
                             return true;
                         }
                         response = true;
-                        $('#stopbutton').prop('disabled', false);
+                        $('#btnStop').prop('disabled', false);
                         show_incremental(vars);
                     } // end of sparql success callback function
                 }
@@ -190,20 +190,20 @@ $(function() {
         YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
     }
 
-    $('#visualizebtn').hide()
+    $('#btnVisualize').hide()
         .on('click', function() {
             resultGraphDIV.show();
-            $('#resulttablediv').hide();
-            $('#visualizebtn').hide();
-            $('#showtablebtn').show();
+            $('#result_table_div').hide();
+            $('#btnVisualize').hide();
+            $('#btnShowTable').show();
             drawresults();
             resultGraphDIV.show();
         });
-    $('#showtablebtn').on('click', function() {
+    $('#btnShowTable').on('click', function() {
         resultGraphDIV.hide();
-        $('#resulttablediv').show();
-        $('#visualizebtn').show();
-        $('#showtablebtn').hide();
+        $('#result_table_div').show();
+        $('#btnVisualize').show();
+        $('#btnShowTable').hide();
     });
 
     var mnodes = [],
@@ -264,8 +264,8 @@ $(function() {
         drawRDFMTS(manodes, malinks, 'mtviz');
     }
 
-    const addfeedbackdialog = $('#feedbackModal');
-    const addfeedbackform = addfeedbackdialog.find('form').on('submit', function(event) {
+    const addFeedbackDialog = $('#feedbackModal');
+    const addFeedbackForm = addFeedbackDialog.find('form').on('submit', function(event) {
         event.preventDefault();
         addFeedback(true);
     });
@@ -273,11 +273,11 @@ $(function() {
           fedbackpreds = $('#fedbackpreds'),
           allfeedbackFields = $([]).add(feedbackdesc).add(fedbackpreds);
 
-    addfeedbackdialog.on('shown.bs.modal', function() {
+    addFeedbackDialog.on('shown.bs.modal', function() {
         feedbackdesc.trigger('focus');
     });
-    addfeedbackdialog.on('hidden.bs.modal', function() {
-        addfeedbackform[0].reset();
+    addFeedbackDialog.on('hidden.bs.modal', function() {
+        addFeedbackForm[0].reset();
         allfeedbackFields.removeClass('ui-state-error');
         resetTips();
     });
@@ -335,12 +335,12 @@ $(function() {
             console.log('Invalid data...');
         }
         if (close) {
-            addfeedbackdialog.modal('hide');
+            addFeedbackDialog.modal('hide');
         }
         return valid;
     }
 
-    $('#addfeedback').on('click', function() {
+    $('#add_feedback').on('click', function() {
         fedbackpreds.empty()
                     .append('<option value="-1">Select column</option>');
         for (const d in queryVars) {
@@ -419,13 +419,13 @@ $(function() {
                         if (row.length === 0 || row === 'EOF') {
                             // console.log('loop done');
                             resDrawn = false;
-                            $('#visualizebtn').show();
+                            $('#btnVisualize').show();
                             drawresults();
-                            $('#exetime').html(' ' + data.execTime + ' sec');
+                            $('#time_total').html(' ' + data.execTime + ' sec');
                             response = false;
                             return
                         }
-                        $('#exetime').html(' ' + data.execTime + ' sec');
+                        $('#time_total').html(' ' + data.execTime + ' sec');
                         const rowml = [],
                             resmap = {};
                         for (let j = 0; j < vars.length; j++) {
@@ -482,7 +482,7 @@ $(function() {
                         show_incremental(vars)
                     } else {
                         shouldstop = false;
-                        $('#stopbutton').prop('disabled', true);
+                        $('#btnStop').prop('disabled', true);
                     }
                 });
             }
@@ -490,7 +490,7 @@ $(function() {
         // setTimeout(,1000);
     }
     let shouldstop = false;
-    $('#stopbutton').on('click', function() {
+    $('#btnStop').on('click', function() {
         console.log('stop pressed');
         response = false;
         shouldstop = true;
