@@ -35,7 +35,7 @@ $(function() {
         $('#vizDsName').html('');
         loaded = 0;
         vized = 0;
-        galoaded = 0;
+        gaLoaded = 0;
         get_rdfmts_stats(fed);
         get_rdfmts(fed);
         get_rdfmts_graph_analys(fed);
@@ -91,7 +91,7 @@ $(function() {
 
     var loaded = 0;
     var vized = 0;
-    var galoaded = 0;
+    var gaLoaded = 0;
     var gtable = null;
     var force = null;
     var linkdistance = 150;
@@ -206,17 +206,18 @@ $(function() {
     });
 
     function get_rdfmts_stats(fed) {
-        if (fed == null || (fed == federation && loaded == 1)) {
+        if (fed == null || (fed === federation && loaded === 1)) {
             console.log('already loaded');
             return
         }
         $('#fedName').html(fed);
         $('#vizFedName').html(fed);
         $('#gaFedName').html(fed);
-        if (stats == null || stats == 'undefined') {
-            $('#rdfmts_data_table').empty();
-            $('#rdfmts_data_table').append('<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>');
-            stats = $('#rdfmts_data_table').DataTable({
+        if (stats == null || stats === 'undefined') {
+            let rdfmtsDataTable = $('#rdfmts_data_table');
+            rdfmtsDataTable.empty()
+                .append('<thead><tr><th>#</th><th>Name</th><th>URI</th><th>Instances</th><th>Num. of Properties</th></tr></thead>');
+            stats = rdfmtsDataTable.DataTable({
                 order: [[1, 'desc']],
                 responsive: true,
                 select: true,
@@ -257,7 +258,7 @@ $(function() {
         $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) {
             jsdata = data2;
         });
-        if (fed == null || (fed == federation && vized == 1)) {
+        if (fed == null || (fed === federation && vized === 1)) {
             return
         }
         $('#fedName').html(fed);
@@ -274,8 +275,6 @@ $(function() {
             sourcescard = sources.length;
             max_score = sourcescard;
             var legend= '';
-            data_sources.empty();
-            $('#ga_datasources').empty();
             var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources:', sources.length);
             for (var i = 0; i < sources.length; i++) {
@@ -289,13 +288,15 @@ $(function() {
             graph_legend.empty()
                         .html(legend);
 
-            $('#ga_datasources').html(datasources);
-            data_sources.html(datasources)
+            $('#ga_datasources').empty()
+                                     .html(datasources);
+            data_sources.empty()
+                        .html(datasources)
                         .prop('disabled', false);
             graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
                 $('#datasources_btn').val($(this).text())
-                if ($(this).text() == 'All') {
+                if ($(this).text() === 'All') {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
                     source = 'All'
@@ -311,7 +312,7 @@ $(function() {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
                 }
-                if (tabVisible == '#analysis') {
+                if (tabVisible === '#analysis') {
                     get_rdfmts_graph_analys(federation, $(this).text());
                 } else {
                     $('#vizDsName').html($(this).text());
@@ -319,11 +320,11 @@ $(function() {
                     sourcemt = source;
                     graph_container.empty()
                         .html('<h3>Please select Visualization type</h3>');
-                    if (viztype == 'fgraph') {
+                    if (viztype === 'fgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'force');
-                    } else if (viztype == 'cgraph') {
+                    } else if (viztype === 'cgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'circular');
-                    } else if (viztype == 'donut') {
+                    } else if (viztype === 'donut') {
                         console.log(source, mtcards);
                         drawDonut(source);
                     }
@@ -583,11 +584,11 @@ $(function() {
         graph_container.empty();
         graph_legend.show();
         console.log('source: ' + source);
-        if (source == 'All') {
+        if (source === 'All') {
             if (alinks.length < 1)
                 alinks=[]
             data = {nodes: anodes, links: alinks};
-            if (gt == 'force') {
+            if (gt === 'force') {
                 anodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
@@ -605,7 +606,7 @@ $(function() {
                 slinks=[]
             }
             data = {nodes: snodes, links: slinks}
-            if (gt == 'force') {
+            if (gt === 'force') {
                 snodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
@@ -674,7 +675,7 @@ $(function() {
                 }
             } else {
                 // the node is part of a collapsed cluster
-                if (l.size == 0) {
+                if (l.size === 0) {
                     // if new cluster, add to set and position at centroid of leaf nodes
                     nm[i] = nodes.length;
                     nodes.push(l);
@@ -1043,13 +1044,13 @@ $(function() {
         }
 
         function isConnected(a, b) {
-            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index == b.index;
+            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index;
         }
 
         function hasConnections(a) {
             for (var property in linkedByIndex) {
                 s = property.split(',');
-                if ((s[0] == a.index || s[1] == a.index) && linkedByIndex[property])
+                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property])
                     return true;
             }
             return false;
@@ -1104,7 +1105,7 @@ $(function() {
         }
 
         function keydown() {
-            if (d3.event.keyCode == 32) {
+            if (d3.event.keyCode === 32) {
                 force.stop();
             }
             else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
@@ -1170,7 +1171,7 @@ $(function() {
                     return isConnected(d, o) ? 1 : highlight_trans;
                 });
                 link.style('opacity', function(o) {
-                    return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
+                    return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans;
                 });
             }
         }
@@ -1189,7 +1190,7 @@ $(function() {
                     return isConnected(d, o) ? 'bold' : 'normal';
                 });
                 link.style('stroke', function(o) {
-                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
+                    return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
                 });
             }
         }
@@ -1197,7 +1198,7 @@ $(function() {
 
     var gsource = null
     function get_rdfmts_graph_analys(fed, source){
-        if (fed == null || source == null || (fed == federation && source == gsource && galoaded == 1)) {
+        if (fed == null || source == null || (fed === federation && source === gsource && gaLoaded === 1)) {
             return
         }
         $('#fedName').html(fed);
@@ -1215,7 +1216,7 @@ $(function() {
                 buttons: table_buttons('mt-graph-analysis'),
                 ajax: '/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source
             });
-            galoaded = 1;
+            gaLoaded = 1;
         } else {
             gtable.clear().draw();
             gtable.ajax.url('/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source).load()
@@ -1224,9 +1225,9 @@ $(function() {
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr('href') // activated tab
-        if (target == '#visualize') {
+        if (target === '#visualize') {
             tabVisible = '#visualize';
-        } else if (target == '#analysis') {
+        } else if (target === '#analysis') {
             tabVisible = '#analysis';
         } else {
             tabVisible = '#home';
@@ -1557,7 +1558,7 @@ $(function() {
             .append('textPath')
             .attr('xlink:href', function(d){return '#' + d.id;})
             .text(function(d) {
-                if (d.pred.lastIndexOf('/') == -1) { return d.pred; }
+                if (d.pred.lastIndexOf('/') === -1) { return d.pred; }
                 return d.pred.substring(d.pred.lastIndexOf('/'), d.pred.length);
             });
 
@@ -1621,7 +1622,7 @@ $(function() {
             .attr('y', 0)
             .attr('class', 'id')
             .text(function(d) {
-                if (d.label.lastIndexOf('/') == -1) { return d.label; }
+                if (d.label.lastIndexOf('/') === -1) { return d.label; }
                 return d.label.substring(d.label.lastIndexOf('/'), d.label.length);
             });
 
@@ -1630,83 +1631,6 @@ $(function() {
 
         // set the graph in motion
         force.start();
-    }
-
-    function getdata() {
-        //list of subjects and objects for the DAG
-        var nodes = [];
-        //connection link between subject and object ->predicates
-        var links = [];
-        var j=0;
-        $('#rdfmts_data_table tbody').empty();
-        $.getJSON('iasiskg-new.json', function(data) {
-            var k = 0;
-            for(var i in data) {
-                var node = {};
-                var tablerow = [];
-                var n =  data[i].rootType;
-                var l = data[i].rootType.lastIndexOf('/');
-                var name = n.substring(l+1);
-                tablerow.push(k+1);
-                k = k + 1;
-                tablerow.push(name);
-                tablerow.push(n);
-                tablerow.push(data[i].wrappers[0].cardinality);
-                tablerow.push(data[i].predicates.length);
-                tablerow.push(data[i].linkedTo.length);
-
-                table.row.add(tablerow).draw(false);
-                node.id=j;
-                node.label=name;
-                node.reflexive = true;
-                node.r = 20;
-                //check if subject already in nodes list
-                var snode = searchNode(nodes, name);
-                if (snode == null) {
-                    nodes.push(node);
-                    snode = node;
-                }
-
-                j++;
-                linkedto = data[i].linkedTo;
-
-                for (lk in linkedto) {
-                    n =  linkedto[lk];
-                    li = n.lastIndexOf('/');
-                    lkname = n.substring(li + 1);
-
-                    var node2 = {};
-                    node2.id = j;
-                    node2.label = lkname;
-                    node2.reflexive = true;
-
-                    //check if object already in nodes list
-                    var onode = searchNode(nodes, lkname);
-                    if (onode == null) {
-                        nodes.push(node2);
-                        onode = node2;
-                    }
-
-                    //connects subject - predicate - object -> a single triple
-                    var link = {};
-
-                    if (snode != null && onode != null && snode.id != onode.id) {
-                        link.source = snode;
-                        link.pred = '';
-                        link.target =onode;
-                        link.left = false;
-                        link.right = true;
-                        link.id = 's' + i;
-                        //add to connection list array
-                        links.push(link);
-                    }
-                    j++;
-                }
-            }
-            data = {nodes:nodes, links: links};
-            //setSize(data);
-            drawWhyDAG(nodes, links);
-        });
     }
 
     function main() {
@@ -1871,7 +1795,7 @@ $(function() {
             .append('textPath')
             .attr('xlink:href', function(d){return '#' + d.id;})
             .text(function(d){
-                if (d.pred.lastIndexOf('/') == -1) { return d.pred; }
+                if (d.pred.lastIndexOf('/') === -1) { return d.pred; }
                 return d.pred.substring(d.pred.lastIndexOf('/'), d.pred.length);
             });
 
@@ -1907,7 +1831,7 @@ $(function() {
             .attr('y', 0)
             .attr('class', 'id')
             .text(function(d) {
-                if (d.label.lastIndexOf('/') == -1) { return d.label; }
+                if (d.label.lastIndexOf('/') === -1) { return d.label; }
                 return d.label.substring(d.label.lastIndexOf('/'), d.label.length);
             });
 
