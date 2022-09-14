@@ -151,11 +151,23 @@ a:hover {
   z-index: 100;
   min-height: 100vh !important;
 }
-.login-panel {
+.auth-panel {
   margin-top: 6rem;
   width: 20%;
   margin-left: auto;
   margin-right: auto;
+}
+#username-label, #password-label {
+  width: 100%;
+  text-align: right;
+  vertical-align: middle;
+  line-height: calc(1.5em + 2 * 0.375rem + 2 * 1px) !important;  /* line height, padding (top and bottom) and border width (top and bottom) of form-control */
+}
+#username, #password {
+  margin-left: 0 !important;
+}
+.col-auth {
+  padding-left: 0 !important;
 }
 .huge {
   font-size: 40px;
