@@ -66,7 +66,7 @@ $(function() {
     // Check if federation name is set, and show statistics and management data.
     function showFederations(federation) {
         if (federation != null && federation !== '') {
-            $('#mfedName').html(federation);
+            $('#fedName').html(federation);
             basic_stat(federation);
             manage(federation);
             if (federation !== 'All'){
@@ -216,7 +216,7 @@ $(function() {
     // Sets up the management tab with information about datasources in a given federation.
     // Additionally, adds a 'on select' method to the table.
     function manage(fed) {
-        $('#mfedName').html(fed);
+        $('#fedName').html(fed);
         // disable buttons before selecting item on the table
         set_disabled_prop_ds_buttons(true);
 
