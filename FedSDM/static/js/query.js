@@ -9,7 +9,6 @@ $(function() {
         vizData = {nodes: {}, links: []},
         queryVars = [],
         table = null, selectedRow = null, selectedRowData = [];
-    $('#selectfederation').prop('disabled', true);
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
