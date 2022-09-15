@@ -1,8 +1,8 @@
 $(function() {
     const federationList = $('#federations-list'),
-          queryResultsTable = $('#query_result_table'),
           resultGraphDIV = $('#result_graph_div');
     let federation = federationList.val(),
+        queryResultsTable = $('#query_result_table'),
         yasqe = null,
         query = null,
         queryTriples = [],
@@ -58,6 +58,7 @@ $(function() {
                     success: function(data) {
                         $('#result_table_div').empty()
                             .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="query_result_table"></table>')
+                        queryResultsTable = $('#query_result_table')
 
                         if ('error' in data) {
                             $('#result_row').show();
