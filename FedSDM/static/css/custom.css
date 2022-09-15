@@ -112,6 +112,9 @@ a:hover {
 .dropdown-menu > li > a:hover {
   background-color: #ccc;
 }
+.nav-tabs {
+  border-bottom: unset !important;
+}
 .nav-tabs > .nav-item {
   padding-left: 1rem;
 }
@@ -216,11 +219,8 @@ a:hover {
   text-decoration: none;
   color: #df8a13;
 }
-.bg-light > .card-header {
-  background-color: #f5f5f5;
-}
-.bg-light > .card-body {
-  background-color: white;
+.bg-white > .card-header {
+  background-color: #ebebeb;
 }
 .card-footer, .card-header {
   padding: .5rem 1rem !important;
@@ -231,6 +231,12 @@ a:hover {
 .card-title {
   font-size: 1rem;
   margin-bottom: 0 !important;
+}
+#summary-row * .card-header {
+  border-bottom: unset !important;
+}
+#summary-row * .card-footer {
+  border-top: unset !important;
 }
 .row-header {
   border-bottom: 1px solid var(--color-almost-white);
