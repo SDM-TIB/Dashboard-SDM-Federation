@@ -44,7 +44,7 @@
     <div class="col" id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">{% block header %} {% endblock %}</h1>
+                {% block headerarea %}<h1 class="page-header">{% block header %} {% endblock %}</h1>{% endblock %}
                 {% for message in get_flashed_messages() %}
                     <div class="flash"> {{ message }}</div>
                 {% endfor %}
