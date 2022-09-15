@@ -39,6 +39,15 @@ class MTManager(object):
         self.user = user
         self.passwd = passwd
 
+    @property
+    def sources_dict(self) -> dict:
+        """Provides a mapping from endpoint URLs to their :class:`DataSource` instance."""
+        sources = {}
+        available_sources = self.get_data_sources()
+        for source in available_sources:
+            sources[source['endpoint']] = self.get_data_source(source['rid'])
+        return sources
+
     def get_data_sources(self) -> list:
         """Gets all sources of the federation the :class:`MTManager` instance was initialized for.
 
@@ -132,13 +141,14 @@ class MTManager(object):
             if rdf_class is not None:
                 r['rid'] = rdf_class
             if r['rid'] not in results:
+                current_source = self.get_data_source(r['datasource'])
                 results[r['rid']] = {
                     'rootType': r['rid'],
                     'linkedTo': [r['mtr']] if 'mtr' in r else [],
                     'wrappers': [{
-                        'url': self.get_data_source(r['datasource']).url,
+                        'url': current_source.url,
                         'predicates': [r['pred']],
-                        'urlparam': '',
+                        'urlparam': current_source.params_to_dict(),
                         'wrapperType': 'SPARQLEndpoint'
                     }],
                     'predicates': [{
@@ -170,12 +180,13 @@ class MTManager(object):
                         w['predicates'].append(r['pred'])
                         w['predicates'] = list(set(w['predicates']))
                 if not wrapper_found:
+                    current_source = self.get_data_source(r['datasource'])
                     results[r['rid']]['wrappers'].append({
-                        'url': self.get_data_source(r['datasource']).url,
+                        'url': current_source.url,
                         'predicates': [
                             r['pred']
                         ],
-                        'urlparam': '',
+                        'urlparam': current_source.params_to_dict(),
                         'wrapperType': 'SPARQLEndpoint'
                     })
         if rdf_class is not None:
@@ -223,7 +234,7 @@ class MTManager(object):
                 e['dstype'],
                 name=e['name'],
                 desc=e['desc'] if 'desc' in e else '',
-                params=e['params'] if 'params' in e else {},
+                params=e['params'] if 'params' in e else '',
                 keywords=e['keywords'] if 'keywords' in e else '',
                 version=e['version'] if 'version' in e else '',
                 homepage=e['homepage'] if 'homepage' in e else '',

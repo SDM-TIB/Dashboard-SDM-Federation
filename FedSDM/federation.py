@@ -269,7 +269,7 @@ def api_add_source() -> Response:
             e['dstype'],
             name=e['name'],
             desc=e['desc'] if 'desc' in e else '',
-            params=e['params'] if 'params' in e else {},
+            params=e['params'] if 'params' in e else '',
             keywords=e['keywords'] if 'keywords' in e else '',
             version=e['version'] if 'version' in e else '',
             homepage=e['homepage'] if 'homepage' in e else '',
@@ -324,7 +324,7 @@ def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Opti
             data = datasource.to_rdf()
             insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
             rr = mdb.update(insert_query)
-            logger.info(datasource.url, 'endpoints cannot be accessed. Please check if you write URLs properly!')
+            logger.info(str(datasource.url) + ' cannot be accessed. Please check if you write URLs properly!')
             if rr:
                 return {'status': -1}, None
             else:
@@ -397,7 +397,7 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
             e['dstype'],
             name=e['name'],
             desc=e['desc'] if 'desc' in e else '',
-            params=e['params'] if 'params' in e else {},
+            params=e['params'] if 'params' in e else '',
             keywords=e['keywords'] if 'keywords' in e else '',
             version=e['version'] if 'version' in e else '',
             homepage=e['homepage'] if 'homepage' in e else '',

@@ -13,7 +13,7 @@ logger = get_logger('mtupdate', './mt-update.log', True)
 
 
 def iterative_query(query: str,
-                    server: str,
+                    server: any,  # any really means str or FedSDM.rdfmt.model.DataSource but that would cause issues
                     limit: int = 10000,
                     max_tries: int = -1,
                     max_answers: int = -1) -> Tuple[list, int]:
@@ -26,8 +26,9 @@ def iterative_query(query: str,
     ----------
     query : str
         The SPARQL query to be executed.
-    server : str
-        The URL of the SPARQL endpoint against which the query should be executed.
+    server : str | DataSource
+        The URL of the SPARQL endpoint against which the query should be executed or, alternatively,
+        the :class:`DataSource` instance representing the endpoint.
     limit : int, optional
         The number of results to be retrieved in one request.
         If no limit is given, it will be set to 10,000 by default.
@@ -77,7 +78,7 @@ def iterative_query(query: str,
 
 
 def contact_rdf_source(query: str,
-                       endpoint: str,
+                       endpoint: any,  # any really means str or FedSDM.rdfmt.model.DataSource but that causes issues
                        output_queue: Queue = Queue(),
                        format_: str = 'application/sparql-results+json') -> str | Tuple[list | str | None, int]:
     """Executes a SPARQL query over an RDF datasource.
@@ -91,8 +92,9 @@ def contact_rdf_source(query: str,
     ----------
     query : str
         The SPARQL query to be executed.
-    endpoint : str
-        The URL of the SPARQL endpoint to which the query should be sent.
+    endpoint : str | DataSource
+        The URL of the SPARQL endpoint to which the query should be sent or, alternatively,
+        the :class:`DataSource` instance representing the endpoint.
     output_queue : multiprocessing.Queue, optional
         The queue to use for fetching the result in an incremental manner.
         If no queue is passed, a new one will be created. However, it is
@@ -116,8 +118,14 @@ def contact_rdf_source(query: str,
 
     """
     # Build the query and header.
-    params = urlparse.urlencode({'query': query, 'format': format_, 'timeout': 600})
+    params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 600})
     headers = {'Accept': format_}
+
+    if not isinstance(endpoint, str):  # actually means it is FedSDM.rdfmt.model.DataSource
+        auth = endpoint.get_auth()
+        if auth is not None:
+            headers['Authorization'] = auth
+        endpoint = endpoint.url
 
     try:
         resp = requests.get(endpoint, params=params, headers=headers)

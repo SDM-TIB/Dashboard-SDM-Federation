@@ -11,6 +11,7 @@ class ConfigSimpleStore(object):
         self.password = passwd
         self.mgr = MTManager(endpoint, user, passwd, graph)
         self.metadata = self.mgr.get_rdfmts()
+        self.sources = self.mgr.sources_dict
         self.predidx = {}
 
     def get_auth(self, endpoint):
@@ -18,8 +19,11 @@ class ConfigSimpleStore(object):
         DeTrusty v0.6.0 introduced the use of private endpoints.
         The dashboard currently does not, but this method is needed for DeTrusty to run.
         """
-        # TODO: implement private endpoints in the dashboard?
-        return None
+        source = self.sources.get(endpoint, None)
+        if source is None:
+            return None
+        else:
+            return source.get_auth()
 
     def createPredicateIndex(self):
         pidx = {}

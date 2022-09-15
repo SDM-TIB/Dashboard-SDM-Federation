@@ -83,9 +83,9 @@ class RDFMTMgr(object):
 
         if not is_update:
             # Get #triples of a dataset
-            triples = self.get_cardinality(endpoint)
+            triples = self.get_cardinality(ds)
             ds.triples = triples
-            data = '<' + ds.rid + '> <' + MT_ONTO + 'triples> ' + triples
+            data = '<' + ds.rid + '> <' + MT_ONTO + 'triples> ' + str(triples)
             self.update_graph([data])
         else:
             today = str(datetime.datetime.now())
@@ -152,19 +152,21 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
-        endpoint_url = endpoint.url
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
-                    '  OPTIONAL { ?t  <' + RDFS + 'label> ?label }\n}'
-            res_list, _ = iterative_query(query, endpoint_url, limit=100)
+                    '  OPTIONAL {\n' \
+                    '    ?t  <' + RDFS + 'label> ?label .\n' \
+                    '    FILTER langMatches( lang(?label), "EN" ) . \n' \
+                    '  }\n}'
+            res_list, _ = iterative_query(query, endpoint, limit=100)
             to_remove = [r for m in metas for r in res_list if m in str(r['t'])]
             for r in to_remove:
                 res_list.remove(r)
         else:
             res_list = [{'t': t} for t in types]
 
-        logger.info(endpoint_url)
+        logger.info(endpoint.url)
         logger.info(res_list)
         pprint(res_list)
 
@@ -179,17 +181,17 @@ class RDFMTMgr(object):
             print(t)
             print('---------------------------------------')
             already_processed.append(t)
-            card = self.get_cardinality(endpoint_url, t)
+            card = self.get_cardinality(endpoint, t)
 
-            source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t).encode()).hexdigest())
+            source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t).encode()).hexdigest())
             source = Source(source_uri, endpoint, card)
             # Get subclasses
-            subc = self.get_subclasses(endpoint_url, t)
+            subc = self.get_subclasses(endpoint, t)
             subclasses = [r['subc'] for r in subc] if subc is not None else []
 
             rdf_properties = []
             # Get predicates of the molecule t
-            predicates = self.get_predicates(endpoint_url, t)
+            predicates = self.get_predicates(endpoint, t)
             properties_processed = []
             for p in predicates:
                 rn = {'t': t, 'cardinality': str(card), 'subclasses': subclasses}
@@ -199,17 +201,17 @@ class RDFMTMgr(object):
                 properties_processed.append(pred)
 
                 mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
-                property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
+                property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
-                pred_card = self.get_cardinality(endpoint_url, t, prop=pred)
+                pred_card = self.get_cardinality(endpoint, t, prop=pred)
                 print(pred, pred_card)
                 rn['p'] = pred
                 rn['predcard'] = pred_card
 
                 # Get range of this predicate from this RDF-MT t
-                rn['range'] = self.get_rdfs_ranges(endpoint_url, pred)
+                rn['range'] = self.get_rdfs_ranges(endpoint, pred)
                 if len(rn['range']) == 0:
-                    rn['r'] = self.find_instance_range(endpoint_url, t, pred)
+                    rn['r'] = self.find_instance_range(endpoint, t, pred)
                     mt_ranges = list(set(rn['range'] + rn['r']))
                 else:
                     mt_ranges = rn['range']
@@ -218,12 +220,12 @@ class RDFMTMgr(object):
                 for mr in mt_ranges:
                     if '^^' in mr:
                         continue
-                    mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
+                    mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred + mr).encode()).hexdigest())
                     if XSD not in mr:
-                        range_card = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr)
+                        range_card = self.get_cardinality(endpoint, t, prop=pred, mr=mr)
                         rtype = 0
                     else:
-                        range_card = self.get_cardinality(endpoint_url, t, prop=pred, mr=mr, mr_datatype=True)
+                        range_card = self.get_cardinality(endpoint, t, prop=pred, mr=mr, mr_datatype=True)
                         rtype = 1
 
                     ran = PropRange(mr_pid, mr, endpoint, range_type=rtype, cardinality=range_card)
@@ -249,15 +251,16 @@ class RDFMTMgr(object):
         return results
 
     @staticmethod
-    def get_rdfs_ranges(endpoint_url: str, predicate: str) -> list:
+    def get_rdfs_ranges(endpoint: str | DataSource, predicate: str) -> list:
         """Extracts the range of a predicate defined using `rdfs:range`.
 
         Extracts the range of a predicate using the predicate `range` of the RDF Schema (RDFS).
 
         Parameters
         ----------
-        endpoint_url : str
-            The URL of the endpoint in which to check the range of the predicate.
+        endpoint : str | DataSource
+            The URL of the endpoint in which to check the range of the predicate or, alternatively,
+            the :class:`DataSource` instance representing the endpoint.
         predicate : str
             The predicate of interest.
 
@@ -269,11 +272,11 @@ class RDFMTMgr(object):
 
         """
         query = 'SELECT DISTINCT ?range WHERE { <' + predicate + '> <' + RDFS + 'range> ?range . }'
-        res_list, _ = iterative_query(query, endpoint_url, limit=100)
+        res_list, _ = iterative_query(query, endpoint, limit=100)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
     @staticmethod
-    def find_instance_range(endpoint_url: str, type_: str, predicate: str) -> list:
+    def find_instance_range(endpoint: str | DataSource, type_: str, predicate: str) -> list:
         """Extracts the range of a predicate by checking the RDF class of the objects.
 
         Extracts the range of a predicate using a SPARQL query to check the RDF class of
@@ -282,8 +285,9 @@ class RDFMTMgr(object):
 
         Parameters
         ----------
-        endpoint_url : str
-            The URL of the endpoint in which to check the range of the predicate.
+        endpoint : str | DataSource
+            The URL of the endpoint in which to check the range of the predicate or, alternatively,
+            the :class:`DataSource` instance representing the endpoint.
         type_ : str
             The RDF class the subject of the triples to consider belongs to.
         predicate : str
@@ -300,10 +304,10 @@ class RDFMTMgr(object):
                 '  ?s a <' + type_ + '> .\n' \
                 '  ?s <' + predicate + '> ?pt .\n' \
                 '  ?pt a ?range .\n}'
-        res_list, _ = iterative_query(query, endpoint_url, limit=50)
+        res_list, _ = iterative_query(query, endpoint, limit=50)
         return [r['range'] for r in res_list if True not in [m in str(r['range']) for m in metas]]
 
-    def get_predicates(self, endpoint_url: str, type_: str) -> list:
+    def get_predicates(self, endpoint: str | DataSource, type_: str) -> list:
         """Gets a list of predicates associated with the specified RDF class.
 
         Extracts all predicates that are associated with the RDF class *type_*.
@@ -312,8 +316,9 @@ class RDFMTMgr(object):
 
         Parameters
         ----------
-        endpoint_url : str
-            The URL of the endpoint from which to extract the predicates.
+        endpoint : str | DataSource
+            The URL of the endpoint from which to extract the predicates or, alternatively,
+            the :class:`DataSource` instance representing the endpoint.
         type_ : str
             The RDF class for which all predicates should be extracted.
 
@@ -327,19 +332,19 @@ class RDFMTMgr(object):
                 '  ?s a <' + type_ + '> .\n' \
                 '  ?s ?p ?pt .\n' \
                 '  OPTIONAL { ?p  <' + RDFS + 'label> ?label }\n}'
-        res_list, status = iterative_query(query, endpoint_url, limit=50)
+        res_list, status = iterative_query(query, endpoint, limit=50)
         existing_predicates = [r['p'] for r in res_list]
 
         if status == -1:  # fallback - get predicates from randomly selected instances of the type
             print('giving up on ' + query)
             print('trying instances .....')
-            rand_inst_res = self.get_preds_of_random_instances(endpoint_url, type_)
+            rand_inst_res = self.get_preds_of_random_instances(endpoint, type_)
             for r in rand_inst_res:
                 if r not in existing_predicates:
                     res_list.append({'p': r})
         return res_list
 
-    def get_preds_of_random_instances(self, endpoint_url: str, type_: str) -> list:
+    def get_preds_of_random_instances(self, endpoint: str | DataSource, type_: str) -> list:
         """Gets the predicates associated with randomly selected instances of a specified RDF class.
 
         This method is used when extracting the predicates of a class failed. In order to reduce
@@ -348,8 +353,9 @@ class RDFMTMgr(object):
 
         Parameters
         ----------
-        endpoint_url : str
-            The URL of the endpoint from which to extract the predicates.
+        endpoint : str | DataSource
+            The URL of the endpoint from which to extract the predicates or, alternatively,
+            the :class:`DataSource` instance representing the endpoint.
         type_ : str
             The RDF class for which the predicates should be extracted.
 
@@ -362,7 +368,7 @@ class RDFMTMgr(object):
 
         """
         query = 'SELECT DISTINCT ?s WHERE { ?s a <' + type_ + '> . }'
-        res_instances, _ = iterative_query(query, endpoint_url, limit=50, max_tries=100)
+        res_instances, _ = iterative_query(query, endpoint, limit=50, max_tries=100)
         res_list = []
         card = len(res_instances)
         if card > 0:
@@ -370,21 +376,21 @@ class RDFMTMgr(object):
             import random
             rand = random.randint(0, card - 1)
             inst = res_instances[rand]
-            inst_res = self.get_preds_of_instance(endpoint_url, inst['s'])
+            inst_res = self.get_preds_of_instance(endpoint, inst['s'])
             inst_res = [r['p'] for r in inst_res]
             res_list.extend(inst_res)
             res_list = list(set(res_list))
         return res_list
 
     @staticmethod
-    def get_preds_of_instance(endpoint_url: str, instance: str) -> list:
+    def get_preds_of_instance(endpoint: str | DataSource, instance: str) -> list:
         """Gets all predicates that are associated with a specific instance in the data.
 
         Extracts the predicates that occur in RDF triples where the subject is *instance*.
 
         Parameters
         ----------
-        endpoint_url : str
+        endpoint : str | DataSource
             The URL of the endpoint from which to extract the predicates.
         instance : str
             The instance in the data for which to extract the predicates.
@@ -398,7 +404,7 @@ class RDFMTMgr(object):
         query = 'SELECT DISTINCT ?p ?label WHERE {\n' \
                 '  <' + instance + '> ?p ?pt .\n' \
                 '  OPTIONAL { ?p  <' + RDFS + 'label> ?label }\n}'
-        res_list, _ = iterative_query(query, endpoint_url, limit=1000)
+        res_list, _ = iterative_query(query, endpoint, limit=1000)
         return res_list
 
     def get_mts_from_owl(self, endpoint: DataSource, graph: str, types: list = None) -> List[dict]:
@@ -421,7 +427,6 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
-        endpoint_url = endpoint.url
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE { GRAPH <' + graph + '> {\n' \
                     '  ?p <' + RDFS + 'domain> ?t .\n' \
@@ -429,7 +434,7 @@ class RDFMTMgr(object):
                     '  OPTIONAL { ?p <' + RDFS + "label> ?plabel . FILTER langMatches(?plabel, 'EN') }\n" \
                     '  OPTIONAL { ?t <' + RDFS + "label> ?tlabel . FILTER langMatches(?tlabel, 'EN') }\n" \
                     '}}'
-            res_list, _ = iterative_query(query, endpoint_url, limit=50)
+            res_list, _ = iterative_query(query, endpoint, limit=50)
 
             to_remove = [r for m in metas for r in res_list if m in str(r['t'])]
             for r in to_remove:
@@ -437,7 +442,7 @@ class RDFMTMgr(object):
         else:
             res_list = [{'t': t} for t in types]
 
-        logger.info(endpoint_url)
+        logger.info(endpoint.url)
         logger.info(res_list)
         results = []
         already_processed = {}
@@ -451,10 +456,10 @@ class RDFMTMgr(object):
             if t not in already_processed:
                 mt_card = -1
                 print(t)
-                source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t).encode()).hexdigest())
+                source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t).encode()).hexdigest())
                 source = Source(source_uri, endpoint, mt_card)
                 already_processed[t] = mt_card
-                subc = self.get_subclasses(endpoint_url, t)
+                subc = self.get_subclasses(endpoint, t)
                 subclasses = [r['subc'] for r in subc]
                 name = r['tlabel'] if 'tlabel' in r else t
                 desc = r['tdesc'] if 'tdesc' in r else None
@@ -466,7 +471,7 @@ class RDFMTMgr(object):
             print(pred)
             rn = {'t': t, 'cardinality': mt_card, 'subclasses': subclasses}
             mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
-            property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred).encode()).hexdigest())
+            property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred).encode()).hexdigest())
             # Get cardinality of this predicate from this RDF-MT
             pred_card = -1
 
@@ -481,7 +486,7 @@ class RDFMTMgr(object):
                 print('range', r['range'])
                 rn['range'].append(r['range'])
                 mr = r['range']
-                mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint_url + t + pred + mr).encode()).hexdigest())
+                mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred + mr).encode()).hexdigest())
 
                 if XSD not in mr:
                     range_card = -1
@@ -580,7 +585,7 @@ class RDFMTMgr(object):
             update_rdf_source(update_query, self.update_endpoint)
 
     @staticmethod
-    def get_cardinality(endpoint: str,
+    def get_cardinality(endpoint: str | DataSource,
                         mt: str = None,
                         prop: str = None,
                         mr: str = None,
@@ -593,8 +598,9 @@ class RDFMTMgr(object):
 
         Parameters
         ----------
-        endpoint : str
-            The URL of the endpoint from which the cardinality is to be extracted.
+        endpoint : str | DataSource
+            The URL of the endpoint from which the cardinality is to be extracted or, alternatively,
+            the :class:`DataSource` instance representing the endpoint.
         mt : str, optional
             The RDF class of interest for the cardinality calculation.
         prop : str, optional
@@ -652,15 +658,16 @@ class RDFMTMgr(object):
             return -1
 
     @staticmethod
-    def get_subclasses(endpoint_url: str, root: str) -> list:
+    def get_subclasses(endpoint: str | DataSource, root: str) -> list:
         """Gets the subclasses of an RDF class.
 
         Extracts a list of all subclasses of the specified RDF class.
 
         Parameters
         ----------
-        endpoint_url : str
-            The URL of the endpoint from which the subclasses should be extracted.
+        endpoint : str | DataSource
+            The URL of the endpoint from which the subclasses should be extracted or, alternatively,
+            the :class:`DataSource` instance representing the endpoint.
         root : str
             The RDF class for which the subclasses should be extracted.
 
@@ -671,7 +678,7 @@ class RDFMTMgr(object):
 
         """
         query = 'SELECT DISTINCT ?subc WHERE { <' + root.replace(' ', '_') + '> <' + RDFS + 'subClassOf> ?subc }'
-        res, _ = contact_rdf_source(query, endpoint_url)
+        res, _ = contact_rdf_source(query, endpoint)
         return res
 
     def get_sources(self) -> list:
@@ -730,7 +737,7 @@ class RDFMTMgr(object):
                 res['dstype'],
                 name=res['name'] if 'name' in res else '',
                 desc=res['desc'] if 'desc' in res else '',
-                params=res['params'] if 'params' in res else {},
+                params=res['params'] if 'params' in res else '',
                 keywords=res['keywords'] if 'keywords' in res else '',
                 version=res['version'] if 'version' in res else '',
                 homepage=res['homepage'] if 'homepage' in res else '',

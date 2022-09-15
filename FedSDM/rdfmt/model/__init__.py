@@ -1,9 +1,13 @@
 from __future__ import annotations  # Python 3.10 still has issues with typing when using classes from the same module
 
 import datetime
+import time
 import urllib.parse as urlparse
+from base64 import b64encode
 from enum import Enum
 from typing import List, Optional
+
+import requests
 
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
 from FedSDM.rdfmt.utils import contact_rdf_source
@@ -319,7 +323,7 @@ class DataSource(object):
                  ds_type: str | DataSourceType,
                  name: str = None,
                  desc: str = None,
-                 params: dict = None,
+                 params: str = None,
                  keywords: str = None,
                  homepage: str = None,
                  version: str = None,
@@ -343,8 +347,9 @@ class DataSource(object):
         desc : str, optional
             A short description explaining what the datasource is about. If none is provided,
             an empty string will be used.
-        params : dict, optional
-            A dictionary with parameters to access the datasource.
+        params : str, optional
+            A string with parameters to access the datasource. The string holds key-value pairs.
+            The pairs are separated by semicolon (;). The delimiter of key and value is a colon (:).
         keywords : str, optional
             A string containing all keywords associated with the datasource.
         homepage : str, optional
@@ -373,6 +378,49 @@ class DataSource(object):
         self.organization = organization if organization is not None else ''
         self.triples = triples
         self.ontology_graph = ontology_graph
+        self.auth_token = None
+        self.auth_token_valid_until = None
+
+    @staticmethod
+    def __get_auth_token(server, username, password):
+        payload = 'grant_type=client_credentials&client_id=' + username + '&client_secret=' + password
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+
+        start = time.time()
+        response = requests.request('POST', server, headers=headers, data=payload)
+        if response.status_code != 200:
+            raise Exception(str(response.status_code) + ': ' + response.text)
+        return response.json()['access_token'], start + response.json()['expires_in']
+
+    def get_auth(self):
+        """
+        DeTrusty v0.6.0 introduced the use of private endpoints.
+        The dashboard currently does not, but this method is needed for DeTrusty to run.
+        """
+        params = self.params_to_dict()
+        if params is not None and 'username' in params and 'password' in params:
+            if 'keycloak' in params:
+                valid_token = False
+                if self.auth_token is not None and self.auth_token_valid_until is not None:
+                    current = time.time()
+                    if self.auth_token_valid_until > current:
+                        valid_token = True
+
+                if valid_token:
+                    token = self.auth_token
+                else:
+                    token, valid_until = self.__get_auth_token(
+                        params['keycloak'],
+                        params['username'],
+                        params['password']
+                    )
+                    self.auth_token = token
+                    self.auth_token_valid_until = valid_until
+                return 'Bearer ' + token
+            else:
+                credentials = params['username'] + ':' + params['password']
+                return 'Basic ' + b64encode(credentials.encode()).decode()
+        return None
 
     def is_accessible(self) -> bool:
         """Performs an accessibility check for the datasource.
@@ -390,16 +438,15 @@ class DataSource(object):
         """
         ask = 'ASK {?s ?p ?o}'
         e = self.url
-        referer = e
         if self.ds_type == DataSourceType.SPARQL_ENDPOINT:
             print('checking endpoint accessibility', e)
-            val, c = contact_rdf_source(ask, referer)
+            val, c = contact_rdf_source(ask, self)
             if c == -2:
-                print(e, '-> is not accessible. Hence, will not be included in the federation!')
+                print(e, ' -> is not accessible. Hence, will not be included in the federation!')
             if val:
                 return True
             else:
-                print(e, '-> is returning empty results. Hence, will not be included in the federation!')
+                print(e, ' -> is returning empty results. Hence, will not be included in the federation!')
         return False
 
     def to_rdf(self, update: bool = False) -> List[str]:
@@ -459,6 +506,14 @@ class DataSource(object):
                '  dstype: ' + str(self.ds_type) + ',\n' \
                '  params: ' + str(self.params) + '\n' \
                '}'
+
+    def params_to_dict(self):
+        result = {}
+        pairs = self.params.split(';')
+        for pair in pairs:
+            param = pair.split(':', 1)
+            result[param[0]] = param[1]
+        return result
 
 
 class DataSourceType(Enum):
