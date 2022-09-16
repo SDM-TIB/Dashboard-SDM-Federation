@@ -1,4 +1,4 @@
 flask==2.2.2
 networkx==2.8.6
-DeTrusty==0.6.3
+DeTrusty==0.6.4
 requests==2.28.1
