@@ -514,7 +514,20 @@ class DataSource(object):
                '  params: ' + str(self.params) + '\n' \
                '}'
 
-    def params_to_dict(self):
+    def params_to_dict(self) -> dict:
+        """Converts the parameters of the datasource into a dictionary.
+
+        This method converts the string containing all the parameters of the datasource
+        into a dictionary holding the parameters as key-value pairs.
+
+        Returns
+        -------
+        dict
+            A dictionary holding the parameters of the datasource as key-value pairs.
+
+        """
+        if not self.params:
+            return {}
         result = {}
         pairs = self.params.split(';')
         for pair in pairs:
