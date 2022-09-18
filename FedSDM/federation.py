@@ -242,6 +242,7 @@ def api_add_source() -> Response:
         - homepage -- homepage of the dataset providing additional information (optional)
         - organization -- organization publishing the dataset (optional)
         - ontology_graph -- URL of the endpoint providing the ontology for the datasource (optional, unused)
+        - types -- a list of RDF classes to which the metadata collection will be restricted (optional)
 
     Note
     ----
@@ -274,7 +275,8 @@ def api_add_source() -> Response:
             version=e['version'] if 'version' in e else '',
             homepage=e['homepage'] if 'homepage' in e else '',
             organization=e['organization'] if 'organization' in e else '',
-            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None
+            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None,
+            types=e['types'] if 'types' in e else ''
         )
     except KeyError:
         print('KeyError: ', request.args)
@@ -332,7 +334,7 @@ def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Opti
         data = datasource.to_rdf()
         insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
         mdb.update(insert_query)
-        p = Process(target=mgr.create, args=(datasource, out_queue, [], ))
+        p = Process(target=mgr.create, args=(datasource, out_queue, ))
         p.start()
         logger.info('Collecting RDF-MTs started')
         return {'status': 1}, out_queue
@@ -365,6 +367,7 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
         - homepage -- homepage of the dataset providing additional information (optional)
         - organization -- organization publishing the dataset (optional)
         - ontology_graph -- URL of the endpoint providing the ontology for the datasource (optional, unused)
+        - types -- a list of RDF classes to which the metadata collection will be restricted (optional)
 
     Note
     ----
@@ -402,7 +405,8 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
             version=e['version'] if 'version' in e else '',
             homepage=e['homepage'] if 'homepage' in e else '',
             organization=e['organization'] if 'organization' in e else '',
-            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None
+            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None,
+            types=e['types'] if 'types' in e else ''
         )
         data = ds.to_rdf(update=True)
         mdb = get_mdb()
@@ -422,7 +426,7 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
             # TODO: Is it a good idea to re-create the MTs here?
             mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', fed)
             out_queue = Queue()
-            p = Process(target=mgr.create, args=(ds, out_queue, [],))
+            p = Process(target=mgr.create, args=(ds, out_queue, ))
             p.start()
             logger.info('Collecting RDF-MTs started')
             return {'status': 1}, out_queue
@@ -543,7 +547,7 @@ def recreate_mts(federation: str, ds: str) -> Tuple[dict, Optional[Queue]]:
     datasource = mgr.get_source(ds)
     if datasource is None:
         return {'status': -1}, None
-    p = Process(target=mgr.create, args=(datasource, out_queue, [], True,))
+    p = Process(target=mgr.create, args=(datasource, out_queue, True, ))
     p.start()
     return {'status': 1}, out_queue
 
@@ -647,6 +651,7 @@ def api_get_datasources(graph: str = None, ds_type=None) -> list:
         the datasources.
 
     """
+    # TODO: check if it is possible to remove duplicated triple patterns when building the query
     mdb = get_mdb()
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
@@ -669,6 +674,7 @@ def api_get_datasources(graph: str = None, ds_type=None) -> list:
                  '  OPTIONAL { ?id mt:params ?params . }\n' \
                  '  OPTIONAL { ?id mt:desc ?desc . }\n' \
                  '  OPTIONAL { ?id mt:organization ?organization . }\n' \
+                 '  OPTIONAL { ?id mt:types ?types . }\n' \
                  '}}'
     else:
         query = 'SELECT DISTINCT * WHERE {\n' \
@@ -682,6 +688,7 @@ def api_get_datasources(graph: str = None, ds_type=None) -> list:
                 '  OPTIONAL { ?id mt:params ?params . }\n' \
                 '  OPTIONAL { ?id mt:desc ?desc . }\n' \
                 '  OPTIONAL { ?id mt:organization ?organization . }\n' \
+                '  OPTIONAL { ?id mt:types ?types . }\n' \
                 '}'
     res, card = mdb.query(query)
     if card > 0:
@@ -692,9 +699,13 @@ def api_get_datasources(graph: str = None, ds_type=None) -> list:
                 r['name'],
                 r['endpoint'],
                 r['dstype'][r['dstype'].rfind('/') + 1:] if 'dstype' in r else '',
-                r['keywords'] if 'keywords' in r else '', r['homepage'] if 'homepage' in r else '',
-                r['organization'] if 'organization' in r else '', r['desc'] if 'desc' in r else '',
-                r['version'] if 'version' in r else '', r['params'] if 'params' in r else ''
+                r['keywords'] if 'keywords' in r else '',
+                r['homepage'] if 'homepage' in r else '',
+                r['organization'] if 'organization' in r else '',
+                r['desc'] if 'desc' in r else '',
+                r['version'] if 'version' in r else '',
+                r['params'] if 'params' in r else '',
+                r['types'] if 'types' in r else ''
             ]
             data.append(dd)
         return data

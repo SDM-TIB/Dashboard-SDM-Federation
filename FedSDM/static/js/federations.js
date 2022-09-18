@@ -263,6 +263,7 @@ $(function() {
         $('#edit_label').val(selectedSource[0][7].trim());
         $('#edit_version').val(selectedSource[0][8].trim());
         $('#edit_params').val(selectedSource[0][9].trim());
+        $('#edit_types').val(selectedSource[0][10].trim());
     });
 
     // Remove datasource click action
@@ -379,21 +380,23 @@ $(function() {
           ds_type = $('#ds_type'),
           URL = $('#URL'),
           params = $('#params'),
+          types = $('#types'),
           keywords = $('#keywords'),
           organization = $('#organization'),
           homepage = $('#homepage'),
           version = $('#version'),
-          allFields = $([]).add(name).add(desc).add(ds_type).add(URL).add(params).add(keywords).add(organization).add(homepage).add(version),
+          allFields = $([]).add(name).add(desc).add(ds_type).add(URL).add(params).add(types).add(keywords).add(organization).add(homepage).add(version),
           edit_name = $('#edit_name'),
           edit_desc = $('#edit_desc'),
           edit_ds_type = $('#edit_ds_type'),
           edit_URL = $('#edit_URL'),
           edit_params = $('#edit_params'),
+          edit_types = $('#edit_types'),
           edit_keywords = $('#edit_keywords'),
           edit_organization = $('#edit_organization'),
           edit_homepage = $('#edit_homepage'),
           edit_version = $('#edit_version'),
-          allFieldsEdit = $([]).add(edit_name).add(edit_desc).add(edit_ds_type).add(edit_URL).add(edit_params).add(edit_keywords).add(edit_organization).add(edit_homepage).add(edit_version),
+          allFieldsEdit = $([]).add(edit_name).add(edit_desc).add(edit_ds_type).add(edit_URL).add(edit_params).add(edit_types).add(edit_keywords).add(edit_organization).add(edit_homepage).add(edit_version),
           fedName = $('#fed_new_name'),
           fedDesc = $('#description'),
           allFieldsFed = $([]).add(fedName).add(fedDesc);
@@ -472,6 +475,7 @@ $(function() {
                     'dstype': ds_type.val(),
                     'keywords': keywords.val(),
                     'params': params.val(),
+                    'types': types.val(),
                     'desc': desc.val(),
                     'version': version.val(),
                     'homepage': homepage.val(),
@@ -541,6 +545,7 @@ $(function() {
                     'dstype': edit_ds_type.val().trim(),
                     'keywords': edit_keywords.val().trim(),
                     'params': edit_params.val().trim(),
+                    'types': edit_types.val().trim(),
                     'desc': edit_desc.val().trim(),
                     'version': edit_version.val().trim(),
                     'homepage': edit_homepage.val().trim(),

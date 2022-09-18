@@ -329,7 +329,8 @@ class DataSource(object):
                  version: str = None,
                  organization: str = None,
                  ontology_graph: str = None,
-                 triples: int = -1):
+                 triples: int = -1,
+                 types: str = None):
         """Initializes an instance of :class:`DataSource`.
 
         The datasource is created based on the passed parameters.
@@ -364,6 +365,9 @@ class DataSource(object):
         triples : int, optional
             The number of triples stored in the datasource. If no value is provided, it defaults
             to -1 to signal the absence of the information.
+        types : str, optional
+            A string with the RDF classes to which the metadata collection is limited. The string
+            holds all classes with their full URI seperated by semicolon (;).
 
         """
         self.rid = urlparse.quote(rid, safe='/:#-')
@@ -376,6 +380,7 @@ class DataSource(object):
         self.homepage = homepage if homepage is not None else ''
         self.version = version if version is not None else ''
         self.organization = organization if organization is not None else ''
+        self.types = types if types is not None else ''
         self.triples = triples
         self.ontology_graph = ontology_graph
         self.auth_token = None
@@ -466,19 +471,21 @@ class DataSource(object):
                 '<' + self.rid + '> <' + MT_ONTO + 'url> "' + urlparse.quote(self.url, safe='/:') + '" ']
         if self.name is not None and self.name != '':
             self.name = self.name.replace('"', "'").replace('\n', ' ')
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'name> "' + self.name + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'name> "' + self.name + '"')
         if self.version is not None and self.version != '':
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'version> "' + self.version + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'version> "' + self.version + '"')
         if self.keywords is not None and self.keywords != '':
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'keywords> "' + self.keywords + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'keywords> "' + self.keywords + '"')
         if self.organization is not None and self.organization != '':
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'organization> "' + self.organization + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'organization> "' + self.organization + '"')
         if self.homepage is not None and self.homepage != '':
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'homepage> "' + self.homepage + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'homepage> "' + self.homepage + '"')
         if self.params is not None and len(self.params) > 0:
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'params> "' + str(self.params) + '" ')
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'params> "' + str(self.params) + '"')
         if self.desc is not None and self.desc != '':
             data.append('<' + self.rid + '> <' + MT_ONTO + 'desc> "' + self.desc.replace('"', "'").replace('`', "'") + '"')
+        if self.types is not None and self.types != '':
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'types> "' + self.types + '"')
         if self.triples != '' and int(self.triples) >= 0:
             data.append('<' + self.rid + '> <' + MT_ONTO + 'triples> ' + str(self.triples))
 
@@ -514,6 +521,23 @@ class DataSource(object):
             param = pair.split(':', 1)
             result[param[0]] = param[1]
         return result
+
+    def types_to_list(self) -> list:
+        """Converts the types the metadata collection is restricted to into a list.
+
+        This method converts the string containing all the RDF classes the metadata collection
+        for the datasource is restricted to into a list.
+
+        Returns
+        -------
+        list
+            A list containing the RDF classes the metadata collection is restricted to.
+
+        """
+        if self.types == '':
+            return []
+        else:
+            return self.types.split(';')
 
 
 class DataSourceType(Enum):

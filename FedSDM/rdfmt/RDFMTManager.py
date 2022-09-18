@@ -49,7 +49,7 @@ class RDFMTMgr(object):
         self.user = user
         self.passwd = passwd
 
-    def create(self, ds: DataSource, out_queue: Queue = Queue(), types: list = None, is_update: bool = False) -> dict:
+    def create(self, ds: DataSource, out_queue: Queue = Queue(), is_update: bool = False) -> dict:
         """(Re-)creates the RDF Molecule Templates of a datasource within the federation.
 
         This method (re-)creates the RDF Molecule Templates of a single datasource within the
@@ -62,9 +62,6 @@ class RDFMTMgr(object):
         out_queue : multiprocessing.Queue, optional
             A queue object used to transmit the results. If none is given, a new one will be created.
             However, in that case it is not possible to retrieve the results from the queue.
-        types : list, optional
-            A list containing the types that are present in the datasource. By default, this is set to None
-            which leads to the actual extraction of the metadata from the datasource.
         is_update : bool, optional
             A Boolean indicating whether this is an update of the RDF Molecule Templates for this datasource.
             By default, it is set to false which indicates the first creation of the RDF Molecule Templates
@@ -93,12 +90,12 @@ class RDFMTMgr(object):
             delete = ['<' + ds.rid + '> <http://purl.org/dc/terms/modified> ?modified ']
             self.delete_insert_data(delete, data, delete)
 
-        results = self.get_rdfmts(ds, types)
+        results = self.get_rdfmts(ds)
         # self.create_inter_ds_links(datasource=ds)
         out_queue.put('EOF')
         return results
 
-    def get_rdfmts(self, datasource: DataSource, types: list = None) -> dict:
+    def get_rdfmts(self, datasource: DataSource) -> dict:
         """Extracts the RDF Molecule Templates from a datasource.
 
         Extracts the RDF Molecule Templates from a datasource.
@@ -110,19 +107,15 @@ class RDFMTMgr(object):
         ---------
         datasource : DataSource
             The datasource from which the RDF Molecule Templates should be extracted.
-        types : list, optional
-            A list containing the types that are present in the datasource. By default,
-            this is set to None which leads to the actual extraction of the metadata
-            from the datasource.
 
         """
         rdf_molecules = {}
         endpoint = datasource.url
 
         if datasource.ontology_graph is None:
-            results = self.get_typed_concepts(datasource, types)
+            results = self.get_typed_concepts(datasource)
         else:
-            results = self.get_mts_from_owl(datasource, datasource.ontology_graph, types)
+            results = self.get_mts_from_owl(datasource, datasource.ontology_graph)
 
         rdf_molecules[endpoint] = results
 
@@ -131,7 +124,7 @@ class RDFMTMgr(object):
         logger.info('*********** finished ***********')
         return rdf_molecules
 
-    def get_typed_concepts(self, endpoint: DataSource, types: list = None) -> List[dict]:
+    def get_typed_concepts(self, endpoint: DataSource) -> List[dict]:
         """Entrypoint for extracting RDF Molecule Templates from a datasource.
 
         The RDF Molecule Templates present in a datasource are extracted using this method.
@@ -141,9 +134,6 @@ class RDFMTMgr(object):
         ----------
         endpoint : DataSource
             The datasource from which the RDF Molecule Templates are to be extracted.
-        types : list, optional
-            A list containing the types that are present in the datasource. By default, this is
-            set to None which leads to the actual extraction of the metadata from the datasource.
 
         Returns
         -------
@@ -152,6 +142,7 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
+        types = endpoint.types_to_list()
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?label WHERE {\n' \
                     '  ?s a ?t .\n' \
@@ -407,7 +398,7 @@ class RDFMTMgr(object):
         res_list, _ = iterative_query(query, endpoint, limit=1000)
         return res_list
 
-    def get_mts_from_owl(self, endpoint: DataSource, graph: str, types: list = None) -> List[dict]:
+    def get_mts_from_owl(self, endpoint: DataSource, graph: str) -> List[dict]:
         """Extracts the RDF Molecule Templates of a datasource from the associated ontology.
 
         The RDF Molecule Templates of the datasource are extracted from the ontology.
@@ -416,9 +407,6 @@ class RDFMTMgr(object):
             The datasource from which the RDF Molecule Templates are to be extracted.
         graph : str
             The graph within the SPARQL endpoint that stores the ontology.
-        types : list, optional
-            A list containing the types that are present in the datasource. By default, this is
-            set to None which leads to the actual extraction of the metadata from the datasource.
 
         Returns
         -------
@@ -427,6 +415,7 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
+        types = endpoint.types_to_list()
         if types is None or len(types) == 0:
             query = 'SELECT DISTINCT ?t ?p ?range ?plabel ?tlabel WHERE { GRAPH <' + graph + '> {\n' \
                     '  ?p <' + RDFS + 'domain> ?t .\n' \
@@ -725,6 +714,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'organization> ?organization }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'homepage> ?homepage }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'params> ?params }\n' \
+                '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'types> ?types }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
@@ -741,7 +731,8 @@ class RDFMTMgr(object):
                 keywords=res['keywords'] if 'keywords' in res else '',
                 version=res['version'] if 'version' in res else '',
                 homepage=res['homepage'] if 'homepage' in res else '',
-                organization=res['organization'] if 'organization' in res else ''
+                organization=res['organization'] if 'organization' in res else '',
+                types=res['types'] if 'types' in res else ''
             )
         return None
 
@@ -1069,7 +1060,7 @@ class RDFMTMgr(object):
                 return res
         return []
 
-    def get_rdfmts_from_mapping(self, datasource: DataSource, types: list = None) -> List[dict]:
+    def get_rdfmts_from_mapping(self, datasource: DataSource) -> List[dict]:
         """Extracts the RDF Molecule Templates of a datasource from its mappings.
 
         If the RDF Mapping Language (RML) mappings used to create the datasource
@@ -1079,9 +1070,6 @@ class RDFMTMgr(object):
         ----------
         datasource : DataSource
             The datasource for which the RDF Molecule Templates should be extracted from the mappings.
-        types : list, optional
-            A list containing the types that are present in the datasource. By default, this is
-            set to None which leads to the actual extraction of the metadata from the mappings.
 
         Returns
         -------
@@ -1091,6 +1079,7 @@ class RDFMTMgr(object):
 
         """
         logger.info('----------------------' + datasource.url + '-------------------------------------')
+        types = datasource.types_to_list()
         if types is None:  # TODO: shortcut if types is set
             types = []
         mt_query = 'PREFIX rr: <http://www.w3.org/ns/r2rml#> ' \

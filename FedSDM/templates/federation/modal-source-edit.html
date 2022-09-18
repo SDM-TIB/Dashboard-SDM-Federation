@@ -19,8 +19,12 @@
             </select>
             <label for="edit_URL" class="required">URL</label>
             <input type="url" name="edit_URL" required id="edit_URL" placeholder="http://dbpedia.org/sparql" class="text ui-widget-content ui-corner-all">
+
             <label for="edit_params">Parameters (key-value):</label>
             <input type="text" name="edit_params" id="edit_params" placeholder="timeout:100000;Content-type:application/json" class="text ui-widget-content ui-corner-all">
+
+            <label for="edit_types">RDF classes to include (separated by semicolon):</label>
+            <input type="text" name="edit_types" id="edit_types" placeholder="leave empty to include all RDF classes" class="text ui-widget-content ui-corner-all">
 
             <label for="edit_keywords">Keywords:</label>
             <input type="text" name="edit_keywords" id="edit_keywords" placeholder="Enter keywords" class="text ui-widget-content ui-corner-all">
