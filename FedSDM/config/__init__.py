@@ -173,10 +173,3 @@ class ConfigSimpleStore(object):
             return self.metadata[molecule]
         rdfmt = self.mgr.get_rdfmt(molecule)
         return rdfmt
-
-    def load_rdfmt(self, rdfclass: str) -> dict:
-        # TODO: Check if this method is needed; it seems to be the same as findMolecule
-        if rdfclass in self.metadata:
-            return self.metadata[rdfclass]
-        rdfmt = self.mgr.get_rdfmt(rdfclass)
-        return rdfmt
