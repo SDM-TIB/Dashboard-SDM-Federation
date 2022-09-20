@@ -49,8 +49,6 @@ def query() -> str:
     if 'fed' in session:
         if session['fed'] not in [f['uri'] for f in g.federations]:
             del session['fed']
-    # if 'fed' in session:
-    #     print(session['fed'])
     return render_template('query/index.html', federations=g.federations)
 
 
