@@ -415,17 +415,18 @@ $(function() {
                     // headers: {Accept: 'text/csv'},//ask for csv. Simple, and uses less bandwidth
                     success: function(data) {
                         let row = data.result;
+                        let elemTimeTotal = $('#time_total');
                         // console.log('row', row);
                         if (row.length === 0 || row === 'EOF') {
                             // console.log('loop done');
                             resDrawn = false;
                             $('#btnVisualize').show();
                             drawResults();
-                            $('#time_total').html(' ' + data.time_total + ' sec');
+                            elemTimeTotal.html(' ' + data.time_total + ' sec');
                             response = false;
                             return
                         }
-                        $('#time_total').html(' ' + data.time_total + ' sec');
+                        elemTimeTotal.html(' ' + data.time_total + ' sec');
                         const rowml = [],
                             resmap = {};
                         for (let j = 0; j < vars.length; j++) {
