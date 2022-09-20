@@ -68,8 +68,8 @@ $(function() {
                             return true
                         }
                         resDrawn = false;
-                        $('#time_first').html(' ' + data.firstResult + ' sec');
-                        $('#time_total').html(' ' + data.execTime + ' sec');
+                        $('#time_first').html(' ' + data.time_first + ' sec');
+                        $('#time_total').html(' ' + data.time_total + ' sec');
 
                         query = encodeURIComponent(yasqe.getValue());
 
@@ -421,11 +421,11 @@ $(function() {
                             resDrawn = false;
                             $('#btnVisualize').show();
                             drawResults();
-                            $('#time_total').html(' ' + data.execTime + ' sec');
+                            $('#time_total').html(' ' + data.time_total + ' sec');
                             response = false;
                             return
                         }
-                        $('#time_total').html(' ' + data.execTime + ' sec');
+                        $('#time_total').html(' ' + data.time_total + ' sec');
                         const rowml = [],
                             resmap = {};
                         for (let j = 0; j < vars.length; j++) {

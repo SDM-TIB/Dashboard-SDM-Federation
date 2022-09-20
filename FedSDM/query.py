@@ -174,7 +174,7 @@ def get_next_result() -> Response:
         process = result_queues[session['hashquery']]['process']
     else:
         total = time() - start
-        return jsonify(execTime=total, firstResult=first, totalRows=1, result='EOF', error='Already finished')
+        return jsonify(time_total=total, time_first=first, total_rows=1, result='EOF', error='Already finished')
     try:
         r = output.get()
         total = time() - start
@@ -183,7 +183,7 @@ def get_next_result() -> Response:
             del result_queues[session['hashquery']]
             del session['hashquery']
 
-        return jsonify(vars=vars, result=r, execTime=total, firstResult=first, totalRows=1)
+        return jsonify(vars=vars, result=r, time_total=total, time_first=first, total_rows=1)
     except Exception as e:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -193,7 +193,7 @@ def get_next_result() -> Response:
         import pprint
         pprint.pprint(emsg)
         total = time() - start
-        return jsonify(execTime=total, firstResult=first, totalRows=1, result=[], error=str(emsg))
+        return jsonify(time_total=total, time_first=first, total_rows=1, result=[], error=str(emsg))
 
 
 @bp.route('/sparql', methods=['POST', 'GET'])
