@@ -476,7 +476,6 @@ $(function() {
 //                        }
                 });
                 req.done(function() {
-                    // console.log('Request successful!');
                     // This makes it able to send new request on the next interval
                     if (response === true && shouldstop === false) {
                         response = true;
