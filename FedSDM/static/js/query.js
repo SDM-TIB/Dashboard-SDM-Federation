@@ -642,7 +642,7 @@ $(function() {
         for (var k = 0; k < data.nodes.length; ++k) {
             var n = data.nodes[k],
                 i = index(n),
-                l = gm[i] || (gm[i] = gn[i]) || (gm[i]={datasource: i, size: 0, nodes: []});
+                l = gm[i] || (gm[i] = gn[i]) || (gm[i] = {datasource: i, size: 0, nodes: []});
 
             if (expand[i]) {
                 // the node should be directly visible
