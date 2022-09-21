@@ -416,9 +416,7 @@ $(function() {
                     success: function(data) {
                         let row = data.result;
                         let elemTimeTotal = $('#time_total');
-                        // console.log('row', row);
                         if (row.length === 0 || row === 'EOF') {
-                            // console.log('loop done');
                             resDrawn = false;
                             $('#btnVisualize').show();
                             drawResults();
@@ -462,7 +460,6 @@ $(function() {
                                 if (lt_idx > 0) {
                                     val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
                                 }
-                                // console.log('data', d, val);
                                 select.append('<option value=' + val + '>' + val + '</option>')
                             });
                         });
@@ -487,7 +484,6 @@ $(function() {
                 });
             }
         }
-        // setTimeout(,1000);
     }
     let shouldStop = false;
     $('#btnStop').on('click', function() {
