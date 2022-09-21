@@ -1055,13 +1055,13 @@ $(function() {
         }
 
         function isConnected(a, b) {
-            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index == b.index;
+            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index;
         }
 
         function hasConnections(a) {
             for (var property in linkedByIndex) {
                 s = property.split(',');
-                if ((s[0] == a.index || s[1] == a.index) && linkedByIndex[property])
+                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property])
                     return true;
             }
             return false;
@@ -1116,10 +1116,10 @@ $(function() {
         }
 
         function keydown() {
-            if (d3.event.keyCode == 32) {
+            if (d3.event.keyCode === 32) {
                 force.stop();
             }
-            else if (d3.event.keyCode>=48 && d3.event.keyCode<=90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
+            else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
                 switch (String.fromCharCode(d3.event.keyCode)) {
                     case 'C': keyc = !keyc; break;
                     case 'S': keys = !keys; break;
@@ -1186,7 +1186,7 @@ $(function() {
                 });
 
                 link.style('opacity', function(o) {
-                    return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
+                    return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans;
                 });
             }
         }
@@ -1206,7 +1206,7 @@ $(function() {
                     return isConnected(d, o) ? 'bold' : 'normal';
                 });
                 link.style('stroke', function(o) {
-                    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
+                    return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
                 });
             }
         }
