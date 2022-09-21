@@ -556,16 +556,16 @@ $(function() {
         returnObj.async = true;
         returnObj.autoShow = true;
         returnObj.get = function(token, callback) {
-            var filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
-                ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
-                ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
-                ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
-                ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
-                ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
-                ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
-                ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && '+
-                ' !regex(str(?type), "nodeID://", "i") ) '
-            var sparqlQuery = 'SELECT DISTINCT ?type WHERE{ ?s a ?type. ' + filters + ' } LIMIT 1000';
+            const filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
+                  ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
+                  ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
+                  ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
+                  ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
+                  ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
+                  ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
+                  ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && '+
+                  ' !regex(str(?type), "nodeID://", "i") ) '
+            const sparqlQuery = 'SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000';
             $.ajax({
                 data: {query: sparqlQuery},
                 url: YASQE.defaults.sparql.endpoint,
