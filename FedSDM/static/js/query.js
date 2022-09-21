@@ -408,7 +408,7 @@ $(function() {
             // This makes it unable to send a new request
             // unless you get response from last request
             response = false;
-            if (shouldstop === false) {
+            if (shouldStop === false) {
                 let req = $.ajax({
                     type: 'GET',
                     url: '/query/nextresult',
@@ -477,11 +477,11 @@ $(function() {
                 });
                 req.done(function() {
                     // This makes it able to send new request on the next interval
-                    if (response === true && shouldstop === false) {
+                    if (response === true && shouldStop === false) {
                         response = true;
                         show_incremental(vars)
                     } else {
-                        shouldstop = false;
+                        shouldStop = false;
                         $('#btnStop').prop('disabled', true);
                     }
                 });
@@ -489,11 +489,11 @@ $(function() {
         }
         // setTimeout(,1000);
     }
-    let shouldstop = false;
+    let shouldStop = false;
     $('#btnStop').on('click', function() {
         console.log('stop pressed');
         response = false;
-        shouldstop = true;
+        shouldStop = true;
     });
 
     /**
