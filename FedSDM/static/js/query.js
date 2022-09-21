@@ -427,24 +427,24 @@ $(function() {
                             return
                         }
                         elemTimeTotal.html(' ' + data.time_total + ' sec');
-                        const rowml = [],
-                            resmap = {};
+                        const row_ml = [],
+                              resultMap = {};
                         for (let j = 0; j < vars.length; j++) {
                             let val = row[vars[j]];
                             if (val.indexOf('^^<') !== -1) {
                                 val = val.substring(0, val.indexOf('^^'));
                             }
                             if ('http' === val.substring(0, 4)) {
-                                // rowml.push('<a href="' + val + '"> &lt;' + val + '&gt;</a>');  TODO: check if this should be added again
-                                rowml.push(val);
+                                // row_ml.push('<a href="' + val + '"> &lt;' + val + '&gt;</a>');  TODO: check if this should be added again
+                                row_ml.push(val);
                             } else {
-                                rowml.push(val);
+                                row_ml.push(val);
                             }
-                            resmap[vars[j]] = val;
+                            resultMap[vars[j]] = val;
                         }
 
-                        table.row.add(rowml).draw(false);
-                        append_nodes_edges(resmap, queryTriples);
+                        table.row.add(row_ml).draw(false);
+                        append_nodes_edges(resultMap, queryTriples);
 
                         table.columns().every(function() {
                             const column = this;
