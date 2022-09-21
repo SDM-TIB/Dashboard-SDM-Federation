@@ -769,8 +769,7 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    var default_node_color = '#ccc';
-    //var default_node_color = 'rgb(3,190,100)';
+    var default_node_color = '#ccc';  // 'rgb(3,190,100)'
     var default_link_color = '#888';
     var nominal_base_node_size = 8;
     var nominal_text_size = 10;
@@ -788,17 +787,14 @@ $(function() {
     var gtable = null;
     var force = null;
     var linkdistance = 150;
-    //var charge = -400;
     var nfit = 0;
     var ncharge = -600;
     var ngravity = 0;
     var sourcescard = 0;
     var sources = null;
     var sourcemt = null;
-    //list of subjects and objects for the DAG
-    var sourcenodes = [];
-    //connection link between subject and object ->predicates
-    var sourcelinks = [];
+    var sourcenodes = [];  // list of subjects and objects for the DAG
+    var sourcelinks = [];  // connection link between subject and object -> predicates
     var sourceids = {}, sourcesnames = {};
 
     var link, circle, text;
@@ -847,7 +843,6 @@ $(function() {
             linkedByIndex[d.source + ',' + d.target] = true;
         });
 
-        //var ctx = svg.getContext('2d');
         var fit = Math.sqrt(nodes.length / (width * height));
         var charge = (-1 / fit);
         var gravity = (8 * fit);
