@@ -1165,7 +1165,7 @@ $(function() {
             if (focus_node === null)
             {
                 svg.style('cursor', 'move');
-                if (highlight_color != 'white') {
+                if (highlight_color !== 'white') {
                     circle.style(towhite, 'white');
                     text.style('font-weight', 'normal');
                     link.style('stroke', function(o) {
@@ -1198,7 +1198,7 @@ $(function() {
             highlight_node = d;
             // added this to make highlight color same as the color of the node
             highlight_color = color(d.datasource);
-            if (highlight_color != 'white') {
+            if (highlight_color !== 'white') {
                 circle.style(towhite, function(o) {
                     return isConnected(d, o) ? highlight_color : 'white';
                 });
