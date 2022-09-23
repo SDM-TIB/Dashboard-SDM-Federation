@@ -6,6 +6,9 @@
 # FedSDM: Semantic Data Manager for Federations of RDF Datasets
 
 FedSDM is a semantic data manager for federations of RDF datasets.
+It offers features to manage federations, like adding, editing, and removing datasets.
+Statistics and plots about the federations, datasets, and metadata are also provided.
+Additionally, FedSDM provides the functionality of executing SPARQL queries over a federation. 
 FedSDM uses [DeTrusty](https://github.com/SDM-TIB/DeTrusty) as its federated query engine.
 
 ## Running the Example
