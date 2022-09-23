@@ -971,14 +971,14 @@ $(function() {
         });
 
         zoom.on('zoom', function() {
-            var stroke = nominal_stroke;
+            let stroke = nominal_stroke;
             if (nominal_stroke * zoom.scale() > max_stroke)
                 stroke = max_stroke / zoom.scale();
 
             link.style('stroke-width', stroke);
             circle.style('stroke-width',stroke);
 
-            var base_radius = nominal_base_node_size;
+            let base_radius = nominal_base_node_size;
             if (nominal_base_node_size * zoom.scale() > max_base_node_size)
                 base_radius = max_base_node_size / zoom.scale();
             circle.attr('d', d3.svg.symbol()
@@ -994,7 +994,7 @@ $(function() {
                 }); //size(d.weight)
 
             text.style('font-size', function(d) {
-                var text_size = nominal_text_size;
+                let text_size = nominal_text_size;
                 if (d.size) {
                     text_size = 16;
                 }
@@ -1011,15 +1011,15 @@ $(function() {
         resize();
         //window.focus();
         d3.select(window).on('resize', resize).on('keydown', keydown);
-        var centroids = {};
-        for (var i = 0; i < max_score; i += 3) {
+        const centroids = {};
+        for (let i = 0; i < max_score; i += 3) {
             centroids[i] = {x: 200 * (i/3 +1), y:200}
             centroids[i+1] = {x: 200 * (i/3+1), y:400}
             centroids[i+2] = {x: 200 * (i/3 +1), y:600}
         }
 
         force.on('tick', function(e) {
-            var k = .1 * e.alpha;
+            const k = .1 * e.alpha;
             // updateGroups();
 
             // Push nodes toward their designated focus.
@@ -1050,7 +1050,7 @@ $(function() {
 
         });
         function printn(alpha) {
-            var quadtree = d3.geom.quadtree(nodes);
+            const quadtree = d3.geom.quadtree(nodes);
             return function(d) { };
         }
 
@@ -1059,7 +1059,7 @@ $(function() {
         }
 
         function hasConnections(a) {
-            for (var property in linkedByIndex) {
+            for (const property in linkedByIndex) {
                 s = property.split(',');
                 if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property])
                     return true;
@@ -1108,7 +1108,7 @@ $(function() {
         }
 
         function resize() {
-            var width = $('#' + canv).width(), height = 980;
+            const width = $('#' + canv).width(), height = 980;
             svg.attr('width', width).attr('height', height);
             force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
             w = width;
