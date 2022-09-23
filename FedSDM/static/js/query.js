@@ -678,7 +678,7 @@ $(function() {
             var e = data.links[k],
                 u = index(e.source),
                 v = index(e.target);
-            if (u != v) {
+            if (u !== v) {
                 gm[u].link_count++;
                 gm[v].link_count++;
             }
@@ -721,7 +721,6 @@ $(function() {
         .interpolate('cardinal-closed')
         .tension(.85);
     function drawCluster(d) {
-        // console.log('drawcluster', d)
         return curve(d.path); // 0.8
     }
     width = $('#graph').width();
@@ -785,7 +784,6 @@ $(function() {
     var stats = null;
     var galoaded = 0;
     var gtable = null;
-    var force = null;
     var linkdistance = 150;
     var nfit = 0;
     var ncharge = -600;
@@ -816,7 +814,6 @@ $(function() {
             $('#graph').show();
             canv = 'graph'
         }
-        var chartLayer = svg.append('g').classed('chartLayer', true);
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
         var g = svg.append('g');
 
@@ -837,40 +834,35 @@ $(function() {
         }
 
         svg.style('cursor', 'move');
-        // d3.json('graph.json', function(error, graph) {
         var linkedByIndex = {};
         links.forEach(function(d) {
             linkedByIndex[d.source + ',' + d.target] = true;
         });
 
         var fit = Math.sqrt(nodes.length / (width * height));
-        var charge = (-1 / fit);
-        var gravity = (8 * fit);
-        ngravity = gravity;
-        ncharge = charge;
+        ngravity = (8 * fit);
+        ncharge = (-1 / fit);
         if (force) force.stop()
-        //data = {nodes:nodes, links:links}
         net = network(data, net, getGroup, expand);
-        //console.log(net, expand)
         force = d3.layout.force()
             .nodes(net.nodes)
             .links(net.links)
             .linkDistance(function(l, i) {
                 var n1 = l.source, n2 = l.target;
                 return divcanv?250:200 +
-                    Math.min(20 * Math.min((n1.size || (n1.datasource != n2.datasource ? n1.group_data.size : 0)),
-                        (n2.size || (n1.datasource != n2.datasource ? n2.group_data.size : 0))),
+                    Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
+                        (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
                         -30 +
-                        30 * Math.min((n1.link_count || (n1.datasource != n2.datasource ? n1.group_data.link_count : 0)),
-                            (n2.link_count || (n1.datasource != n2.datasource ? n2.group_data.link_count : 0))),
+                        30 * Math.min((n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)),
+                            (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
                         300);
             })
             .linkStrength(function(l, i) { return  2; })
-            .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue&orange, ...
+            .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue & orange), ...
             .charge(-600)    // ... charge is important to turn single-linked groups to the outside
             .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
             .size([width, height])
-            .start(); //.chargeDistance(1000) .linkDistance(300)
+            .start();
 
         link = g.selectAll('.link').data(net.links, linkid);
         link.exit().remove();
@@ -885,27 +877,16 @@ $(function() {
                 return color(d.datasource);
             });
 
-        var dr = 3;
         node = g.selectAll('.node').data(net.nodes, nodeid);
         node.exit().remove();
         node.enter().append('g')
             .attr('class', function(d) { return 'node' + (d.size ? '' : ' leaf'); })
-            //.attr('r', function(d) {console.log(d.size, dr); return d.size ? d.size + dr : 3; })
             .attr('cx', function(d) { return d.x; })
             .attr('cy', function(d) { return d.y; })
             .on('dblclick', function(d) {
-                //console.log(d, expand[d.datasource])
                 expand[d.datasource] = !expand[d.datasource];
                 drawRDFMTS(nodes, links, divcanv);
             })
-            //            .on('dblclick.zoom', function(d) {
-            //                d3.event.stopPropagation();
-            //                var dcx = ($('#graph').width()/2-d.x*zoom.scale());
-            //                var dcy = (980/2-d.y*zoom.scale());
-            //                zoom.translate([dcx,dcy]);
-            //                 g.attr('transform', 'translate(' + dcx + ',' + dcy + ')scale(' + zoom.scale() + ')');
-            //
-            //           })
             .on('mouseover', function(d) { set_highlight(d); })
             .on('mousedown', function(d) {
                 d3.event.stopPropagation();
@@ -922,8 +903,7 @@ $(function() {
         var circle = node.append('path')
             .attr('d', d3.svg.symbol()
                 .size(function(d) {
-                    var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)||nominal_base_node_size,2):Math.PI*Math.pow(size(25)||nominal_base_node_size,2);
-                    return v;}) //size(d.weight)
+                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2);}) //size(d.weight)
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(tocolor, function(d) {
@@ -937,11 +917,11 @@ $(function() {
             .style('stroke-width', nominal_stroke)
             .style(towhite, 'white');
 
-        var text = g.selectAll('.text')
-            .data(net.nodes)
-            .enter().append('text')
-            .attr('dy', '.35em')
-            .style('font-size', function(d){ return d.size ? 16 + 'px' : nominal_text_size + 'px' })
+        const text = g.selectAll('.text')
+              .data(net.nodes)
+              .enter().append('text')
+              .attr('dy', '.35em')
+              .style('font-size', function(d){ return d.size ? 16 + 'px' : nominal_text_size + 'px' })
 
         if (text_center) {
             text.text(function (d) {
@@ -953,7 +933,7 @@ $(function() {
             })
                 .style('text-anchor', 'middle');
         } else {
-            text.attr('dx', function (d) { return (size(65) - size(30) || nominal_base_node_size); })  // size(d.weight)
+            text.attr('dx', function (d) { return (size(65) - size(30) || nominal_base_node_size); })
                 .text(function (d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
         }
 
@@ -983,15 +963,13 @@ $(function() {
                 base_radius = max_base_node_size / zoom.scale();
             circle.attr('d', d3.svg.symbol()
                 .size(function(d) {
-                    var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
-                    return v;}) //size(d.weight)
+                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius, 2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius, 2);}) //size(d.weight)
                 .type(function(d) { return d.size ? 'circle' : d.type; })
             );
-            //circle.attr('r', function(d) { return (size(d.size) * base_radius / nominal_base_node_size || base_radius); })
             if (!text_center)
                 text.attr('dx', function(d) {
                     return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
-                }); //size(d.weight)
+                });
 
             text.style('font-size', function(d) {
                 let text_size = nominal_text_size;
