@@ -467,7 +467,8 @@ class DataSource(object):
 
         """
         data = ['<' + self.rid + '> a <' + MT_ONTO + 'DataSource> ',
-                '<' + self.rid + '> <' + MT_ONTO + 'dataSourceType> <' + MT_RESOURCE + 'DatasourceType/' + str(self.ds_type.value) + '> ',
+                '<' + self.rid + '> <' + MT_ONTO + 'dataSourceType> <' + MT_RESOURCE
+                    + 'DatasourceType/' + str(self.ds_type.value) + '> ',
                 '<' + self.rid + '> <' + MT_ONTO + 'url> "' + urlparse.quote(self.url, safe='/:') + '" ']
         if self.name is not None and self.name != '':
             self.name = self.name.replace('"', "'").replace('\n', ' ')
@@ -483,7 +484,8 @@ class DataSource(object):
         if self.params is not None and len(self.params) > 0:
             data.append('<' + self.rid + '> <' + MT_ONTO + 'params> "' + str(self.params) + '"')
         if self.desc is not None and self.desc != '':
-            data.append('<' + self.rid + '> <' + MT_ONTO + 'desc> "' + self.desc.replace('"', "'").replace('`', "'") + '"')
+            self.desc = self.desc.replace('"', "'").replace('`', "'")
+            data.append('<' + self.rid + '> <' + MT_ONTO + 'desc> "' + self.desc + '"')
         if self.types is not None and self.types != '':
             data.append('<' + self.rid + '> <' + MT_ONTO + 'types> "' + self.types + '"')
         if self.triples != '' and int(self.triples) >= 0:
