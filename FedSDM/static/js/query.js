@@ -73,14 +73,12 @@ $(function() {
 
                         query = encodeURIComponent(yasqe.getValue());
 
-                        let results = data.result,
-                            vars = []
+                        const results = data.result,
+                              vars = data.vars;
                         if (results.length > 0) {
                             $('#result_status').hide();
                             $('#result_info').show();
                             $('#result_row').show();
-
-                            vars = data.vars;
 
                             let tableHeader = '<thead><tr>',
                                 tableFooter = '<tfoot><tr>';
