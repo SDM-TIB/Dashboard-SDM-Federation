@@ -63,7 +63,7 @@ $(function() {
                         if ('error' in data) {
                             $('#result_row').show();
                             $('#result_info').show();
-                            $('#result_status').html('Error:' + data.error)
+                            $('#result_status').html('Error: ' + data.error)
                                 .show();
                             return true
                         }
