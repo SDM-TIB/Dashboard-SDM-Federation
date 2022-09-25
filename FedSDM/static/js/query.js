@@ -285,9 +285,7 @@ $(function() {
 
     function addFeedback(close) {
         allFeedbackFields.removeClass('ui-state-error');
-        let valid_pred = checkSelection(feedbackPredicates, 'column');
-        let valid_desc = checkLength(feedbackDesc, 'description', 2, 500);
-        const valid = valid_desc && valid_pred;
+        const valid = checkSelection(feedbackPredicates, 'column') && checkLength(feedbackDesc, 'description', 2, 500);
         console.log({'desc': feedbackDesc.val(), 'pred': feedbackPredicates.val(), 'query': yasqe.getValue(), 'row': selectedRowData, 'columns': queryVars});
 
         if (valid) {
