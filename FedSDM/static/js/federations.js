@@ -597,10 +597,7 @@ $(function() {
                         federation = prefix + name.replaceAll(' ', '-');
                         federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
                         showFederations(federation);
-                        let aTab = '#manage';
-                        if (aTab) {
-                            $('#maincontent a[href="' + aTab + '"]').tab('show');
-                        }
+                        $('#maincontent a[href="#manage"]').tab('show');
                     } else {
                         close = false;
                         $('#errorMsg').html('Error while creating the new federation! Please enter a valid name (var name).')
