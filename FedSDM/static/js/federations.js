@@ -457,9 +457,7 @@ $(function() {
     function addDataSource(close) {
         resetTips();
         allFields.removeClass('ui-state-error');
-        const validName = checkLength(name, 'name', 2, 169);
-        const validURL = checkLength(URL, 'URL', 6, 100);
-        const valid = validName && validURL;
+        const valid = checkLength(name, 'name', 2, 169) && checkLength(URL, 'URL', 6, 100);
         //valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, 'Data source should consist of a-z, 0-9, underscores, spaces and must begin with a letter.' );
         //valid = valid && checkRegexp( URL, emailRegex, 'eg. ui@jquery.com' );
         if (valid) {
@@ -524,9 +522,7 @@ $(function() {
         resetTips();
         allFieldsEdit.removeClass('ui-state-error');
         let eid = selectedSource[0][0];
-        const validName = checkLength(edit_name, 'name', 2, 169);
-        const validURL = checkLength(edit_URL, 'URL', 6, 100);
-        const valid = validName && validURL;
+        const valid = checkLength(edit_name, 'name', 2, 169) && checkLength(edit_URL, 'URL', 6, 100);
         if (valid) {
             table.row('.selected').remove().draw(false);
             table.row.add([eid, edit_name.val(), edit_URL.val(), edit_ds_type.val(), edit_keywords.val(), edit_homepage.val(), edit_organization.val(), edit_desc.val(), edit_version.val(), edit_params.val(),]).draw(false);
