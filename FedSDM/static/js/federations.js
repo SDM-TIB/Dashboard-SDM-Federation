@@ -575,10 +575,10 @@ $(function() {
     // that the user can create another federation without reopening the dialog.
     function createNewFederation(close) {
         resetTips();
-        let name = fedName.val();
-        let desc = fedDesc.val();
+        const name = fedName.val(),
+              desc = fedDesc.val(),
+              valid = checkLength(fedName, 'name', 2, 169);
         console.log(name + ' ' + desc);
-        const valid = checkLength(fedName, 'name', 2, 169);
         if (valid) {
             $.ajax({
                 type: 'POST',
