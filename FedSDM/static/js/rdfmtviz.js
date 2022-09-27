@@ -125,7 +125,7 @@ $(function() {
         $('#list_of_rdfmts').hide();
         mt_details.hide();
         $('#backToTable').show();
-        var url = encodeURIComponent(selectedRow[0][2]);
+        const url = encodeURIComponent(selectedRow[0][2]);
         $.ajax({
             type: 'GET',
             headers: {
@@ -141,17 +141,17 @@ $(function() {
                 mnodes = data.nodes;
                 mlinks = data.links;
                 msourcescard = sources.length;
-                for (var i = 0; i < sources.length; i++) {
-                    var v = sources[i].id;
-                    var name  = sources[i].name;
+                for (let i = 0; i < sources.length; i++) {
+                    const v = sources[i].id,
+                          name  = sources[i].name;
                     sourceids[name] = v;
                     sourcesnames[v] = name;
                 }
-                for (var i = 0; i < mlinks.length; ++i) {
+                for (let i = 0; i < mlinks.length; ++i) {
                     o = mlinks[i];
                     o.source = mnodes[o.source];
                     o.target = mnodes[o.target];
-                    if (o.source.datasource == o.target.datasource) {
+                    if (o.source.datasource === o.target.datasource) {
                         if (o.source.datasource in msourcelinks) {
                             msourcelinks[o.source.datasource].push(o);
                         } else {
@@ -181,7 +181,6 @@ $(function() {
                 $("#mt_viz").show();
 
                 draw_details();
-                // drawRDFMTS(nodes, links);
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
