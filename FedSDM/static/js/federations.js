@@ -306,7 +306,7 @@ $(function() {
             crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) {
-                    alert('Recreating RDF-MTs for '+ selectedSource[0][0] + ' is underway ...');
+                    alert('Recreating RDF-MTs for ' + selectedSource[0][0] + ' is underway...');
                 } else {
                     alert('Cannot start the process. Please check if there are data sources in this federation.');
                 }
@@ -331,7 +331,7 @@ $(function() {
             crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) {
-                    alert('Finding links in progress ...');
+                    alert('Finding links in progress...');
                 } else {
                     alert('Cannot start the process. Please check if there are data sources in this federation.');
                 }
@@ -355,7 +355,7 @@ $(function() {
             crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) {
-                    alert('Finding links in progress ...');
+                    alert('Finding links in progress...');
                 } else {
                     alert('Cannot start the process. Please check if there are data sources in this federation.');
                 }
@@ -600,7 +600,7 @@ $(function() {
                         $('#maincontent a[href="#manage"]').tab('show');
                     } else {
                         close = false;
-                        $('#errorMsg').html('Error while creating the new federation! Please enter a valid name (var name).')
+                        $('#errorMsg').html('Error while creating the new federation! Please enter a valid name!')
                     }
                 },
                 error: function(jqXHR, textStatus) {
