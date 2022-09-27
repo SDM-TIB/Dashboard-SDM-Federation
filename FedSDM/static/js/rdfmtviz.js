@@ -126,7 +126,6 @@ $(function() {
         mt_details.hide();
         $('#backToTable').show();
         var url = encodeURIComponent(selectedRow[0][2]);
-        console.log('url:', url);
         $.ajax({
             type: 'GET',
             headers: {
@@ -136,8 +135,8 @@ $(function() {
             dataType: 'json',
             crossDomain: true,
             success: function(data) {
-                console.log(url)
-                console.log('detail returned:', data);
+                console.log('url: ' + url)
+                console.log('detail returned: ' + data);
                 sources = data.sources;
                 mnodes = data.nodes;
                 mlinks = data.links;
@@ -235,7 +234,7 @@ $(function() {
             let statstable = stats;
             stats.on('select', function(e, dt, type, indexes) {
                 selectedRow = statstable.rows(indexes).data().toArray();
-                console.log('selected row:', selectedRow)
+                console.log('selected row: ' + selectedRow)
                 $('#edit_mt').prop('disabled', false);
                 $('#remove_mt').prop('disabled', false);
                 mt_details.prop('disabled', false);
@@ -249,7 +248,7 @@ $(function() {
                 selectedRow = null;
             });
         } else {
-            console.log('redrawing table ...');
+            console.log('redrawing table...');
             stats.clear().draw();
             stats.ajax.url('/rdfmts/api/rdfmtstats?graph=' + fed).load();
         }
@@ -276,7 +275,7 @@ $(function() {
             max_score = sourcescard;
             var legend= '';
             var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
-            console.log('number of sources:', sources.length);
+            console.log('number of sources: ' + sources.length);
             for (var i = 0; i < sources.length; i++) {
                 var v = sources[i].id;
                 var name  = sources[i].name;
@@ -325,7 +324,7 @@ $(function() {
                     } else if (viztype === 'cgraph') {
                         drawSingleSourceRDFMTS(sourcemt, 'circular');
                     } else if (viztype === 'donut') {
-                        console.log(source, mtcards);
+                        console.log(source + ': ' + mtcards);
                         drawDonut(source);
                     }
                     get_rdfmts_graph_analys(federation, $(this).text());
@@ -565,17 +564,17 @@ $(function() {
         }
     });
     $('#graphVizForce').on('click', function() {
-        console.log('visible tab for datasource selection:' + tabVisible, sourcemt);
+        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'force');
         viztype = 'fgraph';
     });
     $('#graphVizCircular').on('click', function() {
-        console.log('visible tab for datasource selection:' + tabVisible, sourcemt);
+        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourcemt);
         drawSingleSourceRDFMTS(sourcemt, 'circular');
         viztype = 'cgraph';
     });
     $('#donutViz').on('click', function() {
-        console.log(source, mtcards);
+        console.log(source + ': ' + mtcards);
         drawDonut(source);
         viztype = 'donut';
     });
@@ -741,7 +740,7 @@ $(function() {
         .interpolate('cardinal-closed')
         .tension(.85);
     function drawCluster(d) {
-        console.log('drawcluster', d)
+        console.log('drawcluster: ' + d)
         return curve(d.path); // 0.8
     }
     width = graph_container.width();
@@ -749,7 +748,7 @@ $(function() {
     var canv = 'graph';
 
     function drawRDFMTS(nodes, links, divcanv) {
-        console.log('nodes', nodes, 'links', links);
+        console.log('nodes: ' + nodes + '\nlinks:' + links);
         var svg;
         if (divcanv == null) {
             graph_container.empty();
@@ -762,7 +761,7 @@ $(function() {
             svg = d3.select('#mtviz').append('svg');
             width = mt_viz.width();
             height = 980;
-            console.log('showing ...')
+            console.log('showing...')
             mt_viz.show();
             canv = 'mtviz'
         }
@@ -851,7 +850,7 @@ $(function() {
             .attr('cx', function(d) { return d.x; })
             .attr('cy', function(d) { return d.y; })
             .on('dblclick', function(d) {
-                console.log(d.datasource, expand[d.datasource])
+                console.log(d.datasource + ': ' + expand[d.datasource])
                 expand[d.datasource] = !expand[d.datasource];
                 drawRDFMTS(nodes, links, divcanv);
             })
