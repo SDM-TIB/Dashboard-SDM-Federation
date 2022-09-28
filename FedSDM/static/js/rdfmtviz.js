@@ -263,21 +263,19 @@ $(function() {
         $('#gaFedName').html(fed);
         $('#vizFedName').html(fed);
 
-        var j = 0;
         //list of subjects and objects for the DAG
-
         $.getJSON('/rdfmts/api/rdfmts?graph=' + fed, function(data) {
             sources = data.sources;
             nodes = data.nodes;
             links = data.links;
             sourcescard = sources.length;
             max_score = sourcescard;
-            var legend= '';
-            var datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
+            let legend = '',
+                datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources: ' + sources.length);
-            for (var i = 0; i < sources.length; i++) {
-                var v = sources[i].id;
-                var name  = sources[i].name;
+            for (let i = 0; i < sources.length; i++) {
+                const v = sources[i].id,
+                      name  = sources[i].name;
                 sourceids[name] = v;
                 sourcesnames[v] = name;
                 datasources += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
@@ -331,7 +329,7 @@ $(function() {
             });
 
             sourcelinks = [];
-            for (var i = 0; i < links.length; ++i) {
+            for (let i = 0; i < links.length; ++i) {
                 o = links[i];
 
                 o.source = nodes[o.source];
@@ -339,7 +337,7 @@ $(function() {
                 if (o.source == null || o.target == null){
                     console.log(o)
                 }
-                if (o.source.datasource == o.target.datasource) {
+                if (o.source.datasource === o.target.datasource) {
                     if (o.source.datasource in sourcelinks) {
                         sourcelinks[o.source.datasource].push(o);
                     } else {
