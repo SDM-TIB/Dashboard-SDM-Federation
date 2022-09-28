@@ -491,25 +491,25 @@ $(function() {
         donutLegend.appendChild(ul);
     }
 
-    function drawDonut(sourcemt) {
+    function drawDonut(source_mt) {
         donut_charts.forEach(value => value.destroy());
         graph_container.empty();
         graph_legend.hide();
         if (source !== 'All') {
             for (let i = 0; i < jsdata.data.length; i++) {
-                for (let j in mtcards[sourcemt]) {
-                    if (mtcards[sourcemt][j].label.includes(jsdata.data[i][1]))
-                        mtcards[sourcemt][j].value = jsdata.data[i][3];
+                for (let j in mtcards[source_mt]) {
+                    if (mtcards[source_mt][j].label.includes(jsdata.data[i][1]))
+                        mtcards[source_mt][j].value = jsdata.data[i][3];
                 }
             }
-            mtcards[sourcemt].sort(function(a, b) {
+            mtcards[source_mt].sort(function(a, b) {
                 return b.value - a.value;
             });
 
             let labels_ = [], data_ = []
-            for (let i = 0; i < mtcards[sourcemt].length; i++) {
-                labels_.push(mtcards[sourcemt][i]['label']);
-                data_.push(mtcards[sourcemt][i]['value']);
+            for (let i = 0; i < mtcards[source_mt].length; i++) {
+                labels_.push(mtcards[source_mt][i]['label']);
+                data_.push(mtcards[source_mt][i]['value']);
             }
 
             const title = sourcesnames[source];
@@ -532,8 +532,8 @@ $(function() {
                     data_.push(val[i]['value']);
                 }
 
-                const dsname = sourcesnames[key] ? sourcesnames[key] : federation;
-                createDonut(dsname, labels_, data_);
+                const ds_name = sourcesnames[key] ? sourcesnames[key] : federation;
+                createDonut(ds_name, labels_, data_);
             });
         }
     }
