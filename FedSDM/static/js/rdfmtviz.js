@@ -552,11 +552,9 @@ $(function() {
     $('#reset_force').on('click', function() {
         if (force) {
             linkdistance = 150
-            var fit = Math.sqrt(anodes.length / (width * height));
-            var charge = (-1 / fit);
-            var gravity = (8 * fit);
-            ngravity = gravity;
-            ncharge = charge;
+            const fit = Math.sqrt(anodes.length / (width * height));
+            ncharge = (-1 / fit);
+            ngravity = (8 * fit);
             force.linkDistance(linkdistance).gravity(0.05).start()
         }
     });
