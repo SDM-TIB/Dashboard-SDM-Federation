@@ -592,10 +592,10 @@ $(function() {
             }
             vized = 1;
         } else {
-            var snodes = sourcenodes[source];
+            const snodes = sourcenodes[source];
             console.log('number of nodes:' + snodes.length);
-            //connection link between subject and object ->predicates
-            var slinks = sourcelinks[source];
+            //connection link between subject and object -> predicates
+            let slinks = sourcelinks[source];
             if (!slinks) {
                 slinks=[]
             }
@@ -616,11 +616,13 @@ $(function() {
     }
 
     function linkid(l) {
-        var u = nodeid(l.source),
-            v = nodeid(l.target);
+        const u = nodeid(l.source),
+              v = nodeid(l.target);
         return u < v ? u + '|' + v : v + '|' + u;
     }
+
     function getGroup(n) { return n.datasource; }
+
     var off = 15,    // cluster hull offset
         expand = {}, // expanded clusters
         net, force, hullg, hull, linkg, nodeg;
