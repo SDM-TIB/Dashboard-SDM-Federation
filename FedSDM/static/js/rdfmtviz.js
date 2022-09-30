@@ -759,11 +759,9 @@ $(function() {
             linkedByIndex[d.source + ',' + d.target] = true;
         });
 
-        var fit = Math.sqrt(nodes.length / (width * height));
-        var charge = (-1 / fit);
-        var gravity = (8 * fit);
-        ngravity = gravity;
-        ncharge = charge;
+        const fit = Math.sqrt(nodes.length / (width * height));
+        ngravity = (8 * fit);
+        ncharge = (-1 / fit);
         if (force) force.stop()
         net = network(data, net, getGroup, expand);
         console.log('network:', net, expand)
