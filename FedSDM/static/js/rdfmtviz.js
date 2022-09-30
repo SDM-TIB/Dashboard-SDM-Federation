@@ -754,7 +754,7 @@ $(function() {
         }
 
         svg.style('cursor','move');
-        var linkedByIndex = {};
+        let linkedByIndex = {};
         links.forEach(function(d) {
             linkedByIndex[d.source + ',' + d.target] = true;
         });
@@ -771,11 +771,11 @@ $(function() {
             .linkDistance(function(l, i) {
                 var n1 = l.source, n2 = l.target;
                 return divcanv?250:200 +
-                    Math.min(20 * Math.min((n1.size || (n1.datasource != n2.datasource ? n1.group_data.size : 0)),
-                        (n2.size || (n1.datasource != n2.datasource ? n2.group_data.size : 0))),
+                    Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
+                        (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
                         -30 +
-                        30 * Math.min((n1.link_count || (n1.datasource != n2.datasource ? n1.group_data.link_count : 0)),
-                            (n2.link_count || (n1.datasource != n2.datasource ? n2.group_data.link_count : 0))),
+                        30 * Math.min((n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)),
+                            (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
                         300);
             })
             .linkStrength(function(l, i) {
@@ -1056,7 +1056,7 @@ $(function() {
             highlight_node = null;
             if (focus_node == null) {
                 svg.style('cursor', 'move');
-                if (highlight_color != 'white') {
+                if (highlight_color !== 'white') {
                     circle.style(towhite, 'white');
                     text.style('font-weight', 'normal');
                     link.style('stroke', function(o) {
