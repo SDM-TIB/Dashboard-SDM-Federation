@@ -95,7 +95,6 @@ $(function() {
     var gtable = null;
     var force = null;
     var linkdistance = 150;
-    //var charge = -400;
     var nfit = 0;
     var ncharge = -600;
     var ngravity = 0;
@@ -344,33 +343,6 @@ $(function() {
                         sourcelinks[o.source.datasource] = [o];
                     }
                 }
-//                else{
-//                    // add outgoing links
-//                    if (o.source.datasource in sourcelinks)
-//                        sourcelinks[o.source.datasource].push(o) ;
-//                    else
-//                        sourcelinks[o.source.datasource] =[o];
-//                    // add nodes of outgoing links
-//                    if (o.source.datasource in sourcenodes){
-//                        sourcenodes[o.source.datasource].push(o.target);
-//                        }
-//                    else{
-//                        sourcenodes[o.source.datasource] =[o.target];
-//                    }
-
-//                    // add incoming links
-//                    if (o.target.datasource in sourcelinks)
-//                        sourcelinks[o.target.datasource].push(o) ;
-//                    else
-//                        sourcelinks[o.target.datasource] =[o];
-//                    // add nodes of incoming links
-//                    if (o.target.datasource in sourcenodes){
-//                        sourcenodes[o.target.datasource].push(o.source);
-//                        }
-//                    else{
-//                        sourcenodes[o.target.datasource] =[o.source];
-//                    }
-                //  }
             }
             alinks = links;
 
@@ -393,7 +365,6 @@ $(function() {
             });
             nodes = flatnodes;
             anodes = nodes ;
-            // drawRDFMTS(nodes, links);
         });
     }
 
@@ -830,15 +801,6 @@ $(function() {
             .style('stroke', function(d) {
                 return color(d.datasource);
             });
-//        var link = g.selectAll('.link')
-//            .data(links)
-//            .enter()
-//            .append('line')
-//            .attr('class', 'link')
-//            .style('stroke-width', nominal_stroke)
-//            .style('stroke', function(d) {
-//                   return color(d.datasource);
-//            });
         node = g.selectAll('.node').data(net.nodes, nodeid);
         node.exit().remove();
         node.enter().append('g')
@@ -851,14 +813,6 @@ $(function() {
                 expand[d.datasource] = !expand[d.datasource];
                 drawRDFMTS(nodes, links, divcanv);
             })
-            //            .on('dblclick.zoom', function(d) {
-            //                d3.event.stopPropagation();
-            //                var dcx = (graph_container.width()/2-d.x*zoom.scale());
-            //                var dcy = (980/2-d.y*zoom.scale());
-            //                zoom.translate([dcx,dcy]);
-            //                 g.attr('transform', 'translate(' + dcx + ',' + dcy + ')scale(' + zoom.scale() + ')');
-            //
-            //           })
             .on('mouseover', function(d) {
                 set_highlight(d);
             })
@@ -873,20 +827,6 @@ $(function() {
             });
 
         node.call(force.drag);
-
-//        var node = g.selectAll('.node')
-//            .data(nodes)
-//            .enter().append('g')
-//            .attr('class', 'node')
-//            .call(force.drag);
-//
-//        node.on('dblclick.zoom', function(d) {
-//            d3.event.stopPropagation();
-//            var dcx = (graph_container.width()/2-d.x*zoom.scale());
-//	        var dcy = (980/2-d.y*zoom.scale());
-//            zoom.translate([dcx,dcy]);
-//             g.attr('transform', 'translate(' + dcx + ',' + dcy  + ')scale(' + zoom.scale() + ')');
-//           });
 
         var ci = 0;
         var circle = node.append('path')
@@ -920,19 +860,6 @@ $(function() {
             text.attr('dx', function(d) {return (size(65) - size(30) || nominal_base_node_size);}) //size(d.weight)
                 .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesnames[d.datasource]; });
         }
-//        node.on('mouseover', function(d) {
-//                set_highlight(d);
-//                })
-//            .on('mousedown', function(d) {
-//                d3.event.stopPropagation();
-//                focus_node = d;
-//                set_focus(d)
-//                if (highlight_node === null)
-//                    set_highlight(d)
-//                })
-//            .on('mouseout', function(d) {
-//                exit_highlight();
-//            });
 
         d3.select(window).on('mouseup', function() {
             if (focus_node !== null) {
@@ -990,7 +917,6 @@ $(function() {
 
         force.on('tick', function(e) {
             var k = .1 * e.alpha;
-            // updateGroups();
 
             // Push nodes toward their designated focus.
             net.nodes.forEach(function(o, i) {
@@ -1010,22 +936,6 @@ $(function() {
                 .attr('y1', function(d) { return d.source.y; })
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
-
-//            link
-//                .attr('d', function(d) {
-//                     var deltaX = d.target.x - d.source.x,
-//                  deltaY = d.target.y - d.source.y,
-//                  dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
-//                  normX = deltaX / dist,
-//                  normY = deltaY / dist,
-//                  sourcePadding = d.left ? 17 : 12,
-//                  targetPadding = d.right ? 17 : 12,
-//                  sourceX = d.source.x + (sourcePadding * normX),
-//                  sourceY = d.source.y + (sourcePadding * normY),
-//                  targetX = d.target.x - (targetPadding * normX),
-//                  targetY = d.target.y - (targetPadding * normY);
-//              return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
-//                   });
 
             node.each(printn())
                 .attr('cx', function(d) { return d.x; })
@@ -1282,11 +1192,6 @@ $(function() {
         svg.attr('width', graph_container.width())
             .attr('height', 980);
 
-        // draw border around svg image
-        // svg.append('rect')
-        //     .attr('class', 'outline')
-        //     .attr('width', diameter)
-        //     .attr('height', diameter);
         radius = wh/2;
         // create plot area within svg image
         var plot = svg.append('g')
@@ -1300,22 +1205,10 @@ $(function() {
         });
         svg.call(zoom);
 
-        // draw border around plot area
-        // plot.append('circle')
-        //     .attr('class', 'outline')
-        //     .attr('r', radius - margin);
-
-        // fix graph links to map to objects instead of indices
-//        graph.links.forEach(function(d, i) {
-//            d.source = isNaN(d.source) ? d.source : graph.nodes[d.source];
-//            d.target = isNaN(d.target) ? d.target : graph.nodes[d.target];
-//        });
-
         // calculate node positions
         circleLayout(graph.nodes);
 
         // draw edges first
-        //drawLinks(graph.links);
         drawCurves(graph.links);
 
         // draw nodes last
@@ -1404,16 +1297,6 @@ $(function() {
             .attr('d', curve);
     }
 
-//    var color = d3.scale.linear()
-//      .domain([min_score, (min_score+max_score)/2, max_score])
-//      .range(['lime', 'yellow', 'red']);
-//     //d3.scale.category20c();
-////     var color = d3.scale.ordinal()
-////          .domain(['G', 'R', 'B']);
-//
-//    var color = d3.scale.linear().domain([1,100])
-//      .interpolate(d3.interpolateHcl)
-//      .range([d3.rgb('#FF0F00'), d3.rgb('#007AFF')]);
     //draw the DAG graph using d3.js
     function drawWhyDAG(nodes, links) {
         var width  = 960,
@@ -1444,7 +1327,6 @@ $(function() {
             .range([8,64]);
 
         var default_node_color = '#ccc';
-        //var default_node_color = 'rgb(3,190,100)';
         var default_link_color = '#888';
         var nominal_base_node_size = 8;
         var nominal_text_size = 10;
@@ -1458,8 +1340,6 @@ $(function() {
         var svg = d3.select('#graph')
             .append('svg');
 
-        //.attr('preserveAspectRatio', 'xMinYMin meet')
-        //.attr('viewBox', '0 0 960 500');
         svg.style('cursor', 'move');
 
         // init D3 force layout
@@ -1800,7 +1680,6 @@ $(function() {
         // circle (node) group
         // NB: the function arg is crucial here! nodes are known by id, not by index!
         circle = simulation.nodes(data.nodes).on("tick", tick);
-        //circle.data(data.nodes, function(d) { return d.id; });
         var colors = d3.scaleOrdinal().range(d3.schemeCategory20);
         // update existing nodes (reflexive & selected visual states)
         circle.selectAll('circle')
