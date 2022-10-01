@@ -769,8 +769,9 @@ $(function() {
             .nodes(net.nodes)
             .links(net.links)
             .linkDistance(function(l, i) {
-                var n1 = l.source, n2 = l.target;
-                return divcanv?250:200 +
+                const n1 = l.source,
+                      n2 = l.target;
+                return divcanv ? 250 : 200 +
                     Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
                         (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
                         -30 +
@@ -826,26 +827,26 @@ $(function() {
 
         node.call(force.drag);
 
-        var ci = 0;
-        var circle = node.append('path')
+        let ci = 0;
+        let circle = node.append('path')
             .attr('d', d3.svg.symbol()
                 .size(function(d) {
-                    var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)||nominal_base_node_size,2):Math.PI*Math.pow(size(25)||nominal_base_node_size,2);
-                    return v;}) //size(d.weight)
+                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2);
+                })
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(tocolor, function(d) {
-                if (divcanv ==null) {
-                    return color(d.datasource)
+                if (divcanv == null) {
+                    return color(d.datasource);
                 } else {
-                    ci += 1
-                    return color(d.datasource + (ci-1));
+                    ci += 1;
+                    return color(d.datasource + (ci - 1));
                 }
             })
             .style('stroke-width', nominal_stroke)
             .style(towhite, 'white');
 
-        var text = g.selectAll('.text')
+        let text = g.selectAll('.text')
             .data(net.nodes)
             .enter().append('text')
             .attr('dy', '.35em')
@@ -855,7 +856,7 @@ $(function() {
             text.text(function (d) { if (d.label) { return d.label; } else { return sourcesnames[d.datasource]; } })
                 .style('text-anchor', 'middle');
         } else {
-            text.attr('dx', function(d) {return (size(65) - size(30) || nominal_base_node_size);}) //size(d.weight)
+            text.attr('dx', function(d) {return (size(65) - size(30) || nominal_base_node_size);})
                 .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesnames[d.datasource]; });
         }
 
@@ -872,29 +873,29 @@ $(function() {
         });
 
         zoom.on('zoom', function() {
-            var stroke = nominal_stroke;
+            let stroke = nominal_stroke;
             if (nominal_stroke * zoom.scale() > max_stroke)
                 stroke = max_stroke / zoom.scale();
 
             link.style('stroke-width', stroke);
             circle.style('stroke-width',stroke);
 
-            var base_radius = nominal_base_node_size;
+            let base_radius = nominal_base_node_size;
             if (nominal_base_node_size * zoom.scale() > max_base_node_size)
                 base_radius = max_base_node_size / zoom.scale();
             circle.attr('d', d3.svg.symbol()
                 .size(function(d) {
-                    var v = d.size?Math.PI*Math.pow(size(65+d.size>200?200:d.size)*base_radius/nominal_base_node_size||base_radius,2):Math.PI*Math.pow(size(25)*base_radius/nominal_base_node_size||base_radius,2);
-                    return v;}) //size(d.weight)
+                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2);
+                })
                 .type(function(d) { return d.size? 'circle':  d.type; })
             );
             if (!text_center) {
                 text.attr('dx', function(d) {
                     return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
-                }); //size(d.weight)
+                });
             }
             text.style('font-size', function(d) {
-                var text_size = nominal_text_size;
+                let text_size = nominal_text_size;
                 if (d.size) { text_size = 16; }
                 if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale(); }
                 return text_size + 'px'
