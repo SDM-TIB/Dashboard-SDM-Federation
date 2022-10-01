@@ -907,15 +907,15 @@ $(function() {
 
         resize();
         d3.select(window).on('resize', resize).on('keydown', keydown);
-        var centroids = {};
-        for (var i = 0; i < max_score; i += 3) {
-            centroids[i] = {x: 200 * (i/3 +1), y:200}
-            centroids[i+1] = {x: 200 * (i/3+1), y:400}
-            centroids[i+2] = {x: 200 * (i/3 +1), y:600}
+        let centroids = {};
+        for (let i = 0; i < max_score; i += 3) {
+            centroids[i] = {x: 200 * (i/3 + 1), y:200}
+            centroids[i+1] = {x: 200 * (i/3 + 1), y:400}
+            centroids[i+2] = {x: 200 * (i/3 + 1), y:600}
         }
 
         force.on('tick', function(e) {
-            var k = .1 * e.alpha;
+            const k = .1 * e.alpha;
 
             // Push nodes toward their designated focus.
             net.nodes.forEach(function(o, i) {
@@ -953,7 +953,7 @@ $(function() {
         }
 
         function hasConnections(a) {
-            for (var property in linkedByIndex) {
+            for (const property in linkedByIndex) {
                 s = property.split(',');
                 if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property])
                     return true;
@@ -1002,7 +1002,7 @@ $(function() {
         }
 
         function resize() {
-            var width = $('#' + canv).width(), height = 980;
+            const width = $('#' + canv).width(), height = 980;
             svg.attr('width', width).attr('height', height);
             force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
             w = width;
@@ -1031,7 +1031,7 @@ $(function() {
                 }
 
                 link.style('display', function(d) {
-                    var flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
+                    const flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
                     linkedByIndex[d.source.index + ',' + d.target.index] = flag;
                     return flag ? 'inline' : 'none';
                 });
@@ -1087,7 +1087,7 @@ $(function() {
             highlight_node = d;
             // added this to make highlight color same as the color of the node
             highlight_color = color(d.datasource);
-            if (highlight_color != 'white') {
+            if (highlight_color !== 'white') {
                 circle.style(towhite, function(o) {
                     return isConnected(d, o) ? highlight_color : 'white';
                 });
@@ -1129,7 +1129,7 @@ $(function() {
     }
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr('href') // activated tab
+        const target = $(e.target).attr('href') // activated tab
         if (target === '#visualize') {
             tabVisible = '#visualize';
         } else if (target === '#analysis') {
@@ -1145,12 +1145,12 @@ $(function() {
 
     // Generates a tooltip for an SVG circle element based on its ID
     function addTooltip(circle) {
-        var x = parseFloat(circle.attr('cx'));
-        var y = parseFloat(circle.attr('cy'));
-        var r = parseFloat(circle.attr('r'));
-        var text = circle.attr('id');
+        const x = parseFloat(circle.attr('cx')),
+              y = parseFloat(circle.attr('cy')),
+              r = parseFloat(circle.attr('r')),
+              text = circle.attr('id');
 
-        var tooltip = d3.select('#plot')
+        let tooltip = d3.select('#plot')
             .append('text')
             .text(text)
             .attr('x', x)
@@ -1158,7 +1158,7 @@ $(function() {
             .attr('dy', -r * 2)
             .attr('id', 'tooltip');
 
-        var offset = tooltip.node().getBBox().width / 2;
+        const offset = tooltip.node().getBBox().width / 2;
 
         if ((x - offset) < -radius) {
             tooltip.attr('text-anchor', 'start');
