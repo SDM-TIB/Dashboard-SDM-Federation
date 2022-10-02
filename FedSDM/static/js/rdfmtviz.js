@@ -65,59 +65,59 @@ $(function() {
 
     var focus_node = null, highlight_node = null;
 
-    var text_center = false;
-    var outline = false;
+    var text_center = false,
+        outline = false;
 
-    var min_score = 0;
-    var max_score = 1;
-    var highlight_color = '#A52A2A';
-    var highlight_trans = 0.1;
+    var min_score = 0,
+        max_score = 1,
+        highlight_color = '#A52A2A',
+        highlight_trans = 0.1;
 
     var size = d3.scale.pow().exponent(1)
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
 
-    var default_node_color = '#ccc';
-    var default_link_color = '#888';
-    var nominal_base_node_size = 8;
-    var nominal_text_size = 10;
-    var max_text_size = 24;
-    var nominal_stroke = 1.5;
-    var max_stroke = 4.5;
-    var max_base_node_size = 40;
-    var min_zoom = 0.1;
-    var max_zoom = 7;
+    var default_node_color = '#ccc',
+        default_link_color = '#888',
+        nominal_base_node_size = 8,
+        nominal_text_size = 10,
+        max_text_size = 24,
+        nominal_stroke = 1.5,
+        max_stroke = 4.5,
+        max_base_node_size = 40,
+        min_zoom = 0.1,
+        max_zoom = 7;
 
-    var loaded = 0;
-    var vized = 0;
-    var gaLoaded = 0;
-    var gtable = null;
-    var force = null;
-    var linkdistance = 150;
-    var nfit = 0;
-    var ncharge = -600;
-    var ngravity = 0;
-    var sourcescard = 0;
-    var sources = null;
-    var sourcemt = null;
+    var loaded = 0,
+        vized = 0,
+        gaLoaded = 0,
+        gtable = null,
+        force = null,
+        linkdistance = 150,
+        nfit = 0,
+        ncharge = -600,
+        ngravity = 0,
+        sourcescard = 0,
+        sources = null,
+        sourcemt = null;
     //list of subjects and objects for the DAG
     var sourcenodes = [];
     //connection link between subject and object ->predicates
-    var sourcelinks = [];
-    var sourceids = {}, sourcesnames = {};
+    var sourcelinks = [],
+        sourceids = {}, sourcesnames = {};
 
     var anodes = [],
-        alinks = [];
-    var mtcards = {'All': []};
-    var viztype = null;
-    var data = {nodes: [], links: []};
+        alinks = [],
+        mtcards = {'All': []},
+        viztype = null,
+        data = {nodes: [], links: []};
 
-    var selectedRow = null;
-    var mnodes = [],
+    var selectedRow = null,
+        mnodes = [],
         malinks = [],
-        mlinks = [];
-    var msourcenodes = [],
+        mlinks = [],
+        msourcenodes = [],
         msourcelinks = [];
 
     mt_details.on('click', function() {
@@ -626,10 +626,10 @@ $(function() {
         }
 
         // determine nodes
-        for (var k = 0; k < data.nodes.length; ++k) {
-            var n = data.nodes[k],
-                i = index(n),
-                l = gm[i] || (gm[i]=gn[i]) || (gm[i]={datasource:i, size:0, nodes:[]});
+        for (let k = 0; k < data.nodes.length; ++k) {
+            const n = data.nodes[k],
+                  i = index(n),
+                  l = gm[i] || (gm[i] = gn[i]) || (gm[i] = {datasource: i, size: 0, nodes: []});
 
             if (expand[i]) {
                 // the node should be directly visible
@@ -658,24 +658,24 @@ $(function() {
             n.group_data = l;
         }
 
-        for (i in gm) { gm[i].link_count = 0; }
+        for (const i in gm) { gm[i].link_count = 0; }
 
         // determine links
-        for (k = 0; k < data.links.length; ++k) {
-            var e = data.links[k],
+        for (let k = 0; k < data.links.length; ++k) {
+            let e = data.links[k],
                 u = index(e.source),
                 v = index(e.target);
-            if (u != v) {
+            if (u !== v) {
                 gm[u].link_count++;
                 gm[v].link_count++;
             }
             u = expand[u] ? nm[e.source.label] : nm[u];
             v = expand[v] ? nm[e.target.label] : nm[v];
-            var i = (u < v ? u + '|' + v : v + '|' + u),
+            let i = (u < v ? u + '|' + v : v + '|' + u),
                 l = lm[i] || (lm[i] = {source:u, target:v, size:0});
             l.size += 1;
         }
-        for (i in lm) { links.push(lm[i]); }
+        for (const i in lm) { links.push(lm[i]); }
 
         return {nodes: nodes, links: links};
     }
@@ -684,11 +684,11 @@ $(function() {
         var hulls = {};
 
         // create point sets
-        for (var k = 0; k < nodes.length; ++k) {
-            var n = nodes[k];
+        for (let k = 0; k < nodes.length; ++k) {
+            const n = nodes[k];
 
             if (n.size) continue;
-            var i = index(n),
+            let i = index(n),
                 l = hulls[i] || (hulls[i] = []);
             l.push([n.x-offset, n.y-offset]);
             l.push([n.x-offset, n.y+offset]);
@@ -698,7 +698,7 @@ $(function() {
 
         // create convex hulls
         var hullset = [];
-        for (i in hulls) {
+        for (const i in hulls) {
             hullset.push({datasource: i, path: d3.geom.hull(hulls[i])});
         }
 
@@ -733,9 +733,9 @@ $(function() {
             mt_viz.show();
             canv = 'mtviz'
         }
-        var chartLayer = svg.append('g').classed('chartLayer', true);
-        var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
-        var g = svg.append('g');
+        var chartLayer = svg.append('g').classed('chartLayer', true),
+            zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
+            g = svg.append('g');
 
         hullg = svg.append('g');
         linkg = svg.append('g');
@@ -746,8 +746,8 @@ $(function() {
             .duration(1000)
             .attr('opacity', 1);
 
-        var tocolor = 'fill';
-        var towhite = 'stroke';
+        var tocolor = 'fill',
+            towhite = 'stroke';
         if (outline) {
             tocolor = 'stroke'
             towhite = 'fill'
@@ -1139,9 +1139,9 @@ $(function() {
         }
     });
 
-    var diameter = 500;
-    var radius = diameter / 2;
-    var margin = 10;
+    var diameter = 500,
+        radius = diameter / 2,
+        margin = 10;
 
     // Generates a tooltip for an SVG circle element based on its ID
     function addTooltip(circle) {
@@ -1229,8 +1229,8 @@ $(function() {
         // calculate theta for each node
         nodes.forEach(function(d, i) {
             // calculate polar coordinates
-            var theta  = scale(i);
-            var radial = radius - margin;
+            var theta  = scale(i),
+                radial = radius - margin;
 
             // convert to cartesian coordinates
             d.x = radial * Math.sin(theta);
@@ -1239,7 +1239,8 @@ $(function() {
     }
     var circularnode, circularlink, circulartext;
     function dragged(d) {
-        d.x = d3.event.x, d.y = d3.event.y;
+        d.x = d3.event.x;
+        d.y = d3.event.y;
         d3.select(this).attr('cx', d.x).attr('cy', d.y);
         circularlink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
         circularlink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
@@ -1310,14 +1311,14 @@ $(function() {
 
         var focus_node = null, highlight_node = null;
 
-        var text_center = false;
-        var outline = false;
-        var w = w;
-        var h = h;
-        var min_score = 0;
-        var max_score = 1;
-        var highlight_color = 'blue';
-        var highlight_trans = 0.1;
+        var text_center = false,
+            outline = false,
+            w = w,
+            h = h,
+            min_score = 0,
+            max_score = 1,
+            highlight_color = 'blue',
+            highlight_trans = 0.1;
         var colors = d3.scale.linear()
             .domain([min_score, (min_score+max_score)/2, max_score])
             .range(['lime', 'yellow', 'red']);
@@ -1325,16 +1326,16 @@ $(function() {
             .domain([1,100])
             .range([8,64]);
 
-        var default_node_color = '#ccc';
-        var default_link_color = '#888';
-        var nominal_base_node_size = 8;
-        var nominal_text_size = 10;
-        var max_text_size = 24;
-        var nominal_stroke = 1.5;
-        var max_stroke = 4.5;
-        var max_base_node_size = 36;
-        var min_zoom = 0.1;
-        var max_zoom = 7;
+        var default_node_color = '#ccc',
+            default_link_color = '#888',
+            nominal_base_node_size = 8,
+            nominal_text_size = 10,
+            max_text_size = 24,
+            nominal_stroke = 1.5,
+            max_stroke = 4.5,
+            max_base_node_size = 36,
+            min_zoom = 0.1,
+            max_zoom = 7;
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         var svg = d3.select('#graph')
             .append('svg');
