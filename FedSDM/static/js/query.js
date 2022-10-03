@@ -306,12 +306,9 @@ $(function() {
                 crossDomain: true,
                 success: function(data, textStatus, jqXHR) {
                     console.log(data);
-                    if (data != null && data.length > 0) {
-                        // load_query_table(data);
-                    } else {
+                    if (data === null || data.length === 0) {
                         $('#validateTips').html('Error while adding feedback!')
                     }
-                    // showqueries(datasource);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR.status);
