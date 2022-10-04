@@ -205,12 +205,12 @@ $(function() {
     });
 
     var mnodes = [],
-        malinks = []
-    mlinks = [];
-    var msourcenodes = [],
-        msourcelinks = [];
-    var mtcards = {'All': []};
-    var resDrawn = false;
+        malinks = [],
+        mlinks = [],
+        msourcenodes = [],
+        msourcelinks = [],
+        mtcards = {'All': []},
+        resDrawn = false;
     function drawResults() {
         if (resDrawn === true) {
             return
@@ -713,10 +713,10 @@ $(function() {
     height = 980;
     var canv = 'graph';
 
-    var width, height;
-    var h = 960, w = 760;
-    var chartWidth, chartHeight;
-    var margin;
+    var width, height,
+        h = 960, w = 760,
+        chartWidth, chartHeight,
+        margin;
 
     var drag = d3.behavior.drag()
         .origin(function(d) { return d; })
@@ -741,45 +741,45 @@ $(function() {
 
     var focus_node = null, highlight_node = null;
 
-    var text_center = false;
-    var outline = false;
+    var text_center = false,
+        outline = false;
 
-    var min_score = 0;
-    var max_score = 1;
-    var highlight_color = '#A52A2A';
-    var highlight_trans = 0.1;
+    var min_score = 0,
+        max_score = 1,
+        highlight_color = '#A52A2A',
+        highlight_trans = 0.1;
 
     var size = d3.scale.pow().exponent(1)
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
 
-    var default_node_color = '#ccc';  // 'rgb(3,190,100)'
-    var default_link_color = '#888';
-    var nominal_base_node_size = 8;
-    var nominal_text_size = 10;
-    var max_text_size = 24;
-    var nominal_stroke = 1.5;
-    var max_stroke = 4.5;
-    var max_base_node_size = 40;
-    var min_zoom = 0.1;
-    var max_zoom = 7;
+    var default_node_color = '#ccc',  // 'rgb(3,190,100)'
+        default_link_color = '#888',
+        nominal_base_node_size = 8,
+        nominal_text_size = 10,
+        max_text_size = 24,
+        nominal_stroke = 1.5,
+        max_stroke = 4.5,
+        max_base_node_size = 40,
+        min_zoom = 0.1,
+        max_zoom = 7;
 
-    var loaded = 0;
-    var vized = 0;
-    var stats = null;
-    var galoaded = 0;
-    var gtable = null;
-    var linkdistance = 150;
-    var nfit = 0;
-    var ncharge = -600;
-    var ngravity = 0;
-    var sourcescard = 0;
-    var sources = null;
-    var sourcemt = null;
-    var sourcenodes = [];  // list of subjects and objects for the DAG
-    var sourcelinks = [];  // connection link between subject and object -> predicates
-    var sourceids = {}, sourcesnames = {};
+    var loaded = 0,
+        vized = 0,
+        stats = null,
+        galoaded = 0,
+        gtable = null,
+        linkdistance = 150,
+        nfit = 0,
+        ncharge = -600,
+        ngravity = 0,
+        sourcescard = 0,
+        sources = null,
+        sourcemt = null,
+        sourcenodes = [],  // list of subjects and objects for the DAG
+        sourcelinks = [],  // connection link between subject and object -> predicates
+        sourceids = {}, sourcesnames = {};
 
     var link, circle, text;
     function drawRDFMTS(nodes, links, divcanv) {
@@ -800,8 +800,8 @@ $(function() {
             $('#graph').show();
             canv = 'graph'
         }
-        var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
-        var g = svg.append('g');
+        var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
+            g = svg.append('g');
 
         hullg = svg.append('g');
         linkg = svg.append('g');
@@ -812,8 +812,8 @@ $(function() {
             .duration(1000)
             .attr('opacity', 1);
 
-        var tocolor = 'fill';
-        var towhite = 'stroke';
+        var tocolor = 'fill',
+            towhite = 'stroke';
         if (outline) {
             tocolor = 'stroke'
             towhite = 'fill'
