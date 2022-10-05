@@ -591,9 +591,8 @@ $(function() {
 
     function getGroup(n) { return n.datasource; }
 
-    var off = 15,    // cluster hull offset
-        expand = {}, // expanded clusters
-        net, force, hullg, hull, linkg, nodeg;
+    var expand = {}, // expanded clusters
+        net, force, hullg, linkg, nodeg;
 
     // constructs the network to visualize
     function network(data, prev, index, expand) {
@@ -713,9 +712,7 @@ $(function() {
     var canv = 'graph';
 
     var width, height,
-        h = 960, w = 760,
-        chartWidth, chartHeight,
-        margin;
+        h = 960, w = 760;
 
     var drag = d3.behavior.drag()
         .origin(function(d) { return d; })
@@ -743,8 +740,7 @@ $(function() {
     var text_center = false,
         outline = false;
 
-    var min_score = 0,
-        max_score = 1,
+    var max_score = 1,
         highlight_color = '#A52A2A',
         highlight_trans = 0.1;
 
@@ -753,8 +749,7 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    var default_node_color = '#ccc',  // 'rgb(3,190,100)'
-        default_link_color = '#888',
+    var default_link_color = '#888',
         nominal_base_node_size = 8,
         nominal_text_size = 10,
         max_text_size = 24,
@@ -764,23 +759,11 @@ $(function() {
         min_zoom = 0.1,
         max_zoom = 7;
 
-    var loaded = 0,
-        vized = 0,
-        stats = null,
-        galoaded = 0,
-        gtable = null,
-        linkdistance = 150,
-        nfit = 0,
-        ncharge = -600,
+    var ncharge = -600,
         ngravity = 0,
-        sourcescard = 0,
-        sources = null,
-        sourcemt = null,
-        sourcenodes = [],  // list of subjects and objects for the DAG
-        sourcelinks = [],  // connection link between subject and object -> predicates
-        sourceids = {}, sourcesnames = {};
+        sourcesnames = {};
 
-    var link, circle, text;
+    var link;
     function drawRDFMTS(nodes, links, divcanv) {
         // console.log(nodes, links);
         var svg;
