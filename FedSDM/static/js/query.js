@@ -160,7 +160,6 @@ $(function() {
 
                                 $('#add_feedback').prop('disabled', false);
                             }).on('deselect', function(e, dt, type, indexes) {
-//                                var rowData = table.rows(indexes).data().toArray();
                                 $('#add_feedback').prop('disabled', true);
                                 selectedRow = null;
                             });
@@ -973,7 +972,6 @@ $(function() {
         svg.call(zoom);
 
         resize();
-        //window.focus();
         d3.select(window).on('resize', resize).on('keydown', keydown);
         const centroids = {};
         for (let i = 0; i < max_score; i += 3) {
@@ -984,7 +982,6 @@ $(function() {
 
         force.on('tick', function(e) {
             const k = .1 * e.alpha;
-            // updateGroups();
 
             // Push nodes toward their designated focus.
             net.nodes.forEach(function(o, i) {
