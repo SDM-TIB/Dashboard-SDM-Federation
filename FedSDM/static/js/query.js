@@ -812,7 +812,7 @@ $(function() {
             .duration(1000)
             .attr('opacity', 1);
 
-        var tocolor = 'fill',
+        let tocolor = 'fill',
             towhite = 'stroke';
         if (outline) {
             tocolor = 'stroke'
@@ -820,12 +820,12 @@ $(function() {
         }
 
         svg.style('cursor', 'move');
-        var linkedByIndex = {};
+        let linkedByIndex = {};
         links.forEach(function(d) {
             linkedByIndex[d.source + ',' + d.target] = true;
         });
 
-        var fit = Math.sqrt(nodes.length / (width * height));
+        const fit = Math.sqrt(nodes.length / (width * height));
         ngravity = (8 * fit);
         ncharge = (-1 / fit);
         if (force) force.stop()
@@ -834,8 +834,8 @@ $(function() {
             .nodes(net.nodes)
             .links(net.links)
             .linkDistance(function(l, i) {
-                var n1 = l.source, n2 = l.target;
-                return divcanv?250:200 +
+                const n1 = l.source, n2 = l.target;
+                return divcanv ? 250 : 200 +
                     Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
                         (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
                         -30 +
@@ -885,8 +885,8 @@ $(function() {
 
         node.call(force.drag);
 
-        var ci = 0;
-        var circle = node.append('path')
+        let ci = 0;
+        let circle = node.append('path')
             .attr('d', d3.svg.symbol()
                 .size(function(d) {
                     return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2);}) //size(d.weight)
