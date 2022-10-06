@@ -498,7 +498,6 @@ $(function() {
             });
         } else {
             close = false;
-            console.log('Invalid data...');
         }
         if (close) {
             addSourceModal.modal('hide');
@@ -611,7 +610,6 @@ $(function() {
             });
         } else {
             close = false;
-            console.log('Invalid data...');
         }
         if (close) {
             fedModal.modal('hide');
