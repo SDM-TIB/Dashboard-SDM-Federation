@@ -597,7 +597,7 @@ $(function() {
     // constructs the network to visualize
     function network(data, prev, index, expand) {
         expand = expand || {};
-        var gm = {},    // group map
+        let gm = {},    // group map
             nm = {},    // node map
             lm = {},    // link map
             gn = {},    // previous group nodes
@@ -608,7 +608,8 @@ $(function() {
         // process previous nodes for reuse or centroid calculation
         if (prev) {
             prev.nodes.forEach(function(n) {
-                var i = index(n), o;
+                const i = index(n);
+                let o;
 
                 if (n.size > 0) {
                     gn[i] = n;
@@ -623,10 +624,10 @@ $(function() {
         }
 
         // determine nodes
-        for (var k = 0; k < data.nodes.length; ++k) {
-            var n = data.nodes[k],
-                i = index(n),
-                l = gm[i] || (gm[i] = gn[i]) || (gm[i] = {datasource: i, size: 0, nodes: []});
+        for (let k = 0; k < data.nodes.length; ++k) {
+            const n = data.nodes[k],
+                  i = index(n),
+                  l = gm[i] || (gm[i] = gn[i]) || (gm[i] = {datasource: i, size: 0, nodes: []});
 
             if (expand[i]) {
                 // the node should be directly visible
@@ -658,8 +659,8 @@ $(function() {
         for (i in gm) { gm[i].link_count = 0; }
 
         // determine links
-        for (k = 0; k < data.links.length; ++k) {
-            var e = data.links[k],
+        for (let k = 0; k < data.links.length; ++k) {
+            let e = data.links[k],
                 u = index(e.source),
                 v = index(e.target);
             if (u !== v) {
@@ -668,24 +669,24 @@ $(function() {
             }
             u = expand[u] ? nm[e.source.label] : nm[u];
             v = expand[v] ? nm[e.target.label] : nm[v];
-            var i = (u < v ? u + '|' + v : v + '|' + u),
+            let i = (u < v ? u + '|' + v : v + '|' + u),
                 l = lm[i] || (lm[i] = {source: u, target: v, size: 0});
             l.size += 1;
         }
-        for (i in lm) { links.push(lm[i]); }
+        for (const i in lm) { links.push(lm[i]); }
 
         return {nodes: nodes, links: links};
     }
 
     function convexHulls(nodes, index, offset) {
-        var hulls = {};
+        let hulls = {};
 
         // create point sets
-        for (var k = 0; k < nodes.length; ++k) {
-            var n = nodes[k];
+        for (let k = 0; k < nodes.length; ++k) {
+            const n = nodes[k];
 
             if (n.size) continue;
-            var i = index(n),
+            let i = index(n),
                 l = hulls[i] || (hulls[i] = []);
             l.push([n.x-offset, n.y-offset]);
             l.push([n.x-offset, n.y+offset]);
@@ -694,19 +695,22 @@ $(function() {
         }
 
         // create convex hulls
-        var hullset = [];
-        for (i in hulls) {
+        let hullset = [];
+        for (const i in hulls) {
             hullset.push({datasource: i, path: d3.geom.hull(hulls[i])});
         }
 
         return hullset;
     }
+
     var curve = d3.svg.line()
         .interpolate('cardinal-closed')
         .tension(.85);
+
     function drawCluster(d) {
         return curve(d.path); // 0.8
     }
+
     width = $('#graph').width();
     height = 980;
     var canv = 'graph';
