@@ -770,24 +770,19 @@ $(function() {
     var link;
     function drawRDFMTS(nodes, links, divcanv) {
         // console.log(nodes, links);
-        var svg;
-        if(divcanv == null) {
-            $('#graph').empty();
-            svg = d3.select('#graph').append('svg');
-            width = $('#graph').width();
-            height = 980;
-            canv = 'graph'
-        } else {
-            $('#graph').empty();
-            svg = d3.select('#graph').append('svg');
-            width = $('#graph').width();
-            height = 980;
+        let svg;
+        const graph = $('graph');
+        graph.empty();
+        svg = d3.select('#graph').append('svg');
+        width = graph.width();
+        height = 980;
+        canv = 'graph'
+        if (divcanv !== null) {
             // console.log('showing ...')
-            $('#graph').show();
-            canv = 'graph'
+            graph.show();
         }
-        var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
-            g = svg.append('g');
+        const zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
+              g = svg.append('g');
 
         hullg = svg.append('g');
         linkg = svg.append('g');
