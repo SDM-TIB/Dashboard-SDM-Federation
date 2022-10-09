@@ -34,7 +34,7 @@ $(function() {
             .html('<h1> Loading ... !</h1>');
         $('#vizDsName').html('');
         loaded = 0;
-        vized = 0;
+        visualized = 0;
         gaLoaded = 0;
         get_rdfmts_stats(fed);
         get_rdfmts(fed);
@@ -90,7 +90,7 @@ $(function() {
         max_zoom = 7;
 
     let loaded = 0,
-        vized = 0,
+        visualized = 0,
         gaLoaded = 0,
         gtable = null,
         linkDistance = 150,
@@ -253,7 +253,7 @@ $(function() {
         $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) {
             jsdata = data2;
         });
-        if (fed == null || (fed === federation && vized === 1)) {
+        if (fed == null || (fed === federation && visualized === 1)) {
             return
         }
         $('#fedName').html(fed);
@@ -559,7 +559,7 @@ $(function() {
             } else {
                 drawGraph(data);
             }
-            vized = 1;
+            visualized = 1;
         } else {
             const snodes = sourcenodes[source];
             console.log('number of nodes:' + snodes.length);
