@@ -94,7 +94,7 @@ $(function() {
         gaLoaded = 0,
         gtable = null,
         linkDistance = 150,
-        ncharge = -600,
+        nCharge = -600,
         ngravity = 0,
         sourcescard = 0,
         sources = null,
@@ -522,7 +522,7 @@ $(function() {
         if (force) {
             linkDistance = 150
             const fit = Math.sqrt(anodes.length / (width * height));
-            ncharge = (-1 / fit);
+            nCharge = (-1 / fit);
             ngravity = (8 * fit);
             force.linkDistance(linkDistance).gravity(0.05).start()
         }
@@ -759,7 +759,7 @@ $(function() {
 
         const fit = Math.sqrt(nodes.length / (width * height));
         ngravity = (8 * fit);
-        ncharge = (-1 / fit);
+        nCharge = (-1 / fit);
         if (force) force.stop()
         net = network(data, net, getGroup, expand);
         console.log('network:', net, expand)
