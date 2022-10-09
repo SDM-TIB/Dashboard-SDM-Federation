@@ -93,7 +93,7 @@ $(function() {
         vized = 0,
         gaLoaded = 0,
         gtable = null,
-        linkdistance = 150,
+        linkDistance = 150,
         ncharge = -600,
         ngravity = 0,
         sourcescard = 0,
@@ -514,17 +514,17 @@ $(function() {
     });
     $('#start_force').on('click', function() {
         if (force) {
-            linkdistance += 10;
-            force.linkDistance(linkdistance).gravity(0.05).start()
+            linkDistance += 10;
+            force.linkDistance(linkDistance).gravity(0.05).start()
         }
     });
     $('#reset_force').on('click', function() {
         if (force) {
-            linkdistance = 150
+            linkDistance = 150
             const fit = Math.sqrt(anodes.length / (width * height));
             ncharge = (-1 / fit);
             ngravity = (8 * fit);
-            force.linkDistance(linkdistance).gravity(0.05).start()
+            force.linkDistance(linkDistance).gravity(0.05).start()
         }
     });
     $('#graphVizForce').on('click', function() {
