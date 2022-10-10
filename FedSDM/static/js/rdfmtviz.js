@@ -96,7 +96,7 @@ $(function() {
         linkDistance = 150,
         nCharge = -600,
         nGravity = 0,
-        sourcescard = 0,
+        sourcesCard = 0,
         sources = null,
         sourcemt = null;
     //list of subjects and objects for the DAG
@@ -265,8 +265,8 @@ $(function() {
             sources = data.sources;
             nodes = data.nodes;
             links = data.links;
-            sourcescard = sources.length;
-            max_score = sourcescard;
+            sourcesCard = sources.length;
+            max_score = sourcesCard;
             let legend = '',
                 datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources: ' + sources.length);
