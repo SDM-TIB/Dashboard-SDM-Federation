@@ -98,7 +98,7 @@ $(function() {
         nGravity = 0,
         sourcesCard = 0,
         sources = null,
-        sourcemt = null;
+        sourceMT = null;
     //list of subjects and objects for the DAG
     let sourcenodes = [];
     //connection link between subject and object ->predicates
@@ -293,10 +293,10 @@ $(function() {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
                     source = 'All'
-                    sourcemt = source;
+                    sourceMT = source;
                 } else {
                     source = sourceids[$(this).text()];
-                    sourcemt = source;
+                    sourceMT = source;
                 }
                 if (source) {
                     $('#vizDsName').html($(this).text());
@@ -310,13 +310,13 @@ $(function() {
                 } else {
                     $('#vizDsName').html($(this).text());
                     $('#gaDsName').html($(this).text());
-                    sourcemt = source;
+                    sourceMT = source;
                     graph_container.empty()
                         .html('<h3>Please select Visualization type</h3>');
                     if (viztype === 'fgraph') {
-                        drawSingleSourceRDFMTS(sourcemt, 'force');
+                        drawSingleSourceRDFMTS(sourceMT, 'force');
                     } else if (viztype === 'cgraph') {
-                        drawSingleSourceRDFMTS(sourcemt, 'circular');
+                        drawSingleSourceRDFMTS(sourceMT, 'circular');
                     } else if (viztype === 'donut') {
                         console.log(source + ': ' + mtcards);
                         drawDonut(source);
@@ -528,13 +528,13 @@ $(function() {
         }
     });
     $('#graphVizForce').on('click', function() {
-        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourcemt);
-        drawSingleSourceRDFMTS(sourcemt, 'force');
+        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourceMT);
+        drawSingleSourceRDFMTS(sourceMT, 'force');
         viztype = 'fgraph';
     });
     $('#graphVizCircular').on('click', function() {
-        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourcemt);
-        drawSingleSourceRDFMTS(sourcemt, 'circular');
+        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourceMT);
+        drawSingleSourceRDFMTS(sourceMT, 'circular');
         viztype = 'cgraph';
     });
     $('#donutViz').on('click', function() {
