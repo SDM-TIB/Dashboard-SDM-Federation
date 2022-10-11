@@ -100,7 +100,7 @@ $(function() {
         sources = null,
         sourceMT = null;
     //list of subjects and objects for the DAG
-    let sourcenodes = [];
+    let sourceNodes = [];
     //connection link between subject and object ->predicates
     let sourcelinks = [],
         sourceids = {}, sourcesnames = {};
@@ -345,7 +345,7 @@ $(function() {
             alinks = links;
 
             flatnodes = [];
-            sourcenodes = [];
+            sourceNodes = [];
             mtcards = {'All': []};
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
@@ -355,10 +355,10 @@ $(function() {
                 } else {
                     mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                 }
-                if (val.datasource in sourcenodes) {
-                    sourcenodes[val.datasource].push(val);
+                if (val.datasource in sourceNodes) {
+                    sourceNodes[val.datasource].push(val);
                 } else {
-                    sourcenodes[val.datasource] = [val]
+                    sourceNodes[val.datasource] = [val]
                 }
             });
             nodes = flatnodes;
@@ -561,7 +561,7 @@ $(function() {
             }
             visualized = 1;
         } else {
-            const snodes = sourcenodes[source];
+            const snodes = sourceNodes[source];
             console.log('number of nodes:' + snodes.length);
             //connection link between subject and object -> predicates
             let slinks = sourcelinks[source];
