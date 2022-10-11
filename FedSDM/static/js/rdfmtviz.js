@@ -102,7 +102,7 @@ $(function() {
     //list of subjects and objects for the DAG
     let sourceNodes = [];
     //connection link between subject and object ->predicates
-    let sourcelinks = [],
+    let sourceLinks = [],
         sourceids = {}, sourcesnames = {};
 
     var anodes = [],
@@ -325,7 +325,7 @@ $(function() {
                 }
             });
 
-            sourcelinks = [];
+            sourceLinks = [];
             for (let i = 0; i < links.length; ++i) {
                 o = links[i];
 
@@ -335,10 +335,10 @@ $(function() {
                     console.log(o)
                 }
                 if (o.source.datasource === o.target.datasource) {
-                    if (o.source.datasource in sourcelinks) {
-                        sourcelinks[o.source.datasource].push(o);
+                    if (o.source.datasource in sourceLinks) {
+                        sourceLinks[o.source.datasource].push(o);
                     } else {
-                        sourcelinks[o.source.datasource] = [o];
+                        sourceLinks[o.source.datasource] = [o];
                     }
                 }
             }
@@ -564,7 +564,7 @@ $(function() {
             const snodes = sourceNodes[source];
             console.log('number of nodes:' + snodes.length);
             //connection link between subject and object -> predicates
-            let slinks = sourcelinks[source];
+            let slinks = sourceLinks[source];
             if (!slinks) {
                 slinks=[]
             }
