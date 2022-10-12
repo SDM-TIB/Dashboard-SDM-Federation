@@ -103,7 +103,7 @@ $(function() {
     let sourceNodes = [];
     //connection link between subject and object ->predicates
     let sourceLinks = [],
-        sourceids = {}, sourcesnames = {};
+        sourceIDs = {}, sourcesnames = {};
 
     var anodes = [],
         alinks = [],
@@ -141,7 +141,7 @@ $(function() {
                 for (let i = 0; i < sources.length; i++) {
                     const v = sources[i].id,
                           name  = sources[i].name;
-                    sourceids[name] = v;
+                    sourceIDs[name] = v;
                     sourcesnames[v] = name;
                 }
                 for (let i = 0; i < mlinks.length; ++i) {
@@ -273,7 +273,7 @@ $(function() {
             for (let i = 0; i < sources.length; i++) {
                 const v = sources[i].id,
                       name  = sources[i].name;
-                sourceids[name] = v;
+                sourceIDs[name] = v;
                 sourcesnames[v] = name;
                 datasources += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
                 legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
@@ -295,7 +295,7 @@ $(function() {
                     source = 'All'
                     sourceMT = source;
                 } else {
-                    source = sourceids[$(this).text()];
+                    source = sourceIDs[$(this).text()];
                     sourceMT = source;
                 }
                 if (source) {
