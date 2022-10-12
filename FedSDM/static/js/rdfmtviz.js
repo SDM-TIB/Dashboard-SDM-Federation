@@ -103,7 +103,7 @@ $(function() {
     let sourceNodes = [];
     //connection link between subject and object ->predicates
     let sourceLinks = [],
-        sourceIDs = {}, sourcesnames = {};
+        sourceIDs = {}, sourcesNames = {};
 
     var anodes = [],
         alinks = [],
@@ -142,7 +142,7 @@ $(function() {
                     const v = sources[i].id,
                           name  = sources[i].name;
                     sourceIDs[name] = v;
-                    sourcesnames[v] = name;
+                    sourcesNames[v] = name;
                 }
                 for (let i = 0; i < mlinks.length; ++i) {
                     o = mlinks[i];
@@ -274,7 +274,7 @@ $(function() {
                 const v = sources[i].id,
                       name  = sources[i].name;
                 sourceIDs[name] = v;
-                sourcesnames[v] = name;
+                sourcesNames[v] = name;
                 datasources += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
                 legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
             }
@@ -481,7 +481,7 @@ $(function() {
                 data_.push(mtcards[source_mt][i]['value']);
             }
 
-            const title = sourcesnames[source];
+            const title = sourcesNames[source];
             createDonut(title, labels_, data_);
         } else {
             $.each(mtcards, function (key, val) {
@@ -501,7 +501,7 @@ $(function() {
                     data_.push(val[i]['value']);
                 }
 
-                const ds_name = sourcesnames[key] ? sourcesnames[key] : federation;
+                const ds_name = sourcesNames[key] ? sourcesNames[key] : federation;
                 createDonut(ds_name, labels_, data_);
             });
         }
@@ -851,11 +851,11 @@ $(function() {
             .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' })
 
         if (text_center) {
-            text.text(function (d) { if (d.label) { return d.label; } else { return sourcesnames[d.datasource]; } })
+            text.text(function (d) { if (d.label) { return d.label; } else { return sourcesNames[d.datasource]; } })
                 .style('text-anchor', 'middle');
         } else {
             text.attr('dx', function(d) {return (size(65) - size(30) || nominal_base_node_size);})
-                .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesnames[d.datasource]; });
+                .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesNames[d.datasource]; });
         }
 
         d3.select(window).on('mouseup', function() {
