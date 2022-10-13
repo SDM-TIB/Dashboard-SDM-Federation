@@ -106,7 +106,7 @@ $(function() {
         sourceIDs = {}, sourcesNames = {};
 
     var aNodes = [],
-        alinks = [],
+        aLinks = [],
         mtcards = {'All': []},
         viztype = null,
         data = {nodes: [], links: []};
@@ -342,7 +342,7 @@ $(function() {
                     }
                 }
             }
-            alinks = links;
+            aLinks = links;
 
             flatnodes = [];
             sourceNodes = [];
@@ -548,14 +548,14 @@ $(function() {
         graph_legend.show();
         console.log('source: ' + source);
         if (source === 'All') {
-            if (alinks.length < 1)
-                alinks=[]
-            data = {nodes: aNodes, links: alinks};
+            if (aLinks.length < 1)
+                aLinks=[]
+            data = {nodes: aNodes, links: aLinks};
             if (gt === 'force') {
                 aNodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
-                drawRDFMTS(aNodes, alinks);
+                drawRDFMTS(aNodes, aLinks);
             } else {
                 drawGraph(data);
             }
