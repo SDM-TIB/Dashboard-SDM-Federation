@@ -105,7 +105,7 @@ $(function() {
     let sourceLinks = [],
         sourceIDs = {}, sourcesNames = {};
 
-    var anodes = [],
+    var aNodes = [],
         alinks = [],
         mtcards = {'All': []},
         viztype = null,
@@ -362,7 +362,7 @@ $(function() {
                 }
             });
             nodes = flatnodes;
-            anodes = nodes ;
+            aNodes = nodes ;
         });
     }
 
@@ -521,7 +521,7 @@ $(function() {
     $('#reset_force').on('click', function() {
         if (force) {
             linkDistance = 150
-            const fit = Math.sqrt(anodes.length / (width * height));
+            const fit = Math.sqrt(aNodes.length / (width * height));
             nCharge = (-1 / fit);
             nGravity = (8 * fit);
             force.linkDistance(linkDistance).gravity(0.05).start()
@@ -550,12 +550,12 @@ $(function() {
         if (source === 'All') {
             if (alinks.length < 1)
                 alinks=[]
-            data = {nodes: anodes, links: alinks};
+            data = {nodes: aNodes, links: alinks};
             if (gt === 'force') {
-                anodes.forEach(function(d) {
+                aNodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
-                drawRDFMTS(anodes, alinks);
+                drawRDFMTS(aNodes, alinks);
             } else {
                 drawGraph(data);
             }
