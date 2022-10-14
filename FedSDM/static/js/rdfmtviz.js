@@ -114,7 +114,7 @@ $(function() {
     let selectedRow = null,
         mNodes = [],
         maLinks = [],
-        mlinks = [],
+        mLinks = [],
         msourcenodes = [],
         msourcelinks = [];
 
@@ -136,7 +136,7 @@ $(function() {
                 console.log('detail returned: ' + data);
                 sources = data.sources;
                 mNodes = data.nodes;
-                mlinks = data.links;
+                mLinks = data.links;
                 msourcescard = sources.length;
                 for (let i = 0; i < sources.length; i++) {
                     const v = sources[i].id,
@@ -144,8 +144,8 @@ $(function() {
                     sourceIDs[name] = v;
                     sourcesNames[v] = name;
                 }
-                for (let i = 0; i < mlinks.length; ++i) {
-                    o = mlinks[i];
+                for (let i = 0; i < mLinks.length; ++i) {
+                    o = mLinks[i];
                     o.source = mNodes[o.source];
                     o.target = mNodes[o.target];
                     if (o.source.datasource === o.target.datasource) {
@@ -156,7 +156,7 @@ $(function() {
                         }
                     }
                 }
-                maLinks = mlinks;
+                maLinks = mLinks;
 
                 flatnodes = [];
                 $.each(mNodes, function (key, val) {
