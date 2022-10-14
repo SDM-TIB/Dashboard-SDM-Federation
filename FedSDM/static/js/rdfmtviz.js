@@ -113,7 +113,7 @@ $(function() {
 
     let selectedRow = null,
         mNodes = [],
-        malinks = [],
+        maLinks = [],
         mlinks = [],
         msourcenodes = [],
         msourcelinks = [];
@@ -156,7 +156,7 @@ $(function() {
                         }
                     }
                 }
-                malinks = mlinks;
+                maLinks = mlinks;
 
                 flatnodes = [];
                 $.each(mNodes, function (key, val) {
@@ -188,9 +188,9 @@ $(function() {
     });
 
     function draw_details() {
-        data = {nodes: manodes, links: malinks};
+        data = {nodes: manodes, links: maLinks};
         mt_viz.html('<h1> Please select data source!</h1>');
-        drawRDFMTS(manodes, malinks, 'mt_viz');
+        drawRDFMTS(manodes, maLinks, 'mt_viz');
     }
 
     $('#backToTable').on('click', function() {
