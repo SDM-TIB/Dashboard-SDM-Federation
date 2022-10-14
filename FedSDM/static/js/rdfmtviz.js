@@ -107,7 +107,7 @@ $(function() {
 
     var aNodes = [],
         aLinks = [],
-        mtcards = {'All': []},
+        MTCards = {'All': []},
         viztype = null,
         data = {nodes: [], links: []};
 
@@ -161,11 +161,11 @@ $(function() {
                 flatnodes = [];
                 $.each(mnodes, function (key, val) {
                     flatnodes.push(val);
-                    mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                    if (val.datasource in mtcards) {
-                        mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
+                    MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
+                    if (val.datasource in MTCards) {
+                        MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                     } else {
-                        mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
+                        MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                     }
                     if (val.datasource in msourcenodes) {
                         msourcenodes[val.datasource].push(val);
@@ -318,7 +318,7 @@ $(function() {
                     } else if (viztype === 'cgraph') {
                         drawSingleSourceRDFMTS(sourceMT, 'circular');
                     } else if (viztype === 'donut') {
-                        console.log(source + ': ' + mtcards);
+                        console.log(source + ': ' + MTCards);
                         drawDonut(source);
                     }
                     get_rdfmts_graph_analys(federation, $(this).text());
@@ -346,14 +346,14 @@ $(function() {
 
             flatnodes = [];
             sourceNodes = [];
-            mtcards = {'All': []};
+            MTCards = {'All': []};
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
-                mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                if (val.datasource in mtcards) {
-                    mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
+                MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
+                if (val.datasource in MTCards) {
+                    MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                 } else {
-                    mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
+                    MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                 }
                 if (val.datasource in sourceNodes) {
                     sourceNodes[val.datasource].push(val);
@@ -466,25 +466,25 @@ $(function() {
         graph_legend.hide();
         if (source !== 'All') {
             for (let i = 0; i < jsdata.data.length; i++) {
-                for (let j in mtcards[source_mt]) {
-                    if (mtcards[source_mt][j].label.includes(jsdata.data[i][1]))
-                        mtcards[source_mt][j].value = jsdata.data[i][3];
+                for (let j in MTCards[source_mt]) {
+                    if (MTCards[source_mt][j].label.includes(jsdata.data[i][1]))
+                        MTCards[source_mt][j].value = jsdata.data[i][3];
                 }
             }
-            mtcards[source_mt].sort(function(a, b) {
+            MTCards[source_mt].sort(function(a, b) {
                 return b.value - a.value;
             });
 
             let labels_ = [], data_ = []
-            for (let i = 0; i < mtcards[source_mt].length; i++) {
-                labels_.push(mtcards[source_mt][i]['label']);
-                data_.push(mtcards[source_mt][i]['value']);
+            for (let i = 0; i < MTCards[source_mt].length; i++) {
+                labels_.push(MTCards[source_mt][i]['label']);
+                data_.push(MTCards[source_mt][i]['value']);
             }
 
             const title = sourcesNames[source];
             createDonut(title, labels_, data_);
         } else {
-            $.each(mtcards, function (key, val) {
+            $.each(MTCards, function (key, val) {
                 for (let i = 0; i < jsdata.data.length; i++) {
                     for (let ii in val) {
                         if (val[ii].label.includes(jsdata.data[i][1]))
@@ -538,7 +538,7 @@ $(function() {
         viztype = 'cgraph';
     });
     $('#donutViz').on('click', function() {
-        console.log(source + ': ' + mtcards);
+        console.log(source + ': ' + MTCards);
         drawDonut(source);
         viztype = 'donut';
     });
