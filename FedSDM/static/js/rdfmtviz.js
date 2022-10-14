@@ -115,7 +115,7 @@ $(function() {
         mNodes = [],
         maLinks = [],
         mLinks = [],
-        msourcenodes = [],
+        mSourceNodes = [],
         msourcelinks = [];
 
     mt_details.on('click', function() {
@@ -167,10 +167,10 @@ $(function() {
                     } else {
                         MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                     }
-                    if (val.datasource in msourcenodes) {
-                        msourcenodes[val.datasource].push(val);
+                    if (val.datasource in mSourceNodes) {
+                        mSourceNodes[val.datasource].push(val);
                     } else {
-                        msourcenodes[val.datasource] = [val]
+                        mSourceNodes[val.datasource] = [val]
                     }
                 });
                 mNodes = flatnodes;
