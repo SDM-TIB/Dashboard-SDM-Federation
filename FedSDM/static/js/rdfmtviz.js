@@ -108,7 +108,7 @@ $(function() {
     var aNodes = [],
         aLinks = [],
         MTCards = {'All': []},
-        viztype = null,
+        vizType = null,
         data = {nodes: [], links: []};
 
     var selectedRow = null,
@@ -313,11 +313,11 @@ $(function() {
                     sourceMT = source;
                     graph_container.empty()
                         .html('<h3>Please select Visualization type</h3>');
-                    if (viztype === 'fgraph') {
+                    if (vizType === 'fgraph') {
                         drawSingleSourceRDFMTS(sourceMT, 'force');
-                    } else if (viztype === 'cgraph') {
+                    } else if (vizType === 'cgraph') {
                         drawSingleSourceRDFMTS(sourceMT, 'circular');
-                    } else if (viztype === 'donut') {
+                    } else if (vizType === 'donut') {
                         console.log(source + ': ' + MTCards);
                         drawDonut(source);
                     }
@@ -530,17 +530,17 @@ $(function() {
     $('#graphVizForce').on('click', function() {
         console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourceMT);
         drawSingleSourceRDFMTS(sourceMT, 'force');
-        viztype = 'fgraph';
+        vizType = 'fgraph';
     });
     $('#graphVizCircular').on('click', function() {
         console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourceMT);
         drawSingleSourceRDFMTS(sourceMT, 'circular');
-        viztype = 'cgraph';
+        vizType = 'cgraph';
     });
     $('#donutViz').on('click', function() {
         console.log(source + ': ' + MTCards);
         drawDonut(source);
-        viztype = 'donut';
+        vizType = 'donut';
     });
 
     function drawSingleSourceRDFMTS(source, gt) {
