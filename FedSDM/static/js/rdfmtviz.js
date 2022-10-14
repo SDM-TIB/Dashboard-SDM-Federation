@@ -116,7 +116,7 @@ $(function() {
         maLinks = [],
         mLinks = [],
         mSourceNodes = [],
-        msourcelinks = [];
+        mSourceLinks = [];
 
     mt_details.on('click', function() {
         $('#list_of_rdfmts').hide();
@@ -149,10 +149,10 @@ $(function() {
                     o.source = mNodes[o.source];
                     o.target = mNodes[o.target];
                     if (o.source.datasource === o.target.datasource) {
-                        if (o.source.datasource in msourcelinks) {
-                            msourcelinks[o.source.datasource].push(o);
+                        if (o.source.datasource in mSourceLinks) {
+                            mSourceLinks[o.source.datasource].push(o);
                         } else {
-                            msourcelinks[o.source.datasource] = [o];
+                            mSourceLinks[o.source.datasource] = [o];
                         }
                     }
                 }
