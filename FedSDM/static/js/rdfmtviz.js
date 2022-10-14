@@ -105,13 +105,13 @@ $(function() {
     let sourceLinks = [],
         sourceIDs = {}, sourcesNames = {};
 
-    var aNodes = [],
+    let aNodes = [],
         aLinks = [],
         MTCards = {'All': []},
         vizType = null,
         data = {nodes: [], links: []};
 
-    var selectedRow = null,
+    let selectedRow = null,
         mnodes = [],
         malinks = [],
         mlinks = [],
