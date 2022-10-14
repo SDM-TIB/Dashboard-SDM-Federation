@@ -112,7 +112,7 @@ $(function() {
         data = {nodes: [], links: []};
 
     let selectedRow = null,
-        mnodes = [],
+        mNodes = [],
         malinks = [],
         mlinks = [],
         msourcenodes = [],
@@ -135,7 +135,7 @@ $(function() {
                 console.log('url: ' + url)
                 console.log('detail returned: ' + data);
                 sources = data.sources;
-                mnodes = data.nodes;
+                mNodes = data.nodes;
                 mlinks = data.links;
                 msourcescard = sources.length;
                 for (let i = 0; i < sources.length; i++) {
@@ -146,8 +146,8 @@ $(function() {
                 }
                 for (let i = 0; i < mlinks.length; ++i) {
                     o = mlinks[i];
-                    o.source = mnodes[o.source];
-                    o.target = mnodes[o.target];
+                    o.source = mNodes[o.source];
+                    o.target = mNodes[o.target];
                     if (o.source.datasource === o.target.datasource) {
                         if (o.source.datasource in msourcelinks) {
                             msourcelinks[o.source.datasource].push(o);
@@ -159,7 +159,7 @@ $(function() {
                 malinks = mlinks;
 
                 flatnodes = [];
-                $.each(mnodes, function (key, val) {
+                $.each(mNodes, function (key, val) {
                     flatnodes.push(val);
                     MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                     if (val.datasource in MTCards) {
@@ -173,8 +173,8 @@ $(function() {
                         msourcenodes[val.datasource] = [val]
                     }
                 });
-                mnodes = flatnodes;
-                manodes = mnodes ;
+                mNodes = flatnodes;
+                manodes = mNodes ;
                 $("#mt_viz").show();
 
                 draw_details();
