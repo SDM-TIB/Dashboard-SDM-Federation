@@ -174,7 +174,7 @@ $(function() {
                     }
                 });
                 mNodes = flatnodes;
-                manodes = mNodes ;
+                maNodes = mNodes ;
                 $("#mt_viz").show();
 
                 draw_details();
@@ -188,9 +188,9 @@ $(function() {
     });
 
     function draw_details() {
-        data = {nodes: manodes, links: maLinks};
+        data = {nodes: maNodes, links: maLinks};
         mt_viz.html('<h1> Please select data source!</h1>');
-        drawRDFMTS(manodes, maLinks, 'mt_viz');
+        drawRDFMTS(maNodes, maLinks, 'mt_viz');
     }
 
     $('#backToTable').on('click', function() {
