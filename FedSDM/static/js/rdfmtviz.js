@@ -235,8 +235,7 @@ $(function() {
                 $('#remove_mt').prop('disabled', false);
                 mt_details.prop('disabled', false);
                 $('#backToTable').hide();
-            }).on('deselect', function(e, dt, type, indexes) {
-                var rowData = statstable.rows(indexes).data().toArray();
+            }).on('deselect', function() {
                 $('#edit_mt').prop('disabled', true);
                 $('#remove_mt').prop('disabled', true);
                 mt_details.prop('disabled', true);
