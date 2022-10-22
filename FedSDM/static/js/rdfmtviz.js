@@ -597,7 +597,7 @@ $(function() {
     // constructs the network to visualize
     function network(data, prev, index, expand) {
         expand = expand || {};
-        var gm = {},    // group map
+        let gm = {},    // group map
             nm = {},    // node map
             lm = {},    // link map
             gn = {},    // previous group nodes
@@ -614,7 +614,7 @@ $(function() {
                     gn[i] = n;
                     n.size = 0;
                 } else {
-                    o = gc[i] || (gc[i] = {x:0,y:0,count:0});
+                    o = gc[i] || (gc[i] = {x:0, y:0, count:0});
                     o.x += n.x;
                     o.y += n.y;
                     o.count += 1;
