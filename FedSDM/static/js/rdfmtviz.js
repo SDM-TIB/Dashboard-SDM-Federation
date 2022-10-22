@@ -560,19 +560,19 @@ $(function() {
             }
             visualized = 1;
         } else {
-            const snodes = sourceNodes[source];
-            console.log('number of nodes:' + snodes.length);
+            const sNodes = sourceNodes[source];
+            console.log('number of nodes:' + sNodes.length);
             //connection link between subject and object -> predicates
             let slinks = sourceLinks[source];
             if (!slinks) {
                 slinks=[]
             }
-            data = {nodes: snodes, links: slinks}
+            data = {nodes: sNodes, links: slinks}
             if (gt === 'force') {
-                snodes.forEach(function(d) {
+                sNodes.forEach(function(d) {
                     expand[d.datasource] = true;
                 });
-                drawRDFMTS(snodes, slinks);
+                drawRDFMTS(sNodes, slinks);
             } else {
                 drawGraph(data);
             }
