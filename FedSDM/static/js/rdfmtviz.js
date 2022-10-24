@@ -678,7 +678,7 @@ $(function() {
     }
 
     function convexHulls(nodes, index, offset) {
-        var hulls = {};
+        let hulls = {};
 
         // create point sets
         for (let k = 0; k < nodes.length; ++k) {
@@ -694,7 +694,7 @@ $(function() {
         }
 
         // create convex hulls
-        var hullset = [];
+        let hullset = [];
         for (const i in hulls) {
             hullset.push({datasource: i, path: d3.geom.hull(hulls[i])});
         }
@@ -714,7 +714,7 @@ $(function() {
 
     function drawRDFMTS(nodes, links, divcanv) {
         console.log('nodes: ' + nodes + '\nlinks:' + links);
-        var svg;
+        let svg;
         if (divcanv == null) {
             graph_container.empty();
             svg = d3.select('#graph').append('svg');
@@ -730,7 +730,7 @@ $(function() {
             mt_viz.show();
             canv = 'mtviz'
         }
-        var chartLayer = svg.append('g').classed('chartLayer', true),
+        let chartLayer = svg.append('g').classed('chartLayer', true),
             zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
             g = svg.append('g');
 
@@ -743,7 +743,7 @@ $(function() {
             .duration(1000)
             .attr('opacity', 1);
 
-        var tocolor = 'fill',
+        let tocolor = 'fill',
             towhite = 'stroke';
         if (outline) {
             tocolor = 'stroke'
