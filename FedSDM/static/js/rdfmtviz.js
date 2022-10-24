@@ -743,10 +743,10 @@ $(function() {
             .duration(1000)
             .attr('opacity', 1);
 
-        let tocolor = 'fill',
+        let toColor = 'fill',
             towhite = 'stroke';
         if (outline) {
-            tocolor = 'stroke'
+            toColor = 'stroke'
             towhite = 'fill'
         }
 
@@ -832,7 +832,7 @@ $(function() {
                 })
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
-            .style(tocolor, function(d) {
+            .style(toColor, function(d) {
                 if (divcanv == null) {
                     return color(d.datasource);
                 } else {
