@@ -1098,16 +1098,16 @@ $(function() {
         }
     }
 
-    var gsource = null
+    var gSource = null
     function get_rdfmts_graph_analys(fed, source){
-        if (fed == null || source == null || (fed === federation && source === gsource && gaLoaded === 1)) {
+        if (fed == null || source == null || (fed === federation && source === gSource && gaLoaded === 1)) {
             return
         }
         $('#fedName').html(fed);
         $('#vizFedName').html(fed);
         $('#gaFedName').html(fed);
         $('#gaDsName').html(source);
-        gsource = source;
+        gSource = source;
         if (gtable == null) {
             gtable = $('#graph-analysis').DataTable({
                 responsive: false,
