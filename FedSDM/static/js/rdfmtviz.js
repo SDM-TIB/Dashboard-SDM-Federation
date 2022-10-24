@@ -608,7 +608,7 @@ $(function() {
         // process previous nodes for reuse or centroid calculation
         if (prev) {
             prev.nodes.forEach(function(n) {
-                var i = index(n), o;
+                let i = index(n), o;
 
                 if (n.size > 0) {
                     gn[i] = n;
