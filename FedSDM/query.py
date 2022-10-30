@@ -154,9 +154,9 @@ def get_next_result() -> Response:
     following information:
         - vars -- a list with the variables occurring in the query
         - result -- a dictionary with the next result for the query
-        - execTime -- time elapsed until now since the query was started
-        - firstResult -- time elapsed between starting the query and retrieving the first result
-        - totalRows -- set to 1 since only a single result will be returned
+        - time_total -- time elapsed until now since the query was started
+        - time_first -- time elapsed between starting the query and retrieving the first result
+        - total_rows -- set to 1 since only a single result will be returned
 
     Returns
     -------
