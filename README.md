@@ -1,7 +1,7 @@
 [![build](https://github.com/SDM-TIB/Dashboard-SDM-Federation/actions/workflows/build.yml/badge.svg)](https://github.com/SDM-TIB/Dashboard-SDM-Federation/actions/workflows/build.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-![Python version](https://img.shields.io/badge/python-v3.10-blue)
+![Python version](https://img.shields.io/badge/python-v3.11-blue)
 
 # FedSDM: Semantic Data Manager for Federations of RDF Datasets
 
