@@ -98,7 +98,7 @@ $(function() {
                                 dom: 'Blfrtip',
                                 buttons: table_buttons('sparql-results')
                             });
-                            queryTriples = data.querytriples;
+                            queryTriples = data.query_triples;
                             let resultMap = {}
                             for (let i = 0; i < results.length; i++) {
                                 let row = results[i],

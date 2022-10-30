@@ -240,7 +240,7 @@ def sparql() -> Response:
         if res is None or len(res) == 0:
             del result_queues[session['hashquery']]
             del session['hashquery']
-            return jsonify(vars=variables, result=[], execTime=total, firstResult=first, totalRows=1)
+            return jsonify(vars=variables, result=[], time_total=total, time_first=first, total_rows=1)
 
         if variables is None:
             print('no results during decomposition', query)
@@ -257,11 +257,11 @@ def sparql() -> Response:
             {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in all_triple_patterns
         ]
         return jsonify(vars=variables,
-                       querytriples=triple_patterns,
+                       query_triples=triple_patterns,
                        result=res,
-                       execTime=total,
-                       firstResult=first,
-                       totalRows=i)
+                       time_total=total,
+                       time_first=first,
+                       total_rows=i)
     except Exception as e:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
