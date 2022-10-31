@@ -166,7 +166,7 @@ def get_next_result() -> Response:
         value to tell the user what happened.
 
     """
-    vars = session['vars']
+    vars_ = session['vars']
     start = session['start']
     first = session['first']
     if 'hashquery' in session and session['hashquery'] in result_queues:
@@ -183,7 +183,7 @@ def get_next_result() -> Response:
             del result_queues[session['hashquery']]
             del session['hashquery']
 
-        return jsonify(vars=vars, result=r, time_total=total, time_first=first, total_rows=1)
+        return jsonify(vars=vars_, result=r, time_total=total, time_first=first, total_rows=1)
     except Exception as e:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
