@@ -38,7 +38,7 @@ $(function() {
         gaLoaded = 0;
         get_rdfmts_stats(fed);
         get_rdfmts(fed);
-        get_rdfmts_graph_analys(fed);
+        get_rdfmts_graph_analysis(fed);
         federation = fed;
     }
 
@@ -305,7 +305,7 @@ $(function() {
                     $('#gaDsName').html('ALL');
                 }
                 if (tabVisible === '#analysis') {
-                    get_rdfmts_graph_analys(federation, $(this).text());
+                    get_rdfmts_graph_analysis(federation, $(this).text());
                 } else {
                     $('#vizDsName').html($(this).text());
                     $('#gaDsName').html($(this).text());
@@ -320,7 +320,7 @@ $(function() {
                         console.log(source + ': ' + MTCards);
                         drawDonut(source);
                     }
-                    get_rdfmts_graph_analys(federation, $(this).text());
+                    get_rdfmts_graph_analysis(federation, $(this).text());
                 }
             });
 
@@ -1099,7 +1099,7 @@ $(function() {
     }
 
     var gSource = null
-    function get_rdfmts_graph_analys(fed, source){
+    function get_rdfmts_graph_analysis(fed, source){
         if (fed == null || source == null || (fed === federation && source === gSource && gaLoaded === 1)) {
             return
         }
