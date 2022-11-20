@@ -29,7 +29,7 @@
 
         $(function() {
             $('#menu a').filter(function() {
-                return this.href === window.location.href;
+                return this.href === window.location.href.split('#')[0];
             }).addClass('active');
         });
     </script>
