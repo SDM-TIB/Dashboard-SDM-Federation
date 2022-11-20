@@ -21,7 +21,7 @@ bp = Blueprint('federation', __name__, url_prefix='/federation')
 logger = get_logger('federation')
 
 
-@bp.route('/')
+@bp.route('')
 def index() -> str:
     """Serves the page '/federation'.
 
