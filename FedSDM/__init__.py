@@ -109,6 +109,6 @@ def create_app() -> Flask:
 
     @app.route('/')
     def index():
-        return redirect('dashboard/')
+        return redirect('dashboard')
 
     return app

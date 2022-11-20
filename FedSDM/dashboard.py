@@ -9,7 +9,7 @@ from FedSDM.utils import (
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 
-@bp.route('/')
+@bp.route('')
 def get_all_stats() -> str:
     """Serves the landing page of FedSDM, i.e., '/dashboard'.
 
