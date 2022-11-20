@@ -28,9 +28,8 @@
         });
 
         $(function() {
-            const url = window.location.href;
             $('#menu a').filter(function() {
-                return this.href === url;
+                return this.href === window.location.href;
             }).addClass('active');
         });
     </script>
