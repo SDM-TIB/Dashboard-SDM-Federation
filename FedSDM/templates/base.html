@@ -22,8 +22,7 @@
     <script type="text/javascript">
         $(window).on('load resize', function() {
             const innerHeight = this.window.innerHeight;
-            const screenHeight = this.screen.height;
-            let height = (innerHeight > 0) ? innerHeight : screenHeight;
+            let height = (innerHeight > 0) ? innerHeight : this.screen.height;
             if (height < 1) height = 1;
             $('#page-wrapper').css('min-height', height + 'px');
         });
