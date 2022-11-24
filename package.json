@@ -13,7 +13,7 @@
     "datatables.net-select": "1.5.0",
     "datatables.net-select-dt": "1.5.0",
     "pdfmake": "0.2.6",
-    "bootstrap": "5.2.2",
+    "bootstrap": "5.2.3",
     "d3": "2.10.3",
     "yasgui-yasqe": "2.11.22",
     "jszip": "3.10.1"
