@@ -31,7 +31,7 @@ $(function() {
         $('#gaFedName').html(fed);
         data_sources.empty();
         graph_container.empty()
-            .html('<h1> Loading ... !</h1>');
+            .html('<h1>Loading...</h1>');
         $('#vizDsName').html('');
         loaded = 0;
         visualized = 0;
