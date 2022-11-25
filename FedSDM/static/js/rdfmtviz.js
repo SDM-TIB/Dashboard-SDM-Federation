@@ -202,7 +202,7 @@ $(function() {
 
     function get_rdfmts_stats(fed) {
         if (fed == null || (fed === federation && loaded === 1)) {
-            console.log('already loaded');
+            console.log('Stats already loaded!');
             return
         }
         $('#fedName').html(fed);
@@ -243,7 +243,7 @@ $(function() {
                 selectedRow = null;
             });
         } else {
-            console.log('redrawing table...');
+            console.log('Redrawing table...');
             stats.clear().draw();
             stats.ajax.url('/rdfmts/api/rdfmtstats?graph=' + fed).load();
         }
