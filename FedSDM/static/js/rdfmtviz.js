@@ -726,7 +726,7 @@ $(function() {
             svg = d3.select('#mtviz').append('svg');
             width = mt_viz.width();
             height = 980;
-            console.log('showing...')
+            console.log('Showing visualization...')
             mt_viz.show();
             canv = 'mtviz'
         }
