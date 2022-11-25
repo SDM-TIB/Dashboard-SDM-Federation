@@ -281,7 +281,7 @@ $(function() {
                         .html(legend);
 
             $('#ga_datasources').empty()
-                                     .html(datasources);
+                                .html(datasources);
             data_sources.empty()
                         .html(datasources)
                         .prop('disabled', false);
@@ -311,7 +311,7 @@ $(function() {
                     $('#gaDsName').html($(this).text());
                     sourceMT = source;
                     graph_container.empty()
-                        .html('<h3>Please select Visualization type</h3>');
+                                   .html('<h3>Please select Visualization type</h3>');
                     if (vizType === 'fgraph') {
                         drawSingleSourceRDFMTS(sourceMT, 'force');
                     } else if (vizType === 'cgraph') {
