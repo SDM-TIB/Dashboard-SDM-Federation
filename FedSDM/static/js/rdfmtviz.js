@@ -1307,9 +1307,7 @@ $(function() {
 
         var focus_node = null, highlight_node = null;
 
-        var text_center = false,
-            outline = false,
-            w = w,
+        var w = w,
             h = h,
             min_score = 0,
             max_score = 1,
