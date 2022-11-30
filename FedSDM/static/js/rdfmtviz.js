@@ -1305,9 +1305,7 @@ $(function() {
         //clear explanation body element
         graph_container.html('');
 
-        var w = w,
-            h = h,
-            min_score = 0,
+        var min_score = 0,
             max_score = 1,
             highlight_color = 'blue',
             highlight_trans = 0.1;
