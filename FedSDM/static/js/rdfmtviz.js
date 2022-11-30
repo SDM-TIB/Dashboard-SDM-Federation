@@ -1305,8 +1305,6 @@ $(function() {
         //clear explanation body element
         graph_container.html('');
 
-        var focus_node = null, highlight_node = null;
-
         var w = w,
             h = h,
             min_score = 0,
