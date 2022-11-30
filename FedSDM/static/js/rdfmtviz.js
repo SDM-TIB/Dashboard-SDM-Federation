@@ -1297,11 +1297,7 @@ $(function() {
     //draw the DAG graph using d3.js
     function drawWhyDAG(nodes, links) {
         var width  = 960,
-            height = 800,
-            // colors = d3.scale.category10();
-            colors = d3.scale.ordinal()
-                .domain(['G', 'R', 'B'])
-                .range(['#009933', '#FF0000', '#0000FD']);
+            height = 800;
         //clear explanation body element
         graph_container.html('');
 
