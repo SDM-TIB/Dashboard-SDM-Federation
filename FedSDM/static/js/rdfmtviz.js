@@ -1296,8 +1296,6 @@ $(function() {
 
     //draw the DAG graph using d3.js
     function drawWhyDAG(nodes, links) {
-        var width  = 960,
-            height = 800;
         //clear explanation body element
         graph_container.html('');
 
