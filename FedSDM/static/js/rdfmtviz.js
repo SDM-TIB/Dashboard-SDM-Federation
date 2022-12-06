@@ -1300,8 +1300,7 @@ $(function() {
         graph_container.html('');
 
         var min_score = 0,
-            max_score = 1,
-            highlight_trans = 0.1;
+            max_score = 1;
         var colors = d3.scale.linear()
             .domain([min_score, (min_score+max_score)/2, max_score])
             .range(['lime', 'yellow', 'red']);
