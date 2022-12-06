@@ -1308,15 +1308,7 @@ $(function() {
             .domain([1,100])
             .range([8,64]);
 
-        var default_node_color = '#ccc',
-            default_link_color = '#888',
-            nominal_base_node_size = 8,
-            nominal_text_size = 10,
-            max_text_size = 24,
-            nominal_stroke = 1.5,
-            max_stroke = 4.5,
-            max_base_node_size = 36,
-            min_zoom = 0.1,
+        var min_zoom = 0.1,
             max_zoom = 7;
         var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         var svg = d3.select('#graph')
