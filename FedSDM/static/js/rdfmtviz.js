@@ -1305,9 +1305,6 @@ $(function() {
             .domain([min_score, (min_score+max_score)/2, max_score])
             .range(['lime', 'yellow', 'red']);
 
-        var min_zoom = 0.1,
-            max_zoom = 7;
-        var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         var svg = d3.select('#graph')
             .append('svg');
 
