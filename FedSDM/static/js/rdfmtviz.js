@@ -1304,9 +1304,6 @@ $(function() {
         var colors = d3.scale.linear()
             .domain([min_score, (min_score+max_score)/2, max_score])
             .range(['lime', 'yellow', 'red']);
-        var size = d3.scale.pow().exponent(1)
-            .domain([1,100])
-            .range([8,64]);
 
         var min_zoom = 0.1,
             max_zoom = 7;
