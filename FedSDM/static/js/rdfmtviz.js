@@ -1294,17 +1294,6 @@ $(function() {
             .attr('d', curve);
     }
 
-    function main() {
-        var range = 100
-        var data = {
-            nodes:d3.range(0, range).map(function(d) { return {label: 'l' + d, r: ~~d3.randomUniform(8, 28)()} }),
-            links:d3.range(0, range).map(function() { return {source: ~~d3.randomUniform(range)(), target: ~~d3.randomUniform(range)()} })
-        }
-        console.log(data)
-        setSize(data)
-        drawChart(data)
-    }
-
     function setSize(data) {
         width = document.querySelector("#graph").clientWidth
         height = document.querySelector("#graph").clientHeight
