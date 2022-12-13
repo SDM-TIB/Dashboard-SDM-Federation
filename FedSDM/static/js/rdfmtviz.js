@@ -1264,20 +1264,6 @@ $(function() {
             .call(d3.behavior.drag().on('drag', dragged));
     }
 
-    // Draws straight edges between nodes
-    function drawLinks(links) {
-        circularlink = d3.select('#plot').selectAll('.link')
-            .data(links)
-            .enter()
-            .append('line')
-            .attr('class', 'link')
-            .style('stroke', function(d, i) { return default_link_color; })
-            .attr('x1', function(d) { return d.source.x; })
-            .attr('y1', function(d) { return d.source.y; })
-            .attr('x2', function(d) { return d.target.x; })
-            .attr('y2', function(d) { return d.target.y; });
-    }
-
     // Draws curved edges between nodes
     function drawCurves(links) {
         // remember this from tree example?
