@@ -1184,9 +1184,9 @@ $(function() {
 
         diameter = wh;
         var svg = d3.select('#graph').append('svg');
-        var chartLayer = svg.append('g').classed('chartLayer', true);
-        svg.attr('width', graph_container.width())
-            .attr('height', 980);
+        svg.append('g').classed('chartLayer', true)
+           .attr('width', graph_container.width())
+           .attr('height', 980);
 
         radius = wh/2;
         // create plot area within svg image
