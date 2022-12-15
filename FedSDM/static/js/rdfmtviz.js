@@ -14,7 +14,7 @@ $(function() {
     let stats = null,
         federation =  federation_list.val(),
         tabVisible = '#home',
-        width, height, h = 960, w = 760, chartWidth, chartHeight;
+        width, height, h = 960, w = 760;
     window.jsdata = [];
 
     if (federation != null && federation !== '') {
