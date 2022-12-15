@@ -64,8 +64,7 @@ $(function() {
     let text_center = false,
         outline = false;
 
-    let min_score = 0,
-        max_score = 1,
+    let max_score = 1,
         highlight_color = '#A52A2A',
         highlight_trans = 0.1;
 
