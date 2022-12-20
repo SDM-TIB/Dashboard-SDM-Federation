@@ -222,7 +222,7 @@ $(function() {
 
         // construct data source management data table
         if (table == null) {
-            table = $('#datasources').DataTable({
+            table = $('#data-sources').DataTable({
                 order: [[ 1, 'desc' ]],
                 responsive: false,
                 select: true,
