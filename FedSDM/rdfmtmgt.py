@@ -762,9 +762,9 @@ def api_rdfmtanalysis() -> Response:
     """Serves requests to '/rdfmts/api/rdfmtanalysis'.
 
     This route performs a network analysis of the RDF Molecule Templates
-    of a datasource. The request requires the following parameters:
+    of a data source. The request requires the following parameters:
         - 'graph' -- the identifier of the federation to which the source belongs
-        - 'source' -- the datasource of interest
+        - 'source' -- the data source of interest
 
     If the value for a parameter is 'All', all available federations and/or
     sources are considered.
@@ -795,7 +795,7 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
     """Gets graph statistics about the RDF Molecule Templates in a specific source.
 
     This method performs a network analysis on the RDF Molecule Templates of the
-    specified federation and datasource. The reported metrics are:
+    specified federation and data source. The reported metrics are:
         - Density
         - Number of nodes
         - Number of edges
@@ -814,7 +814,7 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
     graph : str, optional
         The identifier of the federation of interest. If None, then all federations are considered.
     source : str, optional
-        The identifier of the datasource of interest. If None, then all source are considered.
+        The identifier of the data source of interest. If None, then all source are considered.
 
     Returns
     -------
