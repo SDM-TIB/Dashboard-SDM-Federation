@@ -2,7 +2,7 @@ $(function() {
     const graph_container = $('#graph'),
           graph_legend = $('#legend'),
           federation_list = $('#federations-list'),
-          data_sources = $('#datasources'),
+          data_sources = $('#data_sources'),
           mt_details = $('#mt_details'),
           mt_viz = $('#mt_viz');
 
@@ -262,27 +262,27 @@ $(function() {
             sourcesCard = sources.length;
             max_score = sourcesCard;
             let legend = '',
-                datasources = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
+                data_sources_html = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
             console.log('number of sources: ' + sources.length);
             for (let i = 0; i < sources.length; i++) {
                 const v = sources[i].id,
                       name  = sources[i].name;
                 sourceIDs[name] = v;
                 sourcesNames[v] = name;
-                datasources += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
+                data_sources_html += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
                 legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
             }
             graph_legend.empty()
                         .html(legend);
 
-            $('#ga_datasources').empty()
-                                .html(datasources);
+            $('#ga_data_sources').empty()
+                                 .html(data_sources_html);
             data_sources.empty()
-                        .html(datasources)
+                        .html(data_sources_html)
                         .prop('disabled', false);
             graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
-                $('#datasources_btn').val($(this).text())
+                $('#data_sources_btn').val($(this).text())
                 if ($(this).text() === 'All') {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
@@ -522,12 +522,12 @@ $(function() {
         }
     });
     $('#graphVizForce').on('click', function() {
-        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourceMT);
+        console.log('visible tab for data source selection: ' + tabVisible + ' ' + sourceMT);
         drawSingleSourceRDFMTS(sourceMT, 'force');
         vizType = 'fgraph';
     });
     $('#graphVizCircular').on('click', function() {
-        console.log('visible tab for datasource selection: ' + tabVisible + ' ' + sourceMT);
+        console.log('visible tab for data source selection: ' + tabVisible + ' ' + sourceMT);
         drawSingleSourceRDFMTS(sourceMT, 'circular');
         vizType = 'cgraph';
     });
