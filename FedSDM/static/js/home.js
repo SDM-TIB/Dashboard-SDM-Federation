@@ -1,7 +1,7 @@
 /*!
  * ---------------------------------------------------------------------------------------------
  * FedSDM: home.js
- * Loads statistics about the federations, datasources, RDF-MTs, etc. and creates the bar charts
+ * Loads statistics about the federations, data sources, RDF-MTs, etc. and creates the bar charts
  * ---------------------------------------------------------------------------------------------
  */
 
@@ -17,7 +17,7 @@ $(function() {
     let dataSummaryChart = null,
         federationSummaryChart = null;
 
-    // Given the statistics about the datasources as well as the federations,
+    // Given the statistics about the data sources as well as the federations,
     // this function populates the bar charts of the landing page.
     // It is called from the HTML template since that is the place where the data is available.
     // The chart options defined in utils.js as well as colors defined in colors.js are used.
