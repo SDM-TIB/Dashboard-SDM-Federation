@@ -57,23 +57,23 @@ def get_federations() -> list:
         return []
 
 
-def get_datasources(graph: str = None) -> dict:
-    """Gets all datasources belonging to a particular federation; or all of them.
+def get_data_sources(graph: str = None) -> dict:
+    """Gets all data sources belonging to a particular federation; or all of them.
 
-    Makes use of *MetadataDB* to retrieve the metadata about the datasource of a
+    Makes use of *MetadataDB* to retrieve the metadata about the data source of a
     particular federation. The federation is specified as its identifier (URI).
-    If no federation is given to the method, all datasources are retrieved.
+    If no federation is given to the method, all data sources are retrieved.
 
     Parameters
     ----------
     graph : str, optional
-        The URI of the federation all datasources should be returned for.
+        The URI of the federation all data sources should be returned for.
         None by default which means all federations will be considered.
 
     Returns
     -------
     dict
-        A dictionary with the metadata about the datasources, their identifiers are the keys.
+        A dictionary with the metadata about the data sources, their identifiers are the keys.
 
     """
     mdb = get_mdb()
@@ -90,28 +90,28 @@ def get_datasources(graph: str = None) -> dict:
         return {}
 
 
-def get_num_rdfmts(graph: str, datasource: str = None) -> int:
-    """Gets the number of RDF Molecule Templates of a federation; or a datasource in that federation.
+def get_num_rdfmts(graph: str, data_source: str = None) -> int:
+    """Gets the number of RDF Molecule Templates of a federation; or a data source in that federation.
 
     Uses *MetadataDB* to retrieve the number of RDF Molecule Templates of the specified federation.
-    If a datasource was passed as well, the number of RDF Molecule Templates of that datasource in
+    If a data source was passed as well, the number of RDF Molecule Templates of that data source in
     the mentioned federation is retrieved.
 
     Parameters
     ----------
     graph : str
         The URI of the federation the number of RDF Molecule Templates should be returned for.
-    datasource : str, optional
-        The URI of the datasource of interest. None by default which means all datasources of the federation.
+    data_source : str, optional
+        The URI of the data source of interest. None by default which means all data sources of the federation.
 
     Returns
     -------
     int
-        The number of RDF Molecule Templates in the federation (or the datasource).
+        The number of RDF Molecule Templates in the federation (or the data source).
 
     """
     mdb = get_mdb()
-    source = '?ds' if datasource is None else '<' + datasource + '>'
+    source = '?ds' if data_source is None else '<' + data_source + '>'
     query = 'SELECT (COUNT (DISTINCT ?mt) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
             '  ?mt a mt:RDFMT .\n' \
             '  ?mt  mt:source  ?mtsource .\n'\
@@ -120,28 +120,28 @@ def get_num_rdfmts(graph: str, datasource: str = None) -> int:
     return _process_numeric_result(mdb, query)
 
 
-def get_num_mt_links(graph: str, datasource: str = None) -> int:
-    """Gets the number of links between RDF Molecule Templates in a federation; or a datasource in that federation.
+def get_num_mt_links(graph: str, data_source: str = None) -> int:
+    """Gets the number of links between RDF Molecule Templates in a federation; or a data source in that federation.
 
     Uses the *MetadataDB* to retrieve th number of links between RDF Molecule Templates in the specified federation.
-    If a datasource is passed as well, the number of links within that datasource of the specified federation
+    If a data source is passed as well, the number of links within that data source of the specified federation
     is returned instead.
 
     Parameters
     ----------
     graph : str
         The URI of the federation the number of links between RDF Molecule Templates should be returned for.
-    datasource : str, optional
-        The URI of the datasource of interest. None by default which means all datasources of the federation.
+    data_source : str, optional
+        The URI of the data source of interest. None by default which means all data sources of the federation.
 
     Returns
     -------
     int
-        The number of links between RDF Molecule Templates in the federation (or the datasource).
+        The number of links between RDF Molecule Templates in the federation (or the data source).
 
     """
     mdb = get_mdb()
-    source = '?ds' if datasource is None else '<' + datasource + '>'
+    source = '?ds' if data_source is None else '<' + data_source + '>'
     query = 'SELECT (COUNT(DISTINCT ?d) as ?count) WHERE { GRAPH <' + graph + '> {\n' \
             '  ?d a mt:PropRange .\n' \
             '  ?d mt:name ?mt .\n' \
@@ -150,28 +150,28 @@ def get_num_mt_links(graph: str, datasource: str = None) -> int:
     return _process_numeric_result(mdb, query)
 
 
-def get_num_properties(graph: str, datasource: str = None) -> int:
-    """Gets the number of predicates (properties) within a particular federation; or datasource in that federation.
+def get_num_properties(graph: str, data_source: str = None) -> int:
+    """Gets the number of predicates (properties) within a particular federation; or data source in that federation.
 
     Makes use of *MetadataDB* to count the number of distinct predicates (properties) within the
-    specified federation. If a datasource is passed, the number of distinct predicates (properties)
-    of that datasource in the specified federation is returned instead.
+    specified federation. If a data source is passed, the number of distinct predicates (properties)
+    of that data source in the specified federation is returned instead.
 
     Parameters
     ----------
     graph : str
         The URI of the federation the number of properties should be returned for.
-    datasource : str, optional
-        The URI of the datasource of interest. None by default which means all datasources of the federation.
+    data_source : str, optional
+        The URI of the data source of interest. None by default which means all data sources of the federation.
 
     Returns
     -------
     int
-        The number of properties in the federation (or the datasource).
+        The number of properties in the federation (or the data source).
 
     """
     mdb = get_mdb()
-    source = '?ds' if datasource is None else '<' + datasource + '>'
+    source = '?ds' if data_source is None else '<' + data_source + '>'
     query = 'SELECT (COUNT (DISTINCT ?mtp) AS ?count) WHERE { GRAPH <' + graph + '> {\n' \
             '  ?mt a mt:RDFMT .\n' \
             '  ?mt mt:source  ?mtsource .\n' \
@@ -185,7 +185,7 @@ def get_federation_stats() -> list:
     """Gets detailed statistics about the available federations.
 
     Uses *MetadataDB* to retrieve detailed statistics about the available federations.
-    These statistics include the number of datasources (*sources*), number of RDF
+    These statistics include the number of data sources (*sources*), number of RDF
     Molecule Templates (*rdfmts*), number of links between RDF Molecule Templates (*links*),
     number of predicates (*properties*), and the number of triples (*triples*).
 
