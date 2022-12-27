@@ -17,7 +17,7 @@ class MetadataDB:
     """Provides an abstract way to query and update the metadata knowledge graph.
 
     The *MetadataDB* is a knowledge graph containing the information about the
-    available federations, datasources, and their metadata. This class provides
+    available federations, data sources, and their metadata. This class provides
     an abstract way to query and update said knowledge graph.
 
     """
@@ -212,7 +212,7 @@ def get_mdb() -> MetadataDB:
     """Gets the database holding all the metadata.
 
     The metadata DB holds information about the available federations,
-    datasources, RDF Molecule Templates, etc. If the metadata DB has
+    data sources, RDF Molecule Templates, etc. If the metadata DB has
     not yet been configured for the running instance of FedSDM, it
     will be configured when this method is called. Otherwise, the
     existing :class:`MetadataDB` object is returned.
