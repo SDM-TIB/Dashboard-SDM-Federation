@@ -26,8 +26,8 @@ def index() -> str:
     """Serves the page '/federation'.
 
     This route serves the federation page of the dashboard. It contains statistics about the
-    available federations as well as the datasources. The page also provides the management
-    of federations and datasources. Note that the individual statistics shown and actions
+    available federations as well as the data sources. The page also provides the management
+    of federations and data sources. Note that the individual statistics shown and actions
     performed are actually executed via other routes called via AJAX.
 
     Returns
@@ -52,7 +52,7 @@ def stats() -> Response:
 
     This route provides statistics about the federation(s). Those statistics include the number of
     triples, RDF Molecule Templates, properties, and links between RDF Molecule Templates per
-    datasource in the federation.
+    data source in the federation.
 
     Note
     ----
@@ -88,42 +88,42 @@ def stats() -> Response:
 
 
 def get_stats(graph: str) -> dict:
-    """Gets the statistics for all datasources in the specified federation.
+    """Gets the statistics for all data sources in the specified federation.
 
-    This method provides the following statistics for each datasource in the federation:
+    This method provides the following statistics for each data source in the federation:
         - number of RDF Molecule Templates
         - number of links between the RDF Molecule Templates
         - number of triples
         - number of properties (predicates)
-        - URI of the datasource
+        - URI of the data source
 
     Parameters
     ----------
     graph : str
-        The identifier of the federation for which to return the statistics about the datasource.
+        The identifier of the federation for which to return the statistics about the data source.
 
     Returns
     -------
     dict
-        A dictionary with the above-mentioned statistics about the datasources in the
-        federation. If there are no datasource in the federation or if the federation
+        A dictionary with the above-mentioned statistics about the data sources in the
+        federation. If there are no data source in the federation or if the federation
         does not exist, the dictionary will be empty.
 
     """
     stats = {}
-    datasources = get_data_sources(graph)
-    for datasource in list(datasources.keys()):
-        num_mts = get_num_rdfmts(graph, datasource)
-        props = get_num_properties(graph, datasource)
-        num_links = get_num_mt_links(graph, datasource)
+    data_sources = get_data_sources(graph)
+    for data_source in list(data_sources.keys()):
+        num_mts = get_num_rdfmts(graph, data_source)
+        props = get_num_properties(graph, data_source)
+        num_links = get_num_mt_links(graph, data_source)
         stat = {
             'rdfmts': num_mts,
             'links': num_links,
-            'triples': datasources[datasource]['triples'] if 'triples' in datasources[datasource] else -1,
+            'triples': data_sources[data_source]['triples'] if 'triples' in data_sources[data_source] else -1,
             'properties': props,
-            'ds': datasources[datasource]['source']
+            'ds': data_sources[data_source]['source']
         }
-        stats[datasources[datasource]['source']] = stat
+        stats[data_sources[data_source]['source']] = stat
     return stats
 
 
@@ -172,14 +172,14 @@ def create() -> Response:
 
 @bp.route('/datasources', methods=['GET'])
 @login_required
-def datasources() -> Response:
+def data_sources() -> Response:
     """Serves requests send to '/federation/datasources'.
 
-    This method provides the following metadata for all datasources in the specified federation:
+    This method provides the following metadata for all data sources in the specified federation:
         - identifier -- the internal identifier
         - name -- the human-readable name
-        - URL -- address of the datasource
-        - datasource type -- type, e.g., SPARQL endpoint
+        - URL -- address of the data source
+        - data source type -- type, e.g., SPARQL endpoint
         - homepage -- homepage of the dataset if any
         - version -- version of the dataset if any
         - keywords -- optional keywords
@@ -190,10 +190,10 @@ def datasources() -> Response:
     Note
     ----
     The request has to include the parameter 'graph' identifying a federation. If the specified
-    federation exists, the metadata for all its datasources are returned. However, if the
-    specified value is 'All', then the metadata for **all** datasources are retrieved.
+    federation exists, the metadata for all its data sources are returned. However, if the
+    specified value is 'All', then the metadata for **all** data sources are retrieved.
 
-    When setting the parameter 'ds_type', it is also possible to limit the output to datasources
+    When setting the parameter 'ds_type', it is also possible to limit the output to data sources
     of a specific type. However, at this point only SPARQL endpoints are supported.
 
     This route only accepts GET requests.
@@ -203,7 +203,7 @@ def datasources() -> Response:
     Returns
     -------
     flask.Response
-        A JSON response with the above-mentioned metadata about the datasources.
+        A JSON response with the above-mentioned metadata about the data sources.
 
     """
     try:
@@ -219,7 +219,7 @@ def datasources() -> Response:
         session['fed'] = graph
 
     ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
-    res = api_get_datasources(graph, ds_type)
+    res = api_get_data_sources(graph, ds_type)
 
     return Response(json.dumps({'data': res}), mimetype='application/json')
 
@@ -228,20 +228,20 @@ def datasources() -> Response:
 def api_add_source() -> Response:
     """Serves requests to '/federation/addsource'.
 
-    This method creates new datasource based on the provided data.
-    If possible, the metadata for the datasource is collected.
+    This method creates new data source based on the provided data.
+    If possible, the metadata for the data source is collected.
     The following parameters are valid for this request:
-        - fed -- specifying to which federation the datasource will be added
-        - url -- the URL of the datasource
-        - dstype -- specifying the type of the datasource
-        - name -- human-readable name for the datasource
+        - fed -- specifying to which federation the data source will be added
+        - url -- the URL of the data source
+        - dstype -- specifying the type of the data source
+        - name -- human-readable name for the data source
         - desc -- short description of the data (optional)
         - params -- parameters used for connecting to the source (optional)
         - keywords -- keywords categorizing the dataset (optional)
         - version -- version of the dataset (optional)
         - homepage -- homepage of the dataset providing additional information (optional)
         - organization -- organization publishing the dataset (optional)
-        - ontology_graph -- URL of the endpoint providing the ontology for the datasource (optional, unused)
+        - ontology_graph -- URL of the endpoint providing the ontology for the data source (optional, unused)
         - types -- a list of RDF classes to which the metadata collection will be restricted (optional)
 
     Note
@@ -251,7 +251,7 @@ def api_add_source() -> Response:
     Returns
     -------
     flask.Response
-        A JSON response indicating the status of adding the new datasource. Negative values indicate an error.
+        A JSON response indicating the status of adding the new data source. Negative values indicate an error.
         0 if the source is accessible but no RDF Molecule Templates can be extracted for it. 1 for success.
 
     """
@@ -290,8 +290,8 @@ def api_add_source() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Optional[Queue]]:
-    """Adds a new datasource to the metadata knowledge graph.
+def add_data_source(federation: str, data_source: DataSource) -> Tuple[dict, Optional[Queue]]:
+    """Adds a new data source to the metadata knowledge graph.
 
     The given DataSource object is transformed to RDF triples and added to the
     federation in the metadata knowledge graph using :class:`FedSDM.db.MetadataDB`.
@@ -299,16 +299,16 @@ def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Opti
     Parameters
     ----------
     federation : str
-        The identifier of the federation the datasource should be added to.
-    datasource : FedSDM.rdfmt.model.DataSource
-        The DataSource object representing the datasource to be added.
+        The identifier of the federation the data source should be added to.
+    data_source : FedSDM.rdfmt.model.DataSource
+        The DataSource object representing the data source to be added.
 
     Returns
     -------
     (dict, Queue | None)
         Returns a tuple with a dictionary indicating the status of adding the
-        datasource and an optional queue holding the process collecting the
-        metadata from the datasource.
+        data source and an optional queue holding the process collecting the
+        metadata from the data source.
 
         Negative status values represent an error while adding the source.
         A value of 0 (zero) means that the source is accessible but no RDF
@@ -320,26 +320,26 @@ def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Opti
     # username and password are optional
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     out_queue = Queue()
-    logger.info(datasource.ds_type)
-    if datasource.ds_type == DataSourceType.SPARQL_ENDPOINT:
-        if not datasource.is_accessible():
-            data = datasource.to_rdf()
+    logger.info(data_source.ds_type)
+    if data_source.ds_type == DataSourceType.SPARQL_ENDPOINT:
+        if not data_source.is_accessible():
+            data = data_source.to_rdf()
             insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
             rr = mdb.update(insert_query)
-            logger.info(str(datasource.url) + ' cannot be accessed. Please check if you write URLs properly!')
+            logger.info(str(data_source.url) + ' cannot be accessed. Please check if you write URLs properly!')
             if rr:
                 return {'status': -1}, None
             else:
                 return {'status': -2}, None
-        data = datasource.to_rdf()
+        data = data_source.to_rdf()
         insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
         mdb.update(insert_query)
-        p = Process(target=mgr.create, args=(datasource, out_queue, ))
+        p = Process(target=mgr.create, args=(data_source, out_queue,))
         p.start()
         logger.info('Collecting RDF-MTs started')
         return {'status': 1}, out_queue
     else:
-        data = datasource.to_rdf()
+        data = data_source.to_rdf()
         insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
         rr = mdb.update(insert_query)
         if rr:
@@ -353,20 +353,20 @@ def add_data_source(federation: str, datasource: DataSource) -> Tuple[dict, Opti
 def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
     """Serves requests to '/federation/editsource'.
 
-    This method edits an existing datasource based on the provided data.
-    If possible, the metadata of the datasource will be updated.
+    This method edits an existing data source based on the provided data.
+    If possible, the metadata of the data source will be updated.
     The following parameters are valid for this request:
-        - fed -- specifying to which federation the datasource belongs
-        - url -- the URL of the datasource
-        - dstype -- specifying the type of the datasource
-        - name -- human-readable name for the datasource
+        - fed -- specifying to which federation the data source belongs
+        - url -- the URL of the data source
+        - dstype -- specifying the type of the data source
+        - name -- human-readable name for the data source
         - desc -- short description of the data (optional)
         - params -- parameters used for connecting to the source (optional)
         - keywords -- keywords categorizing the dataset (optional)
         - version -- version of the dataset (optional)
         - homepage -- homepage of the dataset providing additional information (optional)
         - organization -- organization publishing the dataset (optional)
-        - ontology_graph -- URL of the endpoint providing the ontology for the datasource (optional, unused)
+        - ontology_graph -- URL of the endpoint providing the ontology for the data source (optional, unused)
         - types -- a list of RDF classes to which the metadata collection will be restricted (optional)
 
     Note
@@ -377,8 +377,8 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
     -------
     flask.Response | (dict, Queue | None)
         Returns a tuple with a dictionary indicating the status of adding the
-        datasource and an optional queue holding the process collecting the
-        metadata from the datasource.
+        data source and an optional queue holding the process collecting the
+        metadata from the data source.
         Negative status values represent an error while editing the source.
         A status value of 1 (one) represents a success in editing the source;
         in this case also the queue is returned.
@@ -439,11 +439,11 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
 def api_find_links() -> Response:
     """Serves requests to '/federation/api/findlinks'.
 
-    This method finds links between the RDF Molecule Templates of a datasource.
+    This method finds links between the RDF Molecule Templates of a data source.
     The parameter 'fed' has to be present in order to identify the federation
     in which the links should be searched. If the parameter 'datasource' is
     present, all links for that particular source are searched, otherwise
-    the links between all datasource of the federation will be checked.
+    the links between all data source of the federation will be checked.
 
     Returns
     -------
@@ -462,8 +462,8 @@ def api_find_links() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def find_links(federation: str, datasource: str) -> Tuple[dict, Queue]:
-    """Starts the process of finding the links between datasources.
+def find_links(federation: str, data_source: str) -> Tuple[dict, Queue]:
+    """Starts the process of finding the links between data sources.
 
     Starts the process to search for links between the RDF Molecule Templates
     of different sources within the same federation. Depending on the input,
@@ -474,8 +474,8 @@ def find_links(federation: str, datasource: str) -> Tuple[dict, Queue]:
     ----------
     federation : str
         The identifier of the federation in which the links should be search for.
-    datasource : str
-        The identifier of the datasource for which to search for links to other sources.
+    data_source : str
+        The identifier of the data source for which to search for links to other sources.
         If it is None, then all source in the federation will be considered.
 
     Returns
@@ -488,7 +488,7 @@ def find_links(federation: str, datasource: str) -> Tuple[dict, Queue]:
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     out_queue = Queue()
-    p = Process(target=mgr.create_inter_ds_links, args=(datasource, out_queue,))
+    p = Process(target=mgr.create_inter_ds_links, args=(data_source, out_queue,))
     p.start()
     return {'status': 1}, out_queue
 
@@ -497,9 +497,9 @@ def find_links(federation: str, datasource: str) -> Tuple[dict, Queue]:
 def api_recreate_mts() -> Response:
     """Serves requests to '/federation/api/recreatemts'.
 
-    This method recreates the RDF Molecule Templates of a datasource.
+    This method recreates the RDF Molecule Templates of a data source.
     The parameters 'fed' and 'datasource' need to be present to correctly
-    identify the federation and datasource for which the RDF Molecule
+    identify the federation and data source for which the RDF Molecule
     Templates should be recomputed.
 
     Returns
@@ -520,17 +520,17 @@ def api_recreate_mts() -> Response:
 
 
 def recreate_mts(federation: str, ds: str) -> Tuple[dict, Optional[Queue]]:
-    """Starts the process of recreating the RDF Molecule Templates for a datasource.
+    """Starts the process of recreating the RDF Molecule Templates for a data source.
 
-    Starts the process to recreate the RDF Molecule Templates for the datasource
+    Starts the process to recreate the RDF Molecule Templates for the data source
     identified by the parameters passed to the method.
 
     Parameters
     ----------
     federation : str
-        The identifier of the federation to which the datasource belongs.
+        The identifier of the federation to which the data source belongs.
     ds : str
-        The identifier of the datasource for which to recreate the metadata.
+        The identifier of the data source for which to recreate the metadata.
 
     Returns
     -------
@@ -544,10 +544,10 @@ def recreate_mts(federation: str, ds: str) -> Tuple[dict, Optional[Queue]]:
     mdb = get_mdb()
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', federation)
     out_queue = Queue()
-    datasource = mgr.get_source(ds)
-    if datasource is None:
+    data_source = mgr.get_source(ds)
+    if data_source is None:
         return {'status': -1}, None
-    p = Process(target=mgr.create, args=(datasource, out_queue, True, ))
+    p = Process(target=mgr.create, args=(data_source, out_queue, True, ))
     p.start()
     return {'status': 1}, out_queue
 
@@ -613,14 +613,14 @@ def create_federation(name: str, desc: str, is_public: bool) -> Optional[str]:
         return None
 
 
-def api_get_datasources(graph: str = None, ds_type=None) -> list:
-    """Gets all datasources of a specified federation and datasource type with their metadata.
+def api_get_data_sources(graph: str = None, ds_type=None) -> list:
+    """Gets all data sources of a specified federation and data source type with their metadata.
 
-    This method provides the following metadata for all datasources in the specified federation:
+    This method provides the following metadata for all data sources in the specified federation:
         - identifier -- the internal identifier
         - name -- the human-readable name
-        - URL -- address of the datasource
-        - datasource type -- type, e.g., SPARQL endpoint
+        - URL -- address of the data source
+        - data source type -- type, e.g., SPARQL endpoint
         - homepage -- homepage of the dataset if any
         - version -- version of the dataset if any
         - keywords -- optional keywords
@@ -632,23 +632,23 @@ def api_get_datasources(graph: str = None, ds_type=None) -> list:
     ----
     If no federation identifier (parameter 'graph') is given, all federations are considered.
 
-    If no datasource type is specified, then all datasource types are considered.
+    If no data source type is specified, then all data source types are considered.
 
     Parameters
     ----------
     graph : str, optional
-        The identifier of the federation for which the datasources should
+        The identifier of the federation for which the data sources should
         be retrieved. If none is given, all federations will be considered.
-    ds_type : Any, op
-        The datasource types to be considered, i.e., a list of string values
-        representing the datasource types of interest.
+    ds_type : Any, optional
+        The data source types to be considered, i.e., a list of string values
+        representing the data source types of interest.
 
     Returns
     -------
     list
-        A list of all datasources in the federation matching the given datasource
+        A list of all data sources in the federation matching the given data source
         type. Each entry in the list includes the above-mentioned metadata about
-        the datasources.
+        the data sources.
 
     """
     # TODO: check if it is possible to remove duplicated triple patterns when building the query
