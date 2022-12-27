@@ -14,7 +14,7 @@ def get_all_stats() -> str:
     """Serves the landing page of FedSDM, i.e., '/dashboard'.
 
     It makes use of several utility methods in order to get all the different statistics
-    for all federations and datasources available to the instance of FedSDM.
+    for all federations and data sources available to the instance of FedSDM.
 
     Returns
     -------
@@ -28,14 +28,14 @@ def get_all_stats() -> str:
         if session['fed'] not in [f['uri'] for f in feds]:
             del session['fed']
     source_ids = []
-    datasources = {}
+    data_sources = {}
     rdfmts = 0
     links = 0
 
     for f in feds:
         graph = f['uri']
         dss = get_data_sources(graph)
-        datasources.update(dss)
+        data_sources.update(dss)
         source_ids.extend(list(dss.keys()))
         mts = get_num_rdfmts(graph)
         rdfmts += mts
@@ -43,11 +43,11 @@ def get_all_stats() -> str:
         links += lks
         for s in list(dss.keys()):
             num_mts = get_num_rdfmts(graph, s)
-            datasources[s]['rdfmts'] = num_mts
+            data_sources[s]['rdfmts'] = num_mts
             props = get_num_properties(graph, s)
-            datasources[s]['properties'] = props
+            data_sources[s]['properties'] = props
             links_ = get_num_mt_links(graph, s)
-            datasources[s]['links'] = links_
+            data_sources[s]['links'] = links_
 
     stat = {
         'rdfmts': rdfmts,
@@ -56,7 +56,7 @@ def get_all_stats() -> str:
         'links': links
     }
 
-    datasource_stats = list(datasources.values())
+    data_source_stats = list(data_sources.values())
     federation_stats = get_federation_stats()
 
-    return render_template('dashboard/index.html', dsStats=datasource_stats, fedStats=federation_stats, stats=stat)
+    return render_template('dashboard/index.html', dsStats=data_source_stats, fedStats=federation_stats, stats=stat)
