@@ -1,8 +1,8 @@
 /*!
- * -----------------------------------------------------------------------------------------------
+ * ------------------------------------------------------------------------------------------------
  * FedSDM: federations.js
- * Loads statistics about the federations and datasources; creates tables and bar charts with them
- * -----------------------------------------------------------------------------------------------
+ * Loads statistics about the federations and data sources; creates tables and bar charts with them
+ * ------------------------------------------------------------------------------------------------
  */
 
 $(function() {
@@ -107,7 +107,7 @@ $(function() {
         set_disabled_prop_ds_buttons(true)
     }
 
-    // Turns an array with the information about the datasources, i.e., the number ot triples and
+    // Turns an array with the information about the data sources, i.e., the number ot triples and
     // the number of RDF Molecule Templates, into the representation for a bar chart using Chart.js.
     function sourceStatsToBarChart(data) {
         return [
@@ -127,7 +127,7 @@ $(function() {
         ]
     }
 
-    // Loads the basic statistics about datasources in a given federation and populates the table and bar chart.
+    // Loads the basic statistics about data sources in a given federation and populates the table and bar chart.
     function basic_stat(fed) {
         if (statsTable == null) {
             // Construct basic statistics table
@@ -213,7 +213,7 @@ $(function() {
         bsLoaded = 1;
     }
 
-    // Sets up the management tab with information about datasources in a given federation.
+    // Sets up the management tab with information about data sources in a given federation.
     // Additionally, adds a 'on select' method to the table.
     function manage(fed) {
         $('#fedName').html(fed);
@@ -230,7 +230,7 @@ $(function() {
                 columnDefs: [{ target: 0, visible: false, searchable: false }],
                 ajax: '/federation/datasources?graph=' + federation
             });
-            // datasource table select action
+            // data source table select action
             table.on('select', function(e, dt, type, indexes) {
                 selectedSource = table.rows(indexes).data().toArray();
                 set_disabled_prop_ds_buttons(false);
@@ -252,7 +252,7 @@ $(function() {
         });
     }
 
-    // Edit datasource click action
+    // Edit data source click action
     button_edit_source.on('click', function() {
         $('#edit_name').val(selectedSource[0][1]);
         $('#edit_URL').val(selectedSource[0][2]);
@@ -266,7 +266,7 @@ $(function() {
         $('#edit_types').val(selectedSource[0][10].trim());
     });
 
-    // Remove datasource click action
+    // Remove data source click action
     button_remove_source.on('click', function() {
         // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
@@ -452,7 +452,7 @@ $(function() {
        updateDS();
     });
 
-    // Adds a new datasource using the FedSDM API. If the parameter 'close' is true, then the dialog will be closed
+    // Adds a new data source using the FedSDM API. If the parameter 'close' is true, then the dialog will be closed
     // after adding the new source. Otherwise, the dialog stays open in order to add another source to the federation.
     function addDataSource(close) {
         resetTips();
@@ -505,8 +505,8 @@ $(function() {
         return valid;
     }
 
-    // Submits the data to add a new datasource, keeps the dialog open, and resets the form elements after a
-    // successful request so that the user can add a second datasource without reopening the dialog.
+    // Submits the data to add a new data source, keeps the dialog open, and resets the form elements after a
+    // successful request so that the user can add a second data source without reopening the dialog.
     function saveAndMore() {
         let valid = addDataSource(false);
         if (valid) {
@@ -515,7 +515,7 @@ $(function() {
         }
     }
 
-    // Validates the form elements in the edit datasource dialog and sends the request for updating the source
+    // Validates the form elements in the edit data source dialog and sends the request for updating the source
     // using the FedSDM API. On success, the dialog is closes. On fail, an error message will be shown.
     function updateDS() {
         resetTips();
