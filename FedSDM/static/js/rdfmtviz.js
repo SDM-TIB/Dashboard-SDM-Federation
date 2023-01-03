@@ -306,7 +306,7 @@ $(function() {
                     $('#gaDsName').html($(this).text());
                     sourceMT = source;
                     graph_container.empty()
-                                   .html('<h3>Please select Visualization type</h3>');
+                                   .html('<h1> Please select visualization type!</h1>');
                     if (vizType === 'fgraph') {
                         drawSingleSourceRDFMTS(sourceMT, 'force');
                     } else if (vizType === 'cgraph') {
