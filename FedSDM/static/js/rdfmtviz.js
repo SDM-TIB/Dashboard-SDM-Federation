@@ -14,7 +14,17 @@ $(function() {
     let stats = null,
         federation =  federation_list.val(),
         tabVisible = '#home',
-        width, height, h = 960, w = 760;
+        width, height, h = 960, w = 760,
+        loaded = 0,
+        visualized = 0,
+        gaLoaded = 0,
+        gtable = null,
+        linkDistance = 150,
+        nCharge = -600,
+        nGravity = 0,
+        sourcesCard = 0,
+        sources = null,
+        sourceMT = null;
     window.jsdata = [];
 
     if (federation != null && federation !== '') {
@@ -84,16 +94,6 @@ $(function() {
         min_zoom = 0.1,
         max_zoom = 7;
 
-    let loaded = 0,
-        visualized = 0,
-        gaLoaded = 0,
-        gtable = null,
-        linkDistance = 150,
-        nCharge = -600,
-        nGravity = 0,
-        sourcesCard = 0,
-        sources = null,
-        sourceMT = null;
     //list of subjects and objects for the DAG
     let sourceNodes = [];
     //connection link between subject and object ->predicates
