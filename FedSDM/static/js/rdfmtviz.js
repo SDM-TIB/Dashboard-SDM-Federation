@@ -32,7 +32,6 @@ $(function() {
         max_score = 1,
         highlight_color = '#A52A2A',
         highlight_trans = 0.1,
-        default_node_color = '#ccc',
         default_link_color = '#888',
         nominal_base_node_size = 8,
         nominal_text_size = 10,
