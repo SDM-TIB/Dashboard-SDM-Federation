@@ -24,7 +24,15 @@ $(function() {
         nGravity = 0,
         sourcesCard = 0,
         sources = null,
-        sourceMT = null;
+        sourceMT = null,
+        focus_node = null,
+        highlight_node = null,
+        text_center = false,
+        outline = false,
+        max_score = 1,
+        highlight_color = '#A52A2A',
+        highlight_trans = 0.1;
+
     window.jsdata = [];
 
     if (federation != null && federation !== '') {
@@ -68,15 +76,6 @@ $(function() {
     }
 
     var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
-
-    let focus_node = null, highlight_node = null;
-
-    let text_center = false,
-        outline = false;
-
-    let max_score = 1,
-        highlight_color = '#A52A2A',
-        highlight_trans = 0.1;
 
     var size = d3.scale.pow().exponent(1)
         .domain([1,100])
