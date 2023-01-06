@@ -43,7 +43,12 @@ $(function() {
         max_zoom = 7,
         sourceNodes = [],  // list of subjects and objects for the DAG
         sourceLinks = [],  // connection link between subject and object -> predicates
-        sourceIDs = {}, sourcesNames = {};
+        sourceIDs = {}, sourcesNames = {},
+        aNodes = [],
+        aLinks = [],
+        MTCards = {'All': []},
+        vizType = null,
+        data = {nodes: [], links: []};
 
     window.jsdata = [];
 
@@ -93,12 +98,6 @@ $(function() {
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
-
-    let aNodes = [],
-        aLinks = [],
-        MTCards = {'All': []},
-        vizType = null,
-        data = {nodes: [], links: []};
 
     let selectedRow = null,
         mNodes = [],
