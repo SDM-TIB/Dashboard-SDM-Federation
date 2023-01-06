@@ -48,7 +48,13 @@ $(function() {
         aLinks = [],
         MTCards = {'All': []},
         vizType = null,
-        data = {nodes: [], links: []};
+        data = {nodes: [], links: []},
+        selectedRow = null,
+        mNodes = [],
+        maLinks = [],
+        mLinks = [],
+        mSourceNodes = [],
+        mSourceLinks = [];
 
     window.jsdata = [];
 
@@ -98,13 +104,6 @@ $(function() {
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
-
-    let selectedRow = null,
-        mNodes = [],
-        maLinks = [],
-        mLinks = [],
-        mSourceNodes = [],
-        mSourceLinks = [];
 
     mt_details.on('click', function() {
         $('#list_of_rdfmts').hide();
