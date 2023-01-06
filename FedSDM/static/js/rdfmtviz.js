@@ -4,7 +4,8 @@ $(function() {
           federation_list = $('#federations-list'),
           data_sources = $('#data_sources'),
           mt_details = $('#mt_details'),
-          mt_viz = $('#mt_viz');
+          mt_viz = $('#mt_viz'),
+          graphArea = document.getElementById('graph');
 
     data_sources.prop('disabled', true);
     mt_details.prop('disabled', true);
@@ -352,8 +353,6 @@ $(function() {
             aNodes = nodes ;
         });
     }
-
-    const graphArea = document.getElementById('graph');
 
     function createDonut(title, labels_, data_) {
         const donutBox = document.createElement('DIV');
