@@ -54,7 +54,8 @@ $(function() {
         maLinks = [],
         mLinks = [],
         mSourceNodes = [],
-        mSourceLinks = [];
+        mSourceLinks = [],
+        donut_charts = [];
 
     window.jsdata = [];
 
@@ -352,7 +353,6 @@ $(function() {
         });
     }
 
-    let donut_charts = [];
     const graphArea = document.getElementById('graph');
 
     function createDonut(title, labels_, data_) {
