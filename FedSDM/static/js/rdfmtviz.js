@@ -562,9 +562,8 @@ $(function() {
 
     function getGroup(n) { return n.datasource; }
 
-    var off = 15,    // cluster hull offset
-        expand = {}, // expanded clusters
-        net, force, hullg, hull, linkg, nodeg;
+    var expand = {}, // expanded clusters
+        net, force, hullg, linkg, nodeg;
     // constructs the network to visualize
     function network(data, prev, index, expand) {
         expand = expand || {};
