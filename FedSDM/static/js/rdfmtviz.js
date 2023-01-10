@@ -650,10 +650,7 @@ $(function() {
     var curve = d3.svg.line()
         .interpolate('cardinal-closed')
         .tension(.85);
-    function drawCluster(d) {
-        console.log('drawcluster: ' + d)
-        return curve(d.path); // 0.8
-    }
+
     width = graph_container.width();
     height = 980;
     var canv = 'graph';
