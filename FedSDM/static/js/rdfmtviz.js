@@ -647,10 +647,6 @@ $(function() {
         return {nodes: nodes, links: links};
     }
 
-    var curve = d3.svg.line()
-        .interpolate('cardinal-closed')
-        .tension(.85);
-
     width = graph_container.width();
     height = 980;
     var canv = 'graph';
