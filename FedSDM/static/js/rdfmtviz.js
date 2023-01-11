@@ -669,8 +669,7 @@ $(function() {
             mt_viz.show();
             canv = 'mtviz'
         }
-        let chartLayer = svg.append('g').classed('chartLayer', true),
-            zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
+        let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
             g = svg.append('g');
 
         hullg = svg.append('g');
