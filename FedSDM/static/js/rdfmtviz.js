@@ -654,17 +654,16 @@ $(function() {
     function drawRDFMTS(nodes, links, divcanv) {
         console.log('nodes: ' + nodes + '\nlinks:' + links);
         let svg;
+        height = 980;
         if (divcanv == null) {
             graph_container.empty();
             svg = d3.select('#graph').append('svg');
             width = graph_container.width();
-            height = 980;
             canv = 'graph'
         } else {
             mt_viz.empty();
             svg = d3.select('#mtviz').append('svg');
             width = mt_viz.width();
-            height = 980;
             console.log('Showing visualization...')
             mt_viz.show();
             canv = 'mtviz'
