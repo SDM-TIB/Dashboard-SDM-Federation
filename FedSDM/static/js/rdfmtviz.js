@@ -877,7 +877,7 @@ $(function() {
             node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
             text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         });
-        function printn(alpha) {
+        function printn() {
             var quadtree = d3.geom.quadtree(nodes);
             return function(d) { };
         }
