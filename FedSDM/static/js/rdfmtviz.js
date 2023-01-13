@@ -56,7 +56,9 @@ $(function() {
         mLinks = [],
         mSourceNodes = [],
         mSourceLinks = [],
-        donut_charts = [];
+        donut_charts = [],
+        expand = {}, // expanded clusters
+        net, force, hullg, linkg, nodeg;
 
     window.jsdata = [];
 
@@ -562,8 +564,6 @@ $(function() {
 
     function getGroup(n) { return n.datasource; }
 
-    var expand = {}, // expanded clusters
-        net, force, hullg, linkg, nodeg;
     // constructs the network to visualize
     function network(data, prev, index, expand) {
         expand = expand || {};
