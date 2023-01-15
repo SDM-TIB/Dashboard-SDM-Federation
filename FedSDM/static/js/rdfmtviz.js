@@ -870,17 +870,12 @@ $(function() {
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
 
-            node.each(printn())
-                .attr('cx', function(d) { return d.x; })
+            node.attr('cx', function(d) { return d.x; })
                 .attr('cy', function(d) { return d.y; });
 
             node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
             text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         });
-        function printn() {
-            var quadtree = d3.geom.quadtree(nodes);
-            return function(d) { };
-        }
 
         function isConnected(a, b) {
             return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index;
