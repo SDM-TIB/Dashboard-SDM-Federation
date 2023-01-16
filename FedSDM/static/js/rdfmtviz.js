@@ -1186,13 +1186,13 @@ $(function() {
             .enter()
             .append('circle')
             .attr('class', 'node')
-            .attr('id', function(d, i) { return d.label; })
-            .attr('cx', function(d, i) { return d.x; })
-            .attr('cy', function(d, i) { return d.y; })
+            .attr('id', function(d) { return d.label; })
+            .attr('cx', function(d) { return d.x; })
+            .attr('cy', function(d) { return d.y; })
             .attr('r', 10)
-            .style('fill',   function(d, i) { return color(d.datasource); })
-            .on('mouseover', function(d, i) { addTooltip(d3.select(this)); })
-            .on('mouseout',  function(d, i) { d3.select('#tooltip').remove(); })
+            .style('fill',   function(d) { return color(d.datasource); })
+            .on('mouseover', function() { addTooltip(d3.select(this)); })
+            .on('mouseout',  function() { d3.select('#tooltip').remove(); })
             .call(d3.behavior.drag().on('drag', dragged));
     }
 
