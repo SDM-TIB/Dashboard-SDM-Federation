@@ -34,7 +34,7 @@ make stop-example
 **Prerequisites:**
 * make 4.1 or newer
 * Python3 (including pip) 3.10 or newer
-* npm 3.5 or newer
+* npm 7.0 or newer
 * Docker 20.10 or newer
 * docker-compose 1.25 or newer
 
