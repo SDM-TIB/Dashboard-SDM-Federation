@@ -574,8 +574,8 @@ $(function() {
     // that the user can create another federation without reopening the dialog.
     function createNewFederation(close) {
         resetTips();
-        const name = fedName.val(),
-              desc = fedDesc.val(),
+        const name = fedName.val().toString(),
+              desc = fedDesc.val().toString(),
               valid = checkLength(fedName, 'name', 2, 169);
         console.log(name + ' ' + desc);
         if (valid) {
