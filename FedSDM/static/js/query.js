@@ -766,10 +766,10 @@ $(function() {
             .duration(1000)
             .attr('opacity', 1);
 
-        let tocolor = 'fill',
+        let toColor = 'fill',
             towhite = 'stroke';
         if (outline) {
-            tocolor = 'stroke'
+            toColor = 'stroke'
             towhite = 'fill'
         }
 
@@ -846,7 +846,7 @@ $(function() {
                     return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2);}) //size(d.weight)
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
-            .style(tocolor, function(d) {
+            .style(toColor, function(d) {
                 if (divCanvas == null) {
                     return color(d.datasource)
                 } else {
