@@ -710,12 +710,6 @@ $(function() {
     var width, height,
         h = 960, w = 760;
 
-    var drag = d3.behavior.drag()
-        .origin(function(d) { return d; })
-        .on('dragstart', dragstarted)
-        .on('drag', dragged)
-        .on('dragend', dragended);
-
     function dragstarted(d) {
         d3.event.sourceEvent.stopPropagation();
         d3.select(this).classed('dragging', true);
