@@ -767,10 +767,10 @@ $(function() {
             .attr('opacity', 1);
 
         let toColor = 'fill',
-            towhite = 'stroke';
+            toWhite = 'stroke';
         if (outline) {
             toColor = 'stroke'
-            towhite = 'fill'
+            toWhite = 'fill'
         }
 
         svg.style('cursor', 'move');
@@ -855,7 +855,7 @@ $(function() {
                 }
             })
             .style('stroke-width', nominal_stroke)
-            .style(towhite, 'white');
+            .style(toWhite, 'white');
 
         const text = g.selectAll('.text')
               .data(net.nodes)
@@ -1082,7 +1082,7 @@ $(function() {
             {
                 svg.style('cursor', 'move');
                 if (highlight_color !== 'white') {
-                    circle.style(towhite, 'white');
+                    circle.style(toWhite, 'white');
                     text.style('font-weight', 'normal');
                     link.style('stroke', function(o) {
                         return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color
@@ -1115,7 +1115,7 @@ $(function() {
             // added this to make highlight color same as the color of the node
             highlight_color = color(d.datasource);
             if (highlight_color !== 'white') {
-                circle.style(towhite, function(o) {
+                circle.style(toWhite, function(o) {
                     return isConnected(d, o) ? highlight_color : 'white';
                 });
                 text.style('font-weight', function(o) {
