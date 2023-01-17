@@ -707,10 +707,6 @@ $(function() {
         .interpolate('cardinal-closed')
         .tension(.85);
 
-    function drawCluster(d) {
-        return curve(d.path); // 0.8
-    }
-
     width = $('#graph').width();
     height = 980;
     var canv = 'graph';
