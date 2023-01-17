@@ -710,19 +710,6 @@ $(function() {
     var width, height,
         h = 960, w = 760;
 
-    function dragstarted(d) {
-        d3.event.sourceEvent.stopPropagation();
-        d3.select(this).classed('dragging', true);
-    }
-
-    function dragged(d) {
-        d3.select(this).attr('cx', d.x = d3.event.x).attr('cy', d.y = d3.event.y);
-    }
-
-    function dragended(d) {
-        d3.select(this).classed('dragging', false);
-    }
-
     var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
 
     var focus_node = null, highlight_node = null;
