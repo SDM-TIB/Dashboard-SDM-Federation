@@ -703,10 +703,6 @@ $(function() {
         return hullset;
     }
 
-    var curve = d3.svg.line()
-        .interpolate('cardinal-closed')
-        .tension(.85);
-
     width = $('#graph').width();
     height = 980;
     var canv = 'graph';
