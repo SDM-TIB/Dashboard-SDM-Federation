@@ -787,7 +787,7 @@ $(function() {
         force = d3.layout.force()
             .nodes(net.nodes)
             .links(net.links)
-            .linkDistance(function(l, i) {
+            .linkDistance(function(l) {
                 const n1 = l.source, n2 = l.target;
                 return divCanvas ? 250 : 200 +
                     Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
