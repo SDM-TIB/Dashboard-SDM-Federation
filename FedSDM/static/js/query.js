@@ -861,10 +861,10 @@ $(function() {
               .data(net.nodes)
               .enter().append('text')
               .attr('dy', '.35em')
-              .style('font-size', function(d){ return d.size ? 16 + 'px' : nominal_text_size + 'px' })
+              .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' })
 
         if (text_center) {
-            text.text(function (d) {
+            text.text(function(d) {
                 if (d.label) {
                     return d.label;
                 } else {
@@ -873,8 +873,8 @@ $(function() {
             })
                 .style('text-anchor', 'middle');
         } else {
-            text.attr('dx', function (d) { return (size(65) - size(30) || nominal_base_node_size); })
-                .text(function (d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
+            text.attr('dx', function(d) { return (size(65) - size(30) || nominal_base_node_size); })
+                .text(function(d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
         }
 
         d3.select(window).on('mouseup', function() {
