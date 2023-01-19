@@ -873,7 +873,7 @@ $(function() {
             })
                 .style('text-anchor', 'middle');
         } else {
-            text.attr('dx', function(d) { return (size(65) - size(30) || nominal_base_node_size); })
+            text.attr('dx', function() { return (size(65) - size(30) || nominal_base_node_size); })
                 .text(function(d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
         }
 
