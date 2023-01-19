@@ -959,10 +959,6 @@ $(function() {
             text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
         });
-        function printn() {
-            const quadtree = d3.geom.quadtree(nodes);
-            return function(d) { };
-        }
 
         function isConnected(a, b) {
             return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index;
