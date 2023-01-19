@@ -907,9 +907,7 @@ $(function() {
                 .type(function(d) { return d.size ? 'circle' : d.type; })
             );
             if (!text_center)
-                text.attr('dx', function() {
-                    return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
-                });
+                text.attr('dx', (size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
 
             text.style('font-size', function(d) {
                 let text_size = nominal_text_size;
