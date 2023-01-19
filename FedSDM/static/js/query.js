@@ -906,8 +906,7 @@ $(function() {
                     return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius, 2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius, 2);}) //size(d.weight)
                 .type(function(d) { return d.size ? 'circle' : d.type; })
             );
-            if (!text_center)
-                text.attr('dx', (size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
+            if (!text_center) { text.attr('dx', (size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius); }
 
             text.style('font-size', function (d) {
                 let text_size = nominal_text_size;
@@ -915,7 +914,8 @@ $(function() {
 
                 if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale(); }
 
-                return text_size + 'px'});
+                return text_size + 'px'
+            });
             g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         });
 
@@ -957,7 +957,6 @@ $(function() {
 
             node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
             text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
-
         });
 
         function isConnected(a, b) {
