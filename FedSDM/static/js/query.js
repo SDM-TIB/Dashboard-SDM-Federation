@@ -909,14 +909,11 @@ $(function() {
             if (!text_center)
                 text.attr('dx', (size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius);
 
-            text.style('font-size', function(d) {
+            text.style('font-size', function (d) {
                 let text_size = nominal_text_size;
-                if (d.size) {
-                    text_size = 16;
-                }
+                if (d.size) { text_size = 16; }
 
-                if (nominal_text_size * zoom.scale() > max_text_size)
-                    text_size = max_text_size / zoom.scale();
+                if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale(); }
 
                 return text_size + 'px'});
             g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
