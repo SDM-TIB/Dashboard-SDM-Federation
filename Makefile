@@ -1,6 +1,6 @@
 # Makefile for building FedSDM
 
-.PHONY: help install bundle rebuild build run-example stop-example example-run example-stop dev-outdated
+.PHONY: help install bundle rebuild build run-example stop-example example-run example-stop dep-outdated
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -10,7 +10,7 @@ help:
 	@echo "  rebuild        to build a Docker image without re-bundling the dependencies"
 	@echo "  run-example    to build a fresh Docker image and run the example containers"
 	@echo "  stop-example   to stop all example containers and remove their data"
-	@echo "  dev-outdated   to list all outdated dependencies"
+	@echo "  dep-outdated   to list all outdated dependencies"
 
 install:
 	python3 -m pip install -r requirements-dev.txt
@@ -34,6 +34,6 @@ example-run: run-example
 
 example-stop: stop-example
 
-dev-outdated:
+dep-outdated:
 	python3 -m pip list --outdated
 	npm outdated || true
