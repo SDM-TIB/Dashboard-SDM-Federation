@@ -1036,7 +1036,7 @@ $(function() {
                 }
 
                 link.style('display', function(d) {
-                    var flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
+                    let flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
                     linkedByIndex[d.source.index + ',' + d.target.index] = flag;
                     return flag ? 'inline' : 'none';
                 });
