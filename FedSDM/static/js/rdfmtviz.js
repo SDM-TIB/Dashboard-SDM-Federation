@@ -58,7 +58,8 @@ $(function() {
         mSourceLinks = [],
         donut_charts = [],
         expand = {}, // expanded clusters
-        net, force, hullg, linkg, nodeg;
+        net, force, hullg, linkg, nodeg,
+        canv = 'graph';
 
     window.jsdata = [];
 
@@ -649,7 +650,6 @@ $(function() {
 
     width = graph_container.width();
     height = 980;
-    var canv = 'graph';
 
     function drawRDFMTS(nodes, links, divcanv) {
         console.log('nodes: ' + nodes + '\nlinks:' + links);
