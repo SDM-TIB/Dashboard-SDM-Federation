@@ -651,11 +651,11 @@ $(function() {
     width = graph_container.width();
     height = 980;
 
-    function drawRDFMTS(nodes, links, divcanv) {
+    function drawRDFMTS(nodes, links, divCanvas) {
         console.log('nodes: ' + nodes + '\nlinks:' + links);
         let svg;
         height = 980;
-        if (divcanv == null) {
+        if (divCanvas == null) {
             graph_container.empty();
             svg = d3.select('#graph').append('svg');
             width = graph_container.width();
@@ -705,7 +705,7 @@ $(function() {
             .linkDistance(function(l, i) {
                 const n1 = l.source,
                       n2 = l.target;
-                return divcanv ? 250 : 200 +
+                return divCanvas ? 250 : 200 +
                     Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
                         (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
                         -30 +
@@ -744,7 +744,7 @@ $(function() {
             .on('dblclick', function(d) {
                 console.log(d.datasource + ': ' + expand[d.datasource])
                 expand[d.datasource] = !expand[d.datasource];
-                drawRDFMTS(nodes, links, divcanv);
+                drawRDFMTS(nodes, links, divCanvas);
             })
             .on('mouseover', function(d) {
                 set_highlight(d);
@@ -770,7 +770,7 @@ $(function() {
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(toColor, function(d) {
-                if (divcanv == null) {
+                if (divCanvas == null) {
                     return color(d.datasource);
                 } else {
                     ci += 1;
