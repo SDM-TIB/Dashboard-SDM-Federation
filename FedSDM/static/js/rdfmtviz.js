@@ -59,7 +59,7 @@ $(function() {
         donut_charts = [],
         expand = {}, // expanded clusters
         net, force, hullg, linkg, nodeg,
-        canv = 'graph';
+        canvas = 'graph';
 
     window.jsdata = [];
 
@@ -659,14 +659,14 @@ $(function() {
             graph_container.empty();
             svg = d3.select('#graph').append('svg');
             width = graph_container.width();
-            canv = 'graph'
+            canvas = 'graph'
         } else {
             mt_viz.empty();
             svg = d3.select('#mtviz').append('svg');
             width = mt_viz.width();
             console.log('Showing visualization...')
             mt_viz.show();
-            canv = 'mtviz'
+            canvas = 'mtviz'
         }
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
             g = svg.append('g');
@@ -931,7 +931,7 @@ $(function() {
         }
 
         function resize() {
-            const width = $('#' + canv).width(), height = 980;
+            const width = $('#' + canvas).width(), height = 980;
             svg.attr('width', width).attr('height', height);
             force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
             w = width;
