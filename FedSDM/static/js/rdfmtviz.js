@@ -58,7 +58,7 @@ $(function() {
         mSourceLinks = [],
         donut_charts = [],
         expand = {}, // expanded clusters
-        net, force, hullg, linkg, nodeg,
+        net, force,
         canvas = 'graph';
 
     window.jsdata = [];
@@ -670,10 +670,6 @@ $(function() {
         }
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
             g = svg.append('g');
-
-        hullg = svg.append('g');
-        linkg = svg.append('g');
-        nodeg = svg.append('g');
 
         svg.attr('opacity', 1e-6)
             .transition()
