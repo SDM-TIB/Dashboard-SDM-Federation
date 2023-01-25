@@ -692,7 +692,7 @@ $(function() {
         const fit = Math.sqrt(nodes.length / (width * height));
         nGravity = (8 * fit);
         nCharge = (-1 / fit);
-        if (force) force.stop()
+        if (force) { force.stop() }
         net = network(data, net, getGroup, expand);
         console.log('network:', net, expand)
         force = d3.layout.force()
