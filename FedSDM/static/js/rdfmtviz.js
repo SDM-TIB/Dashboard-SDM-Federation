@@ -709,9 +709,7 @@ $(function() {
                             (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
                         300);
             })
-            .linkStrength(function(l, i) {
-                return  2;
-            })
+            .linkStrength(2)
             .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue&orange, ...
             .charge(-600)    // ... charge is important to turn single-linked groups to the outside
             .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
