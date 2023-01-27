@@ -846,7 +846,7 @@ $(function() {
             const k = .1 * e.alpha;
 
             // Push nodes toward their designated focus.
-            net.nodes.forEach(function(o, i) {
+            net.nodes.forEach(function(o) {
                 if (centroids[o.datasource]) {
                     o.y += (centroids[o.datasource].y - o.y) * k;
                     o.x += (centroids[o.datasource].x - o.x) * k;
