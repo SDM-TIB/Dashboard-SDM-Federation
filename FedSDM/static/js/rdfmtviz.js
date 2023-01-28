@@ -90,7 +90,7 @@ $(function() {
 
     var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
 
-    var size = d3.scale.pow().exponent(1)
+    const size = d3.scale.pow().exponent(1)
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
