@@ -5,7 +5,8 @@ $(function() {
           data_sources = $('#data_sources'),
           mt_details = $('#mt_details'),
           mt_viz = $('#mt_viz'),
-          graphArea = document.getElementById('graph');
+          graphArea = document.getElementById('graph'),
+          size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]);  // The largest node for each cluster.
 
     data_sources.prop('disabled', true);
     mt_details.prop('disabled', true);
@@ -89,11 +90,6 @@ $(function() {
     }
 
     var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
-
-    const size = d3.scale.pow().exponent(1)
-        .domain([1,100])
-        .range([8,36]);
-    // The largest node for each cluster.
 
     mt_details.on('click', function() {
         $('#list_of_rdfmts').hide();
