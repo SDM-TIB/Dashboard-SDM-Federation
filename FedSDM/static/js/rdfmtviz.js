@@ -849,7 +849,7 @@ $(function() {
                 }
             });
 
-            text.forEach(function(o, i) {
+            text.forEach(function(o) {
                 if (centroids[o.datasource]) {
                     o.y += (centroids[o.datasource].y - o.y) * k;
                     o.x += (centroids[o.datasource].x - o.x) * k;
