@@ -1198,7 +1198,7 @@ $(function() {
             .append('path')
             .attr('class', 'link')
             .style('stroke-width', nominal_stroke)
-            .style('stroke', function(d, i) { return default_link_color; })
+            .style('stroke', default_link_color)
             .attr('d', curve);
     }
 });
