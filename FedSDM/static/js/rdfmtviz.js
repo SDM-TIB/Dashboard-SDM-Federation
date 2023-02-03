@@ -60,7 +60,8 @@ $(function() {
         donut_charts = [],
         expand = {}, // expanded clusters
         net, force,
-        canvas = 'graph';
+        canvas = 'graph',
+        gSource = null;
 
     window.jsdata = [];
 
@@ -1020,7 +1021,6 @@ $(function() {
         }
     }
 
-    var gSource = null
     function get_rdfmts_graph_analysis(fed, source){
         if (fed == null || source == null || (fed === federation && source === gSource && gaLoaded === 1)) {
             return
