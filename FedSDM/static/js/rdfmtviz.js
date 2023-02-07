@@ -61,7 +61,8 @@ $(function() {
         expand = {}, // expanded clusters
         net, force,
         canvas = 'graph',
-        gSource = null;
+        gSource = null,
+        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true;
 
     window.jsdata = [];
 
@@ -89,8 +90,6 @@ $(function() {
         get_rdfmts_graph_analysis(fed);
         federation = fed;
     }
-
-    var keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true
 
     mt_details.on('click', function() {
         $('#list_of_rdfmts').hide();
