@@ -553,7 +553,7 @@ $(function() {
         return n.size ? '_g_' + n.datasource : n.label;
     }
 
-    function linkid(l) {
+    function linkID(l) {
         const u = nodeID(l.source),
               v = nodeID(l.target);
         return u < v ? u + '|' + v : v + '|' + u;
@@ -712,7 +712,7 @@ $(function() {
             .size([width,height])
             .start(); //.chargeDistance(1000) .linkDistance(300)
 
-        link = g.selectAll('.link').data(net.links, linkid);
+        link = g.selectAll('.link').data(net.links, linkID);
         link.exit().remove();
         link.enter().append('line')
             .attr('class', 'link')
