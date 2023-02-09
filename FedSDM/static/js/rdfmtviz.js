@@ -549,13 +549,13 @@ $(function() {
         }
     }
 
-    function nodeid(n) {
+    function nodeID(n) {
         return n.size ? '_g_' + n.datasource : n.label;
     }
 
     function linkid(l) {
-        const u = nodeid(l.source),
-              v = nodeid(l.target);
+        const u = nodeID(l.source),
+              v = nodeID(l.target);
         return u < v ? u + '|' + v : v + '|' + u;
     }
 
@@ -724,7 +724,7 @@ $(function() {
             .style('stroke', function(d) {
                 return color(d.datasource);
             });
-        node = g.selectAll('.node').data(net.nodes, nodeid);
+        node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
         node.enter().append('g')
             .attr('class', function(d) {
