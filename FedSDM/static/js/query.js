@@ -135,7 +135,7 @@ $(function() {
                                             column.search(val ? '^' + val + '$' : '', true, false).draw();
                                         });
                                 //console.log(column.data().unique());
-                                column.data().unique().sort().each(function(d, j) {
+                                column.data().unique().sort().each(function(d) {
 //                                    let val = d,
 //                                        lt_idx = val.indexOf('&lt;');
 //                                    if (lt_idx > 0) {
