@@ -335,12 +335,12 @@ $(function() {
         feedbackPredicates.append('<option value="All">All</option>');
     });
 
-    function append_nodes_edges(rowmap, qtripl) {
+    function append_nodes_edges(rowMap, qtripl) {
         for (t in qtripl) {
             t = qtripl[t];
             if (t.s.indexOf('?') === 0) {
                 variab = t.s.substring(1, t.s.length);
-                s = rowmap[variab];
+                s = rowMap[variab];
                 setNodeData(s);
             } else {
                 s = t.s
@@ -348,15 +348,15 @@ $(function() {
             }
             if (t.p.indexOf('?') === 0) {
                 variab = t.p.substring(1, t.p.length);
-                //setNodeData(rowmap, variab);
-                p = rowmap[variab];
+                //setNodeData(rowMap, variab);
+                p = rowMap[variab];
             } else {
                 p = t.p;
             }
             if (t.o.indexOf('?') === 0) {
                 variab = t.o.substring(1, t.o.length);
-                // setNodeData(rowmap, variab);
-                o = rowmap[variab];
+                // setNodeData(rowMap, variab);
+                o = rowMap[variab];
                 setNodeData(o);
             } else {
                 o = t.o
