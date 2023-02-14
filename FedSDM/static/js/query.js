@@ -304,7 +304,7 @@ $(function() {
                 },
                 dataType: 'json',
                 crossDomain: true,
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     console.log(data);
                     if (data === null || data.length === 0) {
                         $('#validateTips').html('Error while adding feedback!')
