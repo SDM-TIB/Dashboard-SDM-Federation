@@ -310,7 +310,7 @@ $(function() {
                         $('#validateTips').html('Error while adding feedback!')
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus) {
                     console.log(jqXHR.status);
                     console.log(jqXHR.responseText);
                     console.log(textStatus);
