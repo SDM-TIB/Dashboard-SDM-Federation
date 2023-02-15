@@ -336,7 +336,7 @@ $(function() {
     });
 
     function append_nodes_edges(rowMap, qtripl) {
-        for (t in qtripl) {
+        for (let t in qtripl) {
             t = qtripl[t];
             if (t.s.indexOf('?') === 0) {
                 variab = t.s.substring(1, t.s.length);
