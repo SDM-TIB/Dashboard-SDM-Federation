@@ -335,9 +335,9 @@ $(function() {
         feedbackPredicates.append('<option value="All">All</option>');
     });
 
-    function append_nodes_edges(rowMap, qtripl) {
-        for (let t in qtripl) {
-            t = qtripl[t];
+    function append_nodes_edges(rowMap, queryTriple) {
+        for (let t in queryTriple) {
+            t = queryTriple[t];
             if (t.s.indexOf('?') === 0) {
                 variab = t.s.substring(1, t.s.length);
                 s = rowMap[variab];
