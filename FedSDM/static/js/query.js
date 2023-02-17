@@ -339,24 +339,24 @@ $(function() {
         for (let t in queryTriple) {
             t = queryTriple[t];
             if (t.s.indexOf('?') === 0) {
-                variab = t.s.substring(1, t.s.length);
-                s = rowMap[variab];
+                variable = t.s.substring(1, t.s.length);
+                s = rowMap[variable];
                 setNodeData(s);
             } else {
                 s = t.s
                 setNodeData(s);
             }
             if (t.p.indexOf('?') === 0) {
-                variab = t.p.substring(1, t.p.length);
-                //setNodeData(rowMap, variab);
-                p = rowMap[variab];
+                variable = t.p.substring(1, t.p.length);
+                //setNodeData(rowMap, variable);
+                p = rowMap[variable];
             } else {
                 p = t.p;
             }
             if (t.o.indexOf('?') === 0) {
-                variab = t.o.substring(1, t.o.length);
-                // setNodeData(rowMap, variab);
-                o = rowMap[variab];
+                variable = t.o.substring(1, t.o.length);
+                // setNodeData(rowMap, variable);
+                o = rowMap[variable];
                 setNodeData(o);
             } else {
                 o = t.o
