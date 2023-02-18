@@ -339,7 +339,7 @@ $(function() {
         for (let t in queryTriple) {
             t = queryTriple[t];
             if (t.s.indexOf('?') === 0) {
-                variable = t.s.substring(1, t.s.length);
+                let variable = t.s.substring(1, t.s.length);
                 s = rowMap[variable];
                 setNodeData(s);
             } else {
@@ -347,14 +347,14 @@ $(function() {
                 setNodeData(s);
             }
             if (t.p.indexOf('?') === 0) {
-                variable = t.p.substring(1, t.p.length);
+                let variable = t.p.substring(1, t.p.length);
                 // setNodeData(rowMap, variable);
                 p = rowMap[variable];
             } else {
                 p = t.p;
             }
             if (t.o.indexOf('?') === 0) {
-                variable = t.o.substring(1, t.o.length);
+                let variable = t.o.substring(1, t.o.length);
                 // setNodeData(rowMap, variable);
                 o = rowMap[variable];
                 setNodeData(o);
