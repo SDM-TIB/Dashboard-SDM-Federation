@@ -338,30 +338,29 @@ $(function() {
     function append_nodes_edges(rowMap, queryTriple) {
         for (let t in queryTriple) {
             t = queryTriple[t];
+            let s = t.s,
+                p = t.p,
+                o = t.o;
+
             if (t.s.indexOf('?') === 0) {
                 let variable = t.s.substring(1, t.s.length);
                 s = rowMap[variable];
-                setNodeData(s);
-            } else {
-                s = t.s
-                setNodeData(s);
             }
+            setNodeData(s);
+
             if (t.p.indexOf('?') === 0) {
                 let variable = t.p.substring(1, t.p.length);
-                // setNodeData(rowMap, variable);
                 p = rowMap[variable];
-            } else {
-                p = t.p;
+                // setNodeData(rowMap, variable);
             }
+
             if (t.o.indexOf('?') === 0) {
                 let variable = t.o.substring(1, t.o.length);
-                // setNodeData(rowMap, variable);
                 o = rowMap[variable];
-                setNodeData(o);
-            } else {
-                o = t.o
-                setNodeData(o);
+                // setNodeData(rowMap, variable);
             }
+            setNodeData(o);
+
             setEdgeData(s, p, o);
         }
     }
