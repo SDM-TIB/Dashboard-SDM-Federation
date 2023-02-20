@@ -351,13 +351,11 @@ $(function() {
             if (t.p.indexOf('?') === 0) {
                 let variable = t.p.substring(1, t.p.length);
                 p = rowMap[variable];
-                // setNodeData(rowMap, variable);
             }
 
             if (t.o.indexOf('?') === 0) {
                 let variable = t.o.substring(1, t.o.length);
                 o = rowMap[variable];
-                // setNodeData(rowMap, variable);
             }
             setNodeData(o);
 
