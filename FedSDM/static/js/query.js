@@ -342,23 +342,12 @@ $(function() {
                 p = t.p,
                 o = t.o;
 
-            if (t.s.indexOf('?') === 0) {
-                let variable = t.s.substring(1, t.s.length);
-                s = rowMap[variable];
-            }
+            if (s.indexOf('?') === 0) { s = rowMap[s.substring(1, s.length)]; }
+            if (p.indexOf('?') === 0) { p = rowMap[p.substring(1, p.length)]; }
+            if (o.indexOf('?') === 0) { o = rowMap[o.substring(1, o.length)]; }
+
             setNodeData(s);
-
-            if (t.p.indexOf('?') === 0) {
-                let variable = t.p.substring(1, t.p.length);
-                p = rowMap[variable];
-            }
-
-            if (t.o.indexOf('?') === 0) {
-                let variable = t.o.substring(1, t.o.length);
-                o = rowMap[variable];
-            }
             setNodeData(o);
-
             setEdgeData(s, p, o);
         }
     }
