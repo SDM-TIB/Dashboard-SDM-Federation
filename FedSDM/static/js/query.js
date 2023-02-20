@@ -9,7 +9,8 @@ $(function() {
         vizData = {nodes: {}, links: []},
         queryVars = [],
         table = null, selectedRow = null, selectedRowData = [],
-        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true;
+        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
+        response = false;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -374,7 +375,6 @@ $(function() {
         };
     }
 
-    let response = false;
     function show_incremental(vars) {
         if (response === true) {
             // This makes it unable to send a new request
