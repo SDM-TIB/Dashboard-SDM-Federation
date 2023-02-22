@@ -158,8 +158,6 @@ $(function() {
                                         selectedRowData.push(selectedRow[0][i])
                                     }
                                 }
-                                //console.log('selected row:', selectedRowData, lt_idx);
-
                                 $('#add_feedback').prop('disabled', false);
                             }).on('deselect', function(e, dt, type, indexes) {
                                 $('#add_feedback').prop('disabled', true);
