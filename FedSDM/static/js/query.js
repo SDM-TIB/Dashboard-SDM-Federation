@@ -382,7 +382,6 @@ $(function() {
                 let req = $.ajax({
                     type: 'GET',
                     url: '/query/nextresult',
-                    // headers: {Accept: 'text/csv'},//ask for csv. Simple, and uses less bandwidth
                     success: function(data) {
                         let row = data.result;
                         let elemTimeTotal = $('#time_total');
