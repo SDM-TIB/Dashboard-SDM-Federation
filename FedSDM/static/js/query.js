@@ -563,13 +563,13 @@ $(function() {
 
     // TODO: add more example queries here
 
-    function nodeid(n) {
+    function nodeID(n) {
         return n.size ? '_g_' + n.datasource : n.label;
     }
 
     function linkid(l) {
-        var u = nodeid(l.source),
-            v = nodeid(l.target);
+        var u = nodeID(l.source),
+            v = nodeID(l.target);
         return u < v ? u + '|' + v : v + '|' + u;
     }
 
@@ -799,7 +799,7 @@ $(function() {
                 return color(d.datasource);
             });
 
-        node = g.selectAll('.node').data(net.nodes, nodeid);
+        node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
         node.enter().append('g')
             .attr('class', function(d) { return 'node' + (d.size ? '' : ' leaf'); })
