@@ -516,7 +516,7 @@ $(function() {
     };
 
     var customClassCompleter = function(yasqe) {
-        var returnObj = {
+        let returnObj = {
             isValidCompletionPosition: function() { return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe) },
             preProcessToken: function(token) { return YASQE.Autocompleters.classes.preProcessToken(yasqe, token) },
             postProcessToken: function(token, suggestedString) { return YASQE.Autocompleters.classes.postProcessToken(yasqe, token, suggestedString) }
