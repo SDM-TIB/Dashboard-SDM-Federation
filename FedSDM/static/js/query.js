@@ -568,8 +568,8 @@ $(function() {
     }
 
     function linkID(l) {
-        var u = nodeID(l.source),
-            v = nodeID(l.target);
+        const u = nodeID(l.source),
+              v = nodeID(l.target);
         return u < v ? u + '|' + v : v + '|' + u;
     }
 
