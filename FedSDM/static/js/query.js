@@ -11,7 +11,14 @@ $(function() {
         table = null, selectedRow = null, selectedRowData = [],
         keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
         response = false,
-        shouldStop = false;
+        shouldStop = false,
+        mnodes = [],
+        malinks = [],
+        mlinks = [],
+        msourcenodes = [],
+        msourcelinks = [],
+        mtcards = {'All': []},
+        resDrawn = false;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -203,13 +210,6 @@ $(function() {
         $('#btnShowTable').hide();
     });
 
-    var mnodes = [],
-        malinks = [],
-        mlinks = [],
-        msourcenodes = [],
-        msourcelinks = [],
-        mtcards = {'All': []},
-        resDrawn = false;
     function drawResults() {
         if (resDrawn === true) {
             return
