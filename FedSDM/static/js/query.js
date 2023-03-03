@@ -218,7 +218,7 @@ $(function() {
         mnodes = vizData.nodes;
 
         for (let i = 0; i < mlinks.length; ++i) {
-            o = mlinks[i];
+            let o = mlinks[i];
 
             o.source = mnodes[o.source];
             o.target = mnodes[o.target];
