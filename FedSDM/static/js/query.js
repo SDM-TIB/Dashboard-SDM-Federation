@@ -377,8 +377,7 @@ $(function() {
 
     function show_incremental(vars) {
         if (response === true) {
-            // This makes it unable to send a new request
-            // unless you get response from last request
+            // No new request can be sent unless a response from the last request was received
             response = false;
             if (shouldStop === false) {
                 let req = $.ajax({
