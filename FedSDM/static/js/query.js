@@ -18,7 +18,9 @@ $(function() {
         msourcenodes = [],
         msourcelinks = [],
         mtcards = {'All': []},
-        resDrawn = false;
+        resDrawn = false,
+        expand = {}, // expanded clusters
+        net, force, hullg, linkg, nodeg;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -574,9 +576,6 @@ $(function() {
     }
 
     function getGroup(n) { return n.datasource; }
-
-    var expand = {}, // expanded clusters
-        net, force, hullg, linkg, nodeg;
 
     // constructs the network to visualize
     function network(data, prev, index, expand) {
