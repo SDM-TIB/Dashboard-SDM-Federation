@@ -121,8 +121,7 @@ $(function() {
                                         val = val.substring(0, val.indexOf('^^'));
                                     }
                                     if ('http' === val.substring(0, 4)) {
-                                        // row_ml.push('<a href="' + val + '"> &lt;' + val + '&gt;</a>');
-                                        row_ml.push(val);
+                                        row_ml.push('<a href="' + val + '">' + val + '</a>');
                                     } else {
                                         row_ml.push(val);
                                     }
@@ -403,8 +402,7 @@ $(function() {
                                 val = val.substring(0, val.indexOf('^^'));
                             }
                             if ('http' === val.substring(0, 4)) {
-                                // row_ml.push('<a href="' + val + '"> &lt;' + val + '&gt;</a>');  TODO: check if this should be added again
-                                row_ml.push(val);
+                                row_ml.push('<a href="' + val + '">' + val + '</a>');
                             } else {
                                 row_ml.push(val);
                             }
