@@ -469,7 +469,7 @@ $(function() {
      * -  caching of the suggestion list. These are cached for a period of a month on the client side.
      */
     var getAutocompletionsArrayFromJson = function(result) {
-        var completionsArray = [];
+        let completionsArray = [];
         // console.log('parsing');
         // console.log(result);
         result.forEach(function(row) {  // remove first line, as this one contains the projection variable
