@@ -685,7 +685,7 @@ $(function() {
 
     width = $('#graph').width();
     height = 980;
-    var canv = 'graph';
+    var canvas = 'graph';
 
     var width, height,
         h = 960, w = 760;
@@ -727,7 +727,7 @@ $(function() {
         svg = d3.select('#graph').append('svg');
         width = graph.width();
         height = 980;
-        canv = 'graph'
+        canvas = 'graph'
         if (divCanvas != null) {
             // console.log('showing ...')
             graph.show();
@@ -985,7 +985,7 @@ $(function() {
         }
 
         function resize() {
-            const width = $('#' + canv).width(), height = 980;
+            const width = $('#' + canvas).width(), height = 980;
             svg.attr('width', width).attr('height', height);
             force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
             w = width;
