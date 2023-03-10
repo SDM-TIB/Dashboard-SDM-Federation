@@ -658,31 +658,6 @@ $(function() {
         return {nodes: nodes, links: links};
     }
 
-    function convexHulls(nodes, index, offset) {
-        let hulls = {};
-
-        // create point sets
-        for (let k = 0; k < nodes.length; ++k) {
-            const n = nodes[k];
-
-            if (n.size) continue;
-            let i = index(n),
-                l = hulls[i] || (hulls[i] = []);
-            l.push([n.x-offset, n.y-offset]);
-            l.push([n.x-offset, n.y+offset]);
-            l.push([n.x+offset, n.y-offset]);
-            l.push([n.x+offset, n.y+offset]);
-        }
-
-        // create convex hulls
-        let hullset = [];
-        for (const i in hulls) {
-            hullset.push({datasource: i, path: d3.geom.hull(hulls[i])});
-        }
-
-        return hullset;
-    }
-
     width = $('#graph').width();
     height = 980;
     var canvas = 'graph';
