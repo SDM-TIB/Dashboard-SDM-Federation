@@ -660,7 +660,7 @@ $(function() {
 
     width = $('#graph').width();
     height = 980;
-    var canvas = 'graph';
+    let canvas = 'graph';
 
     var width, height,
         h = 960, w = 760;
