@@ -20,7 +20,8 @@ $(function() {
         mtcards = {'All': []},
         resDrawn = false,
         expand = {}, // expanded clusters
-        net, force, hullg, linkg, nodeg;
+        net, force, hullg, linkg, nodeg,
+        canvas = 'graph';
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -660,7 +661,6 @@ $(function() {
 
     width = $('#graph').width();
     height = 980;
-    let canvas = 'graph';
 
     var width, height,
         h = 960, w = 760;
