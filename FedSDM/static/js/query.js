@@ -664,7 +664,7 @@ $(function() {
     width = $('#graph').width();
     height = 980;
 
-    var text_center = false,
+    let text_center = false,
         outline = false;
 
     var max_score = 1,
