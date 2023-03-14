@@ -22,7 +22,8 @@ $(function() {
         expand = {}, // expanded clusters
         net, force, hullg, linkg, nodeg,
         canvas = 'graph',
-        width, height, h = 960, w = 760;
+        width, height, h = 960, w = 760,
+        focus_node = null, highlight_node = null;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -662,8 +663,6 @@ $(function() {
 
     width = $('#graph').width();
     height = 980;
-
-    let focus_node = null, highlight_node = null;
 
     var text_center = false,
         outline = false;
