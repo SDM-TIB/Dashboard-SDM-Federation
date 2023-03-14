@@ -23,7 +23,9 @@ $(function() {
         net, force, hullg, linkg, nodeg,
         canvas = 'graph',
         width, height, h = 960, w = 760,
-        focus_node = null, highlight_node = null;
+        focus_node = null, highlight_node = null,
+        text_center = false,
+        outline = false;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -663,9 +665,6 @@ $(function() {
 
     width = $('#graph').width();
     height = 980;
-
-    let text_center = false,
-        outline = false;
 
     var max_score = 1,
         highlight_color = '#A52A2A',
