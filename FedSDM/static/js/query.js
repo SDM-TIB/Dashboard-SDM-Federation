@@ -639,7 +639,7 @@ $(function() {
             n.group_data = l;
         }
 
-        for (i in gm) { gm[i].link_count = 0; }
+        for (const i in gm) { gm[i].link_count = 0; }
 
         // determine links
         for (let k = 0; k < data.links.length; ++k) {
