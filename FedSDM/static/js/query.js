@@ -663,7 +663,7 @@ $(function() {
     width = $('#graph').width();
     height = 980;
 
-    var focus_node = null, highlight_node = null;
+    let focus_node = null, highlight_node = null;
 
     var text_center = false,
         outline = false;
