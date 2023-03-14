@@ -22,7 +22,7 @@ $(function() {
         expand = {}, // expanded clusters
         net, force, hullg, linkg, nodeg,
         canvas = 'graph',
-        width, height, h = 960, w = 760,
+        width = $('#graph').width(), height = 980, h = 960, w = 760,
         focus_node = null, highlight_node = null,
         text_center = false,
         outline = false;
@@ -662,9 +662,6 @@ $(function() {
 
         return {nodes: nodes, links: links};
     }
-
-    width = $('#graph').width();
-    height = 980;
 
     var max_score = 1,
         highlight_color = '#A52A2A',
