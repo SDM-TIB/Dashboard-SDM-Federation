@@ -25,7 +25,10 @@ $(function() {
         width = $('#graph').width(), height = 980, h = 960, w = 760,
         focus_node = null, highlight_node = null,
         text_center = false,
-        outline = false;
+        outline = false,
+        max_score = 1,
+        highlight_color = '#A52A2A',
+        highlight_trans = 0.1;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -662,10 +665,6 @@ $(function() {
 
         return {nodes: nodes, links: links};
     }
-
-    let max_score = 1,
-        highlight_color = '#A52A2A',
-        highlight_trans = 0.1;
 
     var size = d3.scale.pow().exponent(1)
         .domain([1,100])
