@@ -666,7 +666,7 @@ $(function() {
         return {nodes: nodes, links: links};
     }
 
-    var size = d3.scale.pow().exponent(1)
+    let size = d3.scale.pow().exponent(1)
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
