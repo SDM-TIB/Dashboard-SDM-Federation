@@ -671,7 +671,7 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    var default_link_color = '#888',
+    let default_link_color = '#888',
         nominal_base_node_size = 8,
         nominal_text_size = 10,
         max_text_size = 24,
