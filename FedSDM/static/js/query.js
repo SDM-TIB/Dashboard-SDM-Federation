@@ -28,7 +28,16 @@ $(function() {
         outline = false,
         max_score = 1,
         highlight_color = '#A52A2A',
-        highlight_trans = 0.1;
+        highlight_trans = 0.1,
+        default_link_color = '#888',
+        nominal_base_node_size = 8,
+        nominal_text_size = 10,
+        max_text_size = 24,
+        nominal_stroke = 1.5,
+        max_stroke = 4.5,
+        max_base_node_size = 40,
+        min_zoom = 0.1,
+        max_zoom = 7;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -670,16 +679,6 @@ $(function() {
         .domain([1,100])
         .range([8,36]);
     // The largest node for each cluster.
-
-    let default_link_color = '#888',
-        nominal_base_node_size = 8,
-        nominal_text_size = 10,
-        max_text_size = 24,
-        nominal_stroke = 1.5,
-        max_stroke = 4.5,
-        max_base_node_size = 40,
-        min_zoom = 0.1,
-        max_zoom = 7;
 
     var ncharge = -600,
         ngravity = 0,
