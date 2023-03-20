@@ -680,7 +680,7 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    var ncharge = -600,
+    let ncharge = -600,
         ngravity = 0,
         sourcesnames = {};
 
