@@ -681,7 +681,7 @@ $(function() {
     // The largest node for each cluster.
 
     let nCharge = -600,
-        ngravity = 0,
+        nGravity = 0,
         sourcesnames = {};
 
     var link;
@@ -724,7 +724,7 @@ $(function() {
         });
 
         const fit = Math.sqrt(nodes.length / (width * height));
-        ngravity = (8 * fit);
+        nGravity = (8 * fit);
         nCharge = (-1 / fit);
         if (force) force.stop()
         net = network(data, net, getGroup, expand);
