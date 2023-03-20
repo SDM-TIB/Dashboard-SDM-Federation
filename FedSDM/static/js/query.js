@@ -680,7 +680,7 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    let ncharge = -600,
+    let nCharge = -600,
         ngravity = 0,
         sourcesnames = {};
 
@@ -725,7 +725,7 @@ $(function() {
 
         const fit = Math.sqrt(nodes.length / (width * height));
         ngravity = (8 * fit);
-        ncharge = (-1 / fit);
+        nCharge = (-1 / fit);
         if (force) force.stop()
         net = network(data, net, getGroup, expand);
         force = d3.layout.force()
