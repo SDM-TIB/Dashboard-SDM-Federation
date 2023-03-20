@@ -682,7 +682,7 @@ $(function() {
 
     let nCharge = -600,
         nGravity = 0,
-        sourcesnames = {};
+        sourceNames = {};
 
     var link;
     function drawRDFMTS(nodes, links, divCanvas) {
@@ -812,13 +812,13 @@ $(function() {
                 if (d.label) {
                     return d.label;
                 } else {
-                    return sourcesnames[d.datasource];
+                    return sourceNames[d.datasource];
                 }
             })
                 .style('text-anchor', 'middle');
         } else {
             text.attr('dx', size(65) - size(30) || nominal_base_node_size)
-                .text(function(d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourcesnames[d.datasource]; });
+                .text(function(d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourceNames[d.datasource]; });
         }
 
         d3.select(window).on('mouseup', function() {
