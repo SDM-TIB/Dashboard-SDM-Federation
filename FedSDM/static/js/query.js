@@ -683,7 +683,7 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    var link;
+    let link;
     function drawRDFMTS(nodes, links, divCanvas) {
         // console.log(nodes, links);
         let svg;
