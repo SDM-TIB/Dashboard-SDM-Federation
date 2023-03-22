@@ -40,7 +40,8 @@ $(function() {
         max_zoom = 7,
         nCharge = -600,
         nGravity = 0,
-        sourceNames = {};
+        sourceNames = {},
+        link;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -683,7 +684,6 @@ $(function() {
         .range([8,36]);
     // The largest node for each cluster.
 
-    let link;
     function drawRDFMTS(nodes, links, divCanvas) {
         // console.log(nodes, links);
         let svg;
