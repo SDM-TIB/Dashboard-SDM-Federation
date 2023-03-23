@@ -41,7 +41,8 @@ $(function() {
         nCharge = -600,
         nGravity = 0,
         sourceNames = {},
-        link;
+        link,
+        size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]);  // The largest node for each cluster.
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -678,11 +679,6 @@ $(function() {
 
         return {nodes: nodes, links: links};
     }
-
-    let size = d3.scale.pow().exponent(1)
-        .domain([1,100])
-        .range([8,36]);
-    // The largest node for each cluster.
 
     function drawRDFMTS(nodes, links, divCanvas) {
         // console.log(nodes, links);
