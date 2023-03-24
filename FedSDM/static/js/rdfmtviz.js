@@ -232,7 +232,7 @@ $(function() {
         $('#gaFedName').html(fed);
         $('#vizFedName').html(fed);
 
-        //list of subjects and objects for the DAG
+        // list of subjects and objects for the DAG
         $.getJSON('/rdfmts/api/rdfmts?graph=' + fed, function(data) {
             sources = data.sources;
             nodes = data.nodes;
