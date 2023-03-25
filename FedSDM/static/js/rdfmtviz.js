@@ -299,7 +299,7 @@ $(function() {
 
             sourceLinks = [];
             for (let i = 0; i < links.length; ++i) {
-                o = links[i];
+                let o = links[i];
 
                 o.source = nodes[o.source];
                 o.target = nodes[o.target];
