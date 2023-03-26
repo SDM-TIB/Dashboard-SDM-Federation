@@ -532,7 +532,7 @@ $(function() {
         } else {
             const sNodes = sourceNodes[source];
             console.log('number of nodes:' + sNodes.length);
-            //connection link between subject and object -> predicates
+            // connection link between subject and object -> predicates
             let slinks = sourceLinks[source];
             if (!slinks) {
                 slinks=[]
