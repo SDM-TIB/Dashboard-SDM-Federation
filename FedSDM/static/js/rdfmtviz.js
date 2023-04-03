@@ -1005,8 +1005,7 @@ $(function() {
             svg.style('cursor', 'pointer');
             if (focus_node !== null) { d = focus_node; }
             highlight_node = d;
-            // added this to make highlight color same as the color of the node
-            highlight_color = color(d.datasource);
+            highlight_color = color(d.datasource);  // added this to make highlight color same as the color of the node
             if (highlight_color !== 'white') {
                 circle.style(toWhite, function(o) {
                     return isConnected(d, o) ? highlight_color : 'white';
