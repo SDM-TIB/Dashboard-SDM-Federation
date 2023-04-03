@@ -842,7 +842,7 @@ $(function() {
         force.on('tick', function(e) {
             const k = .1 * e.alpha;
 
-            // Push nodes toward their designated focus.
+            // push nodes toward their designated focus
             net.nodes.forEach(function(o) {
                 if (centroids[o.datasource]) {
                     o.y += (centroids[o.datasource].y - o.y) * k;
