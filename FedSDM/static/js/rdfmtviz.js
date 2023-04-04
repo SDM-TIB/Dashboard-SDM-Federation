@@ -1021,9 +1021,8 @@ $(function() {
     }
 
     function get_rdfmts_graph_analysis(fed, source){
-        if (fed == null || source == null || (fed === federation && source === gSource && gaLoaded === 1)) {
-            return
-        }
+        if (fed == null || source == null || (fed === federation && source === gSource && gaLoaded === 1)) { return }
+
         $('#fedName').html(fed);
         $('#vizFedName').html(fed);
         $('#gaFedName').html(fed);
