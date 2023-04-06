@@ -1056,7 +1056,7 @@ $(function() {
         }
     });
 
-    var diameter = 500,
+    let diameter = 500,
         radius = diameter / 2,
         margin = 10;
 
