@@ -1060,8 +1060,7 @@ $(function() {
         radius = diameter / 2,
         margin = 10;
 
-    // generates a tooltip for an SVG circle element based on its ID
-    function addTooltip(circle) {
+    function addTooltip(circle) {  // generates a tooltip for an SVG circle element based on its ID
         const x = parseFloat(circle.attr('cx')),
               y = parseFloat(circle.attr('cy')),
               r = parseFloat(circle.attr('r')),
