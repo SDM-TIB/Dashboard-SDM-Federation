@@ -71,7 +71,7 @@ def create_app() -> Flask:
         SESSION_COOKIE_SAMESITE='Strict'
     )
 
-    # ensure the instance folder exists
+    # Ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
