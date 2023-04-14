@@ -1046,7 +1046,7 @@ $(function() {
     }
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        const target = $(e.target).attr('href') // activated tab
+        const target = $(e.target).attr('href')  // activated tab
         if (target === '#visualize') {
             tabVisible = '#visualize';
         } else if (target === '#analysis') {
