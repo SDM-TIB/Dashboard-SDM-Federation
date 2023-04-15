@@ -16,7 +16,7 @@ $(function() {
     let stats = null,
         federation =  federation_list.val(),
         tabVisible = '#home',
-        width, height, h = 960, w = 760,
+        width = graph_container.width(), height = 980, h = 960, w = 760,
         loaded = 0,
         visualized = 0,
         gaLoaded = 0,
@@ -644,9 +644,6 @@ $(function() {
 
         return {nodes: nodes, links: links};
     }
-
-    width = graph_container.width();
-    height = 980;
 
     function drawRDFMTS(nodes, links, divCanvas) {
         console.log('nodes: ' + nodes + '\nlinks:' + links);
