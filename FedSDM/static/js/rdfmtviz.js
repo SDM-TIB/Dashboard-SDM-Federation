@@ -62,7 +62,10 @@ $(function() {
         net, force,
         canvas = 'graph',
         gSource = null,
-        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true;
+        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
+        diameter = 500,
+        radius = diameter / 2,
+        margin = 10;
 
     window.jsdata = [];
 
@@ -1052,10 +1055,6 @@ $(function() {
             tabVisible = '#home';
         }
     });
-
-    let diameter = 500,
-        radius = diameter / 2,
-        margin = 10;
 
     function addTooltip(circle) {  // generates a tooltip for an SVG circle element based on its ID
         const x = parseFloat(circle.attr('cx')),
