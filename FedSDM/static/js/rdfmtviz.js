@@ -1086,7 +1086,7 @@ $(function() {
 
     // Draws an arc diagram for the provided undirected graph
     function drawGraph(graph) {
-        var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
+        let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         // create svg image
         graph_container.empty();
         var circumference = 0;
