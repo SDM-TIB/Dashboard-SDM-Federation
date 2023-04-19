@@ -1089,7 +1089,7 @@ $(function() {
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         // create svg image
         graph_container.empty();
-        var circumference = 0;
+        let circumference = 0;
         graph.nodes.forEach(function(d, i) {
             circumference += 20+2;
         });
