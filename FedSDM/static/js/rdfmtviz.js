@@ -1093,7 +1093,7 @@ $(function() {
         graph.nodes.forEach(function(d, i) {
             circumference += 20+2;
         });
-        var wh = 2 * circumference/(Math.PI);
+        let wh = 2 * circumference/(Math.PI);
         if (wh < 200) wh = 200;
         if (wh>1200) wh = 1200;
 
