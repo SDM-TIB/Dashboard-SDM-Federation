@@ -1098,7 +1098,7 @@ $(function() {
         if (wh>1200) wh = 1200;
 
         diameter = wh;
-        var svg = d3.select('#graph').append('svg');
+        let svg = d3.select('#graph').append('svg');
         svg.append('g').classed('chartLayer', true)
            .attr('width', graph_container.width())
            .attr('height', 980);
