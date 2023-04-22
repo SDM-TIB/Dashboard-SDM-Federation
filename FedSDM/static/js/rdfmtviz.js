@@ -1105,7 +1105,7 @@ $(function() {
 
         radius = wh/2;
         // create plot area within svg image
-        var plot = svg.append('g')
+        let plot = svg.append('g')
             .attr('width', wh)
             .attr('height', wh)
             .attr('id', 'plot')
