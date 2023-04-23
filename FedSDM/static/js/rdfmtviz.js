@@ -1134,9 +1134,9 @@ $(function() {
         });
 
         // used to scale node index to theta value
-        var scale = d3.scale.linear()
-            .domain([0, nodes.length])
-            .range([0, 2 * Math.PI]);
+        const scale = d3.scale.linear()
+              .domain([0, nodes.length])
+              .range([0, 2 * Math.PI]);
 
         // calculate theta for each node
         nodes.forEach(function(d, i) {
