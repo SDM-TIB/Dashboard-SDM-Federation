@@ -1133,7 +1133,7 @@ $(function() {
             return a.datasource - b.datasource;
         });
 
-        // use to scale node index to theta value
+        // used to scale node index to theta value
         var scale = d3.scale.linear()
             .domain([0, nodes.length])
             .range([0, 2 * Math.PI]);
