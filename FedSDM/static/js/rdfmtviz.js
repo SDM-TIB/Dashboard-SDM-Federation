@@ -1092,11 +1092,11 @@ $(function() {
         graph_container.empty();
         let circumference = 0;
         graph.nodes.forEach(function(d, i) {
-            circumference += 20+2;
+            circumference += 20 + 2;
         });
-        let wh = 2 * circumference/(Math.PI);
+        let wh = 2 * circumference / Math.PI;
         if (wh < 200) wh = 200;
-        if (wh>1200) wh = 1200;
+        if (wh > 1200) wh = 1200;
 
         diameter = wh;
         let svg = d3.select('#graph').append('svg');
