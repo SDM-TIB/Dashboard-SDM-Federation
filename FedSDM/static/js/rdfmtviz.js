@@ -1152,8 +1152,8 @@ $(function() {
         d3.select(this).attr('cx', d.x).attr('cy', d.y);
         circularLink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
         circularLink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
-        var curve = d3.svg.diagonal()
-            .projection(function(d) { return [d.x, d.y]; });
+        const curve = d3.svg.diagonal()
+              .projection(function(d) { return [d.x, d.y]; });
         circularLink.filter(function(l) { return l.source === d; }).attr('d', curve);
         circularLink.filter(function(l) { return l.target === d; }).attr('d', curve);
     }
