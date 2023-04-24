@@ -1144,7 +1144,7 @@ $(function() {
             d.y = radial * Math.cos(theta);
         });
     }
-    var circularNode, circularLink;
+    let circularNode, circularLink;
 
     function dragged(d) {
         d.x = d3.event.x;
