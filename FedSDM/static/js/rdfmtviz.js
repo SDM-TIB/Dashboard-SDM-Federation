@@ -1091,7 +1091,7 @@ $(function() {
         // create svg image
         graph_container.empty();
         let circumference = 0;
-        graph.nodes.forEach(function(d, i) {
+        graph.nodes.forEach(function() {
             circumference += 20 + 2;
         });
         let wh = 2 * circumference / Math.PI;
