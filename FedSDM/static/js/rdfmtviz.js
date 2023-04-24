@@ -1116,14 +1116,9 @@ $(function() {
         });
         svg.call(zoom);
 
-        // calculate node positions
-        circleLayout(graph.nodes);
-
-        // draw edges first
-        drawCurves(graph.links);
-
-        // draw nodes last
-        drawNodes(graph.nodes);
+        circleLayout(graph.nodes);  // calculate node positions
+        drawCurves(graph.links);  // draw edges first
+        drawNodes(graph.nodes);  // draw nodes last
     }
 
     // Calculates node locations
