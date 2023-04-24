@@ -1144,7 +1144,7 @@ $(function() {
             d.y = radial * Math.cos(theta);
         });
     }
-    var circularnode, circularlink;
+    var circularNode, circularlink;
 
     function dragged(d) {
         d.x = d3.event.x;
@@ -1160,7 +1160,7 @@ $(function() {
 
     // Draws nodes with tooltips
     function drawNodes(nodes) {
-        circularnode = d3.select('#plot').selectAll('.node')
+        circularNode = d3.select('#plot').selectAll('.node')
             .data(nodes)
             .enter()
             .append('circle')
