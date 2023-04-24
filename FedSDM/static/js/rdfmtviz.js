@@ -1136,8 +1136,8 @@ $(function() {
         // calculate theta for each node
         nodes.forEach(function(d, i) {
             // calculate polar coordinates
-            var theta  = scale(i),
-                radial = radius - margin;
+            const theta  = scale(i),
+                  radial = radius - margin;
 
             // convert to cartesian coordinates
             d.x = radial * Math.sin(theta);
