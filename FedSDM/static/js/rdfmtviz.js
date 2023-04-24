@@ -1144,23 +1144,23 @@ $(function() {
             d.y = radial * Math.cos(theta);
         });
     }
-    var circularnode, circularlink;
+    var circularNode, circularLink;
 
     function dragged(d) {
         d.x = d3.event.x;
         d.y = d3.event.y;
         d3.select(this).attr('cx', d.x).attr('cy', d.y);
-        circularlink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
-        circularlink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
+        circularLink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
+        circularLink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
         var curve = d3.svg.diagonal()
             .projection(function(d) { return [d.x, d.y]; });
-        circularlink.filter(function(l) { return l.source === d; }).attr('d', curve);
-        circularlink.filter(function(l) { return l.target === d; }).attr('d', curve);
+        circularLink.filter(function(l) { return l.source === d; }).attr('d', curve);
+        circularLink.filter(function(l) { return l.target === d; }).attr('d', curve);
     }
 
     // Draws nodes with tooltips
     function drawNodes(nodes) {
-        circularnode = d3.select('#plot').selectAll('.node')
+        circularNode = d3.select('#plot').selectAll('.node')
             .data(nodes)
             .enter()
             .append('circle')
@@ -1181,7 +1181,7 @@ $(function() {
         var curve = d3.svg.diagonal()
             .projection(function(d) { return [d.x, d.y]; });
 
-        circularlink = d3.select('#plot').selectAll('.link')
+        circularLink = d3.select('#plot').selectAll('.link')
             .data(links)
             .enter()
             .append('path')
