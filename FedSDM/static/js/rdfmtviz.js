@@ -65,7 +65,8 @@ $(function() {
         keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
         diameter = 500,
         radius = diameter / 2,
-        margin = 10;
+        margin = 10,
+        circularNode, circularLink;
 
     window.jsdata = [];
 
@@ -1144,7 +1145,6 @@ $(function() {
             d.y = radial * Math.cos(theta);
         });
     }
-    let circularNode, circularLink;
 
     function dragged(d) {
         d.x = d3.event.x;
