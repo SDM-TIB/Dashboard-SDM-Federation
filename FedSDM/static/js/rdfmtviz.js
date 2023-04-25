@@ -1178,8 +1178,8 @@ $(function() {
     // Draws curved edges between nodes
     function drawCurves(links) {
         // remember this from tree example?
-        var curve = d3.svg.diagonal()
-            .projection(function(d) { return [d.x, d.y]; });
+        const curve = d3.svg.diagonal()
+              .projection(function(d) { return [d.x, d.y]; });
 
         circularLink = d3.select('#plot').selectAll('.link')
             .data(links)
