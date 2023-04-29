@@ -6,7 +6,8 @@ $(function() {
           mt_details = $('#mt_details'),
           mt_viz = $('#mt_viz'),
           graphArea = document.getElementById('graph'),
-          size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]);  // The largest node for each cluster.
+          size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]),  // The largest node for each cluster.
+          curve = d3.svg.diagonal().projection(function(d) { return [d.x, d.y]; });
 
     data_sources.prop('disabled', true);
     mt_details.prop('disabled', true);
@@ -1152,8 +1153,6 @@ $(function() {
         d3.select(this).attr('cx', d.x).attr('cy', d.y);
         circularLink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
         circularLink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
-        const curve = d3.svg.diagonal()
-              .projection(function(d) { return [d.x, d.y]; });
         circularLink.filter(function(l) { return l.source === d; }).attr('d', curve);
         circularLink.filter(function(l) { return l.target === d; }).attr('d', curve);
     }
@@ -1177,10 +1176,6 @@ $(function() {
 
     // Draws curved edges between nodes
     function drawCurves(links) {
-        // remember this from tree example?
-        const curve = d3.svg.diagonal()
-              .projection(function(d) { return [d.x, d.y]; });
-
         circularLink = d3.select('#plot').selectAll('.link')
             .data(links)
             .enter()
