@@ -1075,14 +1075,14 @@ $(function() {
         const offset = tooltip.node().getBBox().width / 2;
 
         if ((x - offset) < -radius) {
-            tooltip.attr('text-anchor', 'start');
-            tooltip.attr('dx', -r);
+            tooltip.attr('text-anchor', 'start')
+                   .attr('dx', -r);
         } else if ((x + offset) > radius) {
-            tooltip.attr('text-anchor', 'end');
-            tooltip.attr('dx', r);
+            tooltip.attr('text-anchor', 'end')
+                   .attr('dx', r);
         } else {
-            tooltip.attr('text-anchor', 'middle');
-            tooltip.attr('dx', 0);
+            tooltip.attr('text-anchor', 'middle')
+                   .attr('dx', 0);
         }
     }
 
