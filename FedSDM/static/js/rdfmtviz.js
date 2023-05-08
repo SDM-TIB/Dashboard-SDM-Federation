@@ -71,9 +71,7 @@ $(function() {
 
     window.jsdata = [];
 
-    if (federation != null && federation !== '') {
-        load_data(federation);
-    }
+    if (federation != null && federation !== '') { load_data(federation); }
 
     federation_list.on('change', function() {
         load_data($(this).val());
