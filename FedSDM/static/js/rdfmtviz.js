@@ -123,11 +123,8 @@ $(function() {
                     o.source = mNodes[o.source];
                     o.target = mNodes[o.target];
                     if (o.source.datasource === o.target.datasource) {
-                        if (o.source.datasource in mSourceLinks) {
-                            mSourceLinks[o.source.datasource].push(o);
-                        } else {
-                            mSourceLinks[o.source.datasource] = [o];
-                        }
+                        if (o.source.datasource in mSourceLinks) { mSourceLinks[o.source.datasource].push(o); }
+                        else { mSourceLinks[o.source.datasource] = [o]; }
                     }
                 }
                 maLinks = mLinks;
