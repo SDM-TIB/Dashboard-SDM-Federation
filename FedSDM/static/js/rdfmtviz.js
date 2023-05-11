@@ -138,11 +138,9 @@ $(function() {
                     } else {
                         MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
                     }
-                    if (val.datasource in mSourceNodes) {
-                        mSourceNodes[val.datasource].push(val);
-                    } else {
-                        mSourceNodes[val.datasource] = [val]
-                    }
+
+                    if (val.datasource in mSourceNodes) { mSourceNodes[val.datasource].push(val); }
+                    else { mSourceNodes[val.datasource] = [val]; }
                 });
                 mNodes = flatnodes;
                 maNodes = mNodes ;
