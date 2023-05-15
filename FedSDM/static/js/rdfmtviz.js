@@ -217,9 +217,7 @@ $(function() {
     }
     function get_rdfmts(fed) {
         $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) { jsdata = data2; });
-        if (fed == null || (fed === federation && visualized === 1)) {
-            return
-        }
+        if (fed == null || (fed === federation && visualized === 1)) { return }
         $('#fedName').html(fed);
         $('#gaFedName').html(fed);
         $('#vizFedName').html(fed);
