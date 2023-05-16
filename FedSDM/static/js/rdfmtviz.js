@@ -280,7 +280,6 @@ $(function() {
                     } else if (vizType === 'cgraph') {
                         drawSingleSourceRDFMTS(sourceMT, 'circular');
                     } else if (vizType === 'donut') {
-                        console.log(source + ': ' + MTCards);
                         drawDonut(source);
                     }
                     get_rdfmts_graph_analysis(federation, $(this).text());
