@@ -275,13 +275,9 @@ $(function() {
                     sourceMT = source;
                     graph_container.empty()
                                    .html('<h1> Please select visualization type!</h1>');
-                    if (vizType === 'fgraph') {
-                        drawSingleSourceRDFMTS(sourceMT, 'force');
-                    } else if (vizType === 'cgraph') {
-                        drawSingleSourceRDFMTS(sourceMT, 'circular');
-                    } else if (vizType === 'donut') {
-                        drawDonut(source);
-                    }
+                    if (vizType === 'fgraph') { drawSingleSourceRDFMTS(sourceMT, 'force'); }
+                    else if (vizType === 'cgraph') { drawSingleSourceRDFMTS(sourceMT, 'circular'); }
+                    else if (vizType === 'donut') { drawDonut(source); }
                     get_rdfmts_graph_analysis(federation, $(this).text());
                 }
             });
