@@ -290,11 +290,8 @@ $(function() {
                 o.target = nodes[o.target];
                 if (o.source == null || o.target == null) { console.log(o) }
                 if (o.source.datasource === o.target.datasource) {
-                    if (o.source.datasource in sourceLinks) {
-                        sourceLinks[o.source.datasource].push(o);
-                    } else {
-                        sourceLinks[o.source.datasource] = [o];
-                    }
+                    if (o.source.datasource in sourceLinks) { sourceLinks[o.source.datasource].push(o); }
+                    else { sourceLinks[o.source.datasource] = [o]; }
                 }
             }
             aLinks = links;
