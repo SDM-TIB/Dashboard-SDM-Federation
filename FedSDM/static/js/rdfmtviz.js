@@ -302,11 +302,8 @@ $(function() {
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
                 MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                if (val.datasource in MTCards) {
-                    MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                } else {
-                    MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
-                }
+                if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); }  //, 'color': color(val.datasource)
+                else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; }  // , 'color': color(val.datasource)
                 if (val.datasource in sourceNodes) {
                     sourceNodes[val.datasource].push(val);
                 } else {
