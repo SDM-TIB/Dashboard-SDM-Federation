@@ -304,11 +304,8 @@ $(function() {
                 MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
                 if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); }  //, 'color': color(val.datasource)
                 else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; }  // , 'color': color(val.datasource)
-                if (val.datasource in sourceNodes) {
-                    sourceNodes[val.datasource].push(val);
-                } else {
-                    sourceNodes[val.datasource] = [val]
-                }
+                if (val.datasource in sourceNodes) { sourceNodes[val.datasource].push(val); }
+                else { sourceNodes[val.datasource] = [val] }
             });
             nodes = flatnodes;
             aNodes = nodes ;
