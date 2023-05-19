@@ -414,9 +414,7 @@ $(function() {
                         MTCards[source_mt][j].value = jsdata.data[i][3];
                 }
             }
-            MTCards[source_mt].sort(function(a, b) {
-                return b.value - a.value;
-            });
+            MTCards[source_mt].sort(function(a, b) { return b.value - a.value; });
 
             let labels_ = [], data_ = []
             for (let i = 0; i < MTCards[source_mt].length; i++) {
