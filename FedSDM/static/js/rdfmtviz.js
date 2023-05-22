@@ -408,8 +408,7 @@ $(function() {
         if (source !== 'All') {
             for (let i = 0; i < jsdata.data.length; i++) {
                 for (let j in MTCards[source_mt]) {
-                    if (MTCards[source_mt][j].label.includes(jsdata.data[i][1]))
-                        MTCards[source_mt][j].value = jsdata.data[i][3];
+                    if (MTCards[source_mt][j].label.includes(jsdata.data[i][1])) { MTCards[source_mt][j].value = jsdata.data[i][3]; }
                 }
             }
             MTCards[source_mt].sort(function(a, b) { return b.value - a.value; });
