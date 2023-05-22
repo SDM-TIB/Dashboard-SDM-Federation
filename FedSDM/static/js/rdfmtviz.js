@@ -342,9 +342,7 @@ $(function() {
             options: {
                 cutout: '80%',
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     title: {
                         display: true,
                         text: title,
