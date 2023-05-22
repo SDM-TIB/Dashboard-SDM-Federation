@@ -445,11 +445,7 @@ $(function() {
         }
     }
 
-    $('#stop_force').on('click', function() {
-        if (force) {
-            force.stop()
-        }
-    });
+    $('#stop_force').on('click', function() { if (force) { force.stop() } });
     $('#start_force').on('click', function() {
         if (force) {
             linkDistance += 10;
