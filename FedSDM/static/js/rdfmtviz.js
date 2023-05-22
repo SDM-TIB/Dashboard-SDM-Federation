@@ -482,8 +482,7 @@ $(function() {
         graph_legend.show();
         console.log('source: ' + source);
         if (source === 'All') {
-            if (aLinks.length < 1)
-                aLinks=[]
+            if (aLinks.length < 1) { aLinks=[] }
             data = {nodes: aNodes, links: aLinks};
             if (gt === 'force') {
                 aNodes.forEach(function(d) {
