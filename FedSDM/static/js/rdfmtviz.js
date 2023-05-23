@@ -496,9 +496,7 @@ $(function() {
             console.log('number of nodes:' + sNodes.length);
             // connection link between subject and object -> predicates
             let slinks = sourceLinks[source];
-            if (!slinks) {
-                slinks=[]
-            }
+            if (!slinks) { slinks=[] }
             data = {nodes: sNodes, links: slinks}
             if (gt === 'force') {
                 sNodes.forEach(function(d) {
