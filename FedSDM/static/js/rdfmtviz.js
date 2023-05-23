@@ -482,8 +482,8 @@ $(function() {
         graph_legend.show();
         console.log('source: ' + source);
         if (source === 'All') {
-            if (aLinks.length < 1) { aLinks=[] }
-            data = {nodes: aNodes, links: aLinks};
+            if (aLinks.length < 1) { aLinks = [] }
+            data = { nodes: aNodes, links: aLinks };
             if (gt === 'force') {
                 aNodes.forEach(function(d) { expand[d.datasource] = true; });
                 drawRDFMTS(aNodes, aLinks);
@@ -497,7 +497,7 @@ $(function() {
             // connection link between subject and object -> predicates
             let slinks = sourceLinks[source];
             if (!slinks) { slinks = [] }
-            data = {nodes: sNodes, links: slinks}
+            data = { nodes: sNodes, links: slinks }
             if (gt === 'force') {
                 sNodes.forEach(function(d) {
                     expand[d.datasource] = true;
