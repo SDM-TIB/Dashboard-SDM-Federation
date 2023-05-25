@@ -425,8 +425,7 @@ $(function() {
             $.each(MTCards, function (key, val) {
                 for (let i = 0; i < jsdata.data.length; i++) {
                     for (let ii in val) {
-                        if (val[ii].label.includes(jsdata.data[i][1]))
-                            val[ii].value = jsdata.data[i][3];
+                        if (val[ii].label.includes(jsdata.data[i][1])) { val[ii].value = jsdata.data[i][3]; }
                     }
                 }
                 val.sort(function(a, b) {
