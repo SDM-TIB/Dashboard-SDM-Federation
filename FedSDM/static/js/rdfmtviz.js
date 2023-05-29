@@ -601,7 +601,7 @@ $(function() {
         }
         for (const i in lm) { links.push(lm[i]); }
 
-        return {nodes: nodes, links: links};
+        return { nodes: nodes, links: links };
     }
 
     function drawRDFMTS(nodes, links, divCanvas) {
