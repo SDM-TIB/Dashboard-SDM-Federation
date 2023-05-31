@@ -330,10 +330,7 @@ $(function() {
 
         const data = {
             labels: labels_,
-            datasets: [{
-                data: data_,
-                backgroundColor: colors
-            }]
+            datasets: [{ data: data_, backgroundColor: colors }]
         }
 
         let donut = new Chart(donutCanvas, {
