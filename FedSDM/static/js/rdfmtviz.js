@@ -343,7 +343,7 @@ $(function() {
                     title: {
                         display: true,
                         text: title,
-                        font: {size: 16}
+                        font: { size: 16 }
                     },
                     tooltip: false
                 }
