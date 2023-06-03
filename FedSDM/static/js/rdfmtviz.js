@@ -425,9 +425,7 @@ $(function() {
                         if (val[ii].label.includes(jsdata.data[i][1])) { val[ii].value = jsdata.data[i][3]; }
                     }
                 }
-                val.sort(function(a, b) {
-                    return b.value - a.value;
-                });
+                val.sort(function(a, b) { return b.value - a.value; });
 
                 let labels_ = [], data_ = []
                 for (let i = 0; i < val.length; i++) {
