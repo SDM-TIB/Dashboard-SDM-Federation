@@ -536,7 +536,7 @@ $(function() {
                     gn[i] = n;
                     n.size = 0;
                 } else {
-                    o = gc[i] || (gc[i] = {x:0, y:0, count:0});
+                    o = gc[i] || (gc[i] = { x: 0, y: 0, count: 0 });
                     o.x += n.x;
                     o.y += n.y;
                     o.count += 1;
