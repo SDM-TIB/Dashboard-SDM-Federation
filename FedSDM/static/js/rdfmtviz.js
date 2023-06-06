@@ -591,7 +591,7 @@ $(function() {
             u = expand[u] ? nm[e.source.label] : nm[u];
             v = expand[v] ? nm[e.target.label] : nm[v];
             let i = (u < v ? u + '|' + v : v + '|' + u),
-                l = lm[i] || (lm[i] = {source:u, target:v, size:0});
+                l = lm[i] || (lm[i] = { source: u, target: v, size: 0 });
             l.size += 1;
         }
         for (const i in lm) { links.push(lm[i]); }
