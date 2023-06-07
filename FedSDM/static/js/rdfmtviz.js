@@ -679,8 +679,7 @@ $(function() {
         node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
         node.enter().append('g')
-            .attr('class', function(d) {
-                return 'node' + (d.size ? '' :' leaf'); })
+            .attr('class', function(d) { return 'node' + (d.size ? '' :' leaf'); })
             .attr('cx', function(d) { return d.x; })
             .attr('cy', function(d) { return d.y; })
             .on('dblclick', function(d) {
