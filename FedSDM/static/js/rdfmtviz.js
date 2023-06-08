@@ -633,9 +633,7 @@ $(function() {
 
         svg.style('cursor','move');
         let linkedByIndex = {};
-        links.forEach(function(d) {
-            linkedByIndex[d.source + ',' + d.target] = true;
-        });
+        links.forEach(function(d) { linkedByIndex[d.source + ',' + d.target] = true; });
 
         const fit = Math.sqrt(nodes.length / (width * height));
         nGravity = (8 * fit);
