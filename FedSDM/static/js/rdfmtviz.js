@@ -776,9 +776,9 @@ $(function() {
         d3.select(window).on('resize', resize).on('keydown', keydown);
         let centroids = {};
         for (let i = 0; i < max_score; i += 3) {
-            centroids[i] = {x: 200 * (i/3 + 1), y: 200}
-            centroids[i+1] = {x: 200 * (i/3 + 1), y: 400}
-            centroids[i+2] = {x: 200 * (i/3 + 1), y: 600}
+            centroids[i] = { x: 200 * (i/3 + 1), y: 200 }
+            centroids[i+1] = { x: 200 * (i/3 + 1), y: 400 }
+            centroids[i+2] = { x: 200 * (i/3 + 1), y: 600 }
         }
 
         force.on('tick', function(e) {
