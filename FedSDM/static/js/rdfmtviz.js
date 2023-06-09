@@ -760,7 +760,7 @@ $(function() {
                 .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2); })
                 .type(function(d) { return d.size? 'circle':  d.type; })
             );
-            if (!text_center) { text.attr('dx', function(d) { return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius); }); }
+            if (!text_center) { text.attr('dx', function() { return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius); }); }
             text.style('font-size', function(d) {
                 let text_size = nominal_text_size;
                 if (d.size) { text_size = 16; }
