@@ -837,12 +837,9 @@ $(function() {
 
         function vis_by_node_score(score) {
             if (isNumber(score)) {
-                if (score >= 0.666)
-                    return keyh;
-                else if (score >= 0.333)
-                    return keym;
-                else if (score >= 0)
-                    return keyl;
+                if (score >= 0.666) { return keyh; }
+                else if (score >= 0.333) { return keym; }
+                else if (score >= 0) { return keyl; }
             }
             return true;
         }
