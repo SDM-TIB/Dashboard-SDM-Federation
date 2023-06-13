@@ -845,7 +845,7 @@ $(function() {
         }
 
         function vis_by_link_score(score) {
-            if (isNumber(score))  {
+            if (isNumber(score)) {
                 if (score >= 0.666) { return key3; }
                 else if (score >= 0.333) { return key2; }
                 else if (score >= 0) { return key1; }
