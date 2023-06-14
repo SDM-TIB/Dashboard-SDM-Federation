@@ -671,9 +671,7 @@ $(function() {
             .attr('x2', function(d) { return d.target.x; })
             .attr('y2', function(d) { return d.target.y; })
             .style('stroke-width', nominal_stroke)
-            .style('stroke', function(d) {
-                return color(d.datasource);
-            });
+            .style('stroke', function(d) { return color(d.datasource); });
         node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
         node.enter().append('g')
