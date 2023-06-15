@@ -683,9 +683,7 @@ $(function() {
                 expand[d.datasource] = !expand[d.datasource];
                 drawRDFMTS(nodes, links, divCanvas);
             })
-            .on('mouseover', function(d) {
-                set_highlight(d);
-            })
+            .on('mouseover', function(d) { set_highlight(d); })
             .on('mousedown', function(d) {
                 d3.event.stopPropagation();
                 focus_node = d;
