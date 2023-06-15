@@ -690,9 +690,7 @@ $(function() {
                 set_focus(d)
                 if (highlight_node === null) { set_highlight(d) }
             })
-            .on('mouseout', function() {
-                exit_highlight();
-            });
+            .on('mouseout', function() { exit_highlight(); });
 
         node.call(force.drag);
 
