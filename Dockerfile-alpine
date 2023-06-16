@@ -12,7 +12,7 @@ ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
     VIRTUOSO_HOME="/opt/virtuoso-opensource"
 
 # Set up prerequisites
-COPY --from=prohde/virtuoso-opensource-7:7.2.7-alpine /opt/virtuoso-opensource /opt/virtuoso-opensource
+COPY --from=prohde/virtuoso-opensource-7:7.2.10-alpine /opt/virtuoso-opensource /opt/virtuoso-opensource
 RUN ln -s /opt/virtuoso-opensource/database /database &&\
     ln -s /opt/virtuoso-opensource/bin/virtuoso-entrypoint.sh /virtuoso-entrypoint.sh &&\
     addgroup -S virtuoso &&\
