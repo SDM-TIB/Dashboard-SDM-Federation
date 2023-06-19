@@ -703,9 +703,8 @@ $(function() {
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(toColor, function(d) {
-                if (divCanvas == null) {
-                    return color(d.datasource);
-                } else {
+                if (divCanvas == null) { return color(d.datasource); }
+                else {
                     ci += 1;
                     return color(d.datasource + (ci - 1));
                 }
