@@ -740,8 +740,7 @@ $(function() {
 
         zoom.on('zoom', function() {
             let stroke = nominal_stroke;
-            if (nominal_stroke * zoom.scale() > max_stroke)
-                stroke = max_stroke / zoom.scale();
+            if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale(); }
 
             link.style('stroke-width', stroke);
             circle.style('stroke-width',stroke);
