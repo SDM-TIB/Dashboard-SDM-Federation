@@ -746,8 +746,7 @@ $(function() {
             circle.style('stroke-width',stroke);
 
             let base_radius = nominal_base_node_size;
-            if (nominal_base_node_size * zoom.scale() > max_base_node_size)
-                base_radius = max_base_node_size / zoom.scale();
+            if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale(); }
             circle.attr('d', d3.svg.symbol()
                 .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2); })
                 .type(function(d) { return d.size? 'circle':  d.type; })
