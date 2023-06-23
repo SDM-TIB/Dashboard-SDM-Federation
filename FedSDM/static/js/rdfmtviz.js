@@ -801,9 +801,7 @@ $(function() {
             text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         });
 
-        function isConnected(a, b) {
-            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index;
-        }
+        function isConnected(a, b) { return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index; }
 
         function hasConnections(a) {
             for (const property in linkedByIndex) {
