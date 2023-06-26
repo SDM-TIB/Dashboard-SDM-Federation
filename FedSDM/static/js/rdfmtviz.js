@@ -806,8 +806,7 @@ $(function() {
         function hasConnections(a) {
             for (const property in linkedByIndex) {
                 let s = property.split(',');
-                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property])
-                    return true;
+                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) { return true; }
             }
             return false;
         }
