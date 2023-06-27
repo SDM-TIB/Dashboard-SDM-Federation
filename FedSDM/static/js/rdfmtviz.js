@@ -852,9 +852,7 @@ $(function() {
         }
 
         function keydown() {
-            if (d3.event.keyCode === 32) {
-                force.stop();
-            }
+            if (d3.event.keyCode === 32) { force.stop(); }
             else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
                 switch (String.fromCharCode(d3.event.keyCode)) {
                     case 'C': keyc = !keyc; break;
