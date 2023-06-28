@@ -875,9 +875,7 @@ $(function() {
                     linkedByIndex[d.source.index + ',' + d.target.index] = flag;
                     return flag ? 'inline' : 'none';
                 });
-                node.style('display', function(d) {
-                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
-                });
+                node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
                 text.style('display', function(d) {
                     return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
                 });
