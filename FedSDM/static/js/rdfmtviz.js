@@ -876,9 +876,7 @@ $(function() {
                     return flag ? 'inline' : 'none';
                 });
                 node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
-                text.style('display', function(d) {
-                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
-                });
+                text.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
 
                 if (highlight_node !== null) {
                     if ((key0 || hasConnections(highlight_node)) && vis_by_type('circle') && vis_by_node_score(highlight_node.datasource)) {
