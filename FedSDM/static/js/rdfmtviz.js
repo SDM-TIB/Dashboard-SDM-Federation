@@ -688,9 +688,7 @@ $(function() {
         let ci = 0;
         let circle = node.append('path')
             .attr('d', d3.svg.symbol()
-                .size(function(d) {
-                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2);
-                })
+                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2); })
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(toColor, function(d) {
