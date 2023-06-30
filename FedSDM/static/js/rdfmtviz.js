@@ -904,15 +904,9 @@ $(function() {
             highlight_node = d;
             highlight_color = color(d.datasource);  // added this to make highlight color same as the color of the node
             if (highlight_color !== 'white') {
-                circle.style(toWhite, function(o) {
-                    return isConnected(d, o) ? highlight_color : 'white';
-                });
-                text.style('font-weight', function(o) {
-                    return isConnected(d, o) ? 'bold' : 'normal';
-                });
-                link.style('stroke', function(o) {
-                    return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
-                });
+                circle.style(toWhite, function(o) { return isConnected(d, o) ? highlight_color : 'white'; });
+                text.style('font-weight', function(o) { return isConnected(d, o) ? 'bold' : 'normal'; });
+                link.style('stroke', function(o) { return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color); });
             }
         }
     }
