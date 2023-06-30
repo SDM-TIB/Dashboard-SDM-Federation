@@ -165,10 +165,7 @@ $(function() {
     });
 
     function get_rdfmts_stats(fed) {
-        if (fed == null || (fed === federation && loaded === 1)) {
-            console.log('Stats already loaded!');
-            return
-        }
+        if (fed == null || (fed === federation && loaded === 1)) { return }
         $('#fedName').html(fed);
         $('#vizFedName').html(fed);
         $('#gaFedName').html(fed);
