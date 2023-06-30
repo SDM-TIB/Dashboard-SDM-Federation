@@ -261,9 +261,8 @@ $(function() {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
                 }
-                if (tabVisible === '#analysis') {
-                    get_rdfmts_graph_analysis(federation, $(this).text());
-                } else {
+                if (tabVisible === '#analysis') { get_rdfmts_graph_analysis(federation, $(this).text()); }
+                else {
                     $('#vizDsName').html($(this).text());
                     $('#gaDsName').html($(this).text());
                     sourceMT = source;
