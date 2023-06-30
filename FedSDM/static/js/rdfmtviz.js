@@ -977,9 +977,7 @@ $(function() {
         // create svg image
         graph_container.empty();
         let circumference = 0;
-        graph.nodes.forEach(function() {
-            circumference += 20 + 2;
-        });
+        graph.nodes.forEach(function() { circumference += 20 + 2; });
         let wh = 2 * circumference / Math.PI;
         if (wh < 200) wh = 200;
         if (wh > 1200) wh = 1200;
@@ -998,9 +996,7 @@ $(function() {
             .attr('id', 'plot')
             .attr('transform', 'translate(' + graph_container.width() / 2 + ', ' + 980 / 2 + ')');
 
-        zoom.on('zoom', function() {
-            plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
-        });
+        zoom.on('zoom', function() { plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'); });
         svg.call(zoom);
 
         circleLayout(graph.nodes);  // calculate node positions
@@ -1011,9 +1007,7 @@ $(function() {
     // Calculates node locations
     function circleLayout(nodes) {
         // sort nodes by group
-        nodes.sort(function(a, b) {
-            return a.datasource - b.datasource;
-        });
+        nodes.sort(function(a, b) { return a.datasource - b.datasource; });
 
         // used to scale node index to theta value
         const scale = d3.scale.linear()
