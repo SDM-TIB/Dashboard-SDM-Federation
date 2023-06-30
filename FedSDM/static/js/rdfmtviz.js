@@ -885,9 +885,7 @@ $(function() {
                 if (highlight_color !== 'white') {
                     circle.style(toWhite, 'white');
                     text.style('font-weight', 'normal');
-                    link.style('stroke', function(o) {
-                        return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color
-                    });
+                    link.style('stroke', function(o) { return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color });
                 }
             }
         }
