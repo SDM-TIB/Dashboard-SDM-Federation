@@ -892,15 +892,9 @@ $(function() {
 
         function set_focus(d) {
             if (highlight_trans < 1) {
-                circle.style('opacity', function(o) {
-                    return isConnected(d, o) ? 1 : highlight_trans;
-                });
-                text.style('opacity', function(o) {
-                    return isConnected(d, o) ? 1 : highlight_trans;
-                });
-                link.style('opacity', function(o) {
-                    return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans;
-                });
+                circle.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans; });
+                text.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans; });
+                link.style('opacity', function(o) { return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans; });
             }
         }
 
