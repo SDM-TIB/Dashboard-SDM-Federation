@@ -938,13 +938,9 @@ $(function() {
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         const target = $(e.target).attr('href')  // activated tab
-        if (target === '#visualize') {
-            tabVisible = '#visualize';
-        } else if (target === '#analysis') {
-            tabVisible = '#analysis';
-        } else {
-            tabVisible = '#home';
-        }
+        if (target === '#visualize') { tabVisible = '#visualize'; }
+        else if (target === '#analysis') { tabVisible = '#analysis'; }
+        else { tabVisible = '#home'; }
     });
 
     function addTooltip(circle) {  // generates a tooltip for an SVG circle element based on its ID
