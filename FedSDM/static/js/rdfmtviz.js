@@ -618,8 +618,8 @@ $(function() {
         let toColor = 'fill',
             toWhite = 'stroke';
         if (outline) {
-            toColor = 'stroke'
-            toWhite = 'fill'
+            toColor = 'stroke';
+            toWhite = 'fill';
         }
 
         svg.style('cursor','move');
