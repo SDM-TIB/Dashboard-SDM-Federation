@@ -235,13 +235,13 @@ $(function() {
                 legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
             }
             graph_legend.empty()
-                        .html(legend);
+                .html(legend);
 
             $('#ga_data_sources').empty()
-                                 .html(data_sources_html);
+                .html(data_sources_html);
             data_sources.empty()
-                        .html(data_sources_html)
-                        .prop('disabled', false);
+                .html(data_sources_html)
+                .prop('disabled', false);
             graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
                 $('#data_sources_btn').val($(this).text())
@@ -267,7 +267,7 @@ $(function() {
                     $('#gaDsName').html($(this).text());
                     sourceMT = source;
                     graph_container.empty()
-                                   .html('<h1> Please select visualization type!</h1>');
+                        .html('<h1> Please select visualization type!</h1>');
                     if (vizType === 'fgraph') { drawSingleSourceRDFMTS(sourceMT, 'force'); }
                     else if (vizType === 'cgraph') { drawSingleSourceRDFMTS(sourceMT, 'circular'); }
                     else if (vizType === 'donut') { drawDonut(source); }
@@ -961,13 +961,13 @@ $(function() {
 
         if ((x - offset) < -radius) {
             tooltip.attr('text-anchor', 'start')
-                   .attr('dx', -r);
+                .attr('dx', -r);
         } else if ((x + offset) > radius) {
             tooltip.attr('text-anchor', 'end')
-                   .attr('dx', r);
+                .attr('dx', r);
         } else {
             tooltip.attr('text-anchor', 'middle')
-                   .attr('dx', 0);
+                .attr('dx', 0);
         }
     }
 
@@ -985,8 +985,8 @@ $(function() {
         diameter = wh;
         let svg = d3.select('#graph').append('svg');
         svg.append('g').classed('chartLayer', true)
-           .attr('width', graph_container.width())
-           .attr('height', 980);
+            .attr('width', graph_container.width())
+            .attr('height', 980);
 
         radius = wh/2;
         // create plot area within svg image
@@ -1011,8 +1011,8 @@ $(function() {
 
         // used to scale node index to theta value
         const scale = d3.scale.linear()
-              .domain([0, nodes.length])
-              .range([0, 2 * Math.PI]);
+            .domain([0, nodes.length])
+            .range([0, 2 * Math.PI]);
 
         // calculate theta for each node
         nodes.forEach(function(d, i) {
