@@ -7,7 +7,7 @@ $(function() {
           mt_viz = $('#mt_viz'),
           graphArea = document.getElementById('graph'),
           size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]),  // The largest node for each cluster.
-          curve = d3.svg.diagonal().projection(function(d) { return [d.x, d.y]; });
+          curve = d3.svg.diagonal().projection(function(d) { return [d.x, d.y] });
 
     data_sources.prop('disabled', true);
     mt_details.prop('disabled', true);
@@ -71,9 +71,9 @@ $(function() {
 
     window.jsdata = [];
 
-    if (federation != null && federation !== '') { load_data(federation); }
+    if (federation != null && federation !== '') { load_data(federation) }
 
-    federation_list.on('change', function() { load_data($(this).val()); });
+    federation_list.on('change', function() { load_data($(this).val()) });
 
     function load_data(fed) {
         $('#fedName').html(fed);
@@ -121,8 +121,8 @@ $(function() {
                     o.source = mNodes[o.source];
                     o.target = mNodes[o.target];
                     if (o.source.datasource === o.target.datasource) {
-                        if (o.source.datasource in mSourceLinks) { mSourceLinks[o.source.datasource].push(o); }
-                        else { mSourceLinks[o.source.datasource] = [o]; }
+                        if (o.source.datasource in mSourceLinks) { mSourceLinks[o.source.datasource].push(o) }
+                        else { mSourceLinks[o.source.datasource] = [o] }
                     }
                 }
                 maLinks = mLinks;
@@ -131,11 +131,11 @@ $(function() {
                 $.each(mNodes, function (key, val) {
                     flatnodes.push(val);
                     MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                    if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); }  //, 'color': color(val.datasource)
-                    else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; }  // , 'color': color(val.datasource)
+                    if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}) }  //, 'color': color(val.datasource)
+                    else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}] }  // , 'color': color(val.datasource)
 
-                    if (val.datasource in mSourceNodes) { mSourceNodes[val.datasource].push(val); }
-                    else { mSourceNodes[val.datasource] = [val]; }
+                    if (val.datasource in mSourceNodes) { mSourceNodes[val.datasource].push(val) }
+                    else { mSourceNodes[val.datasource] = [val] }
                 });
                 mNodes = flatnodes;
                 maNodes = mNodes ;
@@ -211,7 +211,7 @@ $(function() {
     }
     function get_rdfmts(fed) {
         if (fed == null || (fed === federation && visualized === 1)) { return }
-        $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) { jsdata = data2; });
+        $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) { jsdata = data2 });
         $('#fedName').html(fed);
         $('#gaFedName').html(fed);
         $('#vizFedName').html(fed);
@@ -261,16 +261,16 @@ $(function() {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
                 }
-                if (tabVisible === '#analysis') { get_rdfmts_graph_analysis(federation, $(this).text()); }
+                if (tabVisible === '#analysis') { get_rdfmts_graph_analysis(federation, $(this).text()) }
                 else {
                     $('#vizDsName').html($(this).text());
                     $('#gaDsName').html($(this).text());
                     sourceMT = source;
                     graph_container.empty()
                         .html('<h1> Please select visualization type!</h1>');
-                    if (vizType === 'fgraph') { drawSingleSourceRDFMTS(sourceMT, 'force'); }
-                    else if (vizType === 'cgraph') { drawSingleSourceRDFMTS(sourceMT, 'circular'); }
-                    else if (vizType === 'donut') { drawDonut(source); }
+                    if (vizType === 'fgraph') { drawSingleSourceRDFMTS(sourceMT, 'force') }
+                    else if (vizType === 'cgraph') { drawSingleSourceRDFMTS(sourceMT, 'circular') }
+                    else if (vizType === 'donut') { drawDonut(source) }
                     get_rdfmts_graph_analysis(federation, $(this).text());
                 }
             });
@@ -283,8 +283,8 @@ $(function() {
                 o.target = nodes[o.target];
                 if (o.source == null || o.target == null) { console.log(o) }
                 if (o.source.datasource === o.target.datasource) {
-                    if (o.source.datasource in sourceLinks) { sourceLinks[o.source.datasource].push(o); }
-                    else { sourceLinks[o.source.datasource] = [o]; }
+                    if (o.source.datasource in sourceLinks) { sourceLinks[o.source.datasource].push(o) }
+                    else { sourceLinks[o.source.datasource] = [o] }
                 }
             }
             aLinks = links;
@@ -295,9 +295,9 @@ $(function() {
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
                 MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}); }  //, 'color': color(val.datasource)
-                else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}]; }  // , 'color': color(val.datasource)
-                if (val.datasource in sourceNodes) { sourceNodes[val.datasource].push(val); }
+                if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}) }  //, 'color': color(val.datasource)
+                else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}] }  // , 'color': color(val.datasource)
+                if (val.datasource in sourceNodes) { sourceNodes[val.datasource].push(val) }
                 else { sourceNodes[val.datasource] = [val] }
             });
             nodes = flatnodes;
@@ -398,10 +398,10 @@ $(function() {
         if (source !== 'All') {
             for (let i = 0; i < jsdata.data.length; i++) {
                 for (let j in MTCards[source_mt]) {
-                    if (MTCards[source_mt][j].label.includes(jsdata.data[i][1])) { MTCards[source_mt][j].value = jsdata.data[i][3]; }
+                    if (MTCards[source_mt][j].label.includes(jsdata.data[i][1])) { MTCards[source_mt][j].value = jsdata.data[i][3] }
                 }
             }
-            MTCards[source_mt].sort(function(a, b) { return b.value - a.value; });
+            MTCards[source_mt].sort(function(a, b) { return b.value - a.value });
 
             let labels_ = [], data_ = []
             for (let i = 0; i < MTCards[source_mt].length; i++) {
@@ -415,10 +415,10 @@ $(function() {
             $.each(MTCards, function (key, val) {
                 for (let i = 0; i < jsdata.data.length; i++) {
                     for (let ii in val) {
-                        if (val[ii].label.includes(jsdata.data[i][1])) { val[ii].value = jsdata.data[i][3]; }
+                        if (val[ii].label.includes(jsdata.data[i][1])) { val[ii].value = jsdata.data[i][3] }
                     }
                 }
-                val.sort(function(a, b) { return b.value - a.value; });
+                val.sort(function(a, b) { return b.value - a.value });
 
                 let labels_ = [], data_ = []
                 for (let i = 0; i < val.length; i++) {
@@ -472,7 +472,7 @@ $(function() {
             if (aLinks.length < 1) { aLinks = [] }
             data = { nodes: aNodes, links: aLinks };
             if (gt === 'force') {
-                aNodes.forEach(function(d) { expand[d.datasource] = true; });
+                aNodes.forEach(function(d) { expand[d.datasource] = true });
                 drawRDFMTS(aNodes, aLinks);
             } else {
                 drawGraph(data);
@@ -486,7 +486,7 @@ $(function() {
             if (!slinks) { slinks = [] }
             data = { nodes: sNodes, links: slinks }
             if (gt === 'force') {
-                sNodes.forEach(function(d) { expand[d.datasource] = true; });
+                sNodes.forEach(function(d) { expand[d.datasource] = true });
                 drawRDFMTS(sNodes, slinks);
             } else {
                 drawGraph(data);
@@ -504,7 +504,7 @@ $(function() {
         return u < v ? u + '|' + v : v + '|' + u;
     }
 
-    function getGroup(n) { return n.datasource; }
+    function getGroup(n) { return n.datasource }
 
     // constructs the network to visualize
     function network(data, prev, index, expand) {
@@ -568,7 +568,7 @@ $(function() {
             n.group_data = l;
         }
 
-        for (const i in gm) { gm[i].link_count = 0; }
+        for (const i in gm) { gm[i].link_count = 0 }
 
         // determine links
         for (let k = 0; k < data.links.length; ++k) {
@@ -585,7 +585,7 @@ $(function() {
                 l = lm[i] || (lm[i] = { source: u, target: v, size: 0 });
             l.size += 1;
         }
-        for (const i in lm) { links.push(lm[i]); }
+        for (const i in lm) { links.push(lm[i]) }
 
         return { nodes: nodes, links: links };
     }
@@ -598,14 +598,14 @@ $(function() {
             graph_container.empty();
             svg = d3.select('#graph').append('svg');
             width = graph_container.width();
-            canvas = 'graph'
+            canvas = 'graph';
         } else {
             mt_viz.empty();
             svg = d3.select('#mtviz').append('svg');
             width = mt_viz.width();
             console.log('Showing visualization...')
             mt_viz.show();
-            canvas = 'mtviz'
+            canvas = 'mtviz';
         }
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
             g = svg.append('g');
@@ -624,7 +624,7 @@ $(function() {
 
         svg.style('cursor','move');
         let linkedByIndex = {};
-        links.forEach(function(d) { linkedByIndex[d.source + ',' + d.target] = true; });
+        links.forEach(function(d) { linkedByIndex[d.source + ',' + d.target] = true });
 
         const fit = Math.sqrt(nodes.length / (width * height));
         nGravity = (8 * fit);
@@ -657,42 +657,42 @@ $(function() {
         link.exit().remove();
         link.enter().append('line')
             .attr('class', 'link')
-            .attr('x1', function(d) { return d.source.x; })
-            .attr('y1', function(d) { return d.source.y; })
-            .attr('x2', function(d) { return d.target.x; })
-            .attr('y2', function(d) { return d.target.y; })
+            .attr('x1', function(d) { return d.source.x })
+            .attr('y1', function(d) { return d.source.y })
+            .attr('x2', function(d) { return d.target.x })
+            .attr('y2', function(d) { return d.target.y })
             .style('stroke-width', nominal_stroke)
-            .style('stroke', function(d) { return color(d.datasource); });
+            .style('stroke', function(d) { return color(d.datasource) });
         node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
         node.enter().append('g')
-            .attr('class', function(d) { return 'node' + (d.size ? '' :' leaf'); })
-            .attr('cx', function(d) { return d.x; })
-            .attr('cy', function(d) { return d.y; })
+            .attr('class', function(d) { return 'node' + (d.size ? '' :' leaf') })
+            .attr('cx', function(d) { return d.x })
+            .attr('cy', function(d) { return d.y })
             .on('dblclick', function(d) {
                 console.log(d.datasource + ': ' + expand[d.datasource])
                 expand[d.datasource] = !expand[d.datasource];
                 drawRDFMTS(nodes, links, divCanvas);
             })
-            .on('mouseover', function(d) { set_highlight(d); })
+            .on('mouseover', function(d) { set_highlight(d) })
             .on('mousedown', function(d) {
                 d3.event.stopPropagation();
                 focus_node = d;
                 set_focus(d)
                 if (highlight_node === null) { set_highlight(d) }
             })
-            .on('mouseout', function() { exit_highlight(); });
+            .on('mouseout', function() { exit_highlight() });
 
         node.call(force.drag);
 
         let ci = 0;
         let circle = node.append('path')
             .attr('d', d3.svg.symbol()
-                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2); })
-                .type(function(d) { return d.size? 'circle': d.type; })
+                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2) })
+                .type(function(d) { return d.size? 'circle': d.type })
             )
             .style(toColor, function(d) {
-                if (divCanvas == null) { return color(d.datasource); }
+                if (divCanvas == null) { return color(d.datasource) }
                 else {
                     ci += 1;
                     return color(d.datasource + (ci - 1));
@@ -708,11 +708,11 @@ $(function() {
             .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' })
 
         if (text_center) {
-            text.text(function (d) { if (d.label) { return d.label; } else { return sourcesNames[d.datasource]; } })
+            text.text(function (d) { if (d.label) { return d.label } else { return sourcesNames[d.datasource] } })
                 .style('text-anchor', 'middle');
         } else {
-            text.attr('dx', function() { return (size(65) - size(30) || nominal_base_node_size); })
-                .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesNames[d.datasource]; });
+            text.attr('dx', function() { return (size(65) - size(30) || nominal_base_node_size) })
+                .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesNames[d.datasource] });
         }
 
         d3.select(window).on('mouseup', function() {
@@ -724,27 +724,27 @@ $(function() {
                     link.style('opacity', 1);
                 }
             }
-            if (highlight_node === null) { exit_highlight(); }
+            if (highlight_node === null) { exit_highlight() }
         });
 
         zoom.on('zoom', function() {
             let stroke = nominal_stroke;
-            if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale(); }
+            if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale() }
 
             link.style('stroke-width', stroke);
             circle.style('stroke-width',stroke);
 
             let base_radius = nominal_base_node_size;
-            if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale(); }
+            if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale() }
             circle.attr('d', d3.svg.symbol()
-                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2); })
-                .type(function(d) { return d.size? 'circle':  d.type; })
+                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2) })
+                .type(function(d) { return d.size? 'circle':  d.type })
             );
-            if (!text_center) { text.attr('dx', function() { return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius); }); }
+            if (!text_center) { text.attr('dx', function() { return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius) }) }
             text.style('font-size', function(d) {
                 let text_size = nominal_text_size;
-                if (d.size) { text_size = 16; }
-                if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale(); }
+                if (d.size) { text_size = 16 }
+                if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale() }
                 return text_size + 'px'
             });
             g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
@@ -778,24 +778,24 @@ $(function() {
                     o.x += (centroids[o.datasource].x - o.x) * k;
                 }
             });
-            link.attr('x1', function(d) { return d.source.x; })
-                .attr('y1', function(d) { return d.source.y; })
-                .attr('x2', function(d) { return d.target.x; })
-                .attr('y2', function(d) { return d.target.y; });
+            link.attr('x1', function(d) { return d.source.x })
+                .attr('y1', function(d) { return d.source.y })
+                .attr('x2', function(d) { return d.target.x })
+                .attr('y2', function(d) { return d.target.y });
 
-            node.attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; });
+            node.attr('cx', function(d) { return d.x })
+                .attr('cy', function(d) { return d.y });
 
-            node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
-            text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+            node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
+            text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
         });
 
-        function isConnected(a, b) { return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index; }
+        function isConnected(a, b) { return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index }
 
         function hasConnections(a) {
             for (const property in linkedByIndex) {
                 let s = property.split(',');
-                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) { return true; }
+                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) { return true }
             }
             return false;
         }
@@ -814,23 +814,23 @@ $(function() {
 
         function vis_by_node_score(score) {
             if (isNumber(score)) {
-                if (score >= 0.666) { return keyh; }
-                else if (score >= 0.333) { return keym; }
-                else if (score >= 0) { return keyl; }
+                if (score >= 0.666) { return keyh }
+                else if (score >= 0.333) { return keym }
+                else if (score >= 0) { return keyl }
             }
             return true;
         }
 
         function vis_by_link_score(score) {
             if (isNumber(score)) {
-                if (score >= 0.666) { return key3; }
-                else if (score >= 0.333) { return key2; }
-                else if (score >= 0) { return key1; }
+                if (score >= 0.666) { return key3 }
+                else if (score >= 0.333) { return key2 }
+                else if (score >= 0) { return key1 }
             }
             return true;
         }
 
-        function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n); }
+        function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n) }
 
         function resize() {
             const width = $('#' + canvas).width(), height = 980;
@@ -841,7 +841,7 @@ $(function() {
         }
 
         function keydown() {
-            if (d3.event.keyCode === 32) { force.stop(); }
+            if (d3.event.keyCode === 32) { force.stop() }
             else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
                 switch (String.fromCharCode(d3.event.keyCode)) {
                     case 'C': keyc = !keyc; break;
@@ -864,12 +864,12 @@ $(function() {
                     linkedByIndex[d.source.index + ',' + d.target.index] = flag;
                     return flag ? 'inline' : 'none';
                 });
-                node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
-                text.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
+                node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none' });
+                text.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none' });
 
                 if (highlight_node !== null) {
                     if ((key0 || hasConnections(highlight_node)) && vis_by_type('circle') && vis_by_node_score(highlight_node.datasource)) {
-                        if (focus_node !== null) { set_focus(focus_node); }
+                        if (focus_node !== null) { set_focus(focus_node) }
                         set_highlight(highlight_node);
                     } else {
                         exit_highlight();
@@ -892,21 +892,21 @@ $(function() {
 
         function set_focus(d) {
             if (highlight_trans < 1) {
-                circle.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans; });
-                text.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans; });
-                link.style('opacity', function(o) { return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans; });
+                circle.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans });
+                text.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans });
+                link.style('opacity', function(o) { return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans });
             }
         }
 
         function set_highlight(d) {
             svg.style('cursor', 'pointer');
-            if (focus_node !== null) { d = focus_node; }
+            if (focus_node !== null) { d = focus_node }
             highlight_node = d;
             highlight_color = color(d.datasource);  // added this to make highlight color same as the color of the node
             if (highlight_color !== 'white') {
-                circle.style(toWhite, function(o) { return isConnected(d, o) ? highlight_color : 'white'; });
-                text.style('font-weight', function(o) { return isConnected(d, o) ? 'bold' : 'normal'; });
-                link.style('stroke', function(o) { return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color); });
+                circle.style(toWhite, function(o) { return isConnected(d, o) ? highlight_color : 'white' });
+                text.style('font-weight', function(o) { return isConnected(d, o) ? 'bold' : 'normal' });
+                link.style('stroke', function(o) { return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color) });
             }
         }
     }
@@ -938,9 +938,9 @@ $(function() {
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         const target = $(e.target).attr('href')  // activated tab
-        if (target === '#visualize') { tabVisible = '#visualize'; }
-        else if (target === '#analysis') { tabVisible = '#analysis'; }
-        else { tabVisible = '#home'; }
+        if (target === '#visualize') { tabVisible = '#visualize' }
+        else if (target === '#analysis') { tabVisible = '#analysis' }
+        else { tabVisible = '#home' }
     });
 
     function addTooltip(circle) {  // generates a tooltip for an SVG circle element based on its ID
@@ -977,7 +977,7 @@ $(function() {
         // create svg image
         graph_container.empty();
         let circumference = 0;
-        graph.nodes.forEach(function() { circumference += 20 + 2; });
+        graph.nodes.forEach(function() { circumference += 20 + 2 });
         let wh = 2 * circumference / Math.PI;
         if (wh < 200) wh = 200;
         if (wh > 1200) wh = 1200;
@@ -996,7 +996,7 @@ $(function() {
             .attr('id', 'plot')
             .attr('transform', 'translate(' + graph_container.width() / 2 + ', ' + 980 / 2 + ')');
 
-        zoom.on('zoom', function() { plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'); });
+        zoom.on('zoom', function() { plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')') });
         svg.call(zoom);
 
         circleLayout(graph.nodes);  // calculate node positions
@@ -1007,7 +1007,7 @@ $(function() {
     // Calculates node locations
     function circleLayout(nodes) {
         // sort nodes by group
-        nodes.sort(function(a, b) { return a.datasource - b.datasource; });
+        nodes.sort(function(a, b) { return a.datasource - b.datasource });
 
         // used to scale node index to theta value
         const scale = d3.scale.linear()
@@ -1030,10 +1030,10 @@ $(function() {
         d.x = d3.event.x;
         d.y = d3.event.y;
         d3.select(this).attr('cx', d.x).attr('cy', d.y);
-        circularLink.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
-        circularLink.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
-        circularLink.filter(function(l) { return l.source === d; }).attr('d', curve);
-        circularLink.filter(function(l) { return l.target === d; }).attr('d', curve);
+        circularLink.filter(function(l) { return l.source === d }).attr('x1', d.x).attr('y1', d.y);
+        circularLink.filter(function(l) { return l.target === d }).attr('x2', d.x).attr('y2', d.y);
+        circularLink.filter(function(l) { return l.source === d }).attr('d', curve);
+        circularLink.filter(function(l) { return l.target === d }).attr('d', curve);
     }
 
     // Draws nodes with tooltips
@@ -1043,13 +1043,13 @@ $(function() {
             .enter()
             .append('circle')
             .attr('class', 'node')
-            .attr('id', function(d) { return d.label; })
-            .attr('cx', function(d) { return d.x; })
-            .attr('cy', function(d) { return d.y; })
+            .attr('id', function(d) { return d.label })
+            .attr('cx', function(d) { return d.x })
+            .attr('cy', function(d) { return d.y })
             .attr('r', 10)
-            .style('fill',   function(d) { return color(d.datasource); })
-            .on('mouseover', function() { addTooltip(d3.select(this)); })
-            .on('mouseout',  function() { d3.select('#tooltip').remove(); })
+            .style('fill',   function(d) { return color(d.datasource) })
+            .on('mouseover', function() { addTooltip(d3.select(this)) })
+            .on('mouseout',  function() { d3.select('#tooltip').remove() })
             .call(d3.behavior.drag().on('drag', dragged));
     }
 
