@@ -6,7 +6,7 @@ $(function() {
           mt_details = $('#mt_details'),
           mt_viz = $('#mt_viz'),
           graphArea = document.getElementById('graph'),
-          size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]),  // The largest node for each cluster.
+          size = d3.scale.pow().exponent(1).domain([1, 100]).range([8, 36]),  // The largest node for each cluster.
           curve = d3.svg.diagonal().projection(function(d) { return [d.x, d.y] });
 
     data_sources.prop('disabled', true);
@@ -49,9 +49,9 @@ $(function() {
         sourceIDs = {}, sourcesNames = {},
         aNodes = [],
         aLinks = [],
-        MTCards = {'All': []},
+        MTCards = { 'All': [] },
         vizType = null,
-        data = {nodes: [], links: []},
+        data = { nodes: [], links: [] },
         selectedRow = null,
         mNodes = [],
         maLinks = [],
@@ -130,9 +130,9 @@ $(function() {
                 flatnodes = [];
                 $.each(mNodes, function (key, val) {
                     flatnodes.push(val);
-                    MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                    if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}) }  //, 'color': color(val.datasource)
-                    else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}] }  // , 'color': color(val.datasource)
+                    MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
+                    if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
+                    else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
 
                     if (val.datasource in mSourceNodes) { mSourceNodes[val.datasource].push(val) }
                     else { mSourceNodes[val.datasource] = [val] }
@@ -294,9 +294,9 @@ $(function() {
             MTCards = {'All': []};
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
-                MTCards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-                if (val.datasource in MTCards) { MTCards[val.datasource].push({'label': val.label, 'value': val.weight}) }  //, 'color': color(val.datasource)
-                else { MTCards[val.datasource] = [{'label': val.label, 'value': val.weight}] }  // , 'color': color(val.datasource)
+                MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
+                if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
+                else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
                 if (val.datasource in sourceNodes) { sourceNodes[val.datasource].push(val) }
                 else { sourceNodes[val.datasource] = [val] }
             });
@@ -666,7 +666,7 @@ $(function() {
         node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
         node.enter().append('g')
-            .attr('class', function(d) { return 'node' + (d.size ? '' :' leaf') })
+            .attr('class', function(d) { return 'node' + (d.size ? '' : ' leaf') })
             .attr('cx', function(d) { return d.x })
             .attr('cy', function(d) { return d.y })
             .on('dblclick', function(d) {
@@ -689,7 +689,7 @@ $(function() {
         let circle = node.append('path')
             .attr('d', d3.svg.symbol()
                 .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2) })
-                .type(function(d) { return d.size? 'circle': d.type })
+                .type(function(d) { return d.size ? 'circle' : d.type })
             )
             .style(toColor, function(d) {
                 if (divCanvas == null) { return color(d.datasource) }
@@ -738,7 +738,7 @@ $(function() {
             if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale() }
             circle.attr('d', d3.svg.symbol()
                 .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2) })
-                .type(function(d) { return d.size? 'circle':  d.type })
+                .type(function(d) { return d.size ? 'circle' :  d.type })
             );
             if (!text_center) { text.attr('dx', function() { return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius) }) }
             text.style('font-size', function(d) {
@@ -1047,9 +1047,9 @@ $(function() {
             .attr('cx', function(d) { return d.x })
             .attr('cy', function(d) { return d.y })
             .attr('r', 10)
-            .style('fill',   function(d) { return color(d.datasource) })
+            .style('fill', function(d) { return color(d.datasource) })
             .on('mouseover', function() { addTooltip(d3.select(this)) })
-            .on('mouseout',  function() { d3.select('#tooltip').remove() })
+            .on('mouseout', function() { d3.select('#tooltip').remove() })
             .call(d3.behavior.drag().on('drag', dragged));
     }
 
