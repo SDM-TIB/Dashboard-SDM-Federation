@@ -6,7 +6,7 @@ $(function() {
         yasqe = null,
         query = null,
         queryTriples = [],
-        vizData = {nodes: {}, links: []},
+        vizData = { nodes: {}, links: [] },
         queryVars = [],
         table = null, selectedRow = null, selectedRowData = [],
         keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
@@ -17,7 +17,7 @@ $(function() {
         mlinks = [],
         msourcenodes = [],
         msourcelinks = [],
-        mtcards = {'All': []},
+        mtcards = { 'All': [] },
         resDrawn = false,
         expand = {}, // expanded clusters
         net, force, hullg, linkg, nodeg,
@@ -42,7 +42,7 @@ $(function() {
         nGravity = 0,
         sourceNames = {},
         link,
-        size = d3.scale.pow().exponent(1).domain([1,100]).range([8,36]);  // The largest node for each cluster.
+        size = d3.scale.pow().exponent(1).domain([1, 100]).range([8, 36]);  // The largest node for each cluster.
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -81,7 +81,7 @@ $(function() {
                         $('#btnShowTable').hide();
                         setting.url = '/query/sparql?federation=' + federation + '&query=' + encodeURIComponent(yasqe.getValue());
                         setting.crossDomain = true;
-                        setting.data ={'query': yasqe.getValue()};
+                        setting.data ={ 'query': yasqe.getValue() };
                         $('#result_info').hide();
                         queryResultsTable.empty();
                     },
@@ -243,9 +243,9 @@ $(function() {
         flatnodes = [];
         $.each(mnodes, function (key, val) {
             flatnodes.push(val);
-            mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-            if (val.datasource in mtcards) { mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); }  //, 'color': color(val.datasource)
-            else { mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; }  // , 'color': color(val.datasource)
+            mtcards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
+            if (val.datasource in mtcards) { mtcards[val.datasource].push({ 'label': val.label, 'value': val.weight }); }  //, 'color': color(val.datasource)
+            else { mtcards[val.datasource] = [{ 'label': val.label, 'value': val.weight }]; }  // , 'color': color(val.datasource)
             if (val.datasource in msourcenodes) { msourcenodes[val.datasource].push(val); }
             else { msourcenodes[val.datasource] = [val] }
         });
@@ -318,7 +318,7 @@ $(function() {
 
     $('#add_feedback').on('click', function() {
         feedbackPredicates.empty()
-                    .append('<option value="-1">Select column</option>');
+            .append('<option value="-1">Select column</option>');
         for (const d in queryVars) { feedbackPredicates.append('<option value=' + queryVars[d] + '> ' + queryVars[d] + '</option>'); }
         feedbackPredicates.append('<option value="All">All</option>');
     });
@@ -477,9 +477,9 @@ $(function() {
             // all we need from these parameters is the last one: the callback to pass the array of completions to
             var sparqlQuery = 'SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000';
             $.ajax({
-                data: {query: sparqlQuery},
+                data: { query: sparqlQuery },
                 url: YASQE.defaults.sparql.endpoint,
-                // headers: {Accept: 'text/csv'},//ask for csv. Simple, and uses less bandwidth
+                // headers: { Accept: 'text/csv' },  //ask for csv. Simple, and uses less bandwidth
                 success: function(data) {
                     // console.log(sparqlQuery);
                     // console.log(data);
@@ -511,9 +511,9 @@ $(function() {
                   ' !regex(str(?type), "nodeID://", "i") ) '
             const sparqlQuery = 'SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000';
             $.ajax({
-                data: {query: sparqlQuery},
+                data: { query: sparqlQuery },
                 url: YASQE.defaults.sparql.endpoint,
-                // headers: {Accept: 'text/csv'},//ask for csv. Simple, and uses less bandwidth
+                // headers: { Accept: 'text/csv' },  //ask for csv. Simple, and uses less bandwidth
                 success: function(data) {
                     // console.log(sparqlQuery);
                     // console.log(data);
@@ -567,7 +567,7 @@ $(function() {
                     gn[i] = n;
                     n.size = 0;
                 } else {
-                    o = gc[i] || (gc[i] = {x: 0, y: 0, count: 0});
+                    o = gc[i] || (gc[i] = { x: 0, y: 0, count: 0 });
                     o.x += n.x;
                     o.y += n.y;
                     o.count += 1;
@@ -579,7 +579,7 @@ $(function() {
         for (let k = 0; k < data.nodes.length; ++k) {
             const n = data.nodes[k],
                   i = index(n),
-                  l = gm[i] || (gm[i] = gn[i]) || (gm[i] = {datasource: i, size: 0, nodes: []});
+                  l = gm[i] || (gm[i] = gn[i]) || (gm[i] = { datasource: i, size: 0, nodes: [] });
 
             if (expand[i]) {
                 // the node should be directly visible
@@ -622,12 +622,12 @@ $(function() {
             u = expand[u] ? nm[e.source.label] : nm[u];
             v = expand[v] ? nm[e.target.label] : nm[v];
             let i = (u < v ? u + '|' + v : v + '|' + u),
-                l = lm[i] || (lm[i] = {source: u, target: v, size: 0});
+                l = lm[i] || (lm[i] = { source: u, target: v, size: 0 });
             l.size += 1;
         }
         for (const i in lm) { links.push(lm[i]); }
 
-        return {nodes: nodes, links: links};
+        return { nodes: nodes, links: links };
     }
 
     function drawRDFMTS(nodes, links, divCanvas) {
@@ -796,9 +796,9 @@ $(function() {
         d3.select(window).on('resize', resize).on('keydown', keydown);
         const centroids = {};
         for (let i = 0; i < max_score; i += 3) {
-            centroids[i] = {x: 200 * (i/3 +1), y:200}
-            centroids[i+1] = {x: 200 * (i/3+1), y:400}
-            centroids[i+2] = {x: 200 * (i/3 +1), y:600}
+            centroids[i] = { x: 200 * (i/3 + 1), y:200 }
+            centroids[i+1] = { x: 200 * (i/3+ 1), y:400 }
+            centroids[i+2] = { x: 200 * (i/3 + 1), y:600 }
         }
 
         force.on('tick', function(e) {
