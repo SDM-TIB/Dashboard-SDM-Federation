@@ -59,9 +59,7 @@ $(function() {
         federation = $(this).val();
         $('#query_row').show();
         $('#result_row').hide();
-        if (yasqe == null) {
-            initialize_yasqe()
-        }
+        if (yasqe == null) { initialize_yasqe() }
     });
 
     function initialize_yasqe() {
@@ -71,9 +69,7 @@ $(function() {
             tabSize: 2,                // modify codemirror tab handling to solely use 2 spaces
             indentUnit: 2,
             extraKeys: {
-                Tab: function(cm) {
-                    cm.replaceSelection(new Array(cm.getOption('indentUnit') + 1).join(' '));
-                }
+                Tab: function(cm) { cm.replaceSelection(new Array(cm.getOption('indentUnit') + 1).join(' ')); }
             },
             sparql: {
                 showQueryButton: true,
@@ -139,14 +135,9 @@ $(function() {
                                     row_ml = [];
                                 for (let j = 0; j < vars.length; j++) {
                                     let val = row[vars[j]];
-                                    if (val.indexOf('^^<') !== -1) {
-                                        val = val.substring(0, val.indexOf('^^'));
-                                    }
-                                    if ('http' === val.substring(0, 4)) {
-                                        row_ml.push('<a href="' + val + '">' + val + '</a>');
-                                    } else {
-                                        row_ml.push(val);
-                                    }
+                                    if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')); }
+                                    if ('http' === val.substring(0, 4)) { row_ml.push('<a href="' + val + '">' + val + '</a>'); }
+                                    else { row_ml.push(val); }
                                     resultMap[vars[j]] = val;
                                 }
                                 table.row.add(row_ml).draw(false);
@@ -184,9 +175,7 @@ $(function() {
                                     if (lt_idx > 0) {
                                         let value = selectedRow[0][i].substring(lt_idx + 4, selectedRow[0][i].indexOf('&gt;'));
                                         selectedRowData.push(value)
-                                    } else {
-                                        selectedRowData.push(selectedRow[0][i])
-                                    }
+                                    } else { selectedRowData.push(selectedRow[0][i]) }
                                 }
                                 $('#add_feedback').prop('disabled', false);
                             }).on('deselect', function(e, dt, type, indexes) {
@@ -234,9 +223,7 @@ $(function() {
     });
 
     function drawResults() {
-        if (resDrawn === true) {
-            return
-        }
+        if (resDrawn === true) { return }
         mlinks = vizData.links;
         mnodes = vizData.nodes;
 
@@ -247,11 +234,8 @@ $(function() {
             o.target = mnodes[o.target];
             //console.log(o);
             if (o.source.datasource === o.target.datasource) {
-                if (o.source.datasource in msourcelinks) {
-                    msourcelinks[o.source.datasource].push(o);
-                } else {
-                    msourcelinks[o.source.datasource] = [o];
-                }
+                if (o.source.datasource in msourcelinks) { msourcelinks[o.source.datasource].push(o); }
+                else { msourcelinks[o.source.datasource] = [o]; }
             }
         }
         malinks = mlinks;
@@ -260,16 +244,10 @@ $(function() {
         $.each(mnodes, function (key, val) {
             flatnodes.push(val);
             mtcards['All'].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-            if (val.datasource in mtcards) {
-                mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); //, 'color': color(val.datasource)
-            } else {
-                mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; // , 'color': color(val.datasource)
-            }
-            if (val.datasource in msourcenodes) {
-                msourcenodes[val.datasource].push(val);
-            } else {
-                msourcenodes[val.datasource] = [val]
-            }
+            if (val.datasource in mtcards) { mtcards[val.datasource].push({'label': val.label, 'value': val.weight}); }  //, 'color': color(val.datasource)
+            else { mtcards[val.datasource] = [{'label': val.label, 'value': val.weight}]; }  // , 'color': color(val.datasource)
+            if (val.datasource in msourcenodes) { msourcenodes[val.datasource].push(val); }
+            else { msourcenodes[val.datasource] = [val] }
         });
         mnodes = flatnodes;
         manodes = mnodes ;
@@ -277,9 +255,7 @@ $(function() {
         data = {nodes: manodes, links: malinks};
         //console.log('nodes:', manodes)
         //console.log('links:', malinks)
-        manodes.forEach(function(d) {
-            expand[d.datasource] = true;
-        });
+        manodes.forEach(function(d) { expand[d.datasource] = true; });
         resDrawn = true;
         drawRDFMTS(manodes, malinks, 'mtviz');
     }
@@ -293,17 +269,13 @@ $(function() {
           feedbackPredicates = $('#feedbackPredicates'),
           allFeedbackFields = $([]).add(feedbackDesc).add(feedbackPredicates);
 
-    addFeedbackDialog.on('shown.bs.modal', function() {
-        feedbackDesc.trigger('focus');
-    });
+    addFeedbackDialog.on('shown.bs.modal', function() { feedbackDesc.trigger('focus'); });
     addFeedbackDialog.on('hidden.bs.modal', function() {
         addFeedbackForm[0].reset();
         allFeedbackFields.removeClass('ui-state-error');
         resetTips();
     });
-    $('#add-feedback-btn').on('click', function() {
-       addFeedback(true);
-    });
+    $('#add-feedback-btn').on('click', function() { addFeedback(true); });
 
     function addFeedback(close) {
         allFeedbackFields.removeClass('ui-state-error');
@@ -328,9 +300,7 @@ $(function() {
                 crossDomain: true,
                 success: function(data) {
                     console.log(data);
-                    if (data === null || data.length === 0) {
-                        $('#validateTips').html('Error while adding feedback!')
-                    }
+                    if (data === null || data.length === 0) { $('#validateTips').html('Error while adding feedback!') }
                 },
                 error: function(jqXHR, textStatus) {
                     console.log(jqXHR.status);
@@ -342,18 +312,14 @@ $(function() {
             close = false;
             console.log('Invalid data...');
         }
-        if (close) {
-            addFeedbackDialog.modal('hide');
-        }
+        if (close) { addFeedbackDialog.modal('hide'); }
         return valid;
     }
 
     $('#add_feedback').on('click', function() {
         feedbackPredicates.empty()
                     .append('<option value="-1">Select column</option>');
-        for (const d in queryVars) {
-            feedbackPredicates.append('<option value=' + queryVars[d] + '> ' + queryVars[d] + '</option>');
-        }
+        for (const d in queryVars) { feedbackPredicates.append('<option value=' + queryVars[d] + '> ' + queryVars[d] + '</option>'); }
         feedbackPredicates.append('<option value="All">All</option>');
     });
 
@@ -420,14 +386,9 @@ $(function() {
                               resultMap = {};
                         for (let j = 0; j < vars.length; j++) {
                             let val = row[vars[j]];
-                            if (val.indexOf('^^<') !== -1) {
-                                val = val.substring(0, val.indexOf('^^'));
-                            }
-                            if ('http' === val.substring(0, 4)) {
-                                row_ml.push('<a href="' + val + '">' + val + '</a>');
-                            } else {
-                                row_ml.push(val);
-                            }
+                            if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')); }
+                            if ('http' === val.substring(0, 4)) { row_ml.push('<a href="' + val + '">' + val + '</a>'); }
+                            else { row_ml.push(val); }
                             resultMap[vars[j]] = val;
                         }
 
@@ -439,17 +400,13 @@ $(function() {
                             const select = $('<select><option value="">All</option></select>')
                                 .appendTo($(column.footer()).empty())
                                 .on('change', function() {
-                                    const val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                    );
+                                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
                                     column.search(val ? '^' + val + '$' : '', true, false).draw();
                                 });
                             column.data().unique().sort().each(function(d) {
                                 let val = d;
                                 const lt_idx = val.indexOf('&lt;');
-                                if (lt_idx > 0) {
-                                    val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
-                                }
+                                if (lt_idx > 0) { val = val.substring(lt_idx + 4, val.indexOf('&gt;')); }
                                 select.append('<option value=' + val + '>' + val + '</option>')
                             });
                         });
@@ -494,11 +451,8 @@ $(function() {
         // console.log(result);
         result.forEach(function(row) {  // remove first line, as this one contains the projection variable
             // console.log(row);
-            if ('type' in row) {
-                completionsArray.push(row['type']);  // remove quotes
-            } else {
-                completionsArray.push(row['property']);  // remove quotes
-            }
+            if ('type' in row) { completionsArray.push(row['type']); }  // remove quotes
+            else { completionsArray.push(row['property']); }  // remove quotes
         });
         return completionsArray;
     }
@@ -570,9 +524,7 @@ $(function() {
         return returnObj;
     };
 
-    $('#classes').on('click', function() {
-        yasqe.setValue('SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}');
-    });
+    $('#classes').on('click', function() { yasqe.setValue('SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}'); });
 
     $('#analyticalnumtheoryex').on('click', function() {
         yasqe.setValue('PREFIX schema: <http://schema.org/> \n' +
@@ -584,9 +536,7 @@ $(function() {
 
     // TODO: add more example queries here
 
-    function nodeID(n) {
-        return n.size ? '_g_' + n.datasource : n.label;
-    }
+    function nodeID(n) { return n.size ? '_g_' + n.datasource : n.label; }
 
     function linkID(l) {
         const u = nodeID(l.source),
@@ -689,10 +639,7 @@ $(function() {
         width = graph.width();
         height = 980;
         canvas = 'graph'
-        if (divCanvas != null) {
-            // console.log('showing ...')
-            graph.show();
-        }
+        if (divCanvas != null) { graph.show(); }
         const zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
               g = svg.append('g');
 
@@ -714,14 +661,12 @@ $(function() {
 
         svg.style('cursor', 'move');
         let linkedByIndex = {};
-        links.forEach(function(d) {
-            linkedByIndex[d.source + ',' + d.target] = true;
-        });
+        links.forEach(function(d) { linkedByIndex[d.source + ',' + d.target] = true; });
 
         const fit = Math.sqrt(nodes.length / (width * height));
         nGravity = (8 * fit);
         nCharge = (-1 / fit);
-        if (force) force.stop()
+        if (force) { force.stop() }
         net = network(data, net, getGroup, expand);
         force = d3.layout.force()
             .nodes(net.nodes)
@@ -752,9 +697,7 @@ $(function() {
             .attr('x2', function(d) { return d.target.x; })
             .attr('y2', function(d) { return d.target.y; })
             .style('stroke-width', nominal_stroke)
-            .style('stroke', function(d) {
-                return color(d.datasource);
-            });
+            .style('stroke', function(d) { return color(d.datasource); });
 
         node = g.selectAll('.node').data(net.nodes, nodeID);
         node.exit().remove();
@@ -771,8 +714,7 @@ $(function() {
                 d3.event.stopPropagation();
                 focus_node = d;
                 set_focus(d)
-                if (highlight_node === null)
-                    set_highlight(d)
+                if (highlight_node === null) { set_highlight(d) }
             })
             .on('mouseout', function(d) { exit_highlight(d); });
 
@@ -781,14 +723,12 @@ $(function() {
         let ci = 0;
         let circle = node.append('path')
             .attr('d', d3.svg.symbol()
-                .size(function(d) {
-                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2);}) //size(d.weight)
+                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2);}) //size(d.weight)
                 .type(function(d) { return d.size? 'circle': d.type; })
             )
             .style(toColor, function(d) {
-                if (divCanvas == null) {
-                    return color(d.datasource)
-                } else {
+                if (divCanvas == null) { return color(d.datasource) }
+                else {
                     ci += 1
                     return color(d.datasource + (ci - 1));
                 }
@@ -804,11 +744,8 @@ $(function() {
 
         if (text_center) {
             text.text(function(d) {
-                if (d.label) {
-                    return d.label;
-                } else {
-                    return sourceNames[d.datasource];
-                }
+                if (d.label) { return d.label; }
+                else { return sourceNames[d.datasource]; }
             })
                 .style('text-anchor', 'middle');
         } else {
@@ -825,24 +762,20 @@ $(function() {
                     link.style('opacity', 1);
                 }
             }
-            if (highlight_node === null)
-                exit_highlight();
+            if (highlight_node === null) { exit_highlight(); }
         });
 
         zoom.on('zoom', function() {
             let stroke = nominal_stroke;
-            if (nominal_stroke * zoom.scale() > max_stroke)
-                stroke = max_stroke / zoom.scale();
+            if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale(); }
 
             link.style('stroke-width', stroke);
             circle.style('stroke-width',stroke);
 
             let base_radius = nominal_base_node_size;
-            if (nominal_base_node_size * zoom.scale() > max_base_node_size)
-                base_radius = max_base_node_size / zoom.scale();
+            if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale(); }
             circle.attr('d', d3.svg.symbol()
-                .size(function(d) {
-                    return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius, 2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius, 2);}) //size(d.weight)
+                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius, 2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius, 2);}) //size(d.weight)
                 .type(function(d) { return d.size ? 'circle' : d.type; })
             );
             if (!text_center) { text.attr('dx', (size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius); }
@@ -850,7 +783,6 @@ $(function() {
             text.style('font-size', function (d) {
                 let text_size = nominal_text_size;
                 if (d.size) { text_size = 16; }
-
                 if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale(); }
 
                 return text_size + 'px'
@@ -898,15 +830,12 @@ $(function() {
             text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         });
 
-        function isConnected(a, b) {
-            return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index;
-        }
+        function isConnected(a, b) { return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index; }
 
         function hasConnections(a) {
             for (const property in linkedByIndex) {
                 s = property.split(',');
-                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property])
-                    return true;
+                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) { return true; }
             }
             return false;
         }
@@ -941,9 +870,7 @@ $(function() {
             return true;
         }
 
-        function isNumber(n) {
-            return !isNaN(parseFloat(n)) && isFinite(n);
-        }
+        function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n); }
 
         function resize() {
             const width = $('#' + canvas).width(), height = 980;
@@ -954,9 +881,7 @@ $(function() {
         }
 
         function keydown() {
-            if (d3.event.keyCode === 32) {
-                force.stop();
-            }
+            if (d3.event.keyCode === 32) { force.stop(); }
             else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
                 switch (String.fromCharCode(d3.event.keyCode)) {
                     case 'C': keyc = !keyc; break;
@@ -979,73 +904,48 @@ $(function() {
                     linkedByIndex[d.source.index + ',' + d.target.index] = flag;
                     return flag ? 'inline' : 'none';
                 });
-                node.style('display', function(d) {
-                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
-                });
-                text.style('display', function(d) {
-                    return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none';
-                });
+                node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
+                text.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none'; });
 
                 if (highlight_node !== null) {
                     if ((key0 || hasConnections(highlight_node)) && vis_by_type('circle') && vis_by_node_score(highlight_node.datasource)) {
-                        if (focus_node !== null)
-                            set_focus(focus_node);
+                        if (focus_node !== null) { set_focus(focus_node); }
                         set_highlight(highlight_node);
-                    } else {
-                        exit_highlight();
-                    }
+                    } else { exit_highlight(); }
                 }
             }
         }
 
         function exit_highlight() {
             highlight_node = null;
-            if (focus_node === null)
-            {
+            if (focus_node === null) {
                 svg.style('cursor', 'move');
                 if (highlight_color !== 'white') {
                     circle.style(toWhite, 'white');
                     text.style('font-weight', 'normal');
-                    link.style('stroke', function(o) {
-                        return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color
-                    });
+                    link.style('stroke', function(o) { return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color });
                 }
             }
         }
 
         function set_focus(d){
             if (highlight_trans < 1) {
-                circle.style('opacity', function(o) {
-                    return isConnected(d, o) ? 1 : highlight_trans;
-                });
-
-                text.style('opacity', function(o) {
-                    return isConnected(d, o) ? 1 : highlight_trans;
-                });
-
-                link.style('opacity', function(o) {
-                    return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans;
-                });
+                circle.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans; });
+                text.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans; });
+                link.style('opacity', function(o) { return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans; });
             }
         }
 
         function set_highlight(d) {
             svg.style('cursor', 'pointer');
-            if (focus_node !== null)
-                d = focus_node;
+            if (focus_node !== null) { d = focus_node; }
             highlight_node = d;
             // added this to make highlight color same as the color of the node
             highlight_color = color(d.datasource);
             if (highlight_color !== 'white') {
-                circle.style(toWhite, function(o) {
-                    return isConnected(d, o) ? highlight_color : 'white';
-                });
-                text.style('font-weight', function(o) {
-                    return isConnected(d, o) ? 'bold' : 'normal';
-                });
-                link.style('stroke', function(o) {
-                    return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color);
-                });
+                circle.style(toWhite, function(o) { return isConnected(d, o) ? highlight_color : 'white'; });
+                text.style('font-weight', function(o) { return isConnected(d, o) ? 'bold' : 'normal'; });
+                link.style('stroke', function(o) { return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color); });
             }
         }
     }
