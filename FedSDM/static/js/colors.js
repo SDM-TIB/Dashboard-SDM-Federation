@@ -79,6 +79,6 @@ const colorNumberTriples = '#B2AD7F',
 
 // Returns the color at position idx in the list of colors. If idx exceeds the limit, #CCC will be returned.
 function color(idx) {
-    if (idx > colors.length - 1) { return  '#CCC'; }
+    if (idx > colors.length - 1) { return  '#CCC' }
     return colors[idx];
 }
