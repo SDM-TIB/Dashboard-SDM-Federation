@@ -46,10 +46,8 @@ $(function() {
                     { target: 4, render: number_renderer },
                     { target: 5, render: number_renderer }
                 ]
-            });
-        } else {
-            statsTableFed.clear().draw();
-        }
+            })
+        } else { statsTableFed.clear().draw() }
 
         for (let fed of feds) {
             let rem = [];
@@ -78,8 +76,8 @@ $(function() {
             }
         } else {
             disableButtons();
-            if (table != null) { table.clear().draw(); }
-            if (statsTable != null) { statsTable.clear().draw(); }
+            if (table != null) { table.clear().draw() }
+            if (statsTable != null) { statsTable.clear().draw() }
             if (sourceStatsChart != null) {
                 sourceStatsChart.data.labels = [];
                 sourceStatsChart.data.datasets = [];
@@ -98,9 +96,9 @@ $(function() {
     // If no federation is selected, then all action buttons will be disabled.
     function disableButtons() {
         button_add_source.prop('disabled', true);
-        button_links.prop('disabled', true)
+        button_links.prop('disabled', true);
         button_all_links.prop('disabled', true);
-        set_disabled_prop_ds_buttons(true)
+        set_disabled_prop_ds_buttons(true);
     }
 
     // Turns an array with the information about the data sources, i.e., the number ot triples and
@@ -142,8 +140,8 @@ $(function() {
                     }
                 ],
                 select: true
-            });
-        } else { statsTable.clear().draw(); }
+            })
+        } else { statsTable.clear().draw() }
         let datas = [];
         $.ajax({
             type: 'GET',
@@ -186,13 +184,13 @@ $(function() {
                             datasets: sourceStatsToBarChart(barData)
                         },
                         options: chartOptions
-                    });
+                    })
                 } else {
                     sourceStatsChart.data.labels = [];
                     sourceStatsChart.data.datasets = [];
                     sourceStatsChart.update();
                     sourceStatsChart.data.labels = barData.labels;
-                    sourceStatsChart.data.datasets = sourceStatsToBarChart(barData)
+                    sourceStatsChart.data.datasets = sourceStatsToBarChart(barData);
                     sourceStatsChart.update();
                 }
             },
@@ -228,7 +226,7 @@ $(function() {
                 set_disabled_prop_ds_buttons(false);
             }).on('deselect', function() {
                 set_disabled_prop_ds_buttons(true);
-                selectedSource = null
+                selectedSource = null;
             });
         } else {
             table.clear().draw();
@@ -236,8 +234,8 @@ $(function() {
             table.ajax.url('/federation/datasources?graph=' + fed).load();
         }
         table.on('draw', function() {
-            if (table.column(0).data().length > 0) { button_links.prop('disabled', false); }
-            else { button_links.prop('disabled', true); }
+            if (table.column(0).data().length > 0) { button_links.prop('disabled', false) }
+            else { button_links.prop('disabled', true) }
         });
     }
 
@@ -293,8 +291,8 @@ $(function() {
             dataType: 'json',
             crossDomain: true,
             success: function(data) {
-                if (data != null && data.status === 1) { alert('Recreating RDF-MTs for ' + selectedSource[0][0] + ' is underway...'); }
-                else { alert('Cannot start the process. Please check if there are data sources in this federation.'); }
+                if (data != null && data.status === 1) { alert('Recreating RDF-MTs for ' + selectedSource[0][0] + ' is underway...') }
+                else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
@@ -315,8 +313,8 @@ $(function() {
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
             crossDomain: true,
             success: function(data) {
-                if (data != null && data.status === 1) { alert('Finding links in progress...'); }
-                else { alert('Cannot start the process. Please check if there are data sources in this federation.'); }
+                if (data != null && data.status === 1) { alert('Finding links in progress...') }
+                else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
@@ -336,8 +334,8 @@ $(function() {
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
             crossDomain: true,
             success: function(data) {
-                if (data != null && data.status === 1) { alert('Finding links in progress...'); }
-                else { alert('Cannot start the process. Please check if there are data sources in this federation.'); }
+                if (data != null && data.status === 1) { alert('Finding links in progress...') }
+                else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
@@ -384,38 +382,38 @@ $(function() {
         event.preventDefault();
         createNewFederation(true);
     });
-    fedModal.on('shown.bs.modal', function() { fedName.trigger('focus'); });
+    fedModal.on('shown.bs.modal', function() { fedName.trigger('focus') });
     fedModal.on('hidden.bs.modal', function() {
         newFedForm[0].reset();
         allFieldsFed.removeClass('ui-state-error');
         resetTips();
     });
-    $('#create-fed-btn-create').on('click', function() { createNewFederation(true); });
+    $('#create-fed-btn-create').on('click', function() { createNewFederation(true) });
 
     addSourceForm.on('submit', function(event) {
         event.preventDefault();
         addDataSource(true);
     });
-    addSourceModal.on('shown.bs.modal', function() { name.trigger('focus'); });
+    addSourceModal.on('shown.bs.modal', function() { name.trigger('focus') });
     addSourceModal.on('hidden.bs.modal', function() {
         addSourceForm[0].reset();
         allFields.removeClass('ui-state-error');
         resetTips();
     });
-    $('#add-source-btn-finish').on('click', function() { addDataSource(true); });
-    $('#add-source-btn-more').on('click', function() { saveAndMore(); });
+    $('#add-source-btn-finish').on('click', function() { addDataSource(true) });
+    $('#add-source-btn-more').on('click', function() { saveAndMore() });
 
     editSourceForm.on('submit', function(event) {
         event.preventDefault();
         updateDS();
     });
-    editSourceModal.on('shown.bs.modal', function() { edit_desc.trigger('focus'); });
+    editSourceModal.on('shown.bs.modal', function() { edit_desc.trigger('focus') });
     editSourceModal.on('hidden.bs.modal', function() {
         editSourceForm[0].reset();
         allFieldsEdit.removeClass('ui-state-error');
         resetTips();
     });
-    $('#edit-source-btn').on('click', function() { updateDS(); });
+    $('#edit-source-btn').on('click', function() { updateDS() });
 
     // Adds a new data source using the FedSDM API. If the parameter 'close' is true, then the dialog will be closed
     // after adding the new source. Otherwise, the dialog stays open in order to add another source to the federation.
@@ -447,7 +445,7 @@ $(function() {
                 dataType: 'json',
                 crossDomain: true,
                 success: function(data) {
-                    if (data != null && data.length > 0) { manage(federation); }
+                    if (data != null && data.length > 0) { manage(federation) }
                     else { $('#validateTips').html('Error while adding data source to the federation!') }
                     table.clear().draw();
                     table.ajax.url('/federation/datasources?graph=' + federation).load();
@@ -458,8 +456,8 @@ $(function() {
                     console.log(textStatus);
                 }
             });
-        } else { close = false; }
-        if (close) { addSourceModal.modal('hide'); }
+        } else { close = false }
+        if (close) { addSourceModal.modal('hide') }
         return valid;
     }
 
@@ -510,9 +508,7 @@ $(function() {
                     if (data != null && data.length > 0) {
                         manage(federation);
                         console.log(data);
-                    } else {
-                        $('#validateTips').html('Error while editing data source!')
-                    }
+                    } else { $('#validateTips').html('Error while editing data source!') }
                     table.clear().draw();
                     table.ajax.url('/federation/datasources?graph=' + federation).load();
                 },
@@ -557,7 +553,7 @@ $(function() {
                         $('#maincontent a[href="#manage"]').tab('show');
                     } else {
                         close = false;
-                        $('#errorMsg').html('Error while creating the new federation! Please enter a valid name!')
+                        $('#errorMsg').html('Error while creating the new federation! Please enter a valid name!');
                     }
                 },
                 error: function(jqXHR, textStatus) {
@@ -566,8 +562,8 @@ $(function() {
                     console.log(textStatus);
                 }
             });
-        } else { close = false; }
-        if (close) { fedModal.modal('hide'); }
+        } else { close = false }
+        if (close) { fedModal.modal('hide') }
         return valid;
     }
 });
