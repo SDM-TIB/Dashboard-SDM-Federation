@@ -154,7 +154,7 @@ $(function() {
             crossDomain: true,
             success: function(data) {
                 datas = data.data;
-                let barData = {labels:[], rdfmts:[], triples:[]};
+                let barData = { labels: [], rdfmts: [], triples: [] };
                 for (const d in datas) {
                     let rem = [];
                     //console.log(datas)
@@ -166,7 +166,7 @@ $(function() {
                     if (triples == null) { triples = '-1' }
 
                     rem.push(triples);
-                    statsTable.row.add(rem).draw( false );
+                    statsTable.row.add(rem).draw(false);
 
                     barData.labels.push(datas[d].ds);
                     rdfmts = log10(rdfmts);
@@ -262,11 +262,11 @@ $(function() {
                 Accept : 'application/json'
             },
             url: '/federation/api/removeds',
-            data: {'ds': selectedSource[0][0], 'fed': federation},
+            data: { 'ds': selectedSource[0][0], 'fed': federation },
             dataType: 'json',
             crossDomain: true,
             success: function(data) {
-                if (data === true) { table.row('.selected').remove().draw(false); }
+                if (data === true) { table.row('.selected').remove().draw(false) }
             },
             error: function(jqXHR, textStatus) {
                 console.log(jqXHR.status);
