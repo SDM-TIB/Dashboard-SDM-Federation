@@ -37,9 +37,7 @@ $(function() {
                 dsData.triples.push(log10(ds.triples));
                 dsData.properties.push(log10(ds.properties));
                 dsData.links.push(log10(ds.links))
-                if (i > 9) {
-                    break;
-                }
+                if (i > 9) { break; }
             }
             dataSummary.height(62 + 110 * dsData.labels.length);
             dataSummaryChart = new Chart($('#data-summary-chart'), {
