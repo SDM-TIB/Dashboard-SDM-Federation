@@ -36,8 +36,8 @@ $(function() {
                 dsData.rdfmts.push(log10(ds.rdfmts));
                 dsData.triples.push(log10(ds.triples));
                 dsData.properties.push(log10(ds.properties));
-                dsData.links.push(log10(ds.links))
-                if (i > 9) { break; }
+                dsData.links.push(log10(ds.links));
+                if (i > 9) { break }
             }
             dataSummary.height(62 + 110 * dsData.labels.length);
             dataSummaryChart = new Chart($('#data-summary-chart'), {
@@ -83,7 +83,7 @@ $(function() {
                 fedData.rdfmts.push(log10(fed.rdfmts));
                 fedData.links.push(log10(fed.links));
                 fedData.properties.push(log10(fed.properties));
-                fedData.triples.push(log10(fed.triples))
+                fedData.triples.push(log10(fed.triples));
             }
             federationSummary.height(62 + 130 * fedData.labels.length);
             federationSummaryChart = new Chart($('#federation-summary-chart'), {
