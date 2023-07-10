@@ -29,7 +29,7 @@ $(function() {
             federationSummary.show();
             dataSummary.show();
 
-            let dsData = {labels: [], rdfmts: [], links: [], properties: [], triples: []};
+            let dsData = { labels: [], rdfmts: [], links: [], properties: [], triples: [] };
             for (let i in dataSources) {  // in JavaScript this will return the index and not the element
                 let ds = dataSources[i];
                 dsData.labels.push(ds.source);
@@ -75,7 +75,7 @@ $(function() {
                 options: chartOptions
             });
 
-            let fedData = {labels: [], sources: [], rdfmts: [], links: [], properties: [], triples: []};
+            let fedData = { labels: [], sources: [], rdfmts: [], links: [], properties: [], triples: [] };
             for (let i in federations) {  // in JavaScript this will return the index and not the element
                 let fed = federations[i];
                 fedData.labels.push(fed.name);
