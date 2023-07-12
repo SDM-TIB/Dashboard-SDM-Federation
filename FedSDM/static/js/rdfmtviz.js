@@ -471,9 +471,7 @@ $(function() {
             if (gt === 'force') {
                 aNodes.forEach(function(d) { expand[d.datasource] = true });
                 drawRDFMTS(aNodes, aLinks);
-            } else {
-                drawGraph(data);
-            }
+            } else { drawGraph(data) }
             visualized = 1;
         } else {
             const sNodes = sourceNodes[source];
