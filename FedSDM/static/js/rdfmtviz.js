@@ -152,7 +152,7 @@ $(function() {
     });
 
     function draw_details() {
-        data = {nodes: maNodes, links: maLinks};
+        data = { nodes: maNodes, links: maLinks };
         mt_viz.html('<h1> Please select data source!</h1>');
         drawRDFMTS(maNodes, maLinks, 'mt_viz');
     }
