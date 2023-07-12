@@ -366,17 +366,14 @@ $(function() {
 
         const ul = document.createElement('UL');
         donut.legend.legendItems.forEach((dataset) => {
-            const text = dataset.text;
-            const datasetIndex = dataset.index;
-            const backgroundColor = dataset.fillStyle;
+            const text = dataset.text,
+                  datasetIndex = dataset.index,
+                  li = document.createElement('LI'),
+                  colorBox = document.createElement('SPAN'),
+                  p = document.createElement('P'),
+                  textNode = document.createTextNode(text);
 
-            const li = document.createElement('LI');
-            const colorBox = document.createElement('SPAN');
-            colorBox.style.backgroundColor = backgroundColor;
-
-            const p = document.createElement('P');
-            const textNode = document.createTextNode(text);
-
+            colorBox.style.backgroundColor = dataset.fillStyle;
             li.onclick = (click) => {
                 click.target.parentNode.classList.toggle('strike');
                 donut.toggleDataVisibility(datasetIndex);
