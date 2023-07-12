@@ -291,7 +291,7 @@ $(function() {
 
             flatnodes = [];
             sourceNodes = [];
-            MTCards = {'All': []};
+            MTCards = { 'All': [] };
             $.each(nodes, function (key, val) {
                 flatnodes.push(val);
                 MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
