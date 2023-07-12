@@ -345,9 +345,9 @@ $(function() {
                 id: 'hoverLabel',
                 afterDraw: function(chart) {
                     const width = chart.chartArea.width,
-                        height = chart.chartArea.height,
-                        top = chart.chartArea.top,
-                        ctx = chart.ctx;
+                          height = chart.chartArea.height,
+                          top = chart.chartArea.top,
+                          ctx = chart.ctx;
                     ctx.save();
                     if (chart._active.length > 0) {
                         const idx = chart._active[0].index,
