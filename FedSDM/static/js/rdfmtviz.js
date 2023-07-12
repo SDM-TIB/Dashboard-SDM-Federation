@@ -350,9 +350,9 @@ $(function() {
                         ctx = chart.ctx;
                     ctx.save();
                     if (chart._active.length > 0) {
-                        const idx = chart._active[0].index
-                        const numberLabel = chart.config.data.datasets[chart._active[0].datasetIndex].data[idx];
-                        const color = chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[idx];
+                        const idx = chart._active[0].index,
+                              numberLabel = chart.config.data.datasets[chart._active[0].datasetIndex].data[idx],
+                              color = chart.config.data.datasets[chart._active[0].datasetIndex].backgroundColor[idx];
                         ctx.font = 'bolder 60px Arial';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
