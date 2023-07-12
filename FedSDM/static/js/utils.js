@@ -36,7 +36,7 @@ const chartOptions = {
             callbacks: {
                 label: function(context) {
                     let label = context.dataset.label || '';
-                    if (label) { label = label.substring(0, label.indexOf('(') - 1) + ': '; }
+                    if (label) { label = label.substring(0, label.indexOf('(') - 1) + ': ' }
                     const value = Math.round(Math.pow(10, context.parsed.x) * 100) / 100
                     label += numberWithCommas(parseInt(value.toString(), 10));
                     return label;
@@ -85,16 +85,17 @@ let tips = $('.validateTips');
 function log10(value) { return parseInt(value) === 1 ? 0.1 : Math.log10(value) }
 
 // Converts any number to its corresponding string value including a comma as thousands separator.
-function numberWithCommas(value) { return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","); }
+function numberWithCommas(value) { return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") }
 
 // Removes the error state from the input form validating error message DOM element and resets its text.
-function resetTips() { tips.removeClass('ui-state-error').text('Some fields are required.'); }
+function resetTips() { tips.removeClass('ui-state-error').text('Some fields are required.') }
 
 // Updates the input form validating error message DOM element with the new error message.
 function updateTips(t) {
     const current_text = tips.text()
     console.log("current: " + current_text + "\tnew: " + t);
-    if (current_text.includes('Some fields are required.')) { tips.text(t); } else {
+    if (current_text.includes('Some fields are required.')) { tips.text(t) }
+    else {
         const str_ary = current_text.split('.');
         const str_set = [...new Set(str_ary)];
         const text = str_set.join('.\n')
@@ -103,7 +104,7 @@ function updateTips(t) {
     }
 
     tips.addClass('ui-state-highlight');
-    setTimeout(function() { tips.removeClass('ui-state-highlight', 1500, 'swing'); }, 500 );
+    setTimeout(function() { tips.removeClass('ui-state-highlight', 1500, 'swing') }, 500 );
 }
 
 // Checks whether the length of the value of o is inbetween min and max.
@@ -113,7 +114,7 @@ function checkLength(o, n, min, max) {
         o.addClass('ui-state-error');
         updateTips('Length of ' + n + ' must be between ' + min + ' and ' + max + '.');
         return false;
-    } else { return true; }
+    } else { return true }
 }
 
 // Checks whether the input value o of the input form argument n satisfies the regular expression regexp.
@@ -122,7 +123,7 @@ function checkRegexp(o, regexp, n) {
         o.addClass('ui-state-error');
         updateTips(n);
         return false;
-    } else { return true; }
+    } else { return true }
 }
 
 // Checks whether o is a valid selection option of input form argument n.
@@ -133,5 +134,5 @@ function checkSelection(o, n) {
         o.addClass('ui-state-error');
         updateTips('Select an option for ' + n + '.');
         return false;
-    } else { return true; }
+    } else { return true }
 }
