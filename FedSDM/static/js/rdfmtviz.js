@@ -594,7 +594,7 @@ $(function() {
             mt_viz.empty();
             svg = d3.select('#mtviz').append('svg');
             width = mt_viz.width();
-            console.log('Showing visualization...')
+            console.log('Showing visualization...');
             mt_viz.show();
             canvas = 'mtviz';
         }
@@ -622,7 +622,7 @@ $(function() {
         nCharge = (-1 / fit);
         if (force) { force.stop() }
         net = network(data, net, getGroup, expand);
-        console.log('network:', net, expand)
+        console.log('network:', net, expand);
         force = d3.layout.force()
             .nodes(net.nodes)
             .links(net.links)
@@ -696,7 +696,7 @@ $(function() {
             .data(net.nodes)
             .enter().append('text')
             .attr('dy', '.35em')
-            .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' })
+            .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' });
 
         if (text_center) {
             text.text(function (d) { if (d.label) { return d.label } else { return sourcesNames[d.datasource] } })
@@ -736,7 +736,7 @@ $(function() {
                 let text_size = nominal_text_size;
                 if (d.size) { text_size = 16 }
                 if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale() }
-                return text_size + 'px'
+                return text_size + 'px';
             });
             g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         });
@@ -747,9 +747,9 @@ $(function() {
         d3.select(window).on('resize', resize).on('keydown', keydown);
         let centroids = {};
         for (let i = 0; i < max_score; i += 3) {
-            centroids[i] = { x: 200 * (i/3 + 1), y: 200 }
-            centroids[i+1] = { x: 200 * (i/3 + 1), y: 400 }
-            centroids[i+2] = { x: 200 * (i/3 + 1), y: 600 }
+            centroids[i] = { x: 200 * (i/3 + 1), y: 200 };
+            centroids[i+1] = { x: 200 * (i/3 + 1), y: 400 };
+            centroids[i+2] = { x: 200 * (i/3 + 1), y: 600 };
         }
 
         force.on('tick', function(e) {
@@ -923,7 +923,7 @@ $(function() {
             gaLoaded = 1;
         } else {
             gtable.clear().draw();
-            gtable.ajax.url('/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source).load()
+            gtable.ajax.url('/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source).load();
         }
     }
 
