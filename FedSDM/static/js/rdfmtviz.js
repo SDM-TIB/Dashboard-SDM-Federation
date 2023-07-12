@@ -488,9 +488,7 @@ $(function() {
             if (gt === 'force') {
                 sNodes.forEach(function(d) { expand[d.datasource] = true });
                 drawRDFMTS(sNodes, slinks);
-            } else {
-                drawGraph(data);
-            }
+            } else { drawGraph(data) }
         }
     }
 
