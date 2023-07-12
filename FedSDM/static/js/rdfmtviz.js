@@ -487,9 +487,7 @@ $(function() {
         }
     }
 
-    function nodeID(n) {
-        return n.size ? '_g_' + n.datasource : n.label;
-    }
+    function nodeID(n) { return n.size ? '_g_' + n.datasource : n.label }
 
     function linkID(l) {
         const u = nodeID(l.source),
