@@ -306,25 +306,15 @@ $(function() {
     }
 
     function createDonut(title, labels_, data_) {
-        const donutBox = document.createElement('DIV');
-        donutBox.classList.add('donut-box');
-        graphArea.appendChild(donutBox);
-
-        const donutWrapper = document.createElement('DIV');
-        donutWrapper.classList.add('donut-wrapper');
-        donutBox.appendChild(donutWrapper);
-
-        const donutCanvas = document.createElement('CANVAS');
-        donutWrapper.appendChild(donutCanvas);
-
-        const donutLegend = document.createElement('DIV');
-        donutLegend.classList.add('donut-legend');
-        donutBox.appendChild(donutLegend);
-
-        const data = {
-            labels: labels_,
-            datasets: [{ data: data_, backgroundColor: colors }]
-        }
+        const donutBox = document.createElement('DIV'),
+              donutWrapper = document.createElement('DIV'),
+              donutCanvas = document.createElement('CANVAS'),
+              donutLegend = document.createElement('DIV'),
+              ul = document.createElement('UL'),
+              data = {
+                   labels: labels_,
+                   datasets: [{ data: data_, backgroundColor: colors }]
+              };
 
         let donut = new Chart(donutCanvas, {
             type: 'doughnut',
@@ -362,9 +352,15 @@ $(function() {
                 }
             }]
         });
-        donut_charts.push(donut);
 
-        const ul = document.createElement('UL');
+        donutBox.classList.add('donut-box');
+        graphArea.appendChild(donutBox);
+        donutWrapper.classList.add('donut-wrapper');
+        donutBox.appendChild(donutWrapper);
+        donutWrapper.appendChild(donutCanvas);
+        donutLegend.classList.add('donut-legend');
+        donutBox.appendChild(donutLegend);
+        donut_charts.push(donut);
         donut.legend.legendItems.forEach((dataset) => {
             const text = dataset.text,
                   datasetIndex = dataset.index,
