@@ -25,7 +25,7 @@ def _process_numeric_result(mdb: MetadataDB, query: str) -> int:
     if card > 0:
         card = res[0]['count']
         if '^^' in card:
-            card = int(card[:card.find('^^')])
+            card = card[:card.find('^^')]
         return int(card)
     else:
         return 0
