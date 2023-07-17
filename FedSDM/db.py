@@ -59,7 +59,7 @@ class MetadataDB:
                         'PREFIX mt: <' + MT_ONTO + '>\n' \
                         'PREFIX mtres: <' + MT_RESOURCE + '>\n'
 
-    def query(self, query: str, output_queue: Queue = Queue(), format: str = 'application/sparql-results+json'):
+    def query(self, query: str, output_queue: Queue = Queue(), format_: str = 'application/sparql-results+json'):
         """Executes a SPARQL query over the query endpoint of the instance.
 
         Executes the given SPARQL query over the query endpoint belonging
@@ -73,7 +73,7 @@ class MetadataDB:
             If an output queue is given, results can be consumed from the queue
             as soon as they are retrieved. Otherwise, the result can only be
             used in a blocking fashion from the return value.
-        format : str, optional
+        format_ : str, optional
             Accepted return format to be included in the body of the request to the query endpoint.
 
         Returns
@@ -86,7 +86,7 @@ class MetadataDB:
         """
         # Build the query and header.
         query = self.prefixes + query
-        params = urlparse.urlencode({'query': query, 'format': format, 'timeout': 10000000})
+        params = urlparse.urlencode({'query': query, 'format': format_, 'timeout': 10000000})
         headers = {'Accept': '*/*', 'Referer': self.query_endpoint, 'Host': self.query_server}
 
         try:
@@ -94,7 +94,7 @@ class MetadataDB:
             if resp.status_code == HTTPStatus.OK:
                 res = resp.text
                 res_list = []
-                if format != 'application/sparql-results+json':
+                if format_ != 'application/sparql-results+json':
                     return res
 
                 try:
