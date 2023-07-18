@@ -104,7 +104,7 @@ class MetadataDB:
                 except Exception as ex:
                     print('EX processing res', ex)
 
-                if type(res) is dict:
+                if isinstance(res, dict):
                     if 'results' in res:
                         for x in res['results']['bindings']:
                             for key, props in x.items():
