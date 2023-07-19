@@ -1,4 +1,4 @@
-FROM python:3.11.4-slim-bullseye
+FROM python:3.11.4-slim-bookworm
 
 # Define environment variables
 ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
