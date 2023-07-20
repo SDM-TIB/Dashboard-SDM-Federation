@@ -111,10 +111,10 @@ def login() -> Response | str:
 def load_logged_in_user() -> None:
     """Loads the information about the logged-in user before the request is actually handled.
 
-    This method is executed before the actual request handlers are triggered. If a user ID is
-    stored in the session cookie, the user's data is loaded from the database and stored in
-    Flasks global variables, i.e., it is accessible as `g.user`. This variable lasts for the
-    length of the request. If no user was logged in or the user does not exist, `g.user` will be None.
+    This method is executed before the actual request handlers are triggered. If a user ID is stored
+    in the session cookie, the application queries the database for the data of the user which is
+    stored in Flask's global variables, i.e., it is accessible as `g.user`. This variable lasts for the
+    length of the request. `g.user` is None if the user does not exist or no user has logged in.
 
     """
     user_id = session.get('user_id')
