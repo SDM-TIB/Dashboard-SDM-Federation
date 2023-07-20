@@ -111,19 +111,19 @@ def get_stats(graph: str) -> dict:
 
     """
     stats_ = {}
-    data_sources = get_data_sources(graph)
-    for data_source in list(data_sources.keys()):
+    data_sources_ = get_data_sources(graph)
+    for data_source in list(data_sources_.keys()):
         num_mts = get_num_rdfmts(graph, data_source)
         props = get_num_properties(graph, data_source)
         num_links = get_num_mt_links(graph, data_source)
         stat = {
             'rdfmts': num_mts,
             'links': num_links,
-            'triples': data_sources[data_source]['triples'] if 'triples' in data_sources[data_source] else -1,
+            'triples': data_sources_[data_source]['triples'] if 'triples' in data_sources_[data_source] else -1,
             'properties': props,
-            'ds': data_sources[data_source]['source']
+            'ds': data_sources_[data_source]['source']
         }
-        stats_[data_sources[data_source]['source']] = stat
+        stats_[data_sources_[data_source]['source']] = stat
     return stats_
 
 
