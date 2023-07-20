@@ -110,7 +110,7 @@ def get_stats(graph: str) -> dict:
         does not exist, the dictionary will be empty.
 
     """
-    stats = {}
+    stats_ = {}
     data_sources = get_data_sources(graph)
     for data_source in list(data_sources.keys()):
         num_mts = get_num_rdfmts(graph, data_source)
@@ -123,8 +123,8 @@ def get_stats(graph: str) -> dict:
             'properties': props,
             'ds': data_sources[data_source]['source']
         }
-        stats[data_sources[data_source]['source']] = stat
-    return stats
+        stats_[data_sources[data_source]['source']] = stat
+    return stats_
 
 
 @bp.route('/create', methods=['POST'])
