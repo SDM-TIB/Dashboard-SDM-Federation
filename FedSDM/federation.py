@@ -74,17 +74,17 @@ def stats() -> Response:
         print('KeyError:', request.args)
         return Response(json.dumps({}), mimetype='application/json')
 
-    stats = {}
+    stats_ = {}
     if graph is not None:
         session['fed'] = graph
         if graph == 'All':
             federations = get_federations()
             for fed in federations:
-                stats.update(get_stats(fed['uri']))
+                stats_.update(get_stats(fed['uri']))
         else:
-            stats.update(get_stats(graph))
+            stats_.update(get_stats(graph))
 
-    return Response(json.dumps({'data': stats}), mimetype='application/json')
+    return Response(json.dumps({'data': stats_}), mimetype='application/json')
 
 
 def get_stats(graph: str) -> dict:
