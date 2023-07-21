@@ -154,7 +154,7 @@ def create() -> Response:
     error = None
 
     if not name:
-        error = 'Name is required. '
+        error = 'Name is required.'
     federation = ''
     if error is not None:
         flash(error)
