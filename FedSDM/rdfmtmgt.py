@@ -506,12 +506,12 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
                     edges_key.append(nid + lnid)
                     edges_key.append(lnid + nid)
 
-                    ldssource = rdfmtsources[lnid]['source']
+                    lds_source = rdfmtsources[lnid]['source']
 
                     lcard = -1
                     edges.append({
                         'source': nid + rdfmtsources[nid]['source'],
-                        'target': lnid + ldssource,
+                        'target': lnid + lds_source,
                         'weight': lcard,
                         'pred': 'linkedto'
                     })
