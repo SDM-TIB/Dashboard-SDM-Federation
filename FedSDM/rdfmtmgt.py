@@ -566,8 +566,8 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
 
     start = time.time()
     res = _iterative_query(query, mdb, 9000)
-    processtime = time.time()
-    print('query time:', (processtime - start))
+    process_time = time.time()
+    print('query time:', (process_time - start))
     if len(res) > 0:
         card = len(res)
         if card == 1 and 'subject' not in res[0]:
@@ -616,7 +616,7 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
 
             print('total nodes', len(nodes))
             sourcenamess = [{'id': v, 'name': k} for k, v in sources.items()]
-            print('Process time', (time.time()-processtime))
+            print('Process time', (time.time() - process_time))
             return {'nodes': nodes, 'sources': sourcenamess}, rdfmtsources
     else:
         return {'nodes': [], 'sources': []}, {}
