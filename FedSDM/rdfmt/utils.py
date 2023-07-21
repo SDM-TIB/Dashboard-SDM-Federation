@@ -1,11 +1,15 @@
+from __future__ import annotations  # Python 3.10 still has issues with typing when using classes from the same module
+
 import time
 import urllib.parse as urlparse
 from http import HTTPStatus
 from multiprocessing import Queue
-from typing import Tuple
+from typing import Tuple, TYPE_CHECKING
 
 import requests
 
+if TYPE_CHECKING:
+    from FedSDM.rdfmt.model import DataSource
 from FedSDM import get_logger
 
 logger = get_logger('mtupdate', './mt-update.log', True)
@@ -13,7 +17,7 @@ logger = get_logger('mtupdate', './mt-update.log', True)
 
 
 def iterative_query(query: str,
-                    server: any,  # any really means str or FedSDM.rdfmt.model.DataSource but that would cause issues
+                    server: str | 'DataSource',
                     limit: int = 10000,
                     max_tries: int = -1,
                     max_answers: int = -1) -> Tuple[list, int]:
