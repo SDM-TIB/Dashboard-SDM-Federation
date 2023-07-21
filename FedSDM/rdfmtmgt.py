@@ -485,8 +485,8 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
 
     start = time.time()
     res = _iterative_query(query, mdb, 5000)
-    processtime = time.time()
-    print('Query edges time:', (processtime - start))
+    process_time = time.time()
+    print('Query edges time:', (process_time - start))
     if len(res) > 0:
         card = len(res)
         if card == 1 and 'subject' not in res[0]:
@@ -517,7 +517,7 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
                     })
 
             print('total edges:', len(edges))
-            print('Process time:', (time.time()-processtime))
+            print('Process time:', (time.time() - process_time))
             return {'links': list(edges)}
     else:
         return {'links': []}
