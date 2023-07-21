@@ -504,7 +504,7 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
                     if lnid + nid in edges_key:
                         continue
                     edges_key.append(nid + lnid)
-                    edges_key.append(lnid+nid)
+                    edges_key.append(lnid + nid)
 
                     ldssource = rdfmtsources[lnid]['source']
 
