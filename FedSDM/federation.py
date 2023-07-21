@@ -452,10 +452,9 @@ def api_find_links() -> Response:
         The response will be empty if the parameter 'fed' was not present.
 
     """
-    try:
-        fed = request.args.get('fed')
-        ds = request.args.get('datasource', None)
-    except KeyError:
+    fed = request.args.get('fed', None)
+    ds = request.args.get('datasource', None)
+    if fed is None:
         return Response(json.dumps({}),  mimetype='application/json')
 
     res, _ = find_links(fed, ds)
