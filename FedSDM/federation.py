@@ -508,10 +508,9 @@ def api_recreate_mts() -> Response:
         The response will be empty if one of the parameters is not present.
 
     """
-    try:
-        fed = request.args.get('fed')
-        ds = request.args.get('datasource')
-    except KeyError:
+    fed = request.args.get('fed', None)
+    ds = request.args.get('datasource', None)
+    if fed is None or ds is None:
         return Response(json.dumps({}), mimetype='application/json')
 
     res, _ = recreate_mts(fed, ds)
