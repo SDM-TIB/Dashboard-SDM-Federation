@@ -493,7 +493,7 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
             return {'links': []}
         else:
             edges = []
-            edgeskey = []
+            edges_key = []
             for r in res:
                 nid = r['subject']
                 if 'mt' in r:
@@ -501,10 +501,10 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
                     if lnid not in rdfmtsources or lnid == nid:
                         print('Skipped range: ', lnid)
                         continue
-                    if lnid + nid in edgeskey:
+                    if lnid + nid in edges_key:
                         continue
-                    edgeskey.append(nid + lnid)
-                    edgeskey.append(lnid+nid)
+                    edges_key.append(nid + lnid)
+                    edges_key.append(lnid+nid)
 
                     ldssource = rdfmtsources[lnid]['source']
 
