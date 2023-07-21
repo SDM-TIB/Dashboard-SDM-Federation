@@ -653,9 +653,7 @@ def api_get_data_sources(graph: str = None, ds_type=None) -> list:
     mdb = get_mdb()
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
-        if ds_type is None:
-            query += '  OPTIONAL { ?id mt:dataSourceType ?dstype . }\n'
-        elif isinstance(ds_type, list) and len(ds_type) > 0:
+        if isinstance(ds_type, list) and len(ds_type) > 0:
             query += '  ?id mt:dataSourceType ?dstype .\n'
             filters = []
             for dt in ds_type:
