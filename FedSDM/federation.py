@@ -218,7 +218,7 @@ def data_sources() -> Response:
     if graph is not None:
         session['fed'] = graph
 
-    ds_type = DataSourceType.from_str(request.args['dstype'] if 'dstype' in request.args else None)
+    ds_type = DataSourceType.from_str(request.args.get('dstype', None))
     res = api_get_data_sources(graph, ds_type)
 
     return Response(json.dumps({'data': res}), mimetype='application/json')
