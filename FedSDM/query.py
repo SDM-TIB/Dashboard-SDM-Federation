@@ -273,7 +273,7 @@ def sparql() -> Response:
         return jsonify({'result': [], 'error': str(emsg)})
 
 
-def execute_query(graph: str, query: str, output: Queue = Queue()):
+def execute_query(graph: str, query_: str, output: Queue = Queue()):
     """Executes a SPARQL query using DeTrusty.
 
     Executes a SPARQL query using the federated query engine `DeTrusty`_.
@@ -283,7 +283,7 @@ def execute_query(graph: str, query: str, output: Queue = Queue()):
     ----------
     graph : str
         Identifier of the federation to be queried.
-    query : str
+    query_ : str
         The SPARQL query to be executed.
     output : multiprocessing.Queue, optional
         If an output queue is given, the results of the query can be
@@ -311,7 +311,7 @@ def execute_query(graph: str, query: str, output: Queue = Queue()):
     mdb = get_mdb()
     config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
     start = time()
-    decomposer = Decomposer(query, config)
+    decomposer = Decomposer(query_, config)
     decomposed_query = decomposer.decompose()
     logger.info(decomposed_query)
     if decomposed_query is None:
