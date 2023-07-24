@@ -220,22 +220,22 @@ def sparql() -> Response:
 
     """
     try:
-        query = request.args.get('query', '')
+        query_ = request.args.get('query', '')
         federation = request.args.get('federation', None)
         session['fed'] = federation
 
-        query = query.replace('\n', ' ').replace('\r', ' ')
+        query_ = query_.replace('\n', ' ').replace('\r', ' ')
         print('federation:', federation)
-        print('query:', query)
-        logger.info(query)
-        session['hashquery'] = str(hashlib.md5(query.encode()).hexdigest())
+        print('query:', query_)
+        logger.info(query_)
+        session['hashquery'] = str(hashlib.md5(query_.encode()).hexdigest())
         if federation is None or len(federation) < 6:
             return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
-        if query is None or len(query) == 0:
+        if query_ is None or len(query_) == 0:
             return jsonify({'result': [], 'error': 'cannot read query'})
 
         output = Queue()
-        variables, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query, output)
+        variables, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query_, output)
         result_queues[session['hashquery']] = {'output': output, 'process': process_queue}
         if res is None or len(res) == 0:
             del result_queues[session['hashquery']]
@@ -243,7 +243,7 @@ def sparql() -> Response:
             return jsonify(vars=variables, result=[], time_total=total, time_first=first, total_rows=1)
 
         if variables is None:
-            print('no results during decomposition', query)
+            print('no results during decomposition', query_)
             del result_queues[session['hashquery']]
             return jsonify({'result': [],
                             'error': 'Cannot execute query on this federation. No matching molecules found'})
