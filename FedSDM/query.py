@@ -235,7 +235,7 @@ def sparql() -> Response:
             return jsonify({'result': [], 'error': 'cannot read query'})
 
         output = Queue()
-        vars_, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query_, output)
+        vars_, res, start, total, first, i, process_queue, triple_patterns = execute_query(federation, query_, output)
         result_queues[session['hashquery']] = {'output': output, 'process': process_queue}
         if res is None or len(res) == 0:
             del result_queues[session['hashquery']]
@@ -254,7 +254,7 @@ def sparql() -> Response:
         session['fed'] = federation
         process_queue.put('EOF')
         triple_patterns = [
-            {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in all_triple_patterns
+            {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in triple_patterns
         ]
         return jsonify(vars=vars_,
                        query_triples=triple_patterns,
