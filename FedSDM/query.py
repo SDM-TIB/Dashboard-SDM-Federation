@@ -235,28 +235,28 @@ def sparql() -> Response:
             return jsonify({'result': [], 'error': 'cannot read query'})
 
         output = Queue()
-        variables, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query_, output)
+        vars_, res, start, total, first, i, process_queue, all_triple_patterns = execute_query(federation, query_, output)
         result_queues[session['hashquery']] = {'output': output, 'process': process_queue}
         if res is None or len(res) == 0:
             del result_queues[session['hashquery']]
             del session['hashquery']
-            return jsonify(vars=variables, result=[], time_total=total, time_first=first, total_rows=1)
+            return jsonify(vars=vars_, result=[], time_total=total, time_first=first, total_rows=1)
 
-        if variables is None:
+        if vars_ is None:
             print('no results during decomposition', query_)
             del result_queues[session['hashquery']]
             return jsonify({'result': [],
                             'error': 'Cannot execute query on this federation. No matching molecules found'})
 
         session['start'] = start
-        session['vars'] = variables
+        session['vars'] = vars_
         session['first'] = first
         session['fed'] = federation
         process_queue.put('EOF')
         triple_patterns = [
             {'s': t.subject.name, 'p': t.predicate.name, 'o': t.theobject.name} for t in all_triple_patterns
         ]
-        return jsonify(vars=variables,
+        return jsonify(vars=vars_,
                        query_triples=triple_patterns,
                        result=res,
                        time_total=total,
