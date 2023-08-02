@@ -84,7 +84,9 @@ def iterative_query(query: str,
 def contact_rdf_source(query: str,
                        endpoint: any,  # any really means str or FedSDM.rdfmt.model.DataSource but that causes issues
                        output_queue: Queue = Queue(),
-                       format_: str = 'application/sparql-results+json') -> str | Tuple[list | str | None, int]:
+                       format_: str = 'application/sparql-results+json',
+                       params_: str = None,
+                       headers_: dict = None) -> str | Tuple[list | str | None, int]:
     """Executes a SPARQL query over an RDF datasource.
 
     The provided SPARQL query is executed over the specified endpoint.
@@ -107,6 +109,12 @@ def contact_rdf_source(query: str,
         The result format to be requested from the endpoint. If the
         format is different from the default SPARQL JSON result,
         the raw result will be returned.
+    params_ : str, optional
+        The parameters to be used for the query request, including the query itself.
+        If no parameters are given, the query with a 10-minute timeout will be used as default.
+    headers_ : dict, optional
+        The headers to be used for the query request. If no headers are given,
+        only the accept header will be sent.
 
     Returns
     -------
@@ -122,8 +130,8 @@ def contact_rdf_source(query: str,
 
     """
     # Build the query and header.
-    params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 600})
-    headers = {'Accept': format_}
+    params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 600}) if params_ is not None else params_
+    headers = {'Accept': format_} if headers_ is not None else headers_
 
     if not isinstance(endpoint, str):  # actually means it is FedSDM.rdfmt.model.DataSource
         auth = endpoint.get_auth()

@@ -9,6 +9,7 @@ from flask import Flask, current_app, g
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
+from FedSDM.rdfmt.utils import contact_rdf_source
 
 logger = get_logger('mt-update', './mt-update.log')
 
@@ -92,60 +93,9 @@ class MetadataDB:
         """
         # Build the query and header.
         query = self.prefixes + query
-        params = urlparse.urlencode({'query': query, 'format': format_, 'timeout': 10000000})
-        headers = {'Accept': '*/*', 'Referer': self.query_endpoint, 'Host': self.query_server}
-
-        try:
-            resp = requests.get(self.query_endpoint, params=params, headers=headers)
-            if resp.status_code == HTTPStatus.OK:
-                res = resp.text
-                res_list = []
-                if format_ != 'application/sparql-results+json':
-                    return res
-
-                try:
-                    res = res.replace('false', 'False')
-                    res = res.replace('true', 'True')
-                    res = eval(res)
-                except Exception as ex:
-                    print('EX processing res', ex)
-
-                if isinstance(res, dict):
-                    if 'results' in res:
-                        for x in res['results']['bindings']:
-                            for key, props in x.items():
-                                # Handle typed-literals and language tags
-                                suffix = ''
-                                if props['type'] == 'typed-literal':
-                                    if isinstance(props['datatype'], bytes):
-                                        suffix = ''  # '^^<' + props['datatype'].decode('utf-8') + '>'
-                                    else:
-                                        suffix = ''  # '^^<' + props['datatype'] + '>'
-                                elif 'xml:lang' in props:
-                                    suffix = ''  # '@' + props['xml:lang']
-                                try:
-                                    if isinstance(props['value'], bytes):
-                                        x[key] = props['value'].decode('utf-8') + suffix
-                                    else:
-                                        x[key] = props['value'] + suffix
-                                except:
-                                    x[key] = props['value'] + suffix
-
-                                if isinstance(x[key], bytes):
-                                    x[key] = x[key].decode('utf-8')
-                            output_queue.put(x)
-                            res_list.append(x)
-                        # reslist = res['results']['bindings']
-                        return res_list, len(res_list)
-                    else:
-                        output_queue.put(res['boolean'])
-                        return res['boolean'], 1
-            else:
-                print('Endpoint->', self.query_endpoint, resp.reason, resp.status_code, query)
-        except Exception as e:
-            print('Exception during query execution to', self.query_endpoint, ':', e)
-
-        return None, -2
+        params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 10000000})
+        headers = {'Accept': format_, 'Referer': self.query_endpoint, 'Host': self.query_server}
+        return contact_rdf_source(query, self.query_endpoint, output_queue, params_=params, headers_=headers)
 
     def update(self, insert_query: str) -> bool:
         """Executes a SPARQL UPDATE query over the update endpoint of the instance.
