@@ -82,7 +82,7 @@ def iterative_query(query: str,
 
 
 def contact_rdf_source(query: str,
-                       endpoint: any,  # any really means str or FedSDM.rdfmt.model.DataSource but that causes issues
+                       endpoint: str | 'DataSource',
                        output_queue: Queue = Queue(),
                        format_: str = 'application/sparql-results+json',
                        params_: str = None,
