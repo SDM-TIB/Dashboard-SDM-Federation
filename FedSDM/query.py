@@ -184,7 +184,7 @@ def get_next_result() -> Response:
             del session['hashquery']
 
         return jsonify(vars=vars_, result=r, time_total=total, time_first=first, total_rows=1)
-    except Exception as e:
+    except Exception:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
         emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
