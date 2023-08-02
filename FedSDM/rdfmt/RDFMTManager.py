@@ -506,8 +506,7 @@ class RDFMTMgr(object):
                 properties=mts[t]['properties'],
                 desc=mts[t]['desc']
             )
-            data = mt.to_rdf()
-            self.update_graph(data)
+            self.update_graph(mt.to_rdf())
         return results
 
     def update_graph(self, data: list) -> None:
