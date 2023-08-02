@@ -106,9 +106,9 @@ def feedback() -> Response:
     )
     db.commit()
     fdb = db.execute(
-        'SELECT id'
+        'SELECT id '
         ' FROM feedbackreport '
-        ' where userID=' + str(user_id) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query + '"'
+        ' WHERE userID=' + str(user_id) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query + '"'
     ).fetchone()
     ds_id = fdb['id']
     print('Last inserted row selected: ', ds_id)
