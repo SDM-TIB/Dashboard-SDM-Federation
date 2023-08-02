@@ -498,15 +498,14 @@ class RDFMTMgr(object):
             results.append(rn)
 
         for t in mts:
-            mt = RDFMT(
+            self.update_graph(RDFMT(
                 rid=t,
                 name=mts[t]['name'],
                 sources=mts[t]['sources'],
                 subclass_of=mts[t]['subClassOf'],
                 properties=mts[t]['properties'],
                 desc=mts[t]['desc']
-            )
-            self.update_graph(mt.to_rdf())
+            ).to_rdf())
         return results
 
     def update_graph(self, data: list) -> None:
