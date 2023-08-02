@@ -169,12 +169,13 @@ class MetadataDB:
 
         try:
             resp = requests.post(self.update_endpoint, data=insert_query, headers=headers)
-            if resp.status_code == HTTPStatus.OK or resp.status_code == HTTPStatus.ACCEPTED or resp.status_code == HTTPStatus.NO_CONTENT:
+            status = resp.status_code
+            if status == HTTPStatus.OK or status == HTTPStatus.ACCEPTED or status == HTTPStatus.NO_CONTENT:
                 return True
             else:
-                print('Update Endpoint->', self.update_endpoint, resp.reason, resp.status_code, insert_query)
+                print('Update Endpoint->', self.update_endpoint, resp.reason, status, insert_query)
                 logger.error('______/_________/________/________/______________')
-                logger.error(self.update_endpoint + ' - ' + str(resp.reason) + ' - ' + str(resp.status_code))
+                logger.error(self.update_endpoint + ' - ' + str(resp.reason) + ' - ' + str(status))
                 logger.error('ERROR ON: ' + insert_query)
                 logger.error('________________________________________________')
         except Exception as e:
