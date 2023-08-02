@@ -46,12 +46,14 @@ class MetadataDB:
         self.query_endpoint = query_endpoint
         self.update_endpoint = update_endpoint if update_endpoint is not None else query_endpoint
 
-        server = self.query_endpoint.split('https://')[1] if 'https' in self.query_endpoint else self.query_endpoint.split('http://')[1]
+        server = self.query_endpoint.split('https://')[1] if 'https' in self.query_endpoint \
+            else self.query_endpoint.split('http://')[1]
         (server, path) = server.split('/', 1)
         self.query_server = server
         self.query_path = path
 
-        server = self.update_endpoint.split('https://')[1] if 'https' in self.update_endpoint else self.update_endpoint.split('http://')[1]
+        server = self.update_endpoint.split('https://')[1] if 'https' in self.update_endpoint \
+            else self.update_endpoint.split('http://')[1]
         (server, path) = server.split('/', 1)
         self.update_server = server
         self.update_path = path
