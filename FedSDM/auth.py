@@ -158,7 +158,7 @@ def login_required(view: FunctionType) -> any:
     Returns
     -------
     any
-        If a user is logged in, the originally accessed page will be rendered regularly.
+        For logged-in users, the originally accessed page will be rendered.
         Otherwise, the user will be redirected to the login page.
 
     """
