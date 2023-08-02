@@ -89,12 +89,12 @@ def feedback() -> Response:
     pred = e['pred']
     row = e.getlist('row[]')
     columns = e.getlist('columns[]')
-    query = e['query']
+    query_ = e['query']
     desc = e['desc']
     selected_row = {}
     for c, v in zip(columns, row):
         selected_row[c] = v
-    print(fed, pred, query, selected_row, desc)
+    print(fed, pred, query_, selected_row, desc)
 
     user_id = session.get('user_id')
 
@@ -102,13 +102,13 @@ def feedback() -> Response:
     db.execute(
         'INSERT INTO feedbackreport (userID, federationID, issueDesc, issueQuery)'
         ' VALUES (?, ?, ?, ?)',
-        (user_id, fed, desc, query)
+        (user_id, fed, desc, query_)
     )
     db.commit()
     fdb = db.execute(
         'SELECT id '
         ' FROM feedbackreport '
-        ' WHERE userID=' + str(user_id) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query + '"'
+        ' WHERE userID=' + str(user_id) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query_ + '"'
     ).fetchone()
     ds_id = fdb['id']
     print('Last inserted row selected: ', ds_id)
