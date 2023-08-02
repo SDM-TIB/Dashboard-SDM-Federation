@@ -315,7 +315,8 @@ def execute_query(graph: str, query_: str, output: Queue = Queue()):
     decomposed_query = decomposer.decompose()
     logger.info(decomposed_query)
     if decomposed_query is None:
-        logger.warning('Decomposer returned None. It might be that the query cannot be answered by the endpoints in the federation.')
+        logger.warning('Decomposer returned None. '
+                       'It might be that the query cannot be answered by the endpoints in the federation.')
         return None, None, 1, 1, 1, 0, None, []
 
     planner = Planner(decomposed_query, True, contact_source, 'RDF', config)
