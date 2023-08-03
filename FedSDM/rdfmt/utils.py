@@ -130,8 +130,8 @@ def contact_rdf_source(query: str,
 
     """
     # Build the query and header.
-    params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 600}) if params_ is not None else params_
-    headers = {'Accept': format_} if headers_ is not None else headers_
+    params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 600}) if params_ is None else params_
+    headers = {'Accept': format_} if headers_ is None else headers_
 
     if not isinstance(endpoint, str):  # actually means it is FedSDM.rdfmt.model.DataSource
         auth = endpoint.get_auth()
