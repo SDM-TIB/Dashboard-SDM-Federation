@@ -894,19 +894,20 @@ class RDFMTMgr(object):
             s = sourcemaps[si]
             if si == did:
                 continue
+
+            def inter_ds_links(s1, rdfmts_s1, s2, rdfmts_s2, queue_):
+                print('Linking between ', s1['subject'], len(rdfmts_s1), ' and (to) ', s2['subject'], len(rdfmts_s2))
+                p = Process(target=self.get_inter_ds_links_bn, args=(s1, rdfmts_s1, s2, rdfmts_s2, queue_,))
+                p.start()
+                return p
+
             print(si)
             queue1 = Queue()
             queues[did] = queue1
-            print('Linking between ', ds['subject'], len(rdfmts[did]), ' and (to) ', s['subject'], len(rdfmts[si]))
-            p = Process(target=self.get_inter_ds_links_bn, args=(ds, rdfmts[did], s, rdfmts[si], queue1,))
-            p.start()
-            processes[did] = p
+            processes[did] = inter_ds_links(ds, rdfmts[did], s, rdfmts[si], queue1)
             queue2 = Queue()
             queues[si] = queue2
-            print('Linking between ', s['subject'], len(rdfmts[si]), ' and (to) ', ds['subject'], len(rdfmts[did]))
-            p2 = Process(target=self.get_inter_ds_links_bn, args=(s, rdfmts[si], ds, rdfmts[did], queue2,))
-            p2.start()
-            processes[si] = p2
+            processes[si] = inter_ds_links(s, rdfmts[si], ds, rdfmts[did], queue2)
             if len(queues) >= 2:
                 while len(queues) > 0:
                     to_remove = []
