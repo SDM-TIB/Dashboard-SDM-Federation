@@ -172,7 +172,7 @@ def contact_rdf_source(query: str,
                                     x[key] = props['value'].decode('utf-8') + suffix
                                 else:
                                     x[key] = props['value'] + suffix
-                            except:
+                            except UnicodeDecodeError:
                                 x[key] = props['value'] + suffix
 
                             if isinstance(x[key], bytes):
