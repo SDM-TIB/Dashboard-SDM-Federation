@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Flask, redirect
+from flask import Flask, redirect, render_template
 
 
 def get_logger(name: str, file: str = None, file_and_console: bool = False) -> logging.Logger:
@@ -106,5 +106,9 @@ def create_app() -> Flask:
     @app.route('/')
     def index():
         return redirect('dashboard')
+
+    @app.route('/info')
+    def info():
+        return render_template('info.html')
 
     return app
