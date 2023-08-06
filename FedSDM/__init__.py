@@ -86,7 +86,6 @@ def create_app() -> Flask:
     # Register the dashboard blueprint
     from . import dashboard
     app.register_blueprint(dashboard.bp)
-    app.add_url_rule('/', endpoint='index')
 
     # Register the federation manager blueprint
     from . import federation
