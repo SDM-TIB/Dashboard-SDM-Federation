@@ -922,10 +922,6 @@ def compute_graph_properties(nodes: list, edges: list) -> list:
     t = nx.transitivity(graph)
 
     print('calculating...', density, n, e, c, cc)
-    #
-    # x = nx.average_node_connectivity(G)
-    #
-    # print('t,x,cc', t, x, cc)
     res = [
         ['Density', density],
         ['Nodes', n],
@@ -933,7 +929,6 @@ def compute_graph_properties(nodes: list, edges: list) -> list:
         ['Connected Components', cc],
         ['Avg. Clustering', c],
         ['Transitivity', t],
-        # [6, 'Avg. Node Connectivity', x],
         ['Avg. Neighbors', avg_neighbors]
     ]
     print(res)
