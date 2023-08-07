@@ -742,8 +742,6 @@ def get_rdfmt_links(graph: str = None):
                         'source': nid + dssource,
                         'target': lnid + ldssource,
                         'weight': lcard,
-                        # 'left': False,
-                        # 'right': True,
                         'pred': r['pred']
                     })
 
