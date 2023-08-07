@@ -627,7 +627,7 @@ def get_rdfmt_links(graph: str = None):
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
-        query = 'SELECT DISTINCT ?subject  ?datasource ?pred ?mt  ?mtrangesource WHERE {  graph <' + graph + '> {\n' \
+        query = 'SELECT DISTINCT ?subject ?datasource ?pred ?mt ?mtrangesource WHERE {  graph <' + graph + '> {\n' \
                 '  ?subject a mt:RDFMT .\n' \
                 '  ?subject mt:source ?source .\n' \
                 '  ?source mt:datasource ?datasource .\n' \
