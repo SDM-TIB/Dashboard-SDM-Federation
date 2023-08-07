@@ -874,7 +874,7 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
                         nodes.append(r['target'])
 
                     if (r['subject'], r['target']) not in edges:
-                        edges.append((r['subject'], r['target']))  # , {'relation': r['mtp'] if 'mtp' in r else ' '}
+                        edges.append((r['subject'], r['target']))
             result = compute_graph_properties(list(set(nodes)), edges)
             print('Graph analysis time: ', (time.time() - process_time))
             return result
