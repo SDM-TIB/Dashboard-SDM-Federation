@@ -576,7 +576,7 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
             nodes = {}
             i = 0
             sources = {}
-            rdfmtsources = {}
+            rdfmt_sources = {}
             j = 0
 
             for r in res:
@@ -594,8 +594,8 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
                     print('unknown source for MT: ', r['subject'])
                     dssource = 'Unknown'
 
-                rdfmtsources[nid] = {'source': sourceid}
-                rdfmtsources[nid]['name'] = nlabel
+                rdfmt_sources[nid] = {'source': sourceid}
+                rdfmt_sources[nid]['name'] = nlabel
 
                 if dssource not in sources:
                     sources[dssource] = j
@@ -617,7 +617,7 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
             print('total nodes', len(nodes))
             sourcenamess = [{'id': v, 'name': k} for k, v in sources.items()]
             print('Process time', (time.time() - process_time))
-            return {'nodes': nodes, 'sources': sourcenamess}, rdfmtsources
+            return {'nodes': nodes, 'sources': sourcenamess}, rdfmt_sources
     else:
         return {'nodes': [], 'sources': []}, {}
 
