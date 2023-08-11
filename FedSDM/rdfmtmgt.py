@@ -271,7 +271,6 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
 
     """
     mdb = get_mdb()
-    print(fed, mt, 'get_rdfmt_details')
     query = 'SELECT DISTINCT ?datasource ?endpoint ?mtp ?preddatasource ?mtrdatasource ?card ?pred ?mtr ' \
             'WHERE { graph <' + fed + '> {\n' \
             '  <' + mt + '> a mt:RDFMT .\n' \
@@ -292,7 +291,6 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
             '}}'
 
     res = _iterative_query(query, mdb)
-    print(len(res), 'results found')
     if len(res) > 0:
         nodes = {}
         edges = []
@@ -396,11 +394,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     'pred': r['pred']
                 })
 
-        print('total nodes:', len(nodes), nodes)
-        print('total edges:', len(edges), edges)
-
         sources = [{'id': v, 'name': k} for k, v in sources.items()]
-        print(edges)
         return {
             'nodes': nodes,
             'links': edges,
