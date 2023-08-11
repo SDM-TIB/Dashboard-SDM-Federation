@@ -198,13 +198,10 @@ def api_rdfmtdetails() -> Response:
         was not present in the request.
 
     """
-    try:
-        fed = request.args['fed']
-        mt = request.args['mt']
-        print('MT:', mt, fed)
-    except KeyError:
-        return Response(json.dumps({}), mimetype='application/json')
-    if mt is None:
+    fed = request.args.get('fed', None)
+    mt = request.args.get('mt', None)
+    print('MT:', mt, fed)
+    if fed is None or mt is None:
         return Response(json.dumps({}), mimetype='application/json')
 
     res = get_rdfmt_details(fed, mt)
