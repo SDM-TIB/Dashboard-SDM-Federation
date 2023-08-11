@@ -200,7 +200,6 @@ def api_rdfmtdetails() -> Response:
     """
     fed = request.args.get('fed', None)
     mt = request.args.get('mt', None)
-    print('MT:', mt, fed)
     if fed is None or mt is None:
         return Response(json.dumps({}), mimetype='application/json')
 
