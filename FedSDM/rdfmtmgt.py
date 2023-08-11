@@ -854,10 +854,7 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
                 '  }\n' \
                 '}'
 
-    start = time.time()
     res = _iterative_query(query, mdb, 5000)
-    process_time = time.time()
-    print('Graph analysis query time:', (process_time - start))
     if len(res) > 0:
         card = len(res)
         if card == 1 and 'subject' not in res[0]:
@@ -874,7 +871,6 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
                     if (r['subject'], r['target']) not in edges:
                         edges.append((r['subject'], r['target']))
             result = compute_graph_properties(list(set(nodes)), edges)
-            print('Graph analysis time: ', (time.time() - process_time))
             return result
     else:
         return []
