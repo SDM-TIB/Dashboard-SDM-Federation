@@ -420,11 +420,10 @@ def api_rdfmts() -> Response:
         A JSON response with the requested data.
 
     """
-    try:
-        graph = request.args['graph']
-    except KeyError:
+    graph = request.args.get('graph', None)
+    if graph is None:  # required parameter missing, returning empty response
         return Response(json.dumps({}), mimetype='application/json')
-    if graph == 'All' or graph is None:
+    elif graph == 'All':  # all federations are to be considered, so no graph is passed on
         graph = None
     else:
         session['fed'] = graph
