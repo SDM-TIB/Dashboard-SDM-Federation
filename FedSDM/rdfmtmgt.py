@@ -432,18 +432,18 @@ def api_rdfmts() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
+def get_rdfmt_edges(rdfmt_sources, graph: str = None) -> dict:
     """Gets the connections between RDF Molecule Templates of a federation.
 
     Makes use of :class:`FedSDM.db.MetadataDB` to retrieve the links between
     RDF Molecule Templates in the federation `graph`. The connections are then
-    filtered by the RDF Molecule Templates in `rdfmtsources`, i.e., if the range
-    of an RDF Molecule Template is not in `rdfmtsources`, then it will not be
+    filtered by the RDF Molecule Templates in `rdfmt_sources`, i.e., if the range
+    of an RDF Molecule Template is not in `rdfmt_sources`, then it will not be
     added to the result.
 
     Parameters
     ----------
-    rdfmtsources : dict
+    rdfmt_sources : dict
         Information about the sources of interest, i.e., connections to
         which source should be considered for the result.
     graph : str, optional
@@ -487,7 +487,7 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
                 nid = r['subject']
                 if 'mt' in r:
                     lnid = r['mt']
-                    if lnid not in rdfmtsources or lnid == nid:
+                    if lnid not in rdfmt_sources or lnid == nid:
                         print('Skipped range: ', lnid)
                         continue
                     if lnid + nid in edges_key:
@@ -495,11 +495,11 @@ def get_rdfmt_edges(rdfmtsources, graph: str = None) -> dict:
                     edges_key.append(nid + lnid)
                     edges_key.append(lnid + nid)
 
-                    lds_source = rdfmtsources[lnid]['source']
+                    lds_source = rdfmt_sources[lnid]['source']
 
                     lcard = -1
                     edges.append({
-                        'source': nid + rdfmtsources[nid]['source'],
+                        'source': nid + rdfmt_sources[nid]['source'],
                         'target': lnid + lds_source,
                         'weight': lcard,
                         'pred': 'linkedto'
