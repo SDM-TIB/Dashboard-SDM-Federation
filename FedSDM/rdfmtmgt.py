@@ -432,7 +432,7 @@ def api_rdfmts() -> Response:
     return Response(json.dumps(res), mimetype='application/json')
 
 
-def get_rdfmt_edges(rdfmt_sources, graph: str = None) -> dict:
+def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
     """Gets the connections between RDF Molecule Templates of a federation.
 
     Makes use of :class:`FedSDM.db.MetadataDB` to retrieve the links between
