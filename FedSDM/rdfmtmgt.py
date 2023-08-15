@@ -460,7 +460,7 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
-        query = 'SELECT DISTINCT ?subject ?mt WHERE { graph <' + graph + '> {\n' \
+        query = 'SELECT DISTINCT ?subject ?mt WHERE { GRAPH <' + graph + '> {\n' \
                 '  ?subject mt:hasProperty ?mtp .\n' \
                 '  ?mtp mt:linkedTo ?mtrange .\n' \
                 '  ?mtrange mt:rdfmt ?mt .\n' \
