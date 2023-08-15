@@ -272,7 +272,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
     """
     mdb = get_mdb()
     query = 'SELECT DISTINCT ?datasource ?endpoint ?mtp ?preddatasource ?mtrdatasource ?card ?pred ?mtr ' \
-            'WHERE { graph <' + fed + '> {\n' \
+            'WHERE { GRAPH <' + fed + '> {\n' \
             '  <' + mt + '> a mt:RDFMT .\n' \
             '  <' + mt + '> mt:source ?source .\n' \
             '  OPTIONAL { ?source mt:cardinality ?card. }\n' \
