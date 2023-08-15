@@ -285,7 +285,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
             '  OPTIONAL {\n' \
             '    ?mtp mt:linkedTo ?mtrange .\n' \
             '    ?mtrange mt:name ?mtr .\n'\
-            '    ?mtr  mt:source ?mtrsource .\n'\
+            '    ?mtr mt:source ?mtrsource .\n'\
             '    ?mtrsource mt:datasource ?mtrdatasource .\n' \
             '  }\n' \
             '}}'
