@@ -803,9 +803,9 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
     """
     mdb = get_mdb()
     if source is None:
-        source = ' ?name '
+        source = '?name'
     else:
-        source = '"' + source + '" '
+        source = '"' + source + '"'
     if graph is not None:
         query = 'SELECT distinct ?subject ?target WHERE { graph <' + graph + '> {\n' \
                 '  ?subject a mt:RDFMT .\n' \
