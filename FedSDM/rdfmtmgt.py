@@ -807,7 +807,7 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
     else:
         source = '"' + source + '"'
     if graph is not None:
-        query = 'SELECT distinct ?subject ?target WHERE { graph <' + graph + '> {\n' \
+        query = 'SELECT distinct ?subject ?target WHERE { GRAPH <' + graph + '> {\n' \
                 '  ?subject a mt:RDFMT .\n' \
                 '  ?subject mt:source ?source .\n' \
                 '  ?source mt:datasource ?datasource .\n' \
