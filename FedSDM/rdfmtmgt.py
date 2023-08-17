@@ -43,7 +43,7 @@ def rdfmt() -> str:
 
 
 @bp.route('/api/rdfmtstats')
-def rdfmtstats() -> Response:
+def rdfmt_stats() -> Response:
     """Serves requests to '/rdfmts/api/rdfmtstats'.
 
     This route provides statistics about the RDF Molecule Templates of the federation
