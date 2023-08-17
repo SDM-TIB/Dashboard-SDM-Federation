@@ -471,8 +471,8 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
                 '}'
 
     res = _iterative_query(query, mdb, 5000)
-    if len(res) > 0:
-        card = len(res)
+    card = len(res)
+    if card > 0:
         if card == 1 and 'subject' not in res[0]:
             return {'links': []}
         else:
