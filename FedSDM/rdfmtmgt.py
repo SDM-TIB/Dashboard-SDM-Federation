@@ -178,7 +178,7 @@ def get_rdfmt_stats(graph: str = None) -> dict:
 
 
 @bp.route('/api/mtdetails')
-def api_rdfmtdetails() -> Response:
+def api_rdfmt_details() -> Response:
     """Serves requests to '/rdfmts/api/mtdetails'.
 
     This route is used to retrieve details about a single RDF Molecule
