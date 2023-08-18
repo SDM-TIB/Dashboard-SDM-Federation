@@ -483,7 +483,6 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
                 if 'mt' in r:
                     lnid = r['mt']
                     if lnid not in rdfmt_sources or lnid == nid:
-                        print('Skipped range: ', lnid)
                         continue
                     if lnid + nid not in edges_key:
                         edges_key.append(nid + lnid)
@@ -498,8 +497,6 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
                             'weight': lcard,
                             'pred': 'linkedto'
                         })
-
-            print('total edges:', len(edges))
             return {'links': list(edges)}
     else:
         return {'links': []}
