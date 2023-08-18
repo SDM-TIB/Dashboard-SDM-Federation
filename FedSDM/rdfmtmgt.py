@@ -485,20 +485,19 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
                     if lnid not in rdfmt_sources or lnid == nid:
                         print('Skipped range: ', lnid)
                         continue
-                    if lnid + nid in edges_key:
-                        continue
-                    edges_key.append(nid + lnid)
-                    edges_key.append(lnid + nid)
+                    if lnid + nid not in edges_key:
+                        edges_key.append(nid + lnid)
+                        edges_key.append(lnid + nid)
 
-                    lds_source = rdfmt_sources[lnid]['source']
+                        lds_source = rdfmt_sources[lnid]['source']
 
-                    lcard = -1
-                    edges.append({
-                        'source': nid + rdfmt_sources[nid]['source'],
-                        'target': lnid + lds_source,
-                        'weight': lcard,
-                        'pred': 'linkedto'
-                    })
+                        lcard = -1
+                        edges.append({
+                            'source': nid + rdfmt_sources[nid]['source'],
+                            'target': lnid + lds_source,
+                            'weight': lcard,
+                            'pred': 'linkedto'
+                        })
 
             print('total edges:', len(edges))
             return {'links': list(edges)}
