@@ -590,7 +590,6 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
                     }
                     i += 1
 
-            print('total nodes', len(nodes))
             sourcenamess = [{'id': v, 'name': k} for k, v in sources.items()]
             return {'nodes': nodes, 'sources': sourcenamess}, rdfmt_sources
     else:
