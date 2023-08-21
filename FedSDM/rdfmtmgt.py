@@ -746,16 +746,15 @@ def api_rdfmtanalysis() -> Response:
         A JSON response with the results from the network analysis.
 
     """
-    try:
-        graph = request.args['graph']
-        source = request.args['source']
-    except KeyError:
+    graph = request.args.get('graph', None)
+    source = request.args.get('source', None)
+    if graph is None or source is None:  # required parameter(s) missing, returning empty response
         return Response(json.dumps({}), mimetype='application/json')
-    if graph == 'All' or graph is None:
+    if graph == 'All':  # all federations are to be considered, so no graph is passed on
         graph = None
     else:
         session['fed'] = graph
-    if source == 'All' or source is None:
+    if source == 'All':  # all sources are to be considered, so none is passed on
         source = None
 
     res = get_graph_stat(graph, source)
