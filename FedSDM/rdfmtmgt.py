@@ -877,15 +877,13 @@ def compute_graph_properties(nodes: list, edges: list) -> list:
     graph = nx.Graph()
     graph.add_nodes_from(nodes)
     graph.add_edges_from(edges)
-    deg = dict(graph.degree())
-    sum_of_edges = sum(deg.values())
-    avg_neighbors = sum_of_edges / nx.number_of_nodes(graph)
     density = nx.density(graph)
     n = nx.number_of_nodes(graph)
     e = nx.number_of_edges(graph)
     c = nx.average_clustering(graph)
     cc = nx.number_connected_components(graph)
     t = nx.transitivity(graph)
+    avg_neighbors = 2*e / n  # count edges as undirected, hence, duplicate them
 
     res = [
         ['Density', density],
