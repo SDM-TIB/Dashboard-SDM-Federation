@@ -887,7 +887,6 @@ def compute_graph_properties(nodes: list, edges: list) -> list:
     cc = nx.number_connected_components(graph)
     t = nx.transitivity(graph)
 
-    print('calculating...', density, n, e, c, cc)
     res = [
         ['Density', density],
         ['Nodes', n],
@@ -897,7 +896,6 @@ def compute_graph_properties(nodes: list, edges: list) -> list:
         ['Transitivity', t],
         ['Avg. Neighbors', avg_neighbors]
     ]
-    print(res)
     return res
 
 
