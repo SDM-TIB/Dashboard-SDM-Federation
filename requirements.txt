@@ -1,4 +1,4 @@
-flask==2.3.2
+flask==2.3.3
 networkx==3.1.0
 DeTrusty==0.12.3
 requests==2.31.0
