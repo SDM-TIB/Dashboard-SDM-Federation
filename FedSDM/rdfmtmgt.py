@@ -719,9 +719,6 @@ def get_rdfmt_links(graph: str = None):
                         'pred': r['pred']
                     })
 
-            print('total nodes:', len(nodes))
-            print('total edges:', len(edges))
-
             sources = [{'id': v, 'name': k} for k, v in sources.items()]
             return {'nodes': nodes, 'links': list(edges), 'sources': sources}
     else:
