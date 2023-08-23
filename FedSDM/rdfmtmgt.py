@@ -640,7 +640,7 @@ def get_rdfmt_links(graph: str = None):
         else:
             nodes = {}
             edges = []
-            nodeids = {}
+            node_ids = {}
             nodecards = {}
             nodeswithnocard = []
             i = 0
@@ -680,7 +680,7 @@ def get_rdfmt_links(graph: str = None):
                         'datasource': sources[dssource],
                         'weight': weight
                     }
-                    nodeids[nid + dssource] = i
+                    node_ids[nid + dssource] = i
                     i += 1
 
                 if 'mt' in r:
@@ -708,7 +708,7 @@ def get_rdfmt_links(graph: str = None):
                             'datasource': sources[ldssource],
                             'weight': lweight
                         }
-                        nodeids[lnid + ldssource] = i
+                        node_ids[lnid + ldssource] = i
                         i += 1
                     lcard = -1
 
