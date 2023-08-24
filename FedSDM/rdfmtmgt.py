@@ -642,7 +642,7 @@ def get_rdfmt_links(graph: str = None):
             edges = []
             node_ids = {}
             node_cards = {}
-            nodeswithnocard = []
+            nodes_with_no_card = []
             i = 0
             sources = {}
             j = 0
@@ -698,7 +698,7 @@ def get_rdfmt_links(graph: str = None):
                     if lnid + ldssource in node_cards:
                         lweight = node_cards[lnid + ldssource]
                     else:
-                        nodeswithnocard.append(lnid + ldssource)
+                        nodes_with_no_card.append(lnid + ldssource)
                         lweight = -1
 
                     if lnid + ldssource not in nodes:
