@@ -653,7 +653,7 @@ def get_rdfmt_links(graph: str = None):
                 if True in val:
                     continue
 
-                nlabel = r['subject']
+                node_label = r['subject']
 
                 if 'datasource' in r:
                     dssource = r['datasource']
@@ -664,10 +664,10 @@ def get_rdfmt_links(graph: str = None):
                     sources[dssource] = j
                     j += 1
 
-                if '/' in nlabel:
-                    nlabel = nlabel[nlabel.rfind('/') + 1:]  # dssource[dssource.rfind('/')+1:] + ':' +
+                if '/' in node_label:
+                    node_label = node_label[node_label.rfind('/') + 1:]  # dssource[dssource.rfind('/')+1:] + ':' +
                 else:
-                    nlabel = nlabel  # dssource[dssource.rfind('/')+1:] + ':' +
+                    node_label = node_label  # dssource[dssource.rfind('/')+1:] + ':' +
 
                 weight = -1
 
@@ -676,7 +676,7 @@ def get_rdfmt_links(graph: str = None):
                 if nid + dssource not in nodes:
                     nodes[nid + dssource] = {
                         'id': nid + dssource,
-                        'label': nlabel,
+                        'label': node_label,
                         'datasource': sources[dssource],
                         'weight': weight
                     }
