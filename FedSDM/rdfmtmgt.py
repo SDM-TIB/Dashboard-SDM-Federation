@@ -665,9 +665,9 @@ def get_rdfmt_links(graph: str = None):
                     j += 1
 
                 if '/' in node_label:
-                    node_label = node_label[node_label.rfind('/') + 1:]  # dssource[dssource.rfind('/')+1:] + ':' +
+                    node_label = node_label[node_label.rfind('/') + 1:]
                 else:
-                    node_label = node_label  # dssource[dssource.rfind('/')+1:] + ':' +
+                    node_label = node_label
 
                 weight = -1
 
