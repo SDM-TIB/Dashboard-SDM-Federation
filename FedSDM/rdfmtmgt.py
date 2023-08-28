@@ -684,7 +684,7 @@ def get_rdfmt_links(graph: str = None):
                     i += 1
 
                 if 'mt' in r:
-                    lnid = r['mt']
+                    lid = r['mt']
                     ldssource = r['mtrangesource']
                     lnlabel = r['mt']
                     if '/' in lnlabel:
@@ -695,26 +695,26 @@ def get_rdfmt_links(graph: str = None):
                     if ldssource not in sources:
                         sources[ldssource] = j
                         j += 1
-                    if lnid + ldssource in node_cards:
-                        lweight = node_cards[lnid + ldssource]
+                    if lid + ldssource in node_cards:
+                        lweight = node_cards[lid + ldssource]
                     else:
-                        nodes_with_no_card.append(lnid + ldssource)
+                        nodes_with_no_card.append(lid + ldssource)
                         lweight = -1
 
-                    if lnid + ldssource not in nodes:
-                        nodes[lnid + ldssource] = {
-                            'id': lnid + ldssource,
+                    if lid + ldssource not in nodes:
+                        nodes[lid + ldssource] = {
+                            'id': lid + ldssource,
                             'label': lnlabel,
                             'datasource': sources[ldssource],
                             'weight': lweight
                         }
-                        node_ids[lnid + ldssource] = i
+                        node_ids[lid + ldssource] = i
                         i += 1
                     lcard = -1
 
                     edges.append({
                         'source': nid + source,
-                        'target': lnid + ldssource,
+                        'target': lid + ldssource,
                         'weight': lcard,
                         'pred': r['pred']
                     })
