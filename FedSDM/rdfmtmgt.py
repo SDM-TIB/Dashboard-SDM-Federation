@@ -685,36 +685,36 @@ def get_rdfmt_links(graph: str = None):
 
                 if 'mt' in r:
                     lid = r['mt']
-                    ldssource = r['mtrangesource']
+                    link_source = r['mtrangesource']
                     lnlabel = r['mt']
                     if '/' in lnlabel:
-                        lnlabel = lnlabel[lnlabel.rfind('/') + 1:]  # ldssource[ldssource.rfind('/') + 1:] + ':' +
+                        lnlabel = lnlabel[lnlabel.rfind('/') + 1:]  # link_source[link_source.rfind('/') + 1:] + ':' +
                     else:
-                        lnlabel = lnlabel  # ldssource[ldssource.rfind('/') + 1:] + ':' +
+                        lnlabel = lnlabel  # link_source[link_source.rfind('/') + 1:] + ':' +
 
-                    if ldssource not in sources:
-                        sources[ldssource] = j
+                    if link_source not in sources:
+                        sources[link_source] = j
                         j += 1
-                    if lid + ldssource in node_cards:
-                        lweight = node_cards[lid + ldssource]
+                    if lid + link_source in node_cards:
+                        lweight = node_cards[lid + link_source]
                     else:
-                        nodes_with_no_card.append(lid + ldssource)
+                        nodes_with_no_card.append(lid + link_source)
                         lweight = -1
 
-                    if lid + ldssource not in nodes:
-                        nodes[lid + ldssource] = {
-                            'id': lid + ldssource,
+                    if lid + link_source not in nodes:
+                        nodes[lid + link_source] = {
+                            'id': lid + link_source,
                             'label': lnlabel,
-                            'datasource': sources[ldssource],
+                            'datasource': sources[link_source],
                             'weight': lweight
                         }
-                        node_ids[lid + ldssource] = i
+                        node_ids[lid + link_source] = i
                         i += 1
                     lcard = -1
 
                     edges.append({
                         'source': nid + source,
-                        'target': lid + ldssource,
+                        'target': lid + link_source,
                         'weight': lcard,
                         'pred': r['pred']
                     })
