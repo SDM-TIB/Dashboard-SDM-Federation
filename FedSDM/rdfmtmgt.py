@@ -688,9 +688,9 @@ def get_rdfmt_links(graph: str = None):
                     link_source = r['mtrangesource']
                     lnlabel = r['mt']
                     if '/' in lnlabel:
-                        lnlabel = lnlabel[lnlabel.rfind('/') + 1:]  # link_source[link_source.rfind('/') + 1:] + ':' +
+                        lnlabel = lnlabel[lnlabel.rfind('/') + 1:]
                     else:
-                        lnlabel = lnlabel  # link_source[link_source.rfind('/') + 1:] + ':' +
+                        lnlabel = lnlabel
 
                     if link_source not in sources:
                         sources[link_source] = j
