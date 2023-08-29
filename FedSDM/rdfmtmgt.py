@@ -710,12 +710,12 @@ def get_rdfmt_links(graph: str = None):
                         }
                         node_ids[lid + link_source] = i
                         i += 1
-                    lcard = -1
+                    link_card = -1
 
                     edges.append({
                         'source': nid + source,
                         'target': lid + link_source,
-                        'weight': lcard,
+                        'weight': link_card,
                         'pred': r['pred']
                     })
 
