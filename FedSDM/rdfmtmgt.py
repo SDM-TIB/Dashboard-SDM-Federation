@@ -686,11 +686,11 @@ def get_rdfmt_links(graph: str = None):
                 if 'mt' in r:
                     lid = r['mt']
                     link_source = r['mtrangesource']
-                    lnlabel = r['mt']
-                    if '/' in lnlabel:
-                        lnlabel = lnlabel[lnlabel.rfind('/') + 1:]
+                    link_label = r['mt']
+                    if '/' in link_label:
+                        link_label = link_label[link_label.rfind('/') + 1:]
                     else:
-                        lnlabel = lnlabel
+                        link_label = link_label
 
                     if link_source not in sources:
                         sources[link_source] = j
@@ -704,7 +704,7 @@ def get_rdfmt_links(graph: str = None):
                     if lid + link_source not in nodes:
                         nodes[lid + link_source] = {
                             'id': lid + link_source,
-                            'label': lnlabel,
+                            'label': link_label,
                             'datasource': sources[link_source],
                             'weight': lweight
                         }
