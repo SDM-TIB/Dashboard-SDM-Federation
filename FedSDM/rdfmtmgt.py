@@ -696,17 +696,17 @@ def get_rdfmt_links(graph: str = None):
                         sources[link_source] = j
                         j += 1
                     if lid + link_source in node_cards:
-                        lweight = node_cards[lid + link_source]
+                        link_weight = node_cards[lid + link_source]
                     else:
                         nodes_with_no_card.append(lid + link_source)
-                        lweight = -1
+                        link_weight = -1
 
                     if lid + link_source not in nodes:
                         nodes[lid + link_source] = {
                             'id': lid + link_source,
                             'label': link_label,
                             'datasource': sources[link_source],
-                            'weight': lweight
+                            'weight': link_weight
                         }
                         node_ids[lid + link_source] = i
                         i += 1
