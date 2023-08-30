@@ -632,8 +632,8 @@ def get_rdfmt_links(graph: str = None):
                 '}'
 
     res = _iterative_query(query, mdb, 100)
-    if len(res) > 0:
-        card = len(res)
+    card = len(res)
+    if card > 0:
         if card == 1 and 'subject' not in res[0]:
             return {'nodes': [], 'links': [], 'sources': []}
         else:
