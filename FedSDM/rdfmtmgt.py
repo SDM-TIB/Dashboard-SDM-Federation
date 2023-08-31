@@ -544,8 +544,8 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
                 '}'
 
     res = _iterative_query(query, mdb, 9000)
-    if len(res) > 0:
-        card = len(res)
+    card = len(res)
+    if card > 0:
         if card == 1 and 'subject' not in res[0]:
             return {'nodes': [], 'sources': []}, {}
         else:
