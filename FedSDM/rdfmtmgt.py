@@ -785,10 +785,7 @@ def get_graph_stat(graph: str = None, source: str = None) -> list:
 
     """
     mdb = get_mdb()
-    if source is None:
-        source = '?name'
-    else:
-        source = '"' + source + '"'
+    source = '"' + source + '"' if source is not None else '?name'
     if graph is not None:
         query = 'SELECT DISTINCT ?subject ?target WHERE { GRAPH <' + graph + '> {\n' \
                 '  ?subject a mt:RDFMT .\n' \
