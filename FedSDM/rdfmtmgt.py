@@ -565,16 +565,16 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
                 source_id = r['source']
 
                 if 'datasource' in r:
-                    dssource = r['datasource']
+                    source = r['datasource']
                 else:
                     print('unknown source for MT: ', r['subject'])
-                    dssource = 'Unknown'
+                    source = 'Unknown'
 
                 rdfmt_sources[nid] = {'source': source_id}
                 rdfmt_sources[nid]['name'] = node_label
 
-                if dssource not in sources:
-                    sources[dssource] = j
+                if source not in sources:
+                    sources[source] = j
                     j += 1
 
                 weight = -1
@@ -582,10 +582,10 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
                 if nid + source_id not in nodes:
                     nodes[nid + source_id] = {
                         'id': nid + source_id,
-                        'label': dssource + '-' + node_label,
-                        'datasource': sources[dssource],
-                        'node_type': sources[dssource],
-                        'cluster': sources[dssource],
+                        'label': source + '-' + node_label,
+                        'datasource': sources[source],
+                        'node_type': sources[source],
+                        'cluster': sources[source],
                         'weight': weight
                     }
                     i += 1
