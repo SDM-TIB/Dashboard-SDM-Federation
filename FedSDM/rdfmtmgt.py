@@ -292,7 +292,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
     if len(res) > 0:
         nodes = {}
         edges = []
-        nodeids = {}
+        node_ids = {}
         nodecards = {}
         nodeswithnocard = []
         i = 0
@@ -320,7 +320,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     'weight': r['card'][:r['card'].find('^^')] if 'card' in r and '^' in r['card'] else 10,
                     'type': 'root'
                 }
-                nodeids[mt + mdssource] = i
+                node_ids[mt + mdssource] = i
                 i += 1
 
             if nid+dssource not in nodes:
@@ -342,7 +342,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     'weight': weight,
                     'type': 'square'
                 }
-                nodeids[nid+dssource] = i
+                node_ids[nid+dssource] = i
                 i += 1
                 edges.append({
                     'source': mt+mdssource,
@@ -374,7 +374,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                         'type': 'circle',
                         'predicateid': nid + dssource
                     }
-                    nodeids[lnid + ldssource] = i
+                    node_ids[lnid + ldssource] = i
                     i += 1
                 if 'predcard' in r:
                     lcard = r['predcard']
