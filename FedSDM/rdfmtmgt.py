@@ -355,7 +355,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
             if 'mtr' in r:
                 lid = r['mtr']
                 link_source = r['mtrdatasource']
-                lnlabel = r['mtr']
+                link_label = r['mtr']
                 if link_source not in sources:
                     sources[link_source] = j
                     j += 1
@@ -368,7 +368,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 if lid + link_source not in nodes:
                     nodes[lid + link_source] = {
                         'id': lid + link_source,
-                        'label': lnlabel,
+                        'label': link_label,
                         'datasource': sources[link_source],
                         'weight': lweight,
                         'type': 'circle',
