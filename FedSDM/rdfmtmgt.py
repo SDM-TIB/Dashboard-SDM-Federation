@@ -303,24 +303,24 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
             nid = r['pred']
             node_label = r['pred']
             pred_source = r['preddatasource']
-            mdssource = r['datasource']
+            source = r['datasource']
             if pred_source not in sources:
                 sources[pred_source] = j
                 j += 1
 
-            if mdssource not in sources:
-                sources[mdssource] = j
+            if source not in sources:
+                sources[source] = j
                 j += 1
 
-            if mt+mdssource not in nodes:
-                nodes[mt+mdssource] = {
+            if mt+source not in nodes:
+                nodes[mt+source] = {
                     'id': mt,
                     'label': mt,
-                    'datasource': sources[mdssource],
+                    'datasource': sources[source],
                     'weight': r['card'][:r['card'].find('^^')] if 'card' in r and '^' in r['card'] else 10,
                     'type': 'root'
                 }
-                node_ids[mt + mdssource] = i
+                node_ids[mt + source] = i
                 i += 1
 
             if nid+pred_source not in nodes:
@@ -345,7 +345,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 node_ids[nid+pred_source] = i
                 i += 1
                 edges.append({
-                    'source': mt+mdssource,
+                    'source': mt+source,
                     'target': nid + pred_source,
                     'weight': weight,
                     'pred': 'hasPredicate',
