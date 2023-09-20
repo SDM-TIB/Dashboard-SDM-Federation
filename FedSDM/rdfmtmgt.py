@@ -302,10 +302,10 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
         for r in res:
             nid = r['pred']
             node_label = r['pred']
-            dssource = r['preddatasource']
+            source = r['preddatasource']
             mdssource = r['datasource']
-            if dssource not in sources:
-                sources[dssource] = j
+            if source not in sources:
+                sources[source] = j
                 j += 1
 
             if mdssource not in sources:
@@ -323,30 +323,30 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 node_ids[mt + mdssource] = i
                 i += 1
 
-            if nid+dssource not in nodes:
+            if nid+source not in nodes:
                 if 'predcard' in r:
                     weight = r['predcard']
                     if '^' in weight:
                         weight = weight[:weight.find('^^')]
-                    if nid + dssource in nodes_with_no_card:
-                        nodes[nid + dssource]['weight'] = weight
-                        nodes_with_no_card.remove(nid + dssource)
+                    if nid + source in nodes_with_no_card:
+                        nodes[nid + source]['weight'] = weight
+                        nodes_with_no_card.remove(nid + source)
                 else:
                     weight = -1
 
-                node_cards[nid + dssource] = weight
-                nodes[nid+dssource] = {
-                    'id': nid+dssource,
+                node_cards[nid + source] = weight
+                nodes[nid+source] = {
+                    'id': nid+source,
                     'label': node_label,
-                    'datasource': sources[dssource],
+                    'datasource': sources[source],
                     'weight': weight,
                     'type': 'square'
                 }
-                node_ids[nid+dssource] = i
+                node_ids[nid+source] = i
                 i += 1
                 edges.append({
                     'source': mt+mdssource,
-                    'target': nid + dssource,
+                    'target': nid + source,
                     'weight': weight,
                     'pred': 'hasPredicate',
                     'ltype': 'predicate'
@@ -372,7 +372,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                         'datasource': sources[ldssource],
                         'weight': lweight,
                         'type': 'circle',
-                        'predicateid': nid + dssource
+                        'predicateid': nid + source
                     }
                     node_ids[lnid + ldssource] = i
                     i += 1
@@ -384,7 +384,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     lcard = -1
 
                 edges.append({
-                    'source': nid + dssource,
+                    'source': nid + source,
                     'target': lnid + ldssource,
                     'weight': lcard,
                     'ltype': 'link',
