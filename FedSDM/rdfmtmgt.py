@@ -490,11 +490,11 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
 
                         lds_source = rdfmt_sources[lid]['source']
 
-                        lcard = -1
+                        link_card = -1
                         edges.append({
                             'source': nid + rdfmt_sources[nid]['source'],
                             'target': lid + lds_source,
-                            'weight': lcard,
+                            'weight': link_card,
                             'pred': 'linkedto'
                         })
             return {'links': list(edges)}
