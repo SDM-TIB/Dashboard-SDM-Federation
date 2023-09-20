@@ -377,16 +377,16 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     node_ids[lid + link_source] = i
                     i += 1
                 if 'predcard' in r:
-                    lcard = r['predcard']
-                    if '^^' in lcard:
-                        lcard = lcard[:lcard.find('^^')]
+                    link_card = r['predcard']
+                    if '^^' in link_card:
+                        link_card = link_card[:link_card.find('^^')]
                 else:
-                    lcard = -1
+                    link_card = -1
 
                 edges.append({
                     'source': nid + pred_source,
                     'target': lid + link_source,
-                    'weight': lcard,
+                    'weight': link_card,
                     'ltype': 'link',
                     'type': 'link',
                     'pred': r['pred']
