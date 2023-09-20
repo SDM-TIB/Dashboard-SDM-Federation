@@ -354,27 +354,27 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
 
             if 'mtr' in r:
                 lid = r['mtr']
-                ldssource = r['mtrdatasource']
+                link_source = r['mtrdatasource']
                 lnlabel = r['mtr']
-                if ldssource not in sources:
-                    sources[ldssource] = j
+                if link_source not in sources:
+                    sources[link_source] = j
                     j += 1
-                if lid+ldssource in node_cards:
-                    lweight = node_cards[lid+ldssource]
+                if lid+link_source in node_cards:
+                    lweight = node_cards[lid+link_source]
                 else:
-                    nodes_with_no_card.append(lid+ldssource)
+                    nodes_with_no_card.append(lid+link_source)
                     lweight = -1
 
-                if lid + ldssource not in nodes:
-                    nodes[lid + ldssource] = {
-                        'id': lid + ldssource,
+                if lid + link_source not in nodes:
+                    nodes[lid + link_source] = {
+                        'id': lid + link_source,
                         'label': lnlabel,
-                        'datasource': sources[ldssource],
+                        'datasource': sources[link_source],
                         'weight': lweight,
                         'type': 'circle',
                         'predicateid': nid + pred_source
                     }
-                    node_ids[lid + ldssource] = i
+                    node_ids[lid + link_source] = i
                     i += 1
                 if 'predcard' in r:
                     lcard = r['predcard']
@@ -385,7 +385,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
 
                 edges.append({
                     'source': nid + pred_source,
-                    'target': lid + ldssource,
+                    'target': lid + link_source,
                     'weight': lcard,
                     'ltype': 'link',
                     'type': 'link',
