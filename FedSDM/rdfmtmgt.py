@@ -301,7 +301,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
 
         for r in res:
             nid = r['pred']
-            nlabel = r['pred']
+            node_label = r['pred']
             dssource = r['preddatasource']
             mdssource = r['datasource']
             if dssource not in sources:
@@ -337,7 +337,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 node_cards[nid + dssource] = weight
                 nodes[nid+dssource] = {
                     'id': nid+dssource,
-                    'label': nlabel,
+                    'label': node_label,
                     'datasource': sources[dssource],
                     'weight': weight,
                     'type': 'square'
