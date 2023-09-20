@@ -294,7 +294,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
         edges = []
         node_ids = {}
         node_cards = {}
-        nodeswithnocard = []
+        nodes_with_no_card = []
         i = 0
         sources = {}
         j = 0
@@ -328,9 +328,9 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     weight = r['predcard']
                     if '^' in weight:
                         weight = weight[:weight.find('^^')]
-                    if nid + dssource in nodeswithnocard:
+                    if nid + dssource in nodes_with_no_card:
                         nodes[nid + dssource]['weight'] = weight
-                        nodeswithnocard.remove(nid + dssource)
+                        nodes_with_no_card.remove(nid + dssource)
                 else:
                     weight = -1
 
@@ -362,7 +362,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 if lnid+ldssource in node_cards:
                     lweight = node_cards[lnid+ldssource]
                 else:
-                    nodeswithnocard.append(lnid+ldssource)
+                    nodes_with_no_card.append(lnid+ldssource)
                     lweight = -1
 
                 if lnid + ldssource not in nodes:
