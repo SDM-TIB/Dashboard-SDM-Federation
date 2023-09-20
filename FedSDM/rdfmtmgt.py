@@ -353,28 +353,28 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 })
 
             if 'mtr' in r:
-                lnid = r['mtr']
+                lid = r['mtr']
                 ldssource = r['mtrdatasource']
                 lnlabel = r['mtr']
                 if ldssource not in sources:
                     sources[ldssource] = j
                     j += 1
-                if lnid+ldssource in node_cards:
-                    lweight = node_cards[lnid+ldssource]
+                if lid+ldssource in node_cards:
+                    lweight = node_cards[lid+ldssource]
                 else:
-                    nodes_with_no_card.append(lnid+ldssource)
+                    nodes_with_no_card.append(lid+ldssource)
                     lweight = -1
 
-                if lnid + ldssource not in nodes:
-                    nodes[lnid + ldssource] = {
-                        'id': lnid + ldssource,
+                if lid + ldssource not in nodes:
+                    nodes[lid + ldssource] = {
+                        'id': lid + ldssource,
                         'label': lnlabel,
                         'datasource': sources[ldssource],
                         'weight': lweight,
                         'type': 'circle',
                         'predicateid': nid + pred_source
                     }
-                    node_ids[lnid + ldssource] = i
+                    node_ids[lid + ldssource] = i
                     i += 1
                 if 'predcard' in r:
                     lcard = r['predcard']
@@ -385,7 +385,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
 
                 edges.append({
                     'source': nid + pred_source,
-                    'target': lnid + ldssource,
+                    'target': lid + ldssource,
                     'weight': lcard,
                     'ltype': 'link',
                     'type': 'link',
