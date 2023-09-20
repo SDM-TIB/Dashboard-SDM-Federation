@@ -481,19 +481,19 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
             for r in res:
                 nid = r['subject']
                 if 'mt' in r:
-                    lnid = r['mt']
-                    if lnid not in rdfmt_sources or lnid == nid:
+                    lid = r['mt']
+                    if lid not in rdfmt_sources or lid == nid:
                         continue
-                    if lnid + nid not in edges_key:
-                        edges_key.append(nid + lnid)
-                        edges_key.append(lnid + nid)
+                    if lid + nid not in edges_key:
+                        edges_key.append(nid + lid)
+                        edges_key.append(lid + nid)
 
-                        lds_source = rdfmt_sources[lnid]['source']
+                        lds_source = rdfmt_sources[lid]['source']
 
                         lcard = -1
                         edges.append({
                             'source': nid + rdfmt_sources[nid]['source'],
-                            'target': lnid + lds_source,
+                            'target': lid + lds_source,
                             'weight': lcard,
                             'pred': 'linkedto'
                         })
