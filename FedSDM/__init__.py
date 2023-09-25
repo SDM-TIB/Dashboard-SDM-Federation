@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, send_from_directory
 
 
 def get_logger(name: str, file: str = None, file_and_console: bool = False) -> logging.Logger:
@@ -110,5 +110,9 @@ def create_app() -> Flask:
     @app.route('/info')
     def info():
         return render_template('info.html')
+
+    @app.route('/favicon.ico')
+    def favicon():
+        return send_from_directory(os.path.join(app.root_path, 'static', 'images'), 'Lynx_Icon.ico', mimetype='image/vnd.microsoft.icon')
 
     return app

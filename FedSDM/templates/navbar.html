@@ -1,7 +1,9 @@
-<div class="col-nav px-sm-2 px-0 bg-dark">
+<div class="col-nav px-sm-2 px-0 bg-dark-subtle">
     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white sidebar">
         <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <span class="fs-5 d-none d-sm-inline">FedSDM</span>
+            <span class="fs-5 d-none d-sm-inline">
+                <img src="{{ url_for('static', filename='images/Lynx_Logo.png') }}" alt="Logo Lynx" width="200px">
+            </span>
         </a>
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
             <li class="nav-item">
@@ -26,10 +28,10 @@
         </ul>
         <hr>
         <div class="dropdown pb-4">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa-solid fa-user fa-fw"></i>&nbsp;{% if g.user %}<span class="ms-1 d-none d-sm-inline">{{ g.user['username'] }}</span>&nbsp;{% endif %}&nbsp;<i class="fa-solid fa-caret-down"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow dropdown-user animated--fadeIn" id="user-dropdown">
+            <ul class="dropdown-menu bg-dark-subtle text-small shadow dropdown-user animated--fadeIn" id="user-dropdown">
                 {% if g.user %}
                     <li><a href="#"><i class="fa-solid fa-user fa-fw"></i> User Profile</a></li>
                     <li><a href="#"><i class="fa-solid fa-user-cog fa-fw"></i> Settings</a></li>

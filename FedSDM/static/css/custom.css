@@ -2,8 +2,8 @@
 
 :root {
   --color-text-buttons: #fff;
-  --color-text-link: #337ab7;
-  --color-text-link-hover: #0a58ca;
+  --color-text-link: #0a58ca;
+  --color-text-link-hover: #07367b;
   --color-border: #e7e7e7;
   --color-almost-white: #eeeeee;
 }
@@ -94,7 +94,6 @@ a:hover {
 }
 .dropdown-toggle:hover, .dropdown-toggle:focus {
   text-decoration: none;
-  color: #ccc !important;
 }
 .dropdown-menu {
   padding: 0.3125rem 0;
