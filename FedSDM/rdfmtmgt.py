@@ -104,7 +104,7 @@ def get_rdfmt_stats(graph: str = None) -> dict:
     mdb = get_mdb()
     if graph is not None:
         session['fed'] = graph
-        query = 'SELECT DISTINCT ?subject ?name (sum(?scard) AS ?subjectcard) (count(?pred) AS ?preds) ' \
+        query = 'SELECT DISTINCT ?subject ?name (SUM(?scard) AS ?subjectcard) (count(?pred) AS ?preds) ' \
                 'WHERE { GRAPH <' + graph + '> {\n' \
                 '  ?subject a mt:RDFMT .\n' \
                 '  ?subject mt:source ?source .\n' \
@@ -116,7 +116,7 @@ def get_rdfmt_stats(graph: str = None) -> dict:
                 '  }\n' \
                 '}} GROUP BY ?subject ?name'
     else:
-        query = 'SELECT DISTINCT ?subject ?name (sum(?scard) AS ?subjectcard) (count(?pred) AS ?preds) WHERE {\n' \
+        query = 'SELECT DISTINCT ?subject ?name (SUM(?scard) AS ?subjectcard) (count(?pred) AS ?preds) WHERE {\n' \
                 '  ?subject a mt:RDFMT .\n' \
                 '  ?subject mt:source ?source.\n' \
                 '  OPTIONAL { ?source mt:cardinality ?scard . }\n' \
