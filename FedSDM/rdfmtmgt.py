@@ -464,7 +464,7 @@ def get_rdfmt_edges(rdfmt_sources: dict, graph: str = None) -> dict:
                 '  ?mtrange mt:rdfmt ?mt .\n' \
                 '}}'
     else:
-        query = 'SELECT COUNT DISTINCT ?subject ?mt WHERE {\n' \
+        query = 'SELECT DISTINCT ?subject ?mt WHERE {\n' \
                 '  ?subject mt:hasProperty ?mtp .\n' \
                 '  ?mtp mt:linkedTo ?mtrange .\n' \
                 '  ?mtrange mt:rdfmt ?mt .\n' \
