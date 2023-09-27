@@ -359,10 +359,10 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                 if link_source not in sources:
                     sources[link_source] = j
                     j += 1
-                if lid+link_source in node_cards:
-                    link_weight = node_cards[lid+link_source]
+                if lid + link_source in node_cards:
+                    link_weight = node_cards[lid + link_source]
                 else:
-                    nodes_with_no_card.append(lid+link_source)
+                    nodes_with_no_card.append(lid + link_source)
                     link_weight = -1
 
                 if lid + link_source not in nodes:
