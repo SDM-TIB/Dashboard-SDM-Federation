@@ -317,7 +317,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     'id': mt,
                     'label': mt,
                     'datasource': sources[source],
-                    'weight': r['card'][:r['card'].find('^^')] if 'card' in r and '^' in r['card'] else 10,
+                    'weight': r['card'][:r['card'].find('^^')] if 'card' in r and '^^' in r['card'] else 10,
                     'type': 'root'
                 }
                 node_ids[mt + source] = i
@@ -326,7 +326,7 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
             if nid+pred_source not in nodes:
                 if 'predcard' in r:
                     weight = r['predcard']
-                    if '^' in weight:
+                    if '^^' in weight:
                         weight = weight[:weight.find('^^')]
                     if nid + pred_source in nodes_with_no_card:
                         nodes[nid + pred_source]['weight'] = weight
