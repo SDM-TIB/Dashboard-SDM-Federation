@@ -335,17 +335,17 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
                     weight = -1
 
                 node_cards[nid + pred_source] = weight
-                nodes[nid+pred_source] = {
-                    'id': nid+pred_source,
+                nodes[nid + pred_source] = {
+                    'id': nid + pred_source,
                     'label': node_label,
                     'datasource': sources[pred_source],
                     'weight': weight,
                     'type': 'square'
                 }
-                node_ids[nid+pred_source] = i
+                node_ids[nid + pred_source] = i
                 i += 1
                 edges.append({
-                    'source': mt+source,
+                    'source': mt + source,
                     'target': nid + pred_source,
                     'weight': weight,
                     'pred': 'hasPredicate',
