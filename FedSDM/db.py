@@ -127,11 +127,8 @@ class MetadataDB:
             if status == HTTPStatus.OK or status == HTTPStatus.ACCEPTED or status == HTTPStatus.NO_CONTENT:
                 return True
             else:
-                print('Update Endpoint->', self.update_endpoint, resp.reason, status, insert_query)
-                logger.error('______/_________/________/________/______________')
-                logger.error(self.update_endpoint + ' - ' + str(resp.reason) + ' - ' + str(status))
-                logger.error('ERROR ON: ' + insert_query)
-                logger.error('________________________________________________')
+                logger.error('Update ' + self.update_endpoint + ' returned: ' + str(status) + '\nReason: ' +
+                             str(resp.reason) + '\nFailed query:\n' + insert_query)
         except Exception as e:
             print('Exception during update query execution to', self.update_endpoint, ':', e, insert_query)
             logger.error('______/_________/________/________/______________')
