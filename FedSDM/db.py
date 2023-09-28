@@ -130,11 +130,8 @@ class MetadataDB:
                 logger.error('Update ' + self.update_endpoint + ' returned: ' + str(status) + '\nReason: ' +
                              str(resp.reason) + '\nFailed query:\n' + insert_query)
         except Exception as e:
-            print('Exception during update query execution to', self.update_endpoint, ':', e, insert_query)
-            logger.error('______/_________/________/________/______________')
-            logger.error('Exception on update: ' + self.update_endpoint + ' ' + str(e))
-            logger.error('EXCEPTION ON: ' + insert_query)
-            logger.error('________________________________________________')
+            logger.exception('Update ' + self.update_endpoint + ' caused an exception: ' +
+                             str(e) + '\nQuery:\n' + insert_query)
 
         return False
 
