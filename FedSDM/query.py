@@ -85,7 +85,7 @@ def feedback() -> Response:
     """
     fed = request.args.get('fed', -1)
     e = request.form
-    print(e)
+    logger.debug('request form in feedback(): ' + str(e))
     pred = e['pred']
     row = e.getlist('row[]')
     columns = e.getlist('columns[]')
@@ -94,7 +94,8 @@ def feedback() -> Response:
     selected_row = {}
     for c, v in zip(columns, row):
         selected_row[c] = v
-    print(fed, pred, query_, selected_row, desc)
+    logger.debug('extracted information in feedback(): ' + fed + ', ' + pred + ', ' + query_ +
+                 ', ' + str(selected_row) + ', ' + desc)
 
     user_id = session.get('user_id')
 
@@ -111,7 +112,7 @@ def feedback() -> Response:
         ' WHERE userID=' + str(user_id) + ' AND issueDesc = "' + desc + '" AND issueQuery="' + query_ + '"'
     ).fetchone()
     ds_id = fdb['id']
-    print('Last inserted row selected: ', ds_id)
+    logger.debug('last inserted row selected in feedback(): ' + str(ds_id))
     db.execute(
         'INSERT INTO feedbackdata (reportID, projVar, projPred, rowData)'
         ' VALUES (?, ?, ?, ?)',
