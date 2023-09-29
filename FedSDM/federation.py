@@ -71,7 +71,7 @@ def stats() -> Response:
     try:
         graph = request.args['graph']
     except KeyError:
-        print('KeyError:', request.args)
+        logger.error('stats() did not receive parameter graph. Received parameters: ' + str(request.args))
         return Response(json.dumps({}), mimetype='application/json')
 
     stats_ = {}
@@ -279,7 +279,7 @@ def api_add_source() -> Response:
             types=e['types'] if 'types' in e else ''
         )
     except KeyError:
-        print('KeyError: ', request.args)
+        logger.error('api_add_source() did not receive required parameters. Received parameters: ' + str(request.args))
         return Response(json.dumps({}),  mimetype='application/json')
 
     res, queue = add_data_source(fed, ds)
