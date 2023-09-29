@@ -127,7 +127,6 @@ def feedback_details() -> Response:
     except KeyError:
         return Response(json.dumps({}), mimetype='application/json')
     db = get_db()
-    print(iid)
     if iid is None:
         return Response(json.dumps({}), mimetype='application/json')
     else:
