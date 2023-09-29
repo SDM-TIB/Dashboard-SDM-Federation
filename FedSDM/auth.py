@@ -99,11 +99,9 @@ def login() -> Response | str:
             session.clear()
             session['user_id'] = user['id']
             session['user_name'] = user['username']
-            print('redirecting to index')
             return redirect(url_for('index'))
 
         flash(error)
-        print(error)
     return render_template('auth.html', title='Login', operation='Login', other='Register')
 
 
