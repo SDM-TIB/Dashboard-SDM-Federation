@@ -28,7 +28,7 @@ VOLUME /database
 
 COPY . /FedSDM
 # Install any needed packages specified in requirements.txt
-RUN python -m pip install --upgrade pip==23.2.* &&\
+RUN python -m pip install --upgrade pip==23.3.* &&\
     python -m pip install --no-cache-dir -r /FedSDM/requirements.txt
 
 EXPOSE 5003 9000
