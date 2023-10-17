@@ -64,6 +64,6 @@
 
 {% include 'feedback/modal-details.jinja2' %}
 
-<script src="/js/feedback.js"></script>
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
 
 {% endblock %}
