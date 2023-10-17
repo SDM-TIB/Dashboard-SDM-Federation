@@ -42,7 +42,7 @@ def index() -> str:
         if session['fed'] not in [f['uri'] for f in feds]:
             del session['fed']
 
-    return render_template('federation/index.html', fedStats=get_federation_stats(), federations=g.federations)
+    return render_template('federation/index.jinja2', fedStats=get_federation_stats(), federations=g.federations)
 
 
 @bp.route('/stats')
@@ -735,7 +735,7 @@ def update(id_):
             db.commit()
             return redirect(url_for('federation.index'))
 
-    return render_template('federation/update.html', federation=federation)
+    return render_template('federation/update.jinja2', federation=federation)
 
 
 @bp.route('/<int:id>/delete', methods=['POST'])

@@ -33,7 +33,7 @@ def feedback_overview() -> str:
     if 'fed' in session:
         if session['fed'] not in [f['uri'] for f in federations]:
             del session['fed']
-    return render_template('feedback/index.html', federations=g.federations)
+    return render_template('feedback/index.jinja2', federations=g.federations)
 
 
 @bp.route('/issues')

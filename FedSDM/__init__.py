@@ -109,7 +109,7 @@ def create_app() -> Flask:
 
     @app.route('/info')
     def info():
-        return render_template('info.html')
+        return render_template('info.jinja2')
 
     @app.route('/favicon.ico')
     def favicon():

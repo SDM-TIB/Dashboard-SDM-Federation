@@ -49,7 +49,7 @@ def query() -> str:
     if 'fed' in session:
         if session['fed'] not in [f['uri'] for f in g.federations]:
             del session['fed']
-    return render_template('query/index.html', federations=g.federations)
+    return render_template('query/index.jinja2', federations=g.federations)
 
 
 result_queues = {}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.jinja2' %}
 {% block title %}Federations{% endblock %}
 
 {% block header %}Federations{% endblock %}
@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row row-header">
     {% set feds_all = true %}
-    {% include 'federations-list.html' %}
+    {% include 'federations-list.jinja2' %}
     {% if g.user %}
         <div style="width: auto; margin-left: auto; padding-right: 15px;">
             <button type="button" class="btn btn-success" name="CreateNewFed" id="CreateNewFed" data-bs-toggle="modal" data-bs-target="#federationModal"> Create New Federation </button>
@@ -149,9 +149,9 @@
 </div>
 <!-- /.row -->
 
-{% include 'federation/modal-federation-create.html' %}
-{% include 'federation/modal-source-add.html' %}
-{% include 'federation/modal-source-edit.html' %}
+{% include 'federation/modal-federation-create.jinja2' %}
+{% include 'federation/modal-source-add.jinja2' %}
+{% include 'federation/modal-source-edit.jinja2' %}
 
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>

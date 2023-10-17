@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'base.jinja2' %}
 {% block title %}Query{% endblock %}
 
 {% block header %}Query{% endblock %}
 
 {% block content %}
 <div class="row row-header">
-    {% include 'federations-list.html' %}
+    {% include 'federations-list.jinja2' %}
 </div>
 
 <link href="{{ url_for('static', filename='css/yasqe.min.css') }}" rel='stylesheet' type='text/css'/>
@@ -69,7 +69,7 @@
 </div>
 <!-- /.row -->
 
-{% include 'query/modal-feedback.html' %}
+{% include 'query/modal-feedback.jinja2' %}
 
 <script src="{{ url_for('static', filename='js/libs/d3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/yasqe.bundled.min.js') }}"></script>

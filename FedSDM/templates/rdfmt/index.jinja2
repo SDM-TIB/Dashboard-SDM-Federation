@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.jinja2' %}
 {% block title %}RDF-MTs{% endblock %}
 
 {% block header %}RDF Molecule Templates (RDF-MTs){% endblock %}
@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row row-header">
     {% set feds_all = true %}
-    {% include 'federations-list.html' %}
+    {% include 'federations-list.jinja2' %}
 </div>
 
 <div class="row">

@@ -59,4 +59,4 @@ def get_all_stats() -> str:
     data_source_stats = list(data_sources.values())
     federation_stats = get_federation_stats()
 
-    return render_template('dashboard/index.html', dsStats=data_source_stats, fedStats=federation_stats, stats=stat)
+    return render_template('dashboard/index.jinja2', dsStats=data_source_stats, fedStats=federation_stats, stats=stat)

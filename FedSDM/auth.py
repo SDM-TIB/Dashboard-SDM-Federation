@@ -59,7 +59,7 @@ def register() -> Response | str:
             return redirect(url_for('auth.login'))
 
         flash(error)
-    return render_template('auth.html', title='Register', operation='Register', other='Login')
+    return render_template('auth.jinja2', title='Register', operation='Register', other='Login')
 
 
 @bp.route('/login', methods=('GET', "POST"))
@@ -102,7 +102,7 @@ def login() -> Response | str:
             return redirect(url_for('index'))
 
         flash(error)
-    return render_template('auth.html', title='Login', operation='Login', other='Register')
+    return render_template('auth.jinja2', title='Login', operation='Login', other='Register')
 
 
 @bp.before_app_request

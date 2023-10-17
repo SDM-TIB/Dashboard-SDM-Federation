@@ -39,7 +39,7 @@ def rdfmt() -> str:
     if 'fed' in session:
         if session['fed'] not in [f['uri'] for f in federations]:
             del session['fed']
-    return render_template('rdfmt/index.html', federations=g.federations)
+    return render_template('rdfmt/index.jinja2', federations=g.federations)
 
 
 @bp.route('/api/rdfmtstats')
