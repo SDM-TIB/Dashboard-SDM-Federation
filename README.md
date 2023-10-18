@@ -3,9 +3,9 @@
 
 ![Python version](https://img.shields.io/badge/python-v3.11-blue)
 
-# FedSDM: Semantic Data Manager for Federations of RDF Datasets
+# ![Logo](FedSDM/static/images/Lynx_Logo.png "Logo")
 
-FedSDM is a semantic data manager for federations of RDF datasets.
+Lynx FedSDM is a semantic data manager for federations of RDF datasets.
 It offers features to manage federations, like adding, editing, and removing datasets.
 Statistics and plots about the federations, datasets, and metadata are also provided.
 Additionally, FedSDM provides the functionality of executing SPARQL queries over a federation. 
