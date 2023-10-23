@@ -1,7 +1,11 @@
+from abc import ABC
+
+from DeTrusty.Molecule.MTManager import Config
+
 from FedSDM.rdfmt import MTManager
 
 
-class ConfigSimpleStore(object):
+class ConfigSimpleStore(Config, ABC):
     """Represents a federation of endpoints and serves to retrieve their metadata.
 
     This class is inspired by :class:`DeTrusty.Molecule.MTManager.Config` and wraps its functionality
@@ -32,6 +36,7 @@ class ConfigSimpleStore(object):
             The user's password required for updating the metadata of the federation.
 
         """
+        super().__init__()
         self.federation = graph
         self.endpoint = endpoint
         self.update = update

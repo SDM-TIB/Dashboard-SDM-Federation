@@ -158,6 +158,7 @@ class MTManager(object):
                     'subclass': []
                 }
             else:
+                current_source = self.get_data_source(r['datasource'])
                 if 'mtr' in r:
                     results[r['rid']]['linkedTo'].append(r['mtr'])
                     results[r['rid']]['linkedTo'] = list(set(results[r['rid']]['linkedTo']))
@@ -175,12 +176,11 @@ class MTManager(object):
                     })
                 wrapper_found = False
                 for w in results[r['rid']]['wrappers']:
-                    if w['url'] == r['datasource']:  # TODO: is this correct due to the changes?
+                    if w['url'] == current_source.url:
                         wrapper_found = True
                         w['predicates'].append(r['pred'])
                         w['predicates'] = list(set(w['predicates']))
                 if not wrapper_found:
-                    current_source = self.get_data_source(r['datasource'])
                     results[r['rid']]['wrappers'].append({
                         'url': current_source.url,
                         'predicates': [
