@@ -1,5 +1,5 @@
 flask==3.0.0
-networkx==3.2.0
+networkx==3.2.1
 DeTrusty==0.13.1
 requests==2.31.0
 Werkzeug==3.0.1
