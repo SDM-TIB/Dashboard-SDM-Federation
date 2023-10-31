@@ -190,9 +190,6 @@ def get_next_result() -> Response:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
         logger.error('Exception while returning incremental results... ' + emsg)
-        print('Exception: ')
-        import pprint
-        pprint.pprint(emsg)
         total = time() - start
         return jsonify(time_total=total, time_first=first, total_rows=1, result=[], error=str(emsg))
 
