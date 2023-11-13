@@ -19,7 +19,7 @@ CREATE TABLE feedbackreport (
     federationID TEXT NOT NULL,
     issueDesc TEXT NOT NULL,
     issueQuery TEXT NOT NULL,
-    issueStatus Text NOT NULL DEFAULT "Open",
+    issueStatus Text NOT NULL DEFAULT 'Open',
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userID) REFERENCES user(id)
 );
@@ -88,7 +88,7 @@ CREATE TABLE params(
 CREATE TABLE rdfmt (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    type TEXT NOT NULL DEFAULT "TYPED",
+    type TEXT NOT NULL DEFAULT 'TYPED',
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     description TEXT
 );
@@ -149,7 +149,7 @@ CREATE TABLE notifications(
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     user_id INTEGER,
-    status TEXT NOT NULL DEFAULT "In Progress",
+    status TEXT NOT NULL DEFAULT 'In Progress',
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
