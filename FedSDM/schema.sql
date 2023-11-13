@@ -140,7 +140,7 @@ CREATE TABLE rdfmtpredsources (
     cardinality INTEGER NOT NULL DEFAULT -1,
     FOREIGN KEY (predicateID) REFERENCES rdfmtpredicates (predicateID) ON DELETE CASCADE,
     FOREIGN KEY (sourceID) REFERENCES datasource (id) ON DELETE CASCADE,
-    FOREIGN KEY (rangeID) REFERENCES rdfmt (id) ON DELETE CASCADE
+    FOREIGN KEY (rangeID) REFERENCES rdfmt (id) ON DELETE CASCADE,
     FOREIGN KEY (rdfmtID) REFERENCES rdfmtpredicates (rdfmtID) ON DELETE CASCADE
 );
 
