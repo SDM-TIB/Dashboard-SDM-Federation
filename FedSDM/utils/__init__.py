@@ -3,7 +3,7 @@ from flask import g
 from FedSDM.db import get_mdb, MetadataDB
 
 
-def _process_numeric_result(mdb: MetadataDB, query: str) -> int:
+def process_numeric_result(mdb: MetadataDB, query: str) -> int:
     """Executes a SPARQL query and returns the result as an integer.
 
     The method assumes that the SPARQL query will return at most one result with a variable called *count*.
@@ -117,7 +117,7 @@ def get_num_rdfmts(graph: str, data_source: str = None) -> int:
             '  ?mt  mt:source  ?mtsource .\n'\
             '  ?mtsource mt:datasource ' + source + ' .\n' \
             '}}'
-    return _process_numeric_result(mdb, query)
+    return process_numeric_result(mdb, query)
 
 
 def get_num_mt_links(graph: str, data_source: str = None) -> int:
@@ -147,7 +147,7 @@ def get_num_mt_links(graph: str, data_source: str = None) -> int:
             '  ?d mt:name ?mt .\n' \
             '  ?d mt:datasource ' + source + ' .\n' \
             '}}'
-    return _process_numeric_result(mdb, query)
+    return process_numeric_result(mdb, query)
 
 
 def get_num_properties(graph: str, data_source: str = None) -> int:
@@ -178,7 +178,7 @@ def get_num_properties(graph: str, data_source: str = None) -> int:
             '  ?mt mt:hasProperty ?mtp .\n' \
             '  ?mtsource mt:datasource ' + source + ' .\n' \
             '}}'
-    return _process_numeric_result(mdb, query)
+    return process_numeric_result(mdb, query)
 
 
 def get_federation_stats() -> list:
