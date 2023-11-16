@@ -74,8 +74,7 @@ const colorNumberTriples = '#B02E16',
       colorNumberLinks = '#5D3988',
       colorNumberSources = '#169649';
 
-// Returns the color at position idx in the list of colors. If idx exceeds the limit, #CCC will be returned.
+// Returns the color at position idx in the list of colors; wraps around if idx is higher than the number of colors available.
 function color(idx) {
-    if (idx > colors.length - 1) { return  '#CCC' }
-    return colors[idx];
+    return colors[idx % (colors.length - 1)];
 }
