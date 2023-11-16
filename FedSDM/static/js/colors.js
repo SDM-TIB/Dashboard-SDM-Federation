@@ -67,9 +67,6 @@ const colors = [
     '#A52A2A'
 ];
 
-// The color to be used for labels of charts.
-const colorChartLabels = '#196384';
-
 // The color to be used for the associated dataset in the statistics bar charts.
 const colorNumberTriples = '#B02E16',
       colorNumberMolecules = '#C5B322',

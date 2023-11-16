@@ -28,7 +28,6 @@ const chartOptions = {
         legend: {
             display: true,
             labels: {
-                fontColor: colorChartLabels,
                 boxWidth: 12
             }
         },
