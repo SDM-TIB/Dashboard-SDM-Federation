@@ -71,10 +71,10 @@ const colors = [
 const colorChartLabels = '#196384';
 
 // The color to be used for the associated dataset in the statistics bar charts.
-const colorNumberTriples = '#B2AD7F',
-      colorNumberMolecules = '#6B5B95',
-      colorNumberProperties = '#FEB236',
-      colorNumberLinks = '#D64161',
+const colorNumberTriples = '#B02E16',
+      colorNumberMolecules = '#C5B322',
+      colorNumberProperties = '#3153C5',
+      colorNumberLinks = '#5D3988',
       colorNumberSources = '#169649';
 
 // Returns the color at position idx in the list of colors. If idx exceeds the limit, #CCC will be returned.
