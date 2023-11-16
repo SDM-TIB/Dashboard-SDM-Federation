@@ -361,18 +361,16 @@ $(function() {
         donutLegend.classList.add('donut-legend');
         donutBox.appendChild(donutLegend);
         donut_charts.push(donut);
-        donut.legend.legendItems.forEach((dataset) => {
-            const text = dataset.text,
-                  datasetIndex = dataset.index,
-                  li = document.createElement('LI'),
+        donut.data.labels.forEach((label, index) => {
+            const li = document.createElement('LI'),
                   colorBox = document.createElement('SPAN'),
                   p = document.createElement('P'),
-                  textNode = document.createTextNode(text);
+                  textNode = document.createTextNode(label);
 
-            colorBox.style.backgroundColor = dataset.fillStyle;
+            colorBox.style.backgroundColor = color(index);
             li.onclick = (click) => {
                 click.target.parentNode.classList.toggle('strike');
-                donut.toggleDataVisibility(datasetIndex);
+                donut.toggleDataVisibility(index);
                 donut.update();
             };
 
