@@ -25,10 +25,10 @@ rebuild:
 build: install bundle rebuild
 
 run-example: rebuild
-	docker-compose -f example/docker-compose.yml up -d
+	docker compose -f example/docker-compose.yml up -d
 
 stop-example:
-	docker-compose -f example/docker-compose.yml down -v
+	docker compose -f example/docker-compose.yml down -v
 
 example-run: run-example
 
