@@ -25,6 +25,7 @@ RUN ln -s /opt/virtuoso-opensource/database /database &&\
 WORKDIR /FedSDM
 
 VOLUME /database
+VOLUME /FedSDM/instance
 
 COPY . /FedSDM
 # Install any needed packages specified in requirements.txt
