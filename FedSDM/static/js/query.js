@@ -178,7 +178,7 @@ $(function() {
                                     } else { selectedRowData.push(selectedRow[0][i]) }
                                 }
                                 $('#add_feedback').prop('disabled', false);
-                            }).on('deselect', function(e, dt, type, indexes) {
+                            }).on('deselect', function() {
                                 $('#add_feedback').prop('disabled', true);
                                 selectedRow = null;
                             });
