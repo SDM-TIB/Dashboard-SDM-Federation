@@ -82,7 +82,6 @@
         </div>
     </div>
 </div>
-<!-- /.row -->
 <div class="row" id="content-row">
     <div class="col-lg-6">
         <div class="card bg-white">
@@ -92,15 +91,11 @@
                     <a href="{{ url_for('federation.index') }}#All" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
-            <!-- /.card-header -->
             <div class="card-body" id="federation-summary">
                 <canvas id="federation-summary-chart"></canvas>
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </div>
-    <!-- /.col-lg-6 -->
     <div class="col-lg-6">
         <div class="card bg-white">
             <div class="card-header">
@@ -109,17 +104,12 @@
                         <a href="{{ url_for('federation.index') }}#home" class="btn btn-default" style="display: inline;">Details</a>
                 </div>
             </div>
-            <!-- /.card-header -->
             <div class="card-body" id="data-summary">
                 <canvas id="data-summary-chart"></canvas>
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </div>
-    <!-- /.col-lg-6 -->
 </div>
-<!-- /.row -->
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>

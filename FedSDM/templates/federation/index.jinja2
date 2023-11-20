@@ -16,20 +16,17 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <!--begin tabs going in wide content -->
         <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
             <li id="navFed" class="nav-item"><a href="#fed" class="nav-link active" role="tab" data-bs-toggle="tab">Available Federations</a></li>
             <li id="navHome" class="nav-item"><a href="#home" class="nav-link" role="tab" data-bs-toggle="tab">Available Data Sources</a></li>
             <li id="navManage" class="nav-item"><a href="#manage" class="nav-link" role="tab" data-bs-toggle="tab">Manage Data Sources</a></li>
         </ul>
-        <!--/.nav-tabs.content-tabs -->
         <div class="tab-content">
             <div class="tab-pane fade in active show" id="fed">
                 <div class="card bg-white">
                     <div class="card-header">
                         <i class="fa-solid fa-chart-column fa-fw"></i> Basic Statistics
                     </div>
-                    <!-- /.card-header -->
                     <div class="card-body">
                         {% if g.user %}
                             <div class="form-group" style="text-align: right">
@@ -39,7 +36,6 @@
                             </div>
                         {% endif %}
                         <div class="row">
-                            <!-- /.col-lg-8 (nested) -->
                             <div class="col-lg-12">
                                 <div>
                                     <table class="table table-bordered table-hover table-striped" id="federations-statistics">
@@ -55,29 +51,21 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <!-- /.table-responsive -->
                             </div>
-                            <!-- /.row -->
                         </div>
-                        <!-- /.row -->
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
             </div>
-            <!--/. #home-->
             <div class="tab-pane fade" id="home">
                 <div class="card bg-white">
                     <div class="card-header">
                         <i class="fa-solid fa-chart-column fa-fw"></i> Basic Statistics
                     </div>
-                    <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
                             <div id="sourceStatsChartContainer" class="col-lg-6">
                                 <canvas id="sourceStatsChart"></canvas>
                             </div>
-                            <!-- /.col-lg-8 (nested) -->
                             <div class="col-lg-6">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped" id="basic-statistics">
@@ -90,17 +78,11 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <!-- /.table-responsive -->
                             </div>
-                            <!-- /.col-lg-4 (nested) -->
                         </div>
-                        <!-- /.row -->
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
             </div>
-            <!--/. #home-->
             <div class="tab-pane fade" id="manage">
                 <div class="card bg-white">
                     <div class="card-header">
@@ -109,7 +91,6 @@
                             <b>Federation: <span id="fedName" style="color:#D2691E"></span></b>
                         </div>
                     </div>
-                    <!-- /.card-header -->
                     <div class="card-body">
                         {% if g.user %}
                             <div class="form-group" style="text-align: right">
@@ -137,22 +118,15 @@
                             </tr>
                             </thead>
                         </table>
-                        <!-- /.table-responsive -->
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
             </div>
-            <!--/. #manage-->
         </div>
     </div>
 </div>
-<!-- /.row -->
-
 {% include 'federation/modal-federation-create.jinja2' %}
 {% include 'federation/modal-source-add.jinja2' %}
 {% include 'federation/modal-source-edit.jinja2' %}
-
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/federations.js') }}"></script>
