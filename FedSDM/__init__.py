@@ -61,7 +61,7 @@ def create_app() -> Flask:
         A Flask application configured to serve FedSDM.
 
     """
-    app = Flask(__name__)
+    app = Flask(__name__, instance_path='/FedSDM/instance')
     app.debug = True
 
     app.config.from_mapping(
