@@ -34,8 +34,7 @@ make stop-example
 * make 4.1 or newer
 * Python3 (including pip) 3.10 or newer
 * npm 7.0 or newer
-* Docker 20.10 or newer
-* docker-compose 1.25 or newer
+* Docker 24.0 or newer
 
 If you do not change the JavaScript dependencies of the application, you can build a new Docker image by running
 ```bash
