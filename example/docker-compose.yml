@@ -4,7 +4,7 @@ services:
 
   lubm:
     container_name: fedsdm_lubm
-    image: prohde/virtuoso-opensource-7:7.2.10-alpine
+    image: prohde/virtuoso-opensource-7:7.2.11-alpine
     ports:
       - "12000:8890"
     networks:
@@ -19,7 +19,7 @@ services:
 
   watdiv_product:
     container_name: fedsdm_watdiv_product
-    image: prohde/virtuoso-opensource-7:7.2.10-alpine
+    image: prohde/virtuoso-opensource-7:7.2.11-alpine
     ports:
       - "13000:8890"
     networks:
@@ -37,7 +37,7 @@ services:
 
   watdiv_role:
     container_name: fedsdm_watdiv_role
-    image: prohde/virtuoso-opensource-7:7.2.10-alpine
+    image: prohde/virtuoso-opensource-7:7.2.11-alpine
     ports:
       - "13001:8890"
     networks:
