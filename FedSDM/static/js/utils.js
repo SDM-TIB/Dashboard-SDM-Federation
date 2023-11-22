@@ -103,6 +103,7 @@ function updateTips(t) {
     }
 
     tips.addClass('ui-state-highlight');
+    tips.addClass('ui-state-error');
     setTimeout(function() { tips.removeClass('ui-state-highlight', 1500, 'swing') }, 500 );
 }
 
