@@ -8,9 +8,9 @@
         <h3 class="card-title">Please {% if operation == 'Login' %}Sign In{% else %}{{ operation }}{% endif %}</h3>
     </div>
     <div class="card-body">
-        {% for message in get_flashed_messages() %}
-            <div class="flash"> {{ message }}</div>
-        {% endfor %}
+        {% if error %}
+            <div class="validateTips auth ui-state-error"> {{ error }}</div>
+        {% endif %}
         <form role="form" method="post">
             <fieldset>
                 <div class="form-group row">

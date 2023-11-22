@@ -83,17 +83,15 @@ def login() -> Response | str:
         the credentials fails. A successful login leads to a redirect to the landing page.
 
     """
+    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         db = get_db()
-        error = None
         user = db.execute('SELECT * FROM user WHERE username = ?', (username, )).fetchone()
 
-        if user is None:
-            error = 'Incorrect username. '
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password. '
+        if user is None or not check_password_hash(user['password'], password):
+            error = 'Wrong credentials.'
 
         if error is None:
             session.clear()
@@ -101,8 +99,8 @@ def login() -> Response | str:
             session['user_name'] = user['username']
             return redirect(url_for('index'))
 
-        flash(error)
-    return render_template('auth.jinja2', title='Login', operation='Login', other='Register')
+        # flash(error)
+    return render_template('auth.jinja2', title='Login', operation='Login', other='Register', error=error)
 
 
 @bp.before_app_request
