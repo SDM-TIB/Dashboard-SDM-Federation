@@ -75,32 +75,32 @@ def create_app() -> Flask:
     os.makedirs(app.instance_path, exist_ok=True)
     os.chmod(app.instance_path, 0o755)
 
-    from . import db
+    from FedSDM import db
     with app.app_context():
         db.init_app(app)
 
     # Register the authentication blueprint
-    from . import auth
+    from FedSDM import auth
     app.register_blueprint(auth.bp)
 
     # Register the dashboard blueprint
-    from . import dashboard
+    from FedSDM import dashboard
     app.register_blueprint(dashboard.bp)
 
     # Register the federation manager blueprint
-    from . import federation
+    from FedSDM import federation
     app.register_blueprint(federation.bp)
 
     # Register the RDF Molecule Template blueprint
-    from . import rdfmtmgt
+    from FedSDM import rdfmtmgt
     app.register_blueprint(rdfmtmgt.bp)
 
     # Register the query blueprint
-    from . import query
+    from FedSDM import query
     app.register_blueprint(query.bp)
 
     # Register the feedback blueprint
-    from . import feedback
+    from FedSDM import feedback
     app.register_blueprint(feedback.bp)
 
     @app.route('/')
