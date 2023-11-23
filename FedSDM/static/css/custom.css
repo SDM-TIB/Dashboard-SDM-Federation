@@ -19,6 +19,7 @@ html, body {
   min-width: 100px;
   max-width: 250px;
   width: auto;
+  border-right: solid 2px #f0f0f0;
 }
 @media (min-width: 576px) {
   .col-nav {
@@ -112,8 +113,9 @@ a:hover {
   display: block;
   clear: both;
 }
+.sidebar .nav-link:hover,
 .dropdown-menu > li > a:hover {
-  background-color: #ccc;
+  background-color: #ffff0091;
 }
 .nav-tabs {
   border-bottom: unset !important;
@@ -141,10 +143,13 @@ a:hover {
 }
 .sidebar .active {
   background-color: transparent;
-  color: #ffff00c4 !important;
+  color: var(--color-text-link-hover) !important;
 }
-.sidebar .nav-link:hover {
-  background-color: #ccc;
+.nav-pills .nav-link {
+  border-radius: calc(2 * var(--bs-nav-pills-border-radius));
+}
+.nav-pills .nav-link.active {
+  background-color: #00b90091 !important;
 }
 #maincontent li:first-child {
   padding-left: 0 !important;
@@ -442,4 +447,7 @@ a:hover {
 }
 .modal label {
   margin-bottom: .25rem;
+}
+.bg-light-gray {
+  background-color: #f6f6f6 !important;
 }
