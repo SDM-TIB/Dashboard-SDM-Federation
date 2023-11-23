@@ -114,7 +114,8 @@ a:hover {
   clear: both;
 }
 .sidebar .nav-link:hover,
-.dropdown-menu > li > a:hover {
+.dropdown-menu > li > a:hover,
+.nav-tabs .nav-link:hover {
   background-color: #ffff0091;
 }
 .nav-tabs {
@@ -129,9 +130,6 @@ a:hover {
 }
 .nav-link:hover {
   color: var(--color-text-link-hover) !important;
-}
-.nav-tabs .nav-link:hover {
-  background-color: var(--color-almost-white);
 }
 .sidebar .nav-item, .sidebar .nav-link {
   width: 100%;
