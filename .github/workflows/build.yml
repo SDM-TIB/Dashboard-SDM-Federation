@@ -10,6 +10,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dockerfile: ['Dockerfile-alpine', 'Dockerfile']
+        include:
+          - tag: 'fedsdm:latest'
+          - tag: 'fedsdm:alpine-latest'
+            dockerfile: 'Dockerfile-alpine'
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node.js
@@ -26,7 +33,5 @@ jobs:
           npm i
       - name: Bundle dependencies
         run: python3 bundle-assets.py
-      - name: Build the Docker image based on Alpine Linux
-        run: docker build -f Dockerfile-alpine . -t fedsdm:alpine-latest
-      - name: Build the Docker image based on Debian/Ubuntu
-        run: docker build -f Dockerfile . -t fedsdm:latest
+      - name: Build the Docker image from ${{ matrix.dockerfile }}
+        run: docker build -f ${{ matrix.dockerfile }} . -t ${{ matrix.tag }}
