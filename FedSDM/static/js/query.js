@@ -129,7 +129,7 @@ $(function() {
                                 buttons: table_buttons('sparql-results')
                             });
                             queryTriples = data.query_triples;
-                            let resultMap = {}
+                            let resultMap = {};
                             for (let i = 0; i < results.length; i++) {
                                 let row = results[i],
                                     row_ml = [];
@@ -638,7 +638,7 @@ $(function() {
         svg = d3.select('#graph').append('svg');
         width = graph.width();
         height = 980;
-        canvas = 'graph'
+        canvas = 'graph';
         if (divCanvas != null) { graph.show() }
         const zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
               g = svg.append('g');
@@ -770,7 +770,7 @@ $(function() {
             if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale() }
 
             link.style('stroke-width', stroke);
-            circle.style('stroke-width',stroke);
+            circle.style('stroke-width', stroke);
 
             let base_radius = nominal_base_node_size;
             if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale() }
