@@ -36,7 +36,7 @@ const chartOptions = {
                 label: function(context) {
                     let label = context.dataset.label || '';
                     if (label) { label = label.substring(0, label.indexOf('(') - 1) + ': ' }
-                    const value = Math.round(Math.pow(10, context.parsed.x) * 100) / 100
+                    const value = Math.round(Math.pow(10, context.parsed.x) * 100) / 100;
                     label += numberWithCommas(parseInt(value.toString(), 10));
                     return label;
                 }
@@ -91,7 +91,7 @@ function resetTips() { tips.removeClass('ui-state-error').text('Some fields are 
 
 // Updates the input form validating error message DOM element with the new error message.
 function updateTips(t) {
-    const current_text = tips.text()
+    const current_text = tips.text();
     console.log("current: " + current_text + "\tnew: " + t);
     if (current_text.includes('Some fields are required.')) { tips.text(t) }
     else {
@@ -99,7 +99,7 @@ function updateTips(t) {
         const str_set = [...new Set(str_ary)];
         const text = str_set.join('.\n')
         tips.text(text + t);
-        tips.html(tips.html().replace(/\n/g,'<br>'))
+        tips.html(tips.html().replace(/\n/g,'<br>'));
     }
 
     tips.addClass('ui-state-highlight');
