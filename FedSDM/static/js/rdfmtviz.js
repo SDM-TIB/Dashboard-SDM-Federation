@@ -138,7 +138,7 @@ $(function() {
                     else { mSourceNodes[val.datasource] = [val] }
                 });
                 mNodes = flatnodes;
-                maNodes = mNodes ;
+                maNodes = mNodes;
                 $("#mt_viz").show();
 
                 draw_details();
@@ -191,7 +191,7 @@ $(function() {
             let statstable = stats;
             stats.on('select', function(e, dt, type, indexes) {
                 selectedRow = statstable.rows(indexes).data().toArray();
-                console.log('selected row: ' + selectedRow)
+                console.log('selected row: ' + selectedRow);
                 $('#edit_mt').prop('disabled', false);
                 $('#remove_mt').prop('disabled', false);
                 mt_details.prop('disabled', false);
@@ -231,7 +231,7 @@ $(function() {
                       name  = sources[i].name;
                 sourceIDs[name] = v;
                 sourcesNames[v] = name;
-                data_sources_html += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>'
+                data_sources_html += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>';
                 legend = legend + '<span style="color:' + color(v) + '"><b>' + name + '</b></span><br/>';
             }
             graph_legend.empty()
@@ -244,7 +244,7 @@ $(function() {
                 .prop('disabled', false);
             graph_container.html('<h1> Please select data source!</h1>');
             $('a[class=datasource]').on('click', function() {
-                $('#data_sources_btn').val($(this).text())
+                $('#data_sources_btn').val($(this).text());
                 if ($(this).text() === 'All') {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
@@ -394,7 +394,7 @@ $(function() {
             }
             MTCards[source_mt].sort(function(a, b) { return b.value - a.value });
 
-            let labels_ = [], data_ = []
+            let labels_ = [], data_ = [];
             for (let i = 0; i < MTCards[source_mt].length; i++) {
                 labels_.push(MTCards[source_mt][i]['label']);
                 data_.push(MTCards[source_mt][i]['value']);
@@ -411,7 +411,7 @@ $(function() {
                 }
                 val.sort(function(a, b) { return b.value - a.value });
 
-                let labels_ = [], data_ = []
+                let labels_ = [], data_ = [];
                 for (let i = 0; i < val.length; i++) {
                     labels_.push(val[i]['label']);
                     data_.push(val[i]['value']);
@@ -427,7 +427,7 @@ $(function() {
     $('#start_force').on('click', function() {
         if (force) {
             linkDistance += 10;
-            force.linkDistance(linkDistance).gravity(0.05).start()
+            force.linkDistance(linkDistance).gravity(0.05).start();
         }
     });
     $('#reset_force').on('click', function() {
@@ -436,7 +436,7 @@ $(function() {
             const fit = Math.sqrt(aNodes.length / (width * height));
             nCharge = (-1 / fit);
             nGravity = (8 * fit);
-            force.linkDistance(linkDistance).gravity(0.05).start()
+            force.linkDistance(linkDistance).gravity(0.05).start();
         }
     });
     $('#graphVizForce').on('click', function() {
@@ -473,7 +473,7 @@ $(function() {
             // connection link between subject and object -> predicates
             let slinks = sourceLinks[source];
             if (!slinks) { slinks = [] }
-            data = { nodes: sNodes, links: slinks }
+            data = { nodes: sNodes, links: slinks };
             if (gt === 'force') {
                 sNodes.forEach(function(d) { expand[d.datasource] = true });
                 drawRDFMTS(sNodes, slinks);
@@ -663,7 +663,7 @@ $(function() {
             .on('mousedown', function(d) {
                 d3.event.stopPropagation();
                 focus_node = d;
-                set_focus(d)
+                set_focus(d);
                 if (highlight_node === null) { set_highlight(d) }
             })
             .on('mouseout', function() { exit_highlight() });
