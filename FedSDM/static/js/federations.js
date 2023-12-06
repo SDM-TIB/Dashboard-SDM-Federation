@@ -46,7 +46,7 @@ $(function() {
                     { target: 4, render: number_renderer },
                     { target: 5, render: number_renderer }
                 ]
-            })
+            });
         } else { statsTableFed.clear().draw() }
 
         for (let fed of feds) {
@@ -118,7 +118,7 @@ $(function() {
                 borderWidth: 1,
                 backgroundColor: colorNumberMolecules,
             }
-        ]
+        ];
     }
 
     // Loads the basic statistics about data sources in a given federation and populates the table and bar chart.
@@ -140,7 +140,7 @@ $(function() {
                     }
                 ],
                 select: true
-            })
+            });
         } else { statsTable.clear().draw() }
         let datas = [];
         $.ajax({
@@ -175,7 +175,7 @@ $(function() {
                     barData.triples.push(triples);
                 }
 
-                $('#sourceStatsChartContainer').height(62 + 70 * barData.labels.length)
+                $('#sourceStatsChartContainer').height(62 + 70 * barData.labels.length);
                 if (sourceStatsChart == null) {
                     sourceStatsChart = new Chart($('#sourceStatsChart'), {
                         type: 'bar',
@@ -184,7 +184,7 @@ $(function() {
                             datasets: sourceStatsToBarChart(barData)
                         },
                         options: chartOptions
-                    })
+                    });
                 } else {
                     sourceStatsChart.data.labels = [];
                     sourceStatsChart.data.datasets = [];
