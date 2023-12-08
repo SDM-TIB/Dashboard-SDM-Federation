@@ -21,6 +21,7 @@ from FedSDM.utils import get_federations
 bp = Blueprint('query', __name__, url_prefix='/query')
 
 logger = get_logger('query')
+result_queues = {}
 
 
 @bp.route('/query')
@@ -50,9 +51,6 @@ def query() -> str:
         if session['fed'] not in [f['uri'] for f in g.federations]:
             del session['fed']
     return render_template('query/index.jinja2', federations=g.federations)
-
-
-result_queues = {}
 
 
 @bp.route('/feedback', methods=['POST'])
