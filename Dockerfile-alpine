@@ -18,7 +18,7 @@ RUN ln -s /opt/virtuoso-opensource/database /database &&\
     addgroup -S virtuoso &&\
     adduser -D -S -G virtuoso virtuoso &&\
     chown -R virtuoso:virtuoso /opt/virtuoso-opensource &&\
-    apk add --no-cache bash libldap libstdc++ curl libssl1.1
+    apk add --no-cache bash libldap libstdc++ curl
 
 # Set the working directory to /FedSDM
 WORKDIR /FedSDM
