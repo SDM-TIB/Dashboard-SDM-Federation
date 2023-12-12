@@ -1,48 +1,14 @@
 $(function() {
-    const federationList = $('#federations-list'),
-          resultGraphDIV = $('#result_graph_div');
+    const federationList = $('#federations-list');
     let federation = federationList.val(),
         queryResultsTable = $('#query_result_table'),
         yasqe = null,
         query = null,
         queryTriples = [],
-        vizData = { nodes: {}, links: [] },
         queryVars = [],
         table = null, selectedRow = null, selectedRowData = [],
-        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
         response = false,
-        shouldStop = false,
-        mnodes = [],
-        malinks = [],
-        mlinks = [],
-        msourcenodes = [],
-        msourcelinks = [],
-        mtcards = { 'All': [] },
-        resDrawn = false,
-        expand = {}, // expanded clusters
-        net, force, hullg, linkg, nodeg,
-        canvas = 'graph',
-        width = $('#graph').width(), height = 980, h = 960, w = 760,
-        focus_node = null, highlight_node = null,
-        text_center = false,
-        outline = false,
-        max_score = 1,
-        highlight_color = '#A52A2A',
-        highlight_trans = 0.1,
-        default_link_color = '#888',
-        nominal_base_node_size = 8,
-        nominal_text_size = 10,
-        max_text_size = 24,
-        nominal_stroke = 1.5,
-        max_stroke = 4.5,
-        max_base_node_size = 40,
-        min_zoom = 0.1,
-        max_zoom = 7,
-        nCharge = -600,
-        nGravity = 0,
-        sourceNames = {},
-        link,
-        size = d3.scale.pow().exponent(1).domain([1, 100]).range([8, 36]);  // The largest node for each cluster.
+        shouldStop = false;
 
     if (federation != null && federation !== '') {
         $('#query_row').show();
@@ -97,7 +63,6 @@ $(function() {
                                 .show();
                             return true;
                         }
-                        resDrawn = false;
                         $('#time_first').html(' ' + data.time_first + ' sec');
                         $('#time_total').html(' ' + data.time_total + ' sec');
 
@@ -142,7 +107,6 @@ $(function() {
                                     resultMap[vars[j]] = val;
                                 }
                                 table.row.add(row_ml).draw(false);
-                                // append_nodes_edges(resultMap, queryTriples);
                             }
                             table.columns().every(function() {
                                 let column = this,
@@ -205,60 +169,6 @@ $(function() {
         YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
         // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
         YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
-    }
-
-    $('#btnVisualize').hide()
-        .on('click', function() {
-            resultGraphDIV.show();
-            $('#result_table_div').hide();
-            $('#btnVisualize').hide();
-            $('#btnShowTable').show();
-            drawResults();
-            resultGraphDIV.show();
-        });
-    $('#btnShowTable').on('click', function() {
-        resultGraphDIV.hide();
-        $('#result_table_div').show();
-        $('#btnVisualize').show();
-        $('#btnShowTable').hide();
-    });
-
-    function drawResults() {
-        if (resDrawn === true) { return }
-        mlinks = vizData.links;
-        mnodes = vizData.nodes;
-
-        for (let i = 0; i < mlinks.length; ++i) {
-            let o = mlinks[i];
-
-            o.source = mnodes[o.source];
-            o.target = mnodes[o.target];
-            //console.log(o);
-            if (o.source.datasource === o.target.datasource) {
-                if (o.source.datasource in msourcelinks) { msourcelinks[o.source.datasource].push(o) }
-                else { msourcelinks[o.source.datasource] = [o] }
-            }
-        }
-        malinks = mlinks;
-
-        flatnodes = [];
-        $.each(mnodes, function (key, val) {
-            flatnodes.push(val);
-            mtcards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
-            if (val.datasource in mtcards) { mtcards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
-            else { mtcards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
-            if (val.datasource in msourcenodes) { msourcenodes[val.datasource].push(val) }
-            else { msourcenodes[val.datasource] = [val] }
-        });
-        mnodes = flatnodes;
-        manodes = mnodes;
-
-        data = {nodes: manodes, links: malinks};
-        //console.log('nodes:', manodes);
-        //console.log('links:', malinks);
-        manodes.forEach(function(d) { expand[d.datasource] = true; });
-        resDrawn = true;
-        drawRDFMTS(manodes, malinks, 'mtviz');
     }
 
     const addFeedbackDialog = $('#feedbackModal');
@@ -324,45 +234,6 @@ $(function() {
         feedbackPredicates.append('<option value="All">All</option>');
     });
 
-    function append_nodes_edges(rowMap, queryTriple) {
-        for (let t in queryTriple) {
-            t = queryTriple[t];
-            let s = t.s,
-                p = t.p,
-                o = t.o;
-
-            if (s.indexOf('?') === 0) { s = rowMap[s.substring(1, s.length)] }
-            if (p.indexOf('?') === 0) { p = rowMap[p.substring(1, p.length)] }
-            if (o.indexOf('?') === 0) { o = rowMap[o.substring(1, o.length)] }
-
-            setNodeData(s);
-            setNodeData(o);
-            setEdgeData(s, p, o);
-        }
-    }
-
-    function setEdgeData(s, p, o) {
-        // console.log(s, p, o);
-        vizData.links.push({
-            'source': s,
-            'target': o,
-            'weight': -1,
-            'ltype': 'link',
-            'type': 'link',
-            'pred': p
-        });
-    }
-
-    function setNodeData(n) {
-        vizData.nodes[n] = {
-            'id': n,
-            'label': n,
-            'datasource': 1,
-            'weight': -1,
-            'type': 'circle'
-        };
-    }
-
     function show_incremental(vars) {
         if (response === true) {
             // No new request can be sent unless a response from the last request was received
@@ -375,9 +246,7 @@ $(function() {
                         let row = data.result;
                         let elemTimeTotal = $('#time_total');
                         if (row.length === 0 || row === 'EOF') {
-                            resDrawn = false;
                             $('#btnVisualize').show();
-                            drawResults();
                             elemTimeTotal.html(' ' + data.time_total + ' sec');
                             response = false;
                             return;
@@ -394,7 +263,6 @@ $(function() {
                         }
 
                         table.row.add(row_ml).draw(false);
-                        append_nodes_edges(resultMap, queryTriples);
 
                         table.columns().every(function() {
                             const column = this;
@@ -537,417 +405,4 @@ $(function() {
 
     // TODO: add more example queries here
 
-    function nodeID(n) { return n.size ? '_g_' + n.datasource : n.label }
-
-    function linkID(l) {
-        const u = nodeID(l.source),
-              v = nodeID(l.target);
-        return u < v ? u + '|' + v : v + '|' + u;
-    }
-
-    function getGroup(n) { return n.datasource }
-
-    // constructs the network to visualize
-    function network(data, prev, index, expand) {
-        expand = expand || {};
-        let gm = {},    // group map
-            nm = {},    // node map
-            lm = {},    // link map
-            gn = {},    // previous group nodes
-            gc = {},    // previous group centroids
-            nodes = [], // output nodes
-            links = []; // output links
-
-        // process previous nodes for reuse or centroid calculation
-        if (prev) {
-            prev.nodes.forEach(function(n) {
-                const i = index(n);
-                let o;
-
-                if (n.size > 0) {
-                    gn[i] = n;
-                    n.size = 0;
-                } else {
-                    o = gc[i] || (gc[i] = { x: 0, y: 0, count: 0 });
-                    o.x += n.x;
-                    o.y += n.y;
-                    o.count += 1;
-                }
-            });
-        }
-
-        // determine nodes
-        for (let k = 0; k < data.nodes.length; ++k) {
-            const n = data.nodes[k],
-                  i = index(n),
-                  l = gm[i] || (gm[i] = gn[i]) || (gm[i] = { datasource: i, size: 0, nodes: [] });
-
-            if (expand[i]) {
-                // the node should be directly visible
-                nm[n.label] = nodes.length;
-                nodes.push(n);
-                if (gn[i]) {
-                    // place new nodes at cluster location (plus jitter)
-                    n.x = gn[i].x + Math.random();
-                    n.y = gn[i].y + Math.random();
-                }
-            } else {
-                // the node is part of a collapsed cluster
-                if (l.size === 0) {
-                    // if new cluster, add to set and position at centroid of leaf nodes
-                    nm[i] = nodes.length;
-                    nodes.push(l);
-                    if (gc[i]) {
-                        l.x = gc[i].x / gc[i].count;
-                        l.y = gc[i].y / gc[i].count;
-                    }
-                }
-                l.nodes.push(n);
-            }
-            // always count group size as we also use it to tweak the force graph strengths/distances
-            l.size += 1;
-            n.group_data = l;
-        }
-
-        for (const i in gm) { gm[i].link_count = 0 }
-
-        // determine links
-        for (let k = 0; k < data.links.length; ++k) {
-            let e = data.links[k],
-                u = index(e.source),
-                v = index(e.target);
-            if (u !== v) {
-                gm[u].link_count++;
-                gm[v].link_count++;
-            }
-            u = expand[u] ? nm[e.source.label] : nm[u];
-            v = expand[v] ? nm[e.target.label] : nm[v];
-            let i = (u < v ? u + '|' + v : v + '|' + u),
-                l = lm[i] || (lm[i] = { source: u, target: v, size: 0 });
-            l.size += 1;
-        }
-        for (const i in lm) { links.push(lm[i]) }
-
-        return { nodes: nodes, links: links };
-    }
-
-    function drawRDFMTS(nodes, links, divCanvas) {
-        // console.log(nodes, links);
-        let svg;
-        const graph = $('graph');
-        graph.empty();
-        svg = d3.select('#graph').append('svg');
-        width = graph.width();
-        height = 980;
-        canvas = 'graph';
-        if (divCanvas != null) { graph.show() }
-        const zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
-              g = svg.append('g');
-
-        hullg = svg.append('g');
-        linkg = svg.append('g');
-        nodeg = svg.append('g');
-
-        svg.attr('opacity', 1e-6)
-            .transition()
-            .duration(1000)
-            .attr('opacity', 1);
-
-        let toColor = 'fill',
-            toWhite = 'stroke';
-        if (outline) {
-            toColor = 'stroke';
-            toWhite = 'fill';
-        }
-
-        svg.style('cursor', 'move');
-        let linkedByIndex = {};
-        links.forEach(function(d) { linkedByIndex[d.source + ',' + d.target] = true });
-
-        const fit = Math.sqrt(nodes.length / (width * height));
-        nGravity = (8 * fit);
-        nCharge = (-1 / fit);
-        if (force) { force.stop() }
-        net = network(data, net, getGroup, expand);
-        force = d3.layout.force()
-            .nodes(net.nodes)
-            .links(net.links)
-            .linkDistance(function(l) {
-                const n1 = l.source, n2 = l.target;
-                return divCanvas ? 250 : 200 +
-                    Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
-                        (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
-                        -30 +
-                        30 * Math.min((n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)),
-                            (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
-                        300);
-            })
-            .linkStrength(2)
-            .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue & orange), ...
-            .charge(-600)    // ... charge is important to turn single-linked groups to the outside
-            .friction(0.5)   // friction adjusted to get dampened display: less bouncy bouncy ball [Swedish Chef, anyone?]
-            .size([width, height])
-            .start();
-
-        link = g.selectAll('.link').data(net.links, linkID);
-        link.exit().remove();
-        link.enter().append('line')
-            .attr('class', 'link')
-            .attr('x1', function(d) { return d.source.x })
-            .attr('y1', function(d) { return d.source.y })
-            .attr('x2', function(d) { return d.target.x })
-            .attr('y2', function(d) { return d.target.y })
-            .style('stroke-width', nominal_stroke)
-            .style('stroke', function(d) { return color(d.datasource) });
-
-        node = g.selectAll('.node').data(net.nodes, nodeID);
-        node.exit().remove();
-        node.enter().append('g')
-            .attr('class', function(d) { return 'node' + (d.size ? '' : ' leaf') })
-            .attr('cx', function(d) { return d.x })
-            .attr('cy', function(d) { return d.y })
-            .on('dblclick', function(d) {
-                expand[d.datasource] = !expand[d.datasource];
-                drawRDFMTS(nodes, links, divCanvas);
-            })
-            .on('mouseover', function(d) { set_highlight(d) })
-            .on('mousedown', function(d) {
-                d3.event.stopPropagation();
-                focus_node = d;
-                set_focus(d);
-                if (highlight_node === null) { set_highlight(d) }
-            })
-            .on('mouseout', function(d) { exit_highlight(d) });
-
-        node.call(force.drag);
-
-        let ci = 0;
-        let circle = node.append('path')
-            .attr('d', d3.svg.symbol()
-                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2) })  //size(d.weight)
-                .type(function(d) { return d.size ? 'circle' : d.type })
-            )
-            .style(toColor, function(d) {
-                if (divCanvas == null) { return color(d.datasource) }
-                else {
-                    ci += 1;
-                    return color(d.datasource + (ci - 1));
-                }
-            })
-            .style('stroke-width', nominal_stroke)
-            .style(toWhite, 'white');
-
-        const text = g.selectAll('.text')
-              .data(net.nodes)
-              .enter().append('text')
-              .attr('dy', '.35em')
-              .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' });
-
-        if (text_center) {
-            text.text(function(d) {
-                if (d.label) { return d.label }
-                else { return sourceNames[d.datasource] }
-            })
-                .style('text-anchor', 'middle');
-        } else {
-            text.attr('dx', size(65) - size(30) || nominal_base_node_size)
-                .text(function(d) { if (d.label) return '\u2002' + d.label; else return '\u2002' + sourceNames[d.datasource]; });
-        }
-
-        d3.select(window).on('mouseup', function() {
-            if (focus_node !== null) {
-                focus_node = null;
-                if (highlight_trans < 1) {
-                    circle.style('opacity', 1);
-                    text.style('opacity', 1);
-                    link.style('opacity', 1);
-                }
-            }
-            if (highlight_node === null) { exit_highlight() }
-        });
-
-        zoom.on('zoom', function() {
-            let stroke = nominal_stroke;
-            if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale() }
-
-            link.style('stroke-width', stroke);
-            circle.style('stroke-width', stroke);
-
-            let base_radius = nominal_base_node_size;
-            if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale() }
-            circle.attr('d', d3.svg.symbol()
-                .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius, 2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius, 2) })  //size(d.weight)
-                .type(function(d) { return d.size ? 'circle' : d.type })
-            );
-            if (!text_center) { text.attr('dx', (size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius) }
-
-            text.style('font-size', function (d) {
-                let text_size = nominal_text_size;
-                if (d.size) { text_size = 16 }
-                if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale() }
-
-                return text_size + 'px';
-            });
-            g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
-        });
-
-        svg.call(zoom);
-
-        resize();
-        d3.select(window).on('resize', resize).on('keydown', keydown);
-        const centroids = {};
-        for (let i = 0; i < max_score; i += 3) {
-            centroids[i] = { x: 200 * (i/3 + 1), y: 200 };
-            centroids[i+1] = { x: 200 * (i/3 + 1), y: 400 };
-            centroids[i+2] = { x: 200 * (i/3 + 1), y: 600 };
-        }
-
-        force.on('tick', function(e) {
-            const k = .1 * e.alpha;
-
-            // Push nodes toward their designated focus.
-            net.nodes.forEach(function(o) {
-                if (centroids[o.datasource]) {
-                    o.y += (centroids[o.datasource].y - o.y) * k;
-                    o.x += (centroids[o.datasource].x - o.x) * k;
-                }
-            });
-
-            text.forEach(function(o) {
-                if (centroids[o.datasource]) {
-                    o.y += (centroids[o.datasource].y - o.y) * k;
-                    o.x += (centroids[o.datasource].x - o.x) * k;
-                }
-            });
-            link.attr('x1', function(d) { return d.source.x })
-                .attr('y1', function(d) { return d.source.y })
-                .attr('x2', function(d) { return d.target.x })
-                .attr('y2', function(d) { return d.target.y });
-
-            node.attr('cx', function(d) { return d.x })
-                .attr('cy', function(d) { return d.y });
-
-            node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
-            text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
-        });
-
-        function isConnected(a, b) { return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index }
-
-        function hasConnections(a) {
-            for (const property in linkedByIndex) {
-                s = property.split(',');
-                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) { return true }
-            }
-            return false;
-        }
-
-        function vis_by_type(type) {
-            switch (type) {
-                case 'circle': return keyc;
-                case 'square': return keys;
-                case 'triangle-up': return keyt;
-                case 'diamond': return keyr;
-                case 'cross': return keyx;
-                case 'triangle-down': return keyd;
-                default: return true;
-            }
-        }
-
-        function vis_by_node_score(score) {
-            if (isNumber(score)) {
-                if (score >= 0.666) { return keyh }
-                else if (score >= 0.333) { return keym }
-                else if (score >= 0) { return keyl }
-            }
-            return true;
-        }
-
-        function vis_by_link_score(score) {
-            if (isNumber(score)) {
-                if (score >= 0.666) { return key3 }
-                else if (score >= 0.333) { return key2 }
-                else if (score >= 0) { return key1 }
-            }
-            return true;
-        }
-
-        function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n) }
-
-        function resize() {
-            const width = $('#' + canvas).width(), height = 980;
-            svg.attr('width', width).attr('height', height);
-            force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
-            w = width;
-            h = height;
-        }
-
-        function keydown() {
-            if (d3.event.keyCode === 32) { force.stop() }
-            else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
-                switch (String.fromCharCode(d3.event.keyCode)) {
-                    case 'C': keyc = !keyc; break;
-                    case 'S': keys = !keys; break;
-                    case 'T': keyt = !keyt; break;
-                    case 'R': keyr = !keyr; break;
-                    case 'X': keyx = !keyx; break;
-                    case 'D': keyd = !keyd; break;
-                    case 'L': keyl = !keyl; break;
-                    case 'M': keym = !keym; break;
-                    case 'H': keyh = !keyh; break;
-                    case '1': key1 = !key1; break;
-                    case '2': key2 = !key2; break;
-                    case '3': key3 = !key3; break;
-                    case '0': key0 = !key0; break;
-                }
-
-                link.style('display', function(d) {
-                    let flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
-                    linkedByIndex[d.source.index + ',' + d.target.index] = flag;
-                    return flag ? 'inline' : 'none';
-                });
-                node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none' });
-                text.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none' });
-
-                if (highlight_node !== null) {
-                    if ((key0 || hasConnections(highlight_node)) && vis_by_type('circle') && vis_by_node_score(highlight_node.datasource)) {
-                        if (focus_node !== null) { set_focus(focus_node) }
-                        set_highlight(highlight_node);
-                    } else { exit_highlight() }
-                }
-            }
-        }
-
-        function exit_highlight() {
-            highlight_node = null;
-            if (focus_node === null) {
-                svg.style('cursor', 'move');
-                if (highlight_color !== 'white') {
-                    circle.style(toWhite, 'white');
-                    text.style('font-weight', 'normal');
-                    link.style('stroke', function(o) { return (isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color });
-                }
-            }
-        }
-
-        function set_focus(d){
-            if (highlight_trans < 1) {
-                circle.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans });
-                text.style('opacity', function(o) { return isConnected(d, o) ? 1 : highlight_trans });
-                link.style('opacity', function(o) { return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans });
-            }
-        }
-
-        function set_highlight(d) {
-            svg.style('cursor', 'pointer');
-            if (focus_node !== null) { d = focus_node }
-            highlight_node = d;
-            // added this to make highlight color same as the color of the node
-            highlight_color = color(d.datasource);
-            if (highlight_color !== 'white') {
-                circle.style(toWhite, function(o) { return isConnected(d, o) ? highlight_color : 'white' });
-                text.style('font-weight', function(o) { return isConnected(d, o) ? 'bold' : 'normal' });
-                link.style('stroke', function(o) { return o.source.index === d.index || o.target.index === d.index ? highlight_color : ((isNumber(o.datasource) && o.datasource >= 0) ? color(o.datasource) : default_link_color) });
-            }
-        }
-    }
 });

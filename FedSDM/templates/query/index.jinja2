@@ -27,10 +27,6 @@
                     <li><a href="#" id="analyticalnumtheoryex">A Video about &quot;Analytic number theory around torsion homology&quot;</a></li>
                     <!-- TODO: add more example queries here -->
                 </ul>
-                <div class="form-group">
-                    <button type="button" class="btn btn-success" id="btnShowTable" style="display:none">Show Table</button>
-                    <button type="button" class="btn btn-success" id="btnVisualize">Visualize</button>
-                </div>
             </div>
         </div>
     </div>
@@ -61,9 +57,7 @@
     </div>
 </div>
 {% include 'query/modal-feedback.jinja2' %}
-<script src="{{ url_for('static', filename='js/libs/d3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/yasqe.bundled.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/query.js') }}"></script>
 {% endblock %}
