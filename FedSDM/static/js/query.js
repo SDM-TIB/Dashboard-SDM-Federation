@@ -133,9 +133,10 @@ $(function() {
                             for (let i = 0; i < results.length; i++) {
                                 let row = results[i],
                                     row_ml = [];
+                                // TODO: Display the datatypes?
                                 for (let j = 0; j < vars.length; j++) {
-                                    let val = row[vars[j]];
-                                    if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')) }
+                                    let val = row[vars[j]]['value'];
+                                    // if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')) }
                                     if ('http' === val.substring(0, 4)) { row_ml.push('<a href="' + val + '">' + val + '</a>') }
                                     else { row_ml.push(val) }
                                     resultMap[vars[j]] = val;
@@ -385,8 +386,8 @@ $(function() {
                         const row_ml = [],
                               resultMap = {};
                         for (let j = 0; j < vars.length; j++) {
-                            let val = row[vars[j]];
-                            if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')) }
+                            let val = row[vars[j]]['value'];
+                            // if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')) }
                             if ('http' === val.substring(0, 4)) { row_ml.push('<a href="' + val + '">' + val + '</a>') }
                             else { row_ml.push(val) }
                             resultMap[vars[j]] = val;
