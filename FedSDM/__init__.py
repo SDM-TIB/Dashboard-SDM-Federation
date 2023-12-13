@@ -1,7 +1,8 @@
 import logging
 import os
 
-from flask import Flask, redirect, render_template, send_from_directory
+from flask import Flask, redirect, render_template, send_from_directory, request, session
+from urllib.parse import urlparse
 
 
 def get_logger(name: str, file: str = None, file_and_console: bool = False) -> logging.Logger:
@@ -114,5 +115,12 @@ def create_app() -> Flask:
     @app.route('/favicon.ico')
     def favicon():
         return send_from_directory(os.path.join(app.root_path, 'static', 'images'), 'Lynx_Icon.ico', mimetype='image/vnd.microsoft.icon')
+
+    @app.before_request
+    def before_request():
+        if not (request.path.startswith('/auth/') or request.path.startswith('/static/')) and not ('/auth/' in request.referrer or '/static/' in request.referrer):
+            url = request.referrer
+            if url and urlparse(url).netloc == request.host:
+                session['url'] = urlparse(url).path
 
     return app

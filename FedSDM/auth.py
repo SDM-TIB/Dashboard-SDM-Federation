@@ -94,12 +94,12 @@ def login() -> Response | str:
             error = 'Wrong credentials.'
 
         if error is None:
+            next_ = session.get('url', url_for('index'))
             session.clear()
             session['user_id'] = user['id']
             session['user_name'] = user['username']
-            return redirect(url_for('index'))
+            return redirect(next_)
 
-        # flash(error)
     return render_template('auth.jinja2', title='Login', operation='Login', other='Register', error=error)
 
 
@@ -161,6 +161,7 @@ def login_required(view: FunctionType) -> any:
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
+            session['url'] = request.path
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)
