@@ -118,7 +118,7 @@ def create_app() -> Flask:
 
     @app.before_request
     def before_request():
-        if not (request.path.startswith('/auth/') or request.path.startswith('/static/')) and not ('/auth/' in request.referrer or '/static/' in request.referrer):
+        if not (request.path.startswith('/auth/') or request.path.startswith('/static/')) and request.referrer is not None and not ('/auth/' in request.referrer or '/static/' in request.referrer):
             url = request.referrer
             if url and urlparse(url).netloc == request.host:
                 session['url'] = urlparse(url).path
