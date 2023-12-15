@@ -127,8 +127,7 @@ function checkRegexp(o, regexp, n) {
 }
 
 // Checks whether o is a valid selection option of input form argument n.
-// It assumes o is the index of the selected option and that invalid / placeholder
-// options have an index with value -1.
+// It assumes o is the index of the selected option and that invalid / placeholder have an index value of -1.
 function checkSelection(o, n) {
     if (o.val() === '-1') {
         o.addClass('ui-state-error');
