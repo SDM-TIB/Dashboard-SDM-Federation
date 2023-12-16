@@ -649,14 +649,13 @@ def api_get_data_sources(graph: str = None, ds_type=None) -> list:
         the data sources.
 
     """
-    # TODO: check if it is possible to remove duplicated triple patterns when building the query
     mdb = get_mdb()
     if graph is not None:
         query = 'SELECT DISTINCT * WHERE { GRAPH <' + graph + '> {\n'
         if isinstance(ds_type, list) and len(ds_type) > 0:
             query += '  ?id mt:dataSourceType ?dstype .\n'
             filters = []
-            for dt in ds_type:
+            for dt in set(ds_type):
                 filters.append('?dstype=<' + MT_RESOURCE + 'DatasourceType/' + str(dt.value) + '>')
             query += '  FILTER (' + ' || '.join(filters) + ')\n'
         else:
