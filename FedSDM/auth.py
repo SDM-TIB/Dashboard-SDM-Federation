@@ -159,11 +159,11 @@ def login_required(view: FunctionType) -> any:
 
     """
     @functools.wraps(view)
-    def wrapped_view(**kwargs):
+    def wrapped_view(*args, **kwargs):
         if g.user is None:
             session['url'] = request.path
             return redirect(url_for('auth.login'))
 
-        return view(**kwargs)
+        return view(*args, **kwargs)
 
     return wrapped_view
