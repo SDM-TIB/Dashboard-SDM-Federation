@@ -118,13 +118,13 @@ def create_app() -> Flask:
 
     @app.errorhandler(422)
     @app.errorhandler(400)
-    def handle_error(err):
-        headers = err.data.get("headers", None)
-        messages = err.data.get("messages", ["Invalid request."])
+    def handle_error(error):
+        headers = error.data.get("headers", None)
+        messages = error.data.get("messages", ["Invalid request."])
         if headers:
-            return jsonify({"errors": messages}), err.code, headers
+            return jsonify({"errors": messages}), error.code, headers
         else:
-            return jsonify({"errors": messages}), err.code
+            return jsonify({"errors": messages}), error.code
 
     @app.before_request
     def before_request():
