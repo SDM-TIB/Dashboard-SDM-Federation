@@ -69,7 +69,7 @@ class Bundle(object):
 NPM_PATH = 'node_modules/'
 JS_PATH = 'js/libs/'
 CSS_PATH = 'css/'
-WEBFONTS_PATH = 'webfonts/'
+WEBFONTS_PATH = os.path.join(Bundle.STATIC_FOLDER, 'webfonts/')
 
 bundles = {
     'bootstrap_js': Bundle(
@@ -143,5 +143,5 @@ for name, bundle in bundles.items():
     bundle.build()
 
 # copy webfonts from Fontawesome
-shutil.rmtree('FedSDM/static/webfonts')
-shutil.copytree('node_modules/@fortawesome/fontawesome-free/webfonts', 'FedSDM/static/webfonts', dirs_exist_ok=True)
+shutil.rmtree(WEBFONTS_PATH)
+shutil.copytree(os.path.join(NPM_PATH, '@fortawesome/fontawesome-free/webfonts'), WEBFONTS_PATH, dirs_exist_ok=True)
