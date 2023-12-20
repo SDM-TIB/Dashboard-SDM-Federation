@@ -23,7 +23,7 @@ To start the dashboard with some preloaded example data, run
 make run-example
 ```
 
-The application is then accessible via your Web browser at `http://localhost:5003`.
+The application is then accessible via your Web browser at [http://localhost:5003](http://localhost:5003).
 You can stop the containers and clean up by executing the following command:
 ```bash
 make stop-example
