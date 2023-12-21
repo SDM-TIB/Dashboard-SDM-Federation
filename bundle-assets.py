@@ -142,7 +142,7 @@ bundles = {
 for name, bundle in bundles.items():
     print('    building bundle:', name)
     bundle.build()
-
-# copy webfonts from Fontawesome
-shutil.rmtree(WEBFONTS_PATH)
-shutil.copytree(os.path.join(NPM_PATH, '@fortawesome/fontawesome-free/webfonts'), WEBFONTS_PATH, dirs_exist_ok=True)
+    if name == 'fontawesome_css':
+        # copy webfonts from Fontawesome
+        shutil.rmtree(WEBFONTS_PATH)
+        shutil.copytree(os.path.join(NPM_PATH, '@fortawesome/fontawesome-free/webfonts'), WEBFONTS_PATH, dirs_exist_ok=True)
