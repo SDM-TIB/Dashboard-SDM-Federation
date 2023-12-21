@@ -140,6 +140,7 @@ bundles = {
 }
 
 for name, bundle in bundles.items():
+    print('    building bundle:', name)
     bundle.build()
 
 # copy webfonts from Fontawesome
