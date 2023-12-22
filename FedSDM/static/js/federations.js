@@ -376,7 +376,8 @@ $(function() {
           allFieldsEdit = $([]).add(edit_name).add(edit_desc).add(edit_ds_type).add(edit_URL).add(edit_params).add(edit_types).add(edit_keywords).add(edit_organization).add(edit_homepage).add(edit_version),
           fedName = $('#fed_new_name'),
           fedDesc = $('#description'),
-          allFieldsFed = $([]).add(fedName).add(fedDesc);
+          fedPublic = $('#fed_new_public'),
+          allFieldsFed = $([]).add(fedName).add(fedDesc).add(fedPublic);
 
     newFedForm.on('submit', function(event) {
         event.preventDefault();
@@ -405,7 +406,7 @@ $(function() {
 
     editSourceForm.on('submit', function(event) {
         event.preventDefault();
-        updateDS();
+        updateDS(true);
     });
     editSourceModal.on('shown.bs.modal', function() { edit_desc.trigger('focus') });
     editSourceModal.on('hidden.bs.modal', function() {
@@ -413,7 +414,7 @@ $(function() {
         allFieldsEdit.removeClass('ui-state-error');
         resetTips();
     });
-    $('#edit-source-btn').on('click', function() { updateDS() });
+    $('#edit-source-btn').on('click', function() { updateDS(true) });
 
     // Adds a new data source using the FedSDM API. If the parameter 'close' is true, then the dialog will be closed
     // after adding the new source. Otherwise, the dialog stays open in order to add another source to the federation.
@@ -426,6 +427,7 @@ $(function() {
         if (valid) {
             $.ajax({
                 type: 'POST',
+                async: false,
                 headers: {
                     Accept : 'application/json'
                 },
@@ -445,8 +447,11 @@ $(function() {
                 dataType: 'json',
                 crossDomain: true,
                 success: function(data) {
-                    if (data != null && data.length > 0) { manage(federation) }
-                    else { $('#validateTips').html('Error while adding data source to the federation!') }
+                    if (data !== null && data.length > 0) { manage(federation) }
+                    else {
+                        close = false;
+                        updateTips('Error while adding data source to the federation!');
+                    }
                     table.clear().draw();
                     table.ajax.url('/federation/datasources?graph=' + federation).load();
                 },
@@ -473,7 +478,7 @@ $(function() {
 
     // Validates the form elements in the edit data source dialog and sends the request for updating the source
     // using the FedSDM API. On success, the dialog is closes. On fail, an error message will be shown.
-    function updateDS() {
+    function updateDS(close) {
         resetTips();
         allFieldsEdit.removeClass('ui-state-error');
         let eid = selectedSource[0][0];
@@ -485,6 +490,7 @@ $(function() {
             button_remove_source.prop('disabled', true);
             $.ajax({
                 type: 'POST',
+                async: false,
                 headers: {
                     Accept : 'application/json'
                 },
@@ -508,7 +514,10 @@ $(function() {
                     if (data != null && data.length > 0) {
                         manage(federation);
                         console.log(data);
-                    } else { $('#validateTips').html('Error while editing data source!') }
+                    } else {
+                        close = false;
+                        updateTips('Error while editing data source!');
+                    }
                     table.clear().draw();
                     table.ajax.url('/federation/datasources?graph=' + federation).load();
                 },
@@ -518,8 +527,8 @@ $(function() {
                     console.log(textStatus);
                 }
             });
-            editSourceModal.modal('hide');
-        }
+        } else { close = false }
+        if (close) { editSourceModal.modal('hide') }
         return valid;
     }
 
@@ -535,15 +544,16 @@ $(function() {
         if (valid) {
             $.ajax({
                 type: 'POST',
+                async: false,
                 headers: {
                     Accept : 'application/json'
                 },
                 url: '/federation/create',
-                data: {'name': name, 'description': desc},
+                data: {'name': name, 'description': desc, 'is_public': fedPublic.is(':checked')},
                 crossDomain: true,
                 success: function(data) {
                     console.log(data);
-                    if (data != null && data.length > 0) {
+                    if (data !== null && data.length > 0) {
                         federation = data;
                         $('#fedName').html(name);
                         // select new federation and go to the 'manage data sources' tab
@@ -553,7 +563,7 @@ $(function() {
                         $('#maincontent a[href="#manage"]').tab('show');
                     } else {
                         close = false;
-                        $('#errorMsg').html('Error while creating the new federation! Please enter a valid name!');
+                        updateTips('Error while creating the new federation! Please try again later!');
                     }
                 },
                 error: function(jqXHR, textStatus) {
