@@ -586,7 +586,7 @@ $(function() {
             canvas = 'graph';
         } else {
             mt_viz.empty();
-            svg = d3.select('#mtviz').append('svg');
+            svg = d3.select('#mt_viz').append('svg');
             width = mt_viz.width();
             console.log('Showing visualization...');
             mt_viz.show();
