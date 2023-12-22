@@ -5,6 +5,8 @@ import networkx as nx
 from flask import (
     Blueprint, g, render_template, session, Response, request
 )
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 from FedSDM.auth import login_required
 from FedSDM.db import get_mdb, MetadataDB
@@ -43,7 +45,8 @@ def rdfmt() -> str:
 
 
 @bp.route('/api/rdfmtstats')
-def rdfmt_stats() -> Response:
+@use_kwargs({'graph': fields.Str(required=True)}, location='query')
+def rdfmt_stats(graph) -> Response:
     """Serves requests to '/rdfmts/api/rdfmtstats'.
 
     This route provides statistics about the RDF Molecule Templates of the federation
@@ -65,10 +68,7 @@ def rdfmt_stats() -> Response:
         given, the response contains an empty JSON object.
 
     """
-    graph = request.args.get('graph', None)
-    if graph is None:  # required parameter missing, returning empty response
-        return Response(json.dumps({}), mimetype='application/json')
-    elif graph == 'All':  # all federations are to be considered, so no graph is passed on
+    if graph == 'All':  # all federations are to be considered, so no graph is passed on
         graph = None
     else:
         session['fed'] = graph
@@ -178,7 +178,8 @@ def get_rdfmt_stats(graph: str = None) -> dict:
 
 
 @bp.route('/api/mtdetails')
-def api_rdfmt_details() -> Response:
+@use_kwargs({'fed': fields.Str(required=True), 'mt': fields.Str(required=True)}, location='query')
+def api_rdfmt_details(fed, mt) -> Response:
     """Serves requests to '/rdfmts/api/mtdetails'.
 
     This route is used to retrieve details about a single RDF Molecule
@@ -196,11 +197,6 @@ def api_rdfmt_details() -> Response:
         was not present in the request.
 
     """
-    fed = request.args.get('fed', None)
-    mt = request.args.get('mt', None)
-    if fed is None or mt is None:
-        return Response(json.dumps({}), mimetype='application/json')
-
     res = get_rdfmt_details(fed, mt)
     return Response(json.dumps(res), mimetype='application/json')
 
@@ -403,14 +399,15 @@ def get_rdfmt_details(fed: str, mt: str) -> dict:
 
 
 @bp.route('/api/rdfmts')
-def api_rdfmts() -> Response:
+@use_kwargs({'graph': fields.Str(required=True)}, location='query')
+def api_rdfmts(graph) -> Response:
     """Serves requests to '/rdfmts/api/rdfmts'.
 
     This method is used to retrieve information about the RDF Molecule
     Templates of a federation in order to visualize them and their
     connectivity. The request requires the parameter 'graph' which
     is the identifier of the federation of interest. If the value
-    is 'all', then all available federations are considered.
+    is 'All', then all available federations are considered.
 
     Returns
     -------
@@ -418,10 +415,7 @@ def api_rdfmts() -> Response:
         A JSON response with the requested data.
 
     """
-    graph = request.args.get('graph', None)
-    if graph is None:  # required parameter missing, returning empty response
-        return Response(json.dumps({}), mimetype='application/json')
-    elif graph == 'All':  # all federations are to be considered, so no graph is passed on
+    if graph == 'All':  # all federations are to be considered, so no graph is passed on
         graph = None
     else:
         session['fed'] = graph
@@ -721,7 +715,8 @@ def get_rdfmt_links(graph: str = None):
 
 
 @bp.route('/api/rdfmtanalysis')
-def api_rdfmtanalysis() -> Response:
+@use_kwargs({'graph': fields.Str(required=True), 'source': fields.Str(required=True)}, location='query')
+def api_rdfmtanalysis(graph, source) -> Response:
     """Serves requests to '/rdfmts/api/rdfmtanalysis'.
 
     This route performs a network analysis of the RDF Molecule Templates
@@ -738,10 +733,6 @@ def api_rdfmtanalysis() -> Response:
         A JSON response with the results from the network analysis.
 
     """
-    graph = request.args.get('graph', None)
-    source = request.args.get('source', None)
-    if graph is None or source is None:  # required parameter(s) missing, returning empty response
-        return Response(json.dumps({}), mimetype='application/json')
     if graph == 'All':  # all federations are to be considered, so no graph is passed on
         graph = None
     else:

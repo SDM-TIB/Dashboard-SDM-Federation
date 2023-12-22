@@ -5,13 +5,15 @@ import traceback
 from multiprocessing import Queue
 from time import time
 
+from DeTrusty import Decomposer, Planner
+from DeTrusty.Wrapper.RDFWrapper import contact_source
 from flask import (
     Blueprint, g, render_template, session, Response, request
 )
 from flask.json import jsonify
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
-from DeTrusty import Decomposer, Planner
-from DeTrusty.Wrapper.RDFWrapper import contact_source
 from FedSDM import get_logger
 from FedSDM.auth import login_required
 from FedSDM.config import ConfigSimpleStore
@@ -54,8 +56,16 @@ def query() -> str:
 
 
 @bp.route('/feedback', methods=['POST'])
+@use_kwargs({'fed': fields.Str(required=True)}, location='query')
+@use_kwargs({
+    'pred': fields.Str(required=True),
+    'row': fields.List(fields.Str(), required=True, data_key='row[]'),
+    'columns': fields.List(fields.Str(), required=True, data_key='columns[]'),
+    'query_': fields.Str(required=True, data_key='query'),
+    'desc': fields.Str(required=True)
+}, location='form')
 @login_required
-def feedback() -> Response:
+def feedback(fed, pred, row, columns, query_, desc) -> Response:
     """Serves requests to '/query/feedback'.
 
     This route receives the content from the feedback form and stores
@@ -65,7 +75,7 @@ def feedback() -> Response:
     should include the following:
         - pred -- the predicate for which the object seems to be wrong
         - row[] -- the query result (row) which seems to be wrong
-        - column[] -- a list with the columns from the query result
+        - columns[] -- a list with the columns from the query result
         - query -- the query in question
         - desc -- a short text describing what the problem is
 
@@ -81,14 +91,6 @@ def feedback() -> Response:
         A JSON response with an empty JSON object.
 
     """
-    fed = request.args.get('fed', -1)
-    e = request.form
-    logger.debug('request form in feedback(): ' + str(e))
-    pred = e['pred']
-    row = e.getlist('row[]')
-    columns = e.getlist('columns[]')
-    query_ = e['query']
-    desc = e['desc']
     selected_row = {}
     for c, v in zip(columns, row):
         selected_row[c] = v

@@ -2,8 +2,10 @@ import functools
 from types import FunctionType
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, Response
+    Blueprint, g, redirect, render_template, request, session, url_for, Response
 )
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from FedSDM.db import get_db
@@ -11,13 +13,15 @@ from FedSDM.db import get_db
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@bp.route('/register', methods=('GET', 'POST'))
-def register() -> Response | str:
-    """Serves requests to '/auth/register'.
+@bp.route('/register', methods=['POST'])
+@use_kwargs({
+    'username': fields.Str(required=True),
+    'password': fields.Str(required=True)
+}, location='form')
+def register(username, password) -> Response | str:
+    """Serves requests to '/auth/register' via POST requests.
 
-    If the request method is 'GET', an HTML page with the registration form will be shown.
-    In the case of a POST request, the submitted form data will be validated. The validation
-    includes the following checks:
+    The submitted form data will be validated. The validation includes the following checks:
 
         - Username is not empty
         - Password is not empty
@@ -33,42 +37,55 @@ def register() -> Response | str:
     Returns
     -------
     flask.Response | str
-        Returns the HTML page with the registration form on GET requests or after validation
-        of the form data fails. A successful registration leads to a redirect to the login page.
+        Returns the HTML page with the registration form if the validation of the form data fails.
+        A successful registration leads to a redirect to the login page.
 
     """
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        error = None
+    db = get_db()
+    error = None
 
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
-        elif db.execute('SELECT id FROM user WHERE username = ?', (username, )).fetchone() is not None:
-            error = 'User {} is already registered.'.format(username)
+    if not username:
+        error = 'Username is required.'
+    elif not password:
+        error = 'Password is required.'
+    elif db.execute('SELECT id FROM user WHERE username = ?', (username, )).fetchone() is not None:
+        error = 'User {} is already registered.'.format(username)
 
-        if error is None:
-            db.execute(
-                'INSERT INTO user (username, password) VALUES (?, ?) ',
-                (username, generate_password_hash(password))
-            )
-            db.commit()
-            return redirect(url_for('auth.login'))
-
-        flash(error)
-    return render_template('auth.jinja2', title='Register', operation='Register', other='Login')
+    if error is None:
+        db.execute(
+            'INSERT INTO user (username, password) VALUES (?, ?) ',
+            (username, generate_password_hash(password))
+        )
+        db.commit()
+        return redirect(url_for('auth.login'))
+    return register_form(error)
 
 
-@bp.route('/login', methods=('GET', "POST"))
-def login() -> Response | str:
-    """Serves requests to '/auth/login'.
+@bp.route('/register', methods=['GET'])
+@use_kwargs({'error': fields.Str()}, location='query')
+def register_form(error=None) -> Response | str:
+    """Serves requests to '/auth/register' via GET requests.
 
-    If the request method is 'GET', an HTML page with the login form will be shown.
-    In case of a POST request, the submitted form data will be validated, i.e., it
-    will be checked against the database.
+    Displays an HTML page with the registration form.
+
+    Returns
+    -------
+    str
+        Returns the HTML page with the registration form.
+
+    """
+    return render_template('auth.jinja2', title='Register', operation='Register', other='Login', error=error)
+
+
+@bp.route('/login', methods=['POST'])
+@use_kwargs({
+    'username': fields.Str(required=True),
+    'password': fields.Str(required=True)
+}, location='form')
+def login(username, password) -> Response | str:
+    """Serves requests to '/auth/login' via POST requests.
+
+    The submitted form data will be validated, i.e., it will be checked against the database.
     If the credentials can be verified, the user's ID and name are stored in the
     session cookie, i.e., the data persists across requests. The data is securely
     signed by Flask so that it cannot be tampered with. The user is then redirected
@@ -79,27 +96,40 @@ def login() -> Response | str:
     Returns
     -------
     flask.Response | str
-        Returns the HTML page with the login form on GET requests or after validation of
-        the credentials fails. A successful login leads to a redirect to the landing page.
+        Returns the HTML page with the login form if the validation of the credentials fails.
+        A successful login leads to a redirect to the previous page.
 
     """
     error = None
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        user = db.execute('SELECT * FROM user WHERE username = ?', (username, )).fetchone()
+    db = get_db()
+    user = db.execute('SELECT * FROM user WHERE username = ?', (username, )).fetchone()
 
-        if user is None or not check_password_hash(user['password'], password):
-            error = 'Wrong credentials.'
+    if user is None or not check_password_hash(user['password'], password):
+        error = 'Wrong credentials.'
 
-        if error is None:
-            next_ = session.get('url', url_for('index'))
-            session.clear()
-            session['user_id'] = user['id']
-            session['user_name'] = user['username']
-            return redirect(next_)
+    if error is None:
+        next_ = session.get('url', url_for('index'))
+        session.clear()
+        session['user_id'] = user['id']
+        session['user_name'] = user['username']
+        return redirect(next_)
 
+    return login_form(error)
+
+
+@bp.route('/login', methods=['GET'])
+@use_kwargs({'error': fields.Str()}, location='query')
+def login_form(error=None) -> str:
+    """Serves requests to '/auth/login' via GET requests.
+
+    Displays an HTML page with the login form.
+
+    Returns
+    -------
+    str
+        Returns the HTML page with the login form.
+
+    """
     return render_template('auth.jinja2', title='Login', operation='Login', other='Register', error=error)
 
 

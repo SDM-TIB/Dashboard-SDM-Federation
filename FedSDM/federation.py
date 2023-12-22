@@ -6,6 +6,8 @@ from typing import Tuple
 from flask import (
     Blueprint, flash, g, redirect, render_template, session, Response, request, url_for, abort
 )
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 from FedSDM import get_logger
 from FedSDM.auth import login_required
@@ -46,8 +48,9 @@ def index() -> str:
 
 
 @bp.route('/stats')
+@use_kwargs({'graph': fields.Str(required=True)}, location='query')
 @login_required
-def stats() -> Response:
+def stats(graph) -> Response:
     """Serves requests send to '/federation/stats'.
 
     This route provides statistics about the federation(s). Those statistics include the number of
@@ -68,21 +71,14 @@ def stats() -> Response:
         A JSON response including the statistics about the federation(s).
 
     """
-    try:
-        graph = request.args['graph']
-    except KeyError:
-        logger.error('stats() did not receive parameter graph. Received parameters: ' + str(request.args))
-        return Response(json.dumps({}), mimetype='application/json')
-
     stats_ = {}
-    if graph is not None:
-        session['fed'] = graph
-        if graph == 'All':
-            federations = get_federations()
-            for fed in federations:
-                stats_.update(get_stats(fed['uri']))
-        else:
-            stats_.update(get_stats(graph))
+    session['fed'] = graph
+    if graph == 'All':
+        federations = get_federations()
+        for fed in federations:
+            stats_.update(get_stats(fed['uri']))
+    else:
+        stats_.update(get_stats(graph))
 
     return Response(json.dumps({'data': stats_}), mimetype='application/json')
 
@@ -128,14 +124,19 @@ def get_stats(graph: str) -> dict:
 
 
 @bp.route('/create', methods=['POST'])
-def create() -> Response:
+@use_kwargs({
+    'name': fields.Str(required=True),
+    'is_public': fields.Bool(required=True),
+    'description': fields.Str(),
+}, location='form')
+def create(name: str, is_public: bool, description: str = '') -> Response:
     """Serves requests to '/federation/create'.
 
     This method creates a new federation based on the provided data.
     The following parameters are valid for this request:
         - name -- the name of the federation
-        - description -- a short description what the federation is about
-        - public -- indicating whether the federation should be publicly accessible (optional)
+        - public -- indicating whether the federation should be publicly accessible
+        - description -- optional, a short description what the federation is about
 
     Note
     ----
@@ -148,31 +149,19 @@ def create() -> Response:
         created successfully, None otherwise.
 
     """
-    name = request.form['name']
-    description = request.form['description']
-    is_public = 'public' in request.form
-    error = None
-
-    if not name:
-        error = 'Name is required.'
-    federation = ''
-    if error is not None:
-        flash(error)
+    inserted = create_federation(name, description, is_public)
+    if inserted is None:
+        federation = ''
     else:
-        inserted = create_federation(name, description, is_public)
-
-        if inserted is None:
-            error = 'Cannot insert new federation to endpoint.'
-            flash(error)
-        else:
-            federation = inserted
-            session['fed'] = federation
+        federation = inserted
+        session['fed'] = federation
     return Response(federation, mimetype='text/plain')
 
 
 @bp.route('/datasources', methods=['GET'])
+@use_kwargs({'graph': fields.Str(required=True)}, location='query')
 @login_required
-def data_sources() -> Response:
+def data_sources(graph) -> Response:
     """Serves requests send to '/federation/datasources'.
 
     This method provides the following metadata for all data sources in the specified federation:
@@ -206,12 +195,6 @@ def data_sources() -> Response:
         A JSON response with the above-mentioned metadata about the data sources.
 
     """
-    try:
-        graph = request.args['graph']
-    except KeyError:
-        logger.error("Key 'graph' not found in the parameters of the request. List of parameters: " + str(request.args))
-        return Response(json.dumps({}), mimetype='application/json')
-
     if graph == 'All':
         graph = None
 
@@ -225,7 +208,23 @@ def data_sources() -> Response:
 
 
 @bp.route('/addsource', methods=['POST'])
-def api_add_source() -> Response:
+@use_kwargs({'fed': fields.Str(required=True)}, location='query')
+@use_kwargs({
+    'url': fields.Str(required=True),
+    'dstype': fields.Str(required=True),
+    'name': fields.Str(required=True),
+    'desc': fields.Str(),
+    'params': fields.Str(),
+    'keywords': fields.Str(),
+    'version': fields.Str(),
+    'homepage': fields.Str(),
+    'organization': fields.Str(),
+    'ongology_graph': fields.Str(),
+    'types': fields.Str()
+}, location='form')
+@login_required
+def api_add_source(fed, url, dstype, name, desc='', params='', keywords='', version='', homepage='',
+                   organization='', ontology_graph=None, types='') -> Response:
     """Serves requests to '/federation/addsource'.
 
     This method creates new data source based on the provided data.
@@ -248,6 +247,8 @@ def api_add_source() -> Response:
     ----
     This route only accepts POST requests.
 
+    The request is only served for logged-in users.
+
     Returns
     -------
     flask.Response
@@ -255,32 +256,26 @@ def api_add_source() -> Response:
         0 if the source is accessible but no RDF Molecule Templates can be extracted for it. 1 for success.
 
     """
-    try:
-        e = request.form
-        fed = request.args['fed']
-        if fed is None or len(fed) == 0:
-            return Response(json.dumps({}), mimetype='application/json')
-        session['fed'] = fed
+    if len(fed) == 0:  # TODO: Maybe better to check if the federation actually exists?
+        return Response(json.dumps({}), mimetype='application/json')
+    session['fed'] = fed
 
-        prefix = 'http://ontario.tib.eu/'
-        rid = prefix + fed[fed.rfind('/')+1:] + '/datasource/' + urlparse.quote(e['name'].replace(' ', '-'), safe=':')
-        ds = DataSource(
-            rid,
-            e['url'],
-            e['dstype'],
-            name=e['name'],
-            desc=e['desc'] if 'desc' in e else '',
-            params=e['params'] if 'params' in e else '',
-            keywords=e['keywords'] if 'keywords' in e else '',
-            version=e['version'] if 'version' in e else '',
-            homepage=e['homepage'] if 'homepage' in e else '',
-            organization=e['organization'] if 'organization' in e else '',
-            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None,
-            types=e['types'] if 'types' in e else ''
-        )
-    except KeyError:
-        logger.error('api_add_source() did not receive required parameters. Received parameters: ' + str(request.args))
-        return Response(json.dumps({}),  mimetype='application/json')
+    prefix = 'http://ontario.tib.eu/'
+    rid = prefix + fed[fed.rfind('/')+1:] + '/datasource/' + urlparse.quote(name.replace(' ', '-'), safe=':')
+    ds = DataSource(
+        rid=rid,
+        url=url,
+        ds_type=dstype,
+        name=name,
+        desc=desc,
+        params=params,
+        keywords=keywords,
+        version=version,
+        homepage=homepage,
+        organization=organization,
+        ontology_graph=ontology_graph,
+        types=types
+    )
 
     res, queue = add_data_source(fed, ds)
     if res['status'] == 1:
@@ -350,7 +345,24 @@ def add_data_source(federation: str, data_source: DataSource) -> Tuple[dict, Opt
 
 
 @bp.route('/editsource', methods=['POST'])
-def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
+@use_kwargs({'fed': fields.Str(required=True)}, location='query')
+@use_kwargs({
+    'id_': fields.Str(required=True, data_key='id'),
+    'url': fields.Str(required=True),
+    'dstype': fields.Str(required=True),
+    'name': fields.Str(required=True),
+    'desc': fields.Str(),
+    'params': fields.Str(),
+    'keywords': fields.Str(),
+    'version': fields.Str(),
+    'homepage': fields.Str(),
+    'organization': fields.Str(),
+    'ongology_graph': fields.Str(),
+    'types': fields.Str()
+}, location='form')
+@login_required
+def api_edit_source(fed, id_, url, dstype, name, desc='', params='', keywords='', version='', homepage='',
+                    organization='', ontology_graph=None, types='') -> Response | Tuple[dict, Optional[Queue]]:
     """Serves requests to '/federation/editsource'.
 
     This method edits an existing data source based on the provided data.
@@ -373,6 +385,8 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
     ----
     This route only accepts POST requests.
 
+    The request is only served for logged-in users.
+
     Returns
     -------
     flask.Response | (dict, Queue | None)
@@ -387,56 +401,52 @@ def api_edit_source() -> Response | Tuple[dict, Optional[Queue]]:
         a JSON response indicating the KeyError will be returned.
 
     """
-    try:
-        fed = request.args['fed']
-        if fed is None or len(fed) == 0:
-            return Response(json.dumps({}), mimetype='application/json')
-        session['fed'] = fed
-
-        e = request.form
-        ds = DataSource(
-            e['id'],
-            e['url'],
-            e['dstype'],
-            name=e['name'],
-            desc=e['desc'] if 'desc' in e else '',
-            params=e['params'] if 'params' in e else '',
-            keywords=e['keywords'] if 'keywords' in e else '',
-            version=e['version'] if 'version' in e else '',
-            homepage=e['homepage'] if 'homepage' in e else '',
-            organization=e['organization'] if 'organization' in e else '',
-            ontology_graph=e['ontology_graph'] if 'ontology_graph' in e else None,
-            types=e['types'] if 'types' in e else ''
-        )
-        data = ds.to_rdf(update=True)
-        mdb = get_mdb()
-        insert_query = 'INSERT { ' + ' . \n'.join(data) + ' }'
-        delete_query = 'DELETE { <' + e['id'] + '> ?p ?o . }'
-        where_query = 'WHERE { <' + e['id'] + '> ?p ?o .\n' \
-                      '  FILTER( ?p != <http://purl.org/dc/terms/created> && ' \
-                      '    ?p != mt:triples )\n}'
-        rr = mdb.update('WITH GRAPH <' + fed + '>\n' + delete_query + '\n' + insert_query + '\n' + where_query)
-
-        if not ds.is_accessible():
-            if rr:
-                return {'status': -1}, None
-            else:
-                return {'status': -2}, None
-        else:
-            # TODO: Is it a good idea to re-create the MTs here?
-            mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', fed)
-            out_queue = Queue()
-            p = Process(target=mgr.create, args=(ds, out_queue, ))
-            p.start()
-            logger.info('Collecting RDF-MTs started')
-            return {'status': 1}, out_queue
-    except KeyError:
-        logger.error('KeyError: ' + str(request.form.keys()))
+    if len(fed) == 0:  # TODO: Maybe better to check if the federation actually exists?
         return Response(json.dumps({}), mimetype='application/json')
+    session['fed'] = fed
+
+    ds = DataSource(
+        rid=id_,
+        url=url,
+        ds_type=dstype,
+        name=name,
+        desc=desc,
+        params=params,
+        keywords=keywords,
+        version=version,
+        homepage=homepage,
+        organization=organization,
+        ontology_graph=ontology_graph,
+        types=types
+    )
+    data = ds.to_rdf(update=True)
+    mdb = get_mdb()
+    insert_query = 'INSERT { ' + ' . \n'.join(data) + ' }'
+    delete_query = 'DELETE { <' + id_ + '> ?p ?o . }'
+    where_query = 'WHERE { <' + id_ + '> ?p ?o .\n' \
+                  '  FILTER( ?p != <http://purl.org/dc/terms/created> && ' \
+                  '    ?p != mt:triples )\n}'
+    rr = mdb.update('WITH GRAPH <' + fed + '>\n' + delete_query + '\n' + insert_query + '\n' + where_query)
+
+    if not ds.is_accessible():
+        if rr:
+            return {'status': -1}, None
+        else:
+            return {'status': -2}, None
+    else:
+        # TODO: Is it a good idea to re-create the MTs here?
+        mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba', fed)
+        out_queue = Queue()
+        p = Process(target=mgr.create, args=(ds, out_queue, ))
+        p.start()
+        logger.info('Collecting RDF-MTs started')
+        return {'status': 1}, out_queue
 
 
 @bp.route('/api/findlinks', methods=['GET', 'POST'])
-def api_find_links() -> Response:
+@use_kwargs({'fed': fields.Str(required=True), 'datasource': fields.Str()}, location='query')
+@login_required
+def api_find_links(fed, datasource=None) -> Response:
     """Serves requests to '/federation/api/findlinks'.
 
     This method finds links between the RDF Molecule Templates of a data source.
@@ -445,6 +455,10 @@ def api_find_links() -> Response:
     present, all links for that particular source are searched, otherwise
     the links between all data source of the federation will be checked.
 
+    Note
+    ----
+    The request is only served for logged-in users.
+
     Returns
     -------
     flask.Response
@@ -452,12 +466,8 @@ def api_find_links() -> Response:
         The response will be empty if the parameter 'fed' was not present.
 
     """
-    fed = request.args.get('fed', None)
-    ds = request.args.get('datasource', None)
-    if fed is None:
-        return Response(json.dumps({}),  mimetype='application/json')
-
-    res, _ = find_links(fed, ds)
+    # TODO: check if federation/datasource exist?
+    res, _ = find_links(fed, datasource)
     return Response(json.dumps(res), mimetype='application/json')
 
 
@@ -493,13 +503,19 @@ def find_links(federation: str, data_source: str) -> Tuple[dict, Queue]:
 
 
 @bp.route('/api/recreatemts')
-def api_recreate_mts() -> Response:
+@use_kwargs({'fed': fields.Str(required=True), 'datasource': fields.Str(required=True)}, location='query')
+@login_required
+def api_recreate_mts(fed, datasource) -> Response:
     """Serves requests to '/federation/api/recreatemts'.
 
     This method recreates the RDF Molecule Templates of a data source.
     The parameters 'fed' and 'datasource' need to be present to correctly
     identify the federation and data source for which the RDF Molecule
     Templates should be recomputed.
+
+    Note
+    ----
+    The request is only served for logged-in users.
 
     Returns
     -------
@@ -508,12 +524,8 @@ def api_recreate_mts() -> Response:
         The response will be empty if one of the parameters is not present.
 
     """
-    fed = request.args.get('fed', None)
-    ds = request.args.get('datasource', None)
-    if fed is None or ds is None:
-        return Response(json.dumps({}), mimetype='application/json')
-
-    res, _ = recreate_mts(fed, ds)
+    # TODO: check if federation/datasource exist?
+    res, _ = recreate_mts(fed, datasource)
     return Response(json.dumps(res), mimetype='application/json')
 
 
@@ -597,7 +609,7 @@ def create_federation(name: str, desc: str, is_public: bool) -> Optional[str]:
         '<' + uri + '>  a  mt:Federation ',
         '<' + uri + '>  mt:name "' + name + '"',
         '<' + uri + '>  mt:desc "' + desc + '"',
-        '<' + uri + '>  mt:ispublic ' + str(is_public),
+        '<' + uri + '>  mt:ispublic "' + str(is_public) + '"',
         '<' + uri + '>  <http://purl.org/dc/terms/created> "' + today + '"',
         '<' + uri + '>  <http://purl.org/dc/terms/modified> "' + today + '"'
     ]

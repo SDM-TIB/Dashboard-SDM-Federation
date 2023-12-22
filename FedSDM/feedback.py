@@ -1,8 +1,10 @@
 import json
 
 from flask import (
-    Blueprint, g, render_template, session, Response, request
+    Blueprint, g, render_template, session, Response
 )
+from webargs import fields
+from webargs.flaskparser import use_kwargs
 
 from FedSDM.auth import login_required
 from FedSDM.db import get_db
@@ -37,8 +39,9 @@ def feedback_overview() -> str:
 
 
 @bp.route('/issues')
+@use_kwargs({'fed': fields.Str(required=True)}, location='query')
 @login_required
-def feedback_list() -> Response:
+def feedback_list(fed) -> Response:
     """Serves requests to '/feedback/issues'.
 
     This route provides all the issues that have been raised for a certain federation.
@@ -62,10 +65,6 @@ def feedback_list() -> Response:
             - created -- the date the issue was raised
 
     """
-    try:
-        fed = request.args['fed']
-    except KeyError:
-        return Response(json.dumps({'data': []}), mimetype='application/json')
     res = []
     db = get_db()
     if fed is None:
@@ -76,6 +75,7 @@ def feedback_list() -> Response:
             ' ORDER BY created DESC'
         ).fetchall()
     else:
+        # TODO: Handle the case of all federations
         feedbacks = db.execute(
             'SELECT distinct f.id as id, f.federationID as fed, f.created as created, '
             '     f.issueDesc as desc, f.issueQuery as query , u.username as user, f.issueStatus as status'
@@ -98,12 +98,13 @@ def feedback_list() -> Response:
 
 
 @bp.route('/details')
+@use_kwargs({'iid': fields.Int(required=True)}, location='query')
 @login_required
-def feedback_details() -> Response:
+def feedback_details(iid) -> Response:
     """Serves requests to '/feedback/details'.
 
     Provides more details about the issue in question. In order to do so, the
-    ID of the issue must be included in the parameter 'id' of the request.
+    ID of the issue must be included in the parameter 'iid' of the request.
 
     Note
     ----
@@ -122,17 +123,13 @@ def feedback_details() -> Response:
         are no details to be returned for the issue with the provided ID.
 
     """
-    try:
-        iid = request.args['id']
-    except KeyError:
-        return Response(json.dumps({}), mimetype='application/json')
     db = get_db()
     if iid is None:
         return Response(json.dumps({}), mimetype='application/json')
     else:
         feedback_data = db.execute(
             'SELECT distinct projVar, projPred, rowData '
-            ' FROM feedbackdata WHERE reportID="' + iid + '" '
+            ' FROM feedbackdata WHERE reportID="' + str(iid) + '" '
         ).fetchone()
 
         if feedback_data is None:
