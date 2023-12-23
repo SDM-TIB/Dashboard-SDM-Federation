@@ -219,7 +219,7 @@ def data_sources(graph) -> Response:
     'version': fields.Str(),
     'homepage': fields.Str(),
     'organization': fields.Str(),
-    'ongology_graph': fields.Str(),
+    'ontology_graph': fields.Str(),
     'types': fields.Str()
 }, location='form')
 @login_required
@@ -357,7 +357,7 @@ def add_data_source(federation: str, data_source: DataSource) -> Tuple[dict, Opt
     'version': fields.Str(),
     'homepage': fields.Str(),
     'organization': fields.Str(),
-    'ongology_graph': fields.Str(),
+    'ontology_graph': fields.Str(),
     'types': fields.Str()
 }, location='form')
 @login_required
