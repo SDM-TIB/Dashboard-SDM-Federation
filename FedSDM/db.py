@@ -93,7 +93,7 @@ class MetadataDB:
         headers = {'Accept': format_, 'Referer': self.query_endpoint, 'Host': self.query_server}
         return contact_rdf_source(query, self.query_endpoint, output_queue, params_=params, headers_=headers)
 
-    def update(self, insert_query: str) -> bool:
+    def update(self, update_query: str) -> bool:
         """Executes a SPARQL UPDATE query over the update endpoint of the instance.
 
         Executed the given SPARQL UPDATE query over the update endpoint
@@ -101,7 +101,7 @@ class MetadataDB:
 
         Parameters
         ----------
-        insert_query : str
+        update_query : str
             The SPARQL UPDATE query to be executed.
 
         Returns
@@ -110,8 +110,8 @@ class MetadataDB:
             Indicating whether executing the update was successful.
 
         """
-        insert_query = self.prefixes + insert_query
-        return update_rdf_source(insert_query, self.update_endpoint, self.username, self.password)
+        update_query = self.prefixes + update_query
+        return update_rdf_source(update_query, self.update_endpoint, self.username, self.password)
 
 
 def get_db() -> sqlite3.Connection:
