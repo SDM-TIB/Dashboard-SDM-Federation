@@ -1,4 +1,4 @@
-from __future__ import annotations  # Python 3.10 still has issues with typing when using classes from the same module
+from __future__ import annotations  # Python 3.12 still has issues with typing when using classes from the same module
 
 import datetime
 import time

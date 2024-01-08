@@ -1,4 +1,4 @@
-from __future__ import annotations  # Python 3.10 still has issues with typing when using classes from the same module
+from __future__ import annotations  # Python 3.12 still has issues with if TYPE_CHECKING imports
 
 import time
 import urllib.parse as urlparse
@@ -19,7 +19,7 @@ logger = get_logger('mtupdate', './mt-update.log', True)
 
 
 def iterative_query(query: str,
-                    server: str | 'DataSource',
+                    server: str | DataSource,
                     limit: int = 10000,
                     max_tries: int = -1,
                     max_answers: int = -1) -> Tuple[list, int]:
@@ -84,7 +84,7 @@ def iterative_query(query: str,
 
 
 def contact_rdf_source(query: str,
-                       endpoint: str | 'DataSource',
+                       endpoint: str | DataSource,
                        output_queue: Queue = Queue(),
                        format_: str = 'application/sparql-results+json',
                        params_: str = None,
