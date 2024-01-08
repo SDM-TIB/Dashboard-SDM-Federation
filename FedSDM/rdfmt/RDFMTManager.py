@@ -1,7 +1,6 @@
 import datetime
 import hashlib
 from multiprocessing import Queue, Process
-from pprint import pprint
 from queue import Empty
 from typing import List, Optional
 
@@ -75,9 +74,6 @@ class RDFMTMgr(object):
             A dictionary with the RDF Molecule Templates for the datasource *ds*.
 
         """
-        endpoint = ds.url
-        # logger.info('----------------------' + endpoint + '-------------------------------------')
-
         if not is_update:
             # Get #triples of a dataset
             triples = self.get_cardinality(ds)
@@ -119,9 +115,6 @@ class RDFMTMgr(object):
 
         rdf_molecules[endpoint] = results
 
-        # pprint(results)
-        # logger.info('*********** ' + endpoint + ' ***********')
-        # logger.info('*********** finished ***********')
         return rdf_molecules
 
     def get_typed_concepts(self, endpoint: DataSource) -> List[dict]:
@@ -157,10 +150,6 @@ class RDFMTMgr(object):
         else:
             res_list = [{'t': t} for t in types]
 
-        # logger.info(endpoint.url)
-        # logger.info(res_list)
-        # pprint(res_list)
-
         results = []
         already_processed = []
         for r in res_list:
@@ -169,8 +158,6 @@ class RDFMTMgr(object):
                 continue
             if t in already_processed:
                 continue
-            # print(t)
-            # print('---------------------------------------')
             already_processed.append(t)
             card = self.get_cardinality(endpoint, t)
 
@@ -195,7 +182,6 @@ class RDFMTMgr(object):
                 property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
                 pred_card = self.get_cardinality(endpoint, t, prop=pred)
-                # print(pred, pred_card)
                 rn['p'] = pred
                 rn['predcard'] = pred_card
 
@@ -431,8 +417,6 @@ class RDFMTMgr(object):
         else:
             res_list = [{'t': t} for t in types]
 
-        # logger.info(endpoint.url)
-        # logger.info(res_list)
         results = []
         already_processed = {}
         mts = {}
@@ -457,7 +441,6 @@ class RDFMTMgr(object):
                 mt_card = already_processed[t]
 
             pred = r['p']
-            # print(pred)
             rn = {'t': t, 'cardinality': mt_card, 'subclasses': subclasses}
             mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
             property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred).encode()).hexdigest())
@@ -472,7 +455,6 @@ class RDFMTMgr(object):
 
             ranges = []
             if 'range' in r and XSD not in r['range']:
-                # print('range', r['range'])
                 rn['range'].append(r['range'])
                 mr = r['range']
                 mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred + mr).encode()).hexdigest())
@@ -885,7 +867,6 @@ class RDFMTMgr(object):
         data = ['<' + datasource.rid + '> <http://purl.org/dc/terms/modified> "' + today + '"']
         delete = ['<' + datasource.rid + '> <http://purl.org/dc/terms/modified> ?modified ']
         self.delete_insert_data(delete, data, delete)
-        # print(did)
         for si in sourcemaps:
             s = sourcemaps[si]
             if si == did:
@@ -897,7 +878,6 @@ class RDFMTMgr(object):
                 p.start()
                 return p
 
-            # print(si)
             queue1 = Queue()
             queues[did] = queue1
             processes[did] = inter_ds_links(ds, rdfmts[did], s, rdfmts[si], queue1)
@@ -911,7 +891,6 @@ class RDFMTMgr(object):
                         try:
                             queue = queues[endpoint]
                             r = queue.get(False)
-                            # print(r)
                             if r == 'EOF':
                                 to_remove.append(endpoint)
                         except Empty:
@@ -919,7 +898,6 @@ class RDFMTMgr(object):
                     for r in to_remove:
                         if r in queues:
                             del queues[r]
-                        # print(r, queues.keys())
                         if r in processes and processes[r].is_alive():
                             print('terminating: ', r)
                             processes[r].terminate()
@@ -973,8 +951,6 @@ class RDFMTMgr(object):
             types_found = self.get_links_bn_ds(res_list, rdfmts_endpoint2, url_endpoint2)
             for link in types_found:
                 data = []
-                # if 'Movie' in m1:
-                #     print(m1, ' ====== ', link)
                 if len(types_found[link]) > 0:
                     print(len(types_found[link]), 'links found')
                     try:
@@ -991,7 +967,6 @@ class RDFMTMgr(object):
                         if len(data) > 0:
                             self.update_graph(data)
                     except Exception as e:
-                        # print('Exception : ', e)
                         logger.error('Exception while collecting data' + str(e))
                         logger.error(m1 + ' --- Vs --- ' + 'in [' + url_endpoint2 + ']')
                         logger.error(types_found)
@@ -1024,11 +999,8 @@ class RDFMTMgr(object):
         """
         results = {}
         for pred in predicate_instance_list:
-            # print(pred)
             rdfmts_found = self.get_mts_matches(predicate_instance_list[pred], endpoint)
             results[pred] = [r for r in rdfmts_found if r in rdfmts]
-            # print(results[pred])
-            # print('=-=-=-=-=-=-')
         return results
 
     @staticmethod
@@ -1080,7 +1052,6 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
-        # logger.info('----------------------' + datasource.url + '-------------------------------------')
         types = datasource.types_to_list()
         if types is None:  # TODO: shortcut if types is set
             types = []
@@ -1101,7 +1072,6 @@ class RDFMTMgr(object):
                    '    ?ptls rml:source ?rds .\n' \
                    '  }\n' \
                    '}}'
-        # print(mt_query)
         res, card = contact_rdf_source(mt_query, self.query_endpoint)
         results = []
         data = []
@@ -1160,7 +1130,6 @@ class RDFMTMgr(object):
                             mr_pid = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p + mr).encode()).hexdigest())
                             rtype = 0
                             for mrr in predicates[p][mr]:
-                                # print(p, mr, mrr)
                                 rds = DataSource(mrr, datasource.url, DataSourceType.MONGODB)  # Only mrr is important here for the range
                                 ran = PropRange(mr_pid, mr, rds, range_type=rtype, cardinality=-1)
                                 ranges.append(ran)
