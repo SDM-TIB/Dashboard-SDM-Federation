@@ -312,20 +312,13 @@ def add_data_source(federation: str, data_source: DataSource) -> Tuple[dict, Opt
 
     """
     mdb = get_mdb()
-    # username and password are optional
     mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, mdb.username, mdb.password, federation)
     out_queue = Queue()
     logger.info(data_source.ds_type)
     if data_source.ds_type == DataSourceType.SPARQL_ENDPOINT:
         if not data_source.is_accessible():
-            data = data_source.to_rdf()
-            insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
-            rr = mdb.update(insert_query)
             logger.info(str(data_source.url) + ' cannot be accessed. Please check if you write URLs properly!')
-            if rr:
-                return {'status': -1}, None
-            else:
-                return {'status': -2}, None
+            return {'status': -2}, None
         data = data_source.to_rdf()
         insert_query = 'INSERT DATA { GRAPH <' + federation + '> { ' + ' . \n'.join(data) + '} }'
         mdb.update(insert_query)

@@ -447,7 +447,7 @@ $(function() {
                 dataType: 'json',
                 crossDomain: true,
                 success: function(data) {
-                    if (data !== null && data.length > 0) { manage(federation) }
+                    if (data.status >= 0) { manage(federation) }
                     else {
                         close = false;
                         updateTips('Error while adding data source to the federation!');
