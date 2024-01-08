@@ -1,13 +1,18 @@
+from __future__ import annotations  # Python 3.12 still has issues with if TYPE_CHECKING during runtime
+
 import datetime
 import hashlib
 from multiprocessing import Queue, Process
 from queue import Empty
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.model import RDFMT, MTProperty, PropRange, DataSource, DataSourceType, Source
 from FedSDM.rdfmt.prefixes import RDFS, XSD, metas, MT_RESOURCE, MT_ONTO
-from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source, iterative_query
+from FedSDM.rdfmt.utils import contact_rdf_source, iterative_query
+
+if TYPE_CHECKING:
+    from FedSDM.db import MetadataDB
 
 logger = get_logger('rdfmts', './rdfmts.log', True)
 """Logger for this module. It logs to the file 'rdfmts.log' as well as to stdout."""
@@ -22,7 +27,7 @@ class RDFMTMgr(object):
 
     """
 
-    def __init__(self, query_url: str, update_url: str, user: str, passwd: str, graph: str):
+    def __init__(self, mdb: MetadataDB, graph: str):
         """Creates a new *RDFMTMgr* instance.
 
         The *RDFMTMgr* object can be used to create and/or update the RDF Molecule Templates
@@ -30,23 +35,14 @@ class RDFMTMgr(object):
 
         Parameters
         ----------
-        query_url : str
-            The URL of the SPARQL endpoint to be used when sending queries.
-        update_url : str
-            The URL of the SPARQL endpoint to be used when updating the metadata.
-        user : str
-            The username required in order to get the update permissions.
-        passwd : str
-            The user's password required to authenticate for update permissions.
+        mdb : MetadataDB
+            Instance of the metadata endpoint holding source descriptions.
         graph : str
             The graph URI used in the SPARQL endpoint for storing the metadata of the federation.
 
         """
         self.graph = graph
-        self.query_endpoint = query_url
-        self.update_endpoint = update_url
-        self.user = user
-        self.passwd = passwd
+        self.mdb = mdb
 
     def create(self, ds: DataSource, out_queue: Queue = Queue(), is_update: bool = False) -> dict:
         """(Re-)creates the RDF Molecule Templates of a datasource within the federation.
@@ -510,10 +506,10 @@ class RDFMTMgr(object):
                 update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:]) + '} }'
             else:
                 update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:i + 49]) + '} }'
-            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
+            self.mdb.update(update_query)
         if i < len(data) + 49:
             update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:]) + '} }'
-            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
+            self.mdb.update(update_query)
 
     def delete_insert_data(self, delete: list, insert: list, where: list = None) -> None:
         """Updates the RDF Molecule Templates in the RDF knowledge graph.
@@ -548,13 +544,13 @@ class RDFMTMgr(object):
                 update_query += ' . \n'.join(delete[i:i + 49]) + '} ' \
                                 'INSERT {' + ' . \n'.join(insert[i:i + 49]) + '} ' \
                                 'WHERE {' + ' . \n'.join(where[i:i + 49]) + '}'
-            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
+            self.mdb.update(update_query)
         update_query = 'WITH <' + self.graph + '> DELETE {'
         if i < len(delete) + 49:
             update_query += ' . \n'.join(delete[i:]) + '} ' \
                            'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
                            'WHERE {' + ' . \n'.join(where[i:]) + '}'
-            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
+            self.mdb.update(update_query)
 
     @staticmethod
     def get_cardinality(endpoint: str | DataSource,
@@ -666,7 +662,7 @@ class RDFMTMgr(object):
                 '  ?subject a <' + MT_ONTO + 'DataSource> .\n' \
                 '  ?subject <' + MT_ONTO + 'url> ?url .\n' \
                 '}}'
-        res_list, _ = iterative_query(query, self.query_endpoint, limit=1000)
+        res_list, _ = self.mdb.iterative_query(query, limit=1000)
         return res_list
 
     def get_source(self, ds_id: str) -> Optional[DataSource]:
@@ -701,7 +697,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'desc> ?desc }\n' \
                 '  OPTIONAL { <' + ds_id + '> <' + MT_ONTO + 'triples> ?triples }\n' \
                 '}}'
-        res_list, _ = iterative_query(query, self.query_endpoint, limit=1, max_answers=1)
+        res_list, _ = self.mdb.iterative_query(query, limit=1, max_answers=1)
         if len(res_list) > 0:
             res = res_list[0]
             return DataSource(
@@ -744,7 +740,7 @@ class RDFMTMgr(object):
                 '  OPTIONAL { ?source <' + MT_ONTO + 'cardinality> ?card }\n' \
                 '  ?source <' + MT_ONTO + 'datasource> <' + datasource + '> .\n' \
                 '}}'
-        res_list, _ = iterative_query(query, self.query_endpoint, limit=1000)
+        res_list, _ = self.mdb.iterative_query(query, limit=1000)
         return res_list
 
     def create_inter_ds_links(self, datasource: DataSource | str = None, output_queue: Queue = Queue()) -> None:
@@ -1072,7 +1068,7 @@ class RDFMTMgr(object):
                    '    ?ptls rml:source ?rds .\n' \
                    '  }\n' \
                    '}}'
-        res, card = contact_rdf_source(mt_query, self.query_endpoint)
+        res, card = self.mdb.query(mt_query)
         results = []
         data = []
         if card > 0:

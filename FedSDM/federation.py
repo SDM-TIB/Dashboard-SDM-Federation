@@ -312,7 +312,7 @@ def add_data_source(federation: str, data_source: DataSource) -> Tuple[dict, Opt
 
     """
     mdb = get_mdb()
-    mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, mdb.username, mdb.password, federation)
+    mgr = RDFMTMgr(mdb, federation)
     out_queue = Queue()
     logger.info(data_source.ds_type)
     if data_source.ds_type == DataSourceType.SPARQL_ENDPOINT:
@@ -428,7 +428,7 @@ def api_edit_source(fed, id_, url, dstype, name, desc='', params='', keywords=''
             return {'status': -2}, None
     else:
         # TODO: Is it a good idea to re-create the MTs here?
-        mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, mdb.username, mdb.password, fed)
+        mgr = RDFMTMgr(mdb, fed)
         out_queue = Queue()
         p = Process(target=mgr.create, args=(ds, out_queue, ))
         p.start()
@@ -488,7 +488,7 @@ def find_links(federation: str, data_source: str) -> Tuple[dict, Queue]:
 
     """
     mdb = get_mdb()
-    mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, mdb.username, mdb.password, federation)
+    mgr = RDFMTMgr(mdb, federation)
     out_queue = Queue()
     p = Process(target=mgr.create_inter_ds_links, args=(data_source, out_queue,))
     p.start()
@@ -545,7 +545,7 @@ def recreate_mts(federation: str, ds: str) -> Tuple[dict, Optional[Queue]]:
 
     """
     mdb = get_mdb()
-    mgr = RDFMTMgr(mdb.query_endpoint, mdb.update_endpoint, mdb.username, mdb.password, federation)
+    mgr = RDFMTMgr(mdb, federation)
     out_queue = Queue()
     data_source = mgr.get_source(ds)
     if data_source is None:

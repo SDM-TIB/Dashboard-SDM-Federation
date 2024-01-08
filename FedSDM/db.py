@@ -7,7 +7,7 @@ from flask import Flask, current_app, g
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
-from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source
+from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source, iterative_query
 
 logger = get_logger('mt-update', './mt-update.log')
 
@@ -92,6 +92,22 @@ class MetadataDB:
         params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 10000000})
         headers = {'Accept': format_, 'Referer': self.query_endpoint, 'Host': self.query_server}
         return contact_rdf_source(query, self.query_endpoint, output_queue, params_=params, headers_=headers)
+
+    def iterative_query(self, query, **kwargs):
+        """Executes a SPARQL query iteratively.
+
+        The given SPARQL query is executed iteratively, i.e., the results are retrieved in blocks of size *limit*.
+        It is also possible to specify the maximum number of results or requests made.
+        For more information, see :func:`FedSDM.utils.iterative_query`.
+
+        Parameters
+        ----------
+        query : str
+            The SPARQL query to be executed.
+
+        """
+        query = self.prefixes + query
+        return iterative_query(query, self.query_endpoint, **kwargs)
 
     def update(self, update_query: str) -> bool:
         """Executes a SPARQL UPDATE query over the update endpoint of the instance.
