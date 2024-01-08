@@ -9,9 +9,10 @@ from typing import Tuple, TYPE_CHECKING
 import requests
 from requests.auth import HTTPDigestAuth
 
+from FedSDM import get_logger
+
 if TYPE_CHECKING:
     from FedSDM.rdfmt.model import DataSource
-from FedSDM import get_logger
 
 logger = get_logger('mtupdate', './mt-update.log', True)
 """Logger for this module. It logs to the file 'mt-update.log' as well as to stdout."""
