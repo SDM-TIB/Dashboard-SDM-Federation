@@ -1,10 +1,8 @@
 import os
 import sqlite3
 import urllib.parse as urlparse
-from http import HTTPStatus
 from multiprocessing import Queue
 
-import requests
 from flask import Flask, current_app, g
 
 from FedSDM import get_logger
