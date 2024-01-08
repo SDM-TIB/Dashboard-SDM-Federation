@@ -60,7 +60,6 @@ class MetadataDB:
                         'PREFIX mt: <' + MT_ONTO + '>\n' \
                         'PREFIX mtres: <' + MT_RESOURCE + '>\n'
 
-        # TODO: use the credentials
         self.username = username
         self.password = password
 
