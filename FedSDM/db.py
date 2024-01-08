@@ -9,7 +9,7 @@ from flask import Flask, current_app, g
 
 from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE, XSD
-from FedSDM.rdfmt.utils import contact_rdf_source
+from FedSDM.rdfmt.utils import contact_rdf_source, update_rdf_source
 
 logger = get_logger('mt-update', './mt-update.log')
 
@@ -91,7 +91,6 @@ class MetadataDB:
             during the execution. In that case, the cardinality will be marked as -2.
 
         """
-        # Build the query and header.
         query = self.prefixes + query
         params = urlparse.urlencode({'query': query, 'format': 'JSON', 'timeout': 10000000})
         headers = {'Accept': format_, 'Referer': self.query_endpoint, 'Host': self.query_server}
@@ -114,26 +113,8 @@ class MetadataDB:
             Indicating whether executing the update was successful.
 
         """
-        # Build the header.
         insert_query = self.prefixes + insert_query
-        headers = {'Accept': '*/*',
-                   'Referer': self.update_endpoint,
-                   'Host': self.update_server,
-                   'Content-type': 'application/sparql-update'}
-
-        try:
-            resp = requests.post(self.update_endpoint, data=insert_query, headers=headers)
-            status = resp.status_code
-            if status == HTTPStatus.OK or status == HTTPStatus.ACCEPTED or status == HTTPStatus.NO_CONTENT:
-                return True
-            else:
-                logger.error('Update ' + self.update_endpoint + ' returned: ' + str(status) + '\nReason: ' +
-                             str(resp.reason) + '\nFailed query:\n' + insert_query)
-        except Exception as e:
-            logger.exception('Update ' + self.update_endpoint + ' caused an exception: ' +
-                             str(e) + '\nQuery:\n' + insert_query)
-
-        return False
+        return update_rdf_source(insert_query, self.update_endpoint, self.username, self.password)
 
 
 def get_db() -> sqlite3.Connection:
@@ -181,9 +162,13 @@ def get_mdb() -> MetadataDB:
         meta_endpoint = os.environ['METADATA_ENDPOINT']
     else:
         meta_endpoint = 'http://localhost:9000/sparql'
+    if 'METADATA_ENDPOINT_UPDATE' in os.environ:
+        meta_endpoint_update = os.environ['METADATA_ENDPOINT_UPDATE']
+    else:
+        meta_endpoint_update = 'http://localhost:9000/sparql-auth'
 
     if 'mdb' not in g:
-        g.mdb = MetadataDB(meta_endpoint)
+        g.mdb = MetadataDB(meta_endpoint, meta_endpoint_update, os.environ.get('METADATA_ENDPOINT_USER', None), os.environ.get('METADATA_ENDPOINT_PASSWORD', None))
         g.default_graph = os.environ['DEFAULT_GRAPH'] if 'DEFAULT_GRAPH' in os.environ else 'http://ontario.tib.eu'
     return g.mdb
 

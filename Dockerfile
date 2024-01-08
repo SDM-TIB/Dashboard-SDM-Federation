@@ -2,6 +2,9 @@ FROM python:3.12.1-slim-bookworm
 
 # Define environment variables
 ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
+    METADATA_ENDPOINT_UPDTAE="http://localhost:9000/sparql-auth" \
+    METADATA_ENDPOINT_USER="dba" \
+    METADATA_ENDPOINT_PASSWORD="dba" \
     DEFAULT_GRAPH="http://ontario.tib.eu" \
     APP_PREFIX="/" \
     VIRT_HTTPSERVER_SERVERPORT="9000" \

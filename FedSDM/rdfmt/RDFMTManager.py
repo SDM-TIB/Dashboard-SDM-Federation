@@ -76,7 +76,7 @@ class RDFMTMgr(object):
 
         """
         endpoint = ds.url
-        logger.info('----------------------' + endpoint + '-------------------------------------')
+        # logger.info('----------------------' + endpoint + '-------------------------------------')
 
         if not is_update:
             # Get #triples of a dataset
@@ -119,9 +119,9 @@ class RDFMTMgr(object):
 
         rdf_molecules[endpoint] = results
 
-        pprint(results)
-        logger.info('*********** ' + endpoint + ' ***********')
-        logger.info('*********** finished ***********')
+        # pprint(results)
+        # logger.info('*********** ' + endpoint + ' ***********')
+        # logger.info('*********** finished ***********')
         return rdf_molecules
 
     def get_typed_concepts(self, endpoint: DataSource) -> List[dict]:
@@ -157,9 +157,9 @@ class RDFMTMgr(object):
         else:
             res_list = [{'t': t} for t in types]
 
-        logger.info(endpoint.url)
-        logger.info(res_list)
-        pprint(res_list)
+        # logger.info(endpoint.url)
+        # logger.info(res_list)
+        # pprint(res_list)
 
         results = []
         already_processed = []
@@ -169,8 +169,8 @@ class RDFMTMgr(object):
                 continue
             if t in already_processed:
                 continue
-            print(t)
-            print('---------------------------------------')
+            # print(t)
+            # print('---------------------------------------')
             already_processed.append(t)
             card = self.get_cardinality(endpoint, t)
 
@@ -195,7 +195,7 @@ class RDFMTMgr(object):
                 property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred).encode()).hexdigest())
                 # Get cardinality of this predicate from this RDF-MT
                 pred_card = self.get_cardinality(endpoint, t, prop=pred)
-                print(pred, pred_card)
+                # print(pred, pred_card)
                 rn['p'] = pred
                 rn['predcard'] = pred_card
 
@@ -431,8 +431,8 @@ class RDFMTMgr(object):
         else:
             res_list = [{'t': t} for t in types]
 
-        logger.info(endpoint.url)
-        logger.info(res_list)
+        # logger.info(endpoint.url)
+        # logger.info(res_list)
         results = []
         already_processed = {}
         mts = {}
@@ -444,7 +444,7 @@ class RDFMTMgr(object):
             subclasses = []
             if t not in already_processed:
                 mt_card = -1
-                print(t)
+                # print(t)
                 source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t).encode()).hexdigest())
                 source = Source(source_uri, endpoint, mt_card)
                 already_processed[t] = mt_card
@@ -457,7 +457,7 @@ class RDFMTMgr(object):
                 mt_card = already_processed[t]
 
             pred = r['p']
-            print(pred)
+            # print(pred)
             rn = {'t': t, 'cardinality': mt_card, 'subclasses': subclasses}
             mt_predicate_uri = MT_RESOURCE + str(hashlib.md5(str(t + pred).encode()).hexdigest())
             property_source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred).encode()).hexdigest())
@@ -472,7 +472,7 @@ class RDFMTMgr(object):
 
             ranges = []
             if 'range' in r and XSD not in r['range']:
-                print('range', r['range'])
+                # print('range', r['range'])
                 rn['range'].append(r['range'])
                 mr = r['range']
                 mr_pid = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t + pred + mr).encode()).hexdigest())
@@ -528,12 +528,10 @@ class RDFMTMgr(object):
                 update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:]) + '} }'
             else:
                 update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:i + 49]) + '} }'
-            logger.info(update_query)
-            update_rdf_source(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
         if i < len(data) + 49:
             update_query = 'INSERT DATA { GRAPH <' + self.graph + '> { ' + ' . \n'.join(data[i:]) + '} }'
-            logger.info(update_query)
-            update_rdf_source(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
 
     def delete_insert_data(self, delete: list, insert: list, where: list = None) -> None:
         """Updates the RDF Molecule Templates in the RDF knowledge graph.
@@ -568,15 +566,13 @@ class RDFMTMgr(object):
                 update_query += ' . \n'.join(delete[i:i + 49]) + '} ' \
                                 'INSERT {' + ' . \n'.join(insert[i:i + 49]) + '} ' \
                                 'WHERE {' + ' . \n'.join(where[i:i + 49]) + '}'
-            logger.info(update_query)
-            update_rdf_source(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
         update_query = 'WITH <' + self.graph + '> DELETE {'
         if i < len(delete) + 49:
             update_query += ' . \n'.join(delete[i:]) + '} ' \
                            'INSERT {' + ' . \n'.join(insert[i:]) + '} ' \
                            'WHERE {' + ' . \n'.join(where[i:]) + '}'
-            logger.info(update_query)
-            update_rdf_source(update_query, self.update_endpoint)
+            update_rdf_source(update_query, self.update_endpoint, self.user, self.passwd)
 
     @staticmethod
     def get_cardinality(endpoint: str | DataSource,
@@ -889,7 +885,7 @@ class RDFMTMgr(object):
         data = ['<' + datasource.rid + '> <http://purl.org/dc/terms/modified> "' + today + '"']
         delete = ['<' + datasource.rid + '> <http://purl.org/dc/terms/modified> ?modified ']
         self.delete_insert_data(delete, data, delete)
-        print(did)
+        # print(did)
         for si in sourcemaps:
             s = sourcemaps[si]
             if si == did:
@@ -901,7 +897,7 @@ class RDFMTMgr(object):
                 p.start()
                 return p
 
-            print(si)
+            # print(si)
             queue1 = Queue()
             queues[did] = queue1
             processes[did] = inter_ds_links(ds, rdfmts[did], s, rdfmts[si], queue1)
@@ -915,7 +911,7 @@ class RDFMTMgr(object):
                         try:
                             queue = queues[endpoint]
                             r = queue.get(False)
-                            print(r)
+                            # print(r)
                             if r == 'EOF':
                                 to_remove.append(endpoint)
                         except Empty:
@@ -923,7 +919,7 @@ class RDFMTMgr(object):
                     for r in to_remove:
                         if r in queues:
                             del queues[r]
-                        print(r, queues.keys())
+                        # print(r, queues.keys())
                         if r in processes and processes[r].is_alive():
                             print('terminating: ', r)
                             processes[r].terminate()
@@ -977,8 +973,8 @@ class RDFMTMgr(object):
             types_found = self.get_links_bn_ds(res_list, rdfmts_endpoint2, url_endpoint2)
             for link in types_found:
                 data = []
-                if 'Movie' in m1:
-                    print(m1, ' ====== ', link)
+                # if 'Movie' in m1:
+                #     print(m1, ' ====== ', link)
                 if len(types_found[link]) > 0:
                     print(len(types_found[link]), 'links found')
                     try:
@@ -995,7 +991,7 @@ class RDFMTMgr(object):
                         if len(data) > 0:
                             self.update_graph(data)
                     except Exception as e:
-                        print('Exception : ', e)
+                        # print('Exception : ', e)
                         logger.error('Exception while collecting data' + str(e))
                         logger.error(m1 + ' --- Vs --- ' + 'in [' + url_endpoint2 + ']')
                         logger.error(types_found)
@@ -1028,11 +1024,11 @@ class RDFMTMgr(object):
         """
         results = {}
         for pred in predicate_instance_list:
-            print(pred)
+            # print(pred)
             rdfmts_found = self.get_mts_matches(predicate_instance_list[pred], endpoint)
             results[pred] = [r for r in rdfmts_found if r in rdfmts]
-            print(results[pred])
-            print('=-=-=-=-=-=-')
+            # print(results[pred])
+            # print('=-=-=-=-=-=-')
         return results
 
     @staticmethod
@@ -1084,7 +1080,7 @@ class RDFMTMgr(object):
             such as predicates and cardinality.
 
         """
-        logger.info('----------------------' + datasource.url + '-------------------------------------')
+        # logger.info('----------------------' + datasource.url + '-------------------------------------')
         types = datasource.types_to_list()
         if types is None:  # TODO: shortcut if types is set
             types = []
@@ -1105,7 +1101,7 @@ class RDFMTMgr(object):
                    '    ?ptls rml:source ?rds .\n' \
                    '  }\n' \
                    '}}'
-        print(mt_query)
+        # print(mt_query)
         res, card = contact_rdf_source(mt_query, self.query_endpoint)
         results = []
         data = []
@@ -1164,7 +1160,7 @@ class RDFMTMgr(object):
                             mr_pid = MT_RESOURCE + str(hashlib.md5(str(datasource.url + t + p + mr).encode()).hexdigest())
                             rtype = 0
                             for mrr in predicates[p][mr]:
-                                print(p, mr, mrr)
+                                # print(p, mr, mrr)
                                 rds = DataSource(mrr, datasource.url, DataSourceType.MONGODB)  # Only mrr is important here for the range
                                 ran = PropRange(mr_pid, mr, rds, range_type=rtype, cardinality=-1)
                                 ranges.append(ran)

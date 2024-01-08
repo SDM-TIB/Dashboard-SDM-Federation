@@ -7,6 +7,7 @@ from multiprocessing import Queue
 from typing import Tuple, TYPE_CHECKING
 
 import requests
+from requests.auth import HTTPDigestAuth
 
 if TYPE_CHECKING:
     from FedSDM.rdfmt.model import DataSource
@@ -192,7 +193,7 @@ def contact_rdf_source(query: str,
     return None, -2
 
 
-def update_rdf_source(update_query: str, endpoint: str) -> bool:
+def update_rdf_source(update_query: str, endpoint: str, username: str, password: str) -> bool:
     """Updates a SPARQL endpoint using a SPARQL update query.
 
     The provided SPARQL endpoint is updated by executing the SPARQL update query.
@@ -204,6 +205,10 @@ def update_rdf_source(update_query: str, endpoint: str) -> bool:
         The SPARQL update query that needs to be executed for the intended update.
     endpoint : str
         The URL of the SPARQL endpoint that should be updated.
+    username : str
+        The username to use for authentication with the SPARQL endpoint
+    password : str
+        The user's password to use for authentication with the SPARQL endpoint
 
     Returns
     -------
@@ -214,18 +219,16 @@ def update_rdf_source(update_query: str, endpoint: str) -> bool:
     """
     headers = {'Accept': '*/*', 'Content-type': 'application/sparql-update'}
     try:
-        resp = requests.post(endpoint, data=update_query, headers=headers)
+        resp = requests.post(endpoint, data=update_query, headers=headers, auth=HTTPDigestAuth(username, password))
         if resp.status_code == HTTPStatus.OK or \
                 resp.status_code == HTTPStatus.ACCEPTED or \
                 resp.status_code == HTTPStatus.NO_CONTENT:
             return True
         else:
-            print('Update Endpoint->', endpoint, resp.reason, resp.status_code, update_query)
-            logger.error(endpoint+' - ' + str(resp.reason) + ' - ' + str(resp.status_code))
-            logger.error('ERROR ON: ' + update_query)
+            logger.error('Update ' + endpoint + ' returned: ' + str(resp.status_code) + '\nReason: ' +
+                         str(resp.reason) + '\nFailed query:\n' + update_query)
     except Exception as e:
-        print('Exception during update query execution to', endpoint, ': ', e, update_query)
-        logger.error('Exception on update: ' + endpoint + ' ' + str(e))
-        logger.error('EXCEPTION ON: ' + update_query)
+        logger.exception('Update ' + endpoint + ' caused an exception: ' + str(e) +
+                         '\nFailed query:\n' + update_query)
 
     return False
