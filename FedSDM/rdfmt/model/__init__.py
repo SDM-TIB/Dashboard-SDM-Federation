@@ -1,9 +1,9 @@
 from __future__ import annotations  # Python 3.12 still has issues with typing when using classes from the same module
 
-import datetime
 import time
 import urllib.parse as urlparse
 from base64 import b64encode
+from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
@@ -101,7 +101,7 @@ class RDFMT(object):
             data.extend(r.to_rdf())
             data.append('<' + self.rid + '> <' + MT_ONTO + 'hasProperty> <' + r.rid + '> ')
 
-        today = str(datetime.datetime.now())
+        today = str(datetime.now())
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/created> "' + today + '"')
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/modified> "' + today + '"')
         return data
@@ -491,7 +491,7 @@ class DataSource(object):
         if self.triples != '' and int(self.triples) >= 0:
             data.append('<' + self.rid + '> <' + MT_ONTO + 'triples> ' + str(self.triples))
 
-        today = str(datetime.datetime.now())
+        today = str(datetime.now())
         if not update:
             data.append('<' + self.rid + '>  <http://purl.org/dc/terms/created> "' + today + '"')
         data.append('<' + self.rid + '>  <http://purl.org/dc/terms/modified> "' + today + '"')
