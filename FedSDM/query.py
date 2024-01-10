@@ -139,7 +139,7 @@ def finalize(process_queue: Queue):
         try:
             os.kill(p, 9)
         except OSError as ex:
-            print(ex)
+            logger.exception(ex)
             pass
         p = process_queue.get()
 
@@ -223,9 +223,7 @@ def sparql() -> Response:
         session['fed'] = federation
 
         query_ = query_.replace('\n', ' ').replace('\r', ' ')
-        print('federation:', federation)
-        print('query:', query_)
-        logger.info(query_)
+        logger.info('federation: ' + federation + '\nquery: ' + query_)
         session['hashquery'] = str(hashlib.md5(query_.encode()).hexdigest())
         if federation is None or len(federation) < 6:
             return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
@@ -241,7 +239,7 @@ def sparql() -> Response:
             return jsonify(vars=vars_, result=[], time_total=total, time_first=first, total_rows=1)
 
         if vars_ is None:
-            print('no results during decomposition', query_)
+            logger.warning('no results during decomposition: ' + query_)
             del result_queues[session['hashquery']]
             return jsonify({'result': [],
                             'error': 'Cannot execute query on this federation. No matching molecules found'})
@@ -264,10 +262,8 @@ def sparql() -> Response:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
         emsg = repr(traceback.format_exception(exc_type, exc_value, exc_traceback))
-        logger.error('Exception while semantifying: ' + emsg)
-        print('Exception: ', e)
-        import pprint
-        pprint.pprint(emsg)
+        logger.exception(e)
+        logger.exception('Exception while semantifying: ' + emsg)
         return jsonify({'result': [], 'error': str(emsg)})
 
 
@@ -331,12 +327,12 @@ def execute_query(graph: str, query_: str, output: Queue = Queue()):
     first = time() - start
 
     if r == 'EOF':
-        print('END of results...')
+        logger.debug('END of results...')
         first = 0
     else:
         if len(variables) == 0 or (len(variables) == 1 and variables[0] == '*'):
             variables = [k for k in r.keys()]
-        print(r)
+        logger.debug(r)
         res.append(r)
         i += 1
     total = time() - start
