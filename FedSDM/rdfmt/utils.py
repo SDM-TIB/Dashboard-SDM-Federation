@@ -154,7 +154,7 @@ def contact_rdf_source(query: str,
                 res = res.replace('true', 'True')
                 res = eval(res)
             except Exception as ex:
-                print('EX processing res', ex)
+                logger.exception('EX processing res ' + str(ex))
 
             if isinstance(res, dict):
                 if 'results' in res:
@@ -187,9 +187,9 @@ def contact_rdf_source(query: str,
                     output_queue.put(res['boolean'])
                     return res['boolean'], 1
         else:
-            print('Endpoint->', endpoint, resp.reason, resp.status_code, query)
+            logger.error('Endpoint -> ' + endpoint + ' ' + resp.reason + ' ' + str(resp.status_code) + ' ' + query)
     except Exception as e:
-        print('Exception during query execution to', endpoint, ': ', e)
+        logger.exception('Exception during query execution at ' + endpoint + ': ' + str(e))
 
     return None, -2
 
