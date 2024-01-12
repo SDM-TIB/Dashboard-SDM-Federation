@@ -1,6 +1,10 @@
 from flask import g
 
+from FedSDM import get_logger
 from FedSDM.db import get_mdb, MetadataDB
+
+logger = get_logger('utils')
+"""Logger for this module. It logs to stdout only."""
 
 
 def process_numeric_result(mdb: MetadataDB, query: str) -> int:
@@ -53,7 +57,7 @@ def get_federations() -> list:
     if card > 0:
         return res
     else:
-        print('no federations available...')
+        logger.debug('no federations available...')
         return []
 
 
