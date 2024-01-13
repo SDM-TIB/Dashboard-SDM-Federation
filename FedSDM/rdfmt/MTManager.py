@@ -280,7 +280,6 @@ class MTManager(object):
                    '    ?ptls rml:source ?rds .\n' \
                    '  }\n' \
                    '}}'
-        print(mt_query)
         res, card = contact_rdf_source(mt_query, self.query_endpoint)
         return res
 
