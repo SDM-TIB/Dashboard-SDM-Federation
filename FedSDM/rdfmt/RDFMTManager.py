@@ -424,7 +424,6 @@ class RDFMTMgr(object):
             subclasses = []
             if t not in already_processed:
                 mt_card = -1
-                # print(t)
                 source_uri = MT_RESOURCE + str(hashlib.md5(str(endpoint.url + t).encode()).hexdigest())
                 source = Source(source_uri, endpoint, mt_card)
                 already_processed[t] = mt_card
