@@ -309,8 +309,8 @@ class RDFMTMgr(object):
         existing_predicates = [r['p'] for r in res_list]
 
         if status == -1:  # fallback - get predicates from randomly selected instances of the type
-            print('giving up on ' + query)
-            print('trying instances .....')
+            logger.warning('giving up on ' + query)
+            logger.warning('trying instances ...')
             rand_inst_res = self.get_preds_of_random_instances(endpoint, type_)
             for r in rand_inst_res:
                 if r not in existing_predicates:
@@ -766,12 +766,12 @@ class RDFMTMgr(object):
             return
 
         sourcemaps = {s['subject']: s for s in sources}
-        print(sourcemaps)
+        logger.debug(sourcemaps)
         for s in sources:
             mts = self.get_ds_rdfmts(s['subject'])
             rdfmts[s['subject']] = {m['subject']: int(m['card']) if 'card' in m else -1 for m in mts}
 
-        print(rdfmts.keys())
+        logger.debug(rdfmts.keys())
         if datasource is not None:
             self.update_links(rdfmts, sourcemaps, datasource)
         else:
@@ -801,7 +801,7 @@ class RDFMTMgr(object):
 
         for si in rdfmts:
             s = sourcemaps[si]
-            print('Searching inter links from ', s['subject'])
+            logger.info('Searching inter links from ', s['subject'])
             for ti in rdfmts:
                 t = sourcemaps[ti]
                 if si == ti:
@@ -826,7 +826,7 @@ class RDFMTMgr(object):
                             if r in queues:
                                 del queues[r]
                             if r in processes and processes[r].is_alive():
-                                print('terminating: ', r)
+                                logger.warning('terminating: ', r)
                                 processes[r].terminate()
                                 del processes[r]
 
@@ -869,7 +869,7 @@ class RDFMTMgr(object):
                 continue
 
             def inter_ds_links(s1, rdfmts_s1, s2, rdfmts_s2, queue_):
-                print('Linking between ', s1['subject'], len(rdfmts_s1), ' and (to) ', s2['subject'], len(rdfmts_s2))
+                logger.info('Linking between ', s1['subject'], len(rdfmts_s1), ' and (to) ', s2['subject'], len(rdfmts_s2))
                 p = Process(target=self.get_inter_ds_links_bn, args=(s1, rdfmts_s1, s2, rdfmts_s2, queue_,))
                 p.start()
                 return p
@@ -895,11 +895,11 @@ class RDFMTMgr(object):
                         if r in queues:
                             del queues[r]
                         if r in processes and processes[r].is_alive():
-                            print('terminating: ', r)
+                            logger.warning('terminating: ', r)
                             processes[r].terminate()
                         if r in processes:
                             del processes[r]
-        print('linking DONE!', did)
+        logger.info('linking DONE!', did)
 
     def get_inter_ds_links_bn(self,
                               endpoint1: dict,
@@ -930,8 +930,8 @@ class RDFMTMgr(object):
         url_endpoint1 = endpoint1['url']
         url_endpoint2 = endpoint2['url']
         for m1 in rdfmts_endpoint1:
-            print(m1)
-            print('--------------------------------------------------')
+            logger.info(m1)
+            logger.info('--------------------------------------------------')
             pred_query = 'SELECT DISTINCT ?p WHERE {\n  ?s a <' + m1 + '> .\n  ?s ?p ?t .\n  FILTER (isURI(?t))\n}'
             res_pred_query, _ = iterative_query(pred_query, url_endpoint1, limit=1000)
             predicates = [r['p'] for r in res_pred_query]
@@ -948,7 +948,7 @@ class RDFMTMgr(object):
             for link in types_found:
                 data = []
                 if len(types_found[link]) > 0:
-                    print(len(types_found[link]), 'links found')
+                    logger.info(len(types_found[link]), 'links found')
                     try:
                         for m2 in types_found[link]:
                             val = str(url_endpoint2 + m1 + link + m2).encode()
@@ -968,7 +968,7 @@ class RDFMTMgr(object):
                         logger.error(types_found)
                         logger.error(data)
 
-        print('get_inter_ds_links_bn Done!')
+        logger.info('get_inter_ds_links_bn Done!')
         queue.put('EOF')
 
     def get_links_bn_ds(self, predicate_instance_list: dict, rdfmts: dict, endpoint: str) -> dict:
