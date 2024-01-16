@@ -9,8 +9,12 @@ from typing import List, Optional
 
 import requests
 
+from FedSDM import get_logger
 from FedSDM.rdfmt.prefixes import MT_ONTO, MT_RESOURCE
 from FedSDM.rdfmt.utils import contact_rdf_source
+
+logger = get_logger('rdfmt.model')
+"""Logger for this module. It logs to stdout only."""
 
 
 class RDFMT(object):
@@ -444,14 +448,14 @@ class DataSource(object):
         ask = 'ASK {?s ?p ?o}'
         e = self.url
         if self.ds_type == DataSourceType.SPARQL_ENDPOINT:
-            print('checking endpoint accessibility', e)
+            logger.debug('checking endpoint accessibility', e)
             val, c = contact_rdf_source(ask, self)
             if c == -2:
-                print(e, ' -> is not accessible. Hence, will not be included in the federation!')
+                logger.debug(e, ' -> is not accessible. Hence, will not be included in the federation!')
             if val:
                 return True
             else:
-                print(e, ' -> is returning empty results. Hence, will not be included in the federation!')
+                logger.debug(e, ' -> is returning empty results. Hence, will not be included in the federation!')
         return False
 
     def to_rdf(self, update: bool = False) -> List[str]:
