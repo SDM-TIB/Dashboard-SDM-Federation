@@ -8,11 +8,15 @@ from flask import (
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
+from FedSDM import get_logger
 from FedSDM.auth import login_required
 from FedSDM.db import get_mdb, MetadataDB
 from FedSDM.utils import get_federations
 
 bp = Blueprint('rdfmts', __name__, url_prefix='/rdfmts')
+
+logger = get_logger('rdfmtmgt')
+"""Logger for this module. It logs to stdout only."""
 
 
 @bp.route('/rdfmt')
@@ -561,7 +565,7 @@ def get_rdfmt_nodes(graph: str = None) -> Tuple[dict, dict]:
                 if 'datasource' in r:
                     source = r['datasource']
                 else:
-                    print('unknown source for MT: ', r['subject'])
+                    logger.warning('unknown source for MT: ' + r['subject'])
                     source = 'Unknown'
 
                 rdfmt_sources[nid] = {'source': source_id}
@@ -651,7 +655,7 @@ def get_rdfmt_links(graph: str = None):
                 if 'datasource' in r:
                     source = r['datasource']
                 else:
-                    print('unknown source for MT:', r['subject'])
+                    logger.warning('unknown source for MT: ' + r['subject'])
                     source = 'Unknown'
                 if source not in sources:
                     sources[source] = j
