@@ -3,7 +3,7 @@ from typing import Tuple
 
 import networkx as nx
 from flask import (
-    Blueprint, g, render_template, session, Response, request
+    Blueprint, g, render_template, session, Response
 )
 from webargs import fields
 from webargs.flaskparser import use_kwargs
