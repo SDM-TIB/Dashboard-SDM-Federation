@@ -9,7 +9,6 @@ from flask import (
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
-from FedSDM import get_logger
 from FedSDM.auth import login_required
 from FedSDM.db import get_db, get_mdb
 from FedSDM.rdfmt import RDFMTMgr
