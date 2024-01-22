@@ -117,7 +117,7 @@ $(function() {
                     sourcesNames[v] = name;
                 }
                 for (let i = 0; i < mLinks.length; ++i) {
-                    o = mLinks[i];
+                    let o = mLinks[i];
                     o.source = mNodes[o.source];
                     o.target = mNodes[o.target];
                     if (o.source.datasource === o.target.datasource) {
