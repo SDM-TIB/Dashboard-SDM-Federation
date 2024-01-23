@@ -127,7 +127,7 @@ $(function() {
                 }
                 maLinks = mLinks;
 
-                flatnodes = [];
+                let flatnodes = [];
                 $.each(mNodes, function (key, val) {
                     flatnodes.push(val);
                     MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
