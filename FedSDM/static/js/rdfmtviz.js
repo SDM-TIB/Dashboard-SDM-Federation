@@ -54,7 +54,6 @@ $(function() {
         data = { nodes: [], links: [] },
         selectedRow = null,
         mNodes = [],
-        maLinks = [],
         mLinks = [],
         mSourceNodes = [],
         mSourceLinks = [],
@@ -125,7 +124,6 @@ $(function() {
                         else { mSourceLinks[o.source.datasource] = [o] }
                     }
                 }
-                maLinks = mLinks;
 
                 let flatNodes = [];
                 $.each(mNodes, function (key, val) {
@@ -138,7 +136,6 @@ $(function() {
                     else { mSourceNodes[val.datasource] = [val] }
                 });
                 mNodes = flatNodes;
-                maNodes = mNodes;
                 $("#mt_viz").show();
 
                 draw_details();
@@ -152,9 +149,9 @@ $(function() {
     });
 
     function draw_details() {
-        data = { nodes: maNodes, links: maLinks };
+        data = { nodes: mNodes, links: mLinks };
         mt_viz.html('<h1> Please select data source!</h1>');
-        drawRDFMTS(maNodes, maLinks, 'mt_viz');
+        drawRDFMTS(mNodes, mLinks, 'mt_viz');
     }
 
     $('#backToTable').on('click', function() {
