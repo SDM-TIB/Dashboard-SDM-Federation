@@ -127,9 +127,9 @@ $(function() {
                 }
                 maLinks = mLinks;
 
-                let flatnodes = [];
+                let flatNodes = [];
                 $.each(mNodes, function (key, val) {
-                    flatnodes.push(val);
+                    flatNodes.push(val);
                     MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
                     if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
                     else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
@@ -137,7 +137,7 @@ $(function() {
                     if (val.datasource in mSourceNodes) { mSourceNodes[val.datasource].push(val) }
                     else { mSourceNodes[val.datasource] = [val] }
                 });
-                mNodes = flatnodes;
+                mNodes = flatNodes;
                 maNodes = mNodes;
                 $("#mt_viz").show();
 
@@ -286,18 +286,18 @@ $(function() {
             }
             aLinks = links;
 
-            let flatnodes = [];
+            let flatNodes = [];
             sourceNodes = [];
             MTCards = { 'All': [] };
             $.each(nodes, function (key, val) {
-                flatnodes.push(val);
+                flatNodes.push(val);
                 MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
                 if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
                 else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
                 if (val.datasource in sourceNodes) { sourceNodes[val.datasource].push(val) }
                 else { sourceNodes[val.datasource] = [val] }
             });
-            aNodes = flatnodes;
+            aNodes = flatNodes;
         });
     }
 
