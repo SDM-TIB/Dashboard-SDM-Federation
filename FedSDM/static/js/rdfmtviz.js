@@ -289,7 +289,7 @@ $(function() {
             }
             aLinks = links;
 
-            flatnodes = [];
+            let flatnodes = [];
             sourceNodes = [];
             MTCards = { 'All': [] };
             $.each(nodes, function (key, val) {
