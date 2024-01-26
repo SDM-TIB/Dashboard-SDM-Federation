@@ -221,7 +221,6 @@ $(function() {
             max_score = sourcesCard;
             let legend = '',
                 data_sources_html = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
-            // console.log('number of sources: ' + sources.length);
             for (let i = 0; i < sources.length; i++) {
                 const v = sources[i].id,
                       name  = sources[i].name;
