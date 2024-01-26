@@ -137,7 +137,6 @@ $(function() {
                 });
                 mNodes = flatNodes;
                 $("#mt_viz").show();
-
                 draw_details();
             },
             error: function(jqXHR, textStatus) {
