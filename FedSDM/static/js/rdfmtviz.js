@@ -990,13 +990,10 @@ $(function() {
             .domain([0, nodes.length])
             .range([0, 2 * Math.PI]);
 
-        // calculate theta for each node
+        // Transform polar coordinates into Cartesian coordinates
         nodes.forEach(function(d, i) {
-            // calculate polar coordinates
             const theta  = scale(i),
                   radial = radius - margin;
-
-            // convert to cartesian coordinates
             d.x = radial * Math.sin(theta);
             d.y = radial * Math.cos(theta);
         });
