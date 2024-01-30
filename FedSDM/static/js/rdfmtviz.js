@@ -244,9 +244,7 @@ $(function() {
                     $('#vizDsName').html('ALL');
                     $('#gaDsName').html('ALL');
                     sourceMT = 'All';
-                } else {
-                    sourceMT = sourceIDs[$(this).text()];
-                }
+                } else { sourceMT = sourceIDs[$(this).text()]; }
                 if (sourceMT) {
                     $('#vizDsName').html($(this).text());
                     $('#gaDsName').html($(this).text());
