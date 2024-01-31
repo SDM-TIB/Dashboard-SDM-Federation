@@ -951,7 +951,7 @@ $(function() {
         // create svg image
         graph_container.empty();
         let circumference = 0;
-        graph.nodes.forEach(function() { circumference += 20 + 2 });
+        graph.nodes.forEach(function() { circumference += 22 });
         let wh = 2 * circumference / Math.PI;
         if (wh < 200) wh = 200;
         if (wh > 1200) wh = 1200;
