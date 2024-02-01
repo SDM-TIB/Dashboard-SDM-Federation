@@ -950,8 +950,7 @@ $(function() {
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         // create svg image
         graph_container.empty();
-        let circumference = 0;
-        graph.nodes.forEach(function() { circumference += 22 });
+        let circumference = 22 * graph.nodes.length;
         let wh = 2 * circumference / Math.PI;
         if (wh < 200) wh = 200;
         if (wh > 1200) wh = 1200;
