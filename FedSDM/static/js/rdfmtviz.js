@@ -615,9 +615,7 @@ $(function() {
                 return divCanvas ? 250 : 200 +
                     Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
                         (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
-                        -30 +
-                        30 * Math.min((n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)),
-                            (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
+                        -30 + 30 * Math.min((n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)), (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
                         300);
             })
             .linkStrength(2)
