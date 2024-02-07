@@ -949,17 +949,16 @@ $(function() {
         // create svg image
         graph_container.empty();
         let circumference = 22 * graph.nodes.length,
-            wh = 2 * circumference / Math.PI;
-        if (wh < 200) wh = 200;
-        if (wh > 1200) wh = 1200;
+            diameter = 2 * circumference / Math.PI;
+        if (diameter < 200) diameter = 200;
+        if (diameter > 1200) diameter = 1200;
 
-        diameter = wh;
         let svg = d3.select('#graph').append('svg');
         svg.append('g').classed('chartLayer', true)
             .attr('width', graph_container.width())
             .attr('height', 980);
 
-        radius = wh/2;
+        radius = diameter/2;
         // create plot area within svg image
         let plot = svg.append('g')
             .attr('width', wh)
