@@ -1,6 +1,6 @@
 flask==3.0.2
 networkx==3.2.1
-DeTrusty==0.15.0
+DeTrusty==0.15.1
 requests==2.31.0
 Werkzeug==3.0.1
 webargs==8.4.0
