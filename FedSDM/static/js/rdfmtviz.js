@@ -958,11 +958,11 @@ $(function() {
             .attr('width', graph_container.width())
             .attr('height', 980);
 
-        radius = diameter/2;
+        radius = diameter / 2;
         // create plot area within svg image
         let plot = svg.append('g')
-            .attr('width', wh)
-            .attr('height', wh)
+            .attr('width', diameter)
+            .attr('height', diameter)
             .attr('id', 'plot')
             .attr('transform', 'translate(' + graph_container.width() / 2 + ', ' + 980 / 2 + ')');
 
