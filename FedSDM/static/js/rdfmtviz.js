@@ -948,8 +948,7 @@ $(function() {
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
         // create svg image
         graph_container.empty();
-        let circumference = 22 * graph.nodes.length,
-            diameter = 2 * circumference / Math.PI;
+        let diameter = 2 * (22 * graph.nodes.length) / Math.PI;
         if (diameter < 200) diameter = 200;
         if (diameter > 1200) diameter = 1200;
 
