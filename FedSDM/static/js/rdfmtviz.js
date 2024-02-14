@@ -949,8 +949,7 @@ $(function() {
         // create svg image
         graph_container.empty();
         let diameter = 2 * (22 * graph.nodes.length) / Math.PI;
-        if (diameter < 200) diameter = 200;
-        if (diameter > 1200) diameter = 1200;
+        diameter = diameter < 200 ? 200 : (diameter > 1200 ? 1200 : diameter);
 
         let svg = d3.select('#graph').append('svg');
         svg.append('g').classed('chartLayer', true)
