@@ -62,7 +62,6 @@ $(function() {
         net, force,
         canvas = 'graph',
         gSource = null,
-        keyc = true, keys = true, keyt = true, keyr = true, keyx = true, keyd = true, keyl = true, keym = true, keyh = true, key1 = true, key2 = true, key3 = true, key0 = true,
         diameter = 500,
         radius = diameter / 2,
         margin = 10,
@@ -764,44 +763,6 @@ $(function() {
 
         function isConnected(a, b) { return linkedByIndex[a.index + ',' + b.index] || linkedByIndex[b.index + ',' + a.index] || a.index === b.index }
 
-        function hasConnections(a) {
-            for (const property in linkedByIndex) {
-                let s = property.split(',');
-                if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) { return true }
-            }
-            return false;
-        }
-
-        function vis_by_type(type) {
-            switch (type) {
-                case 'circle': return keyc;
-                case 'square': return keys;
-                case 'triangle-up': return keyt;
-                case 'diamond': return keyr;
-                case 'cross': return keyx;
-                case 'triangle-down': return keyd;
-                default: return true;
-            }
-        }
-
-        function vis_by_node_score(score) {
-            if (isNumber(score)) {
-                if (score >= 0.666) { return keyh }
-                else if (score >= 0.333) { return keym }
-                else if (score >= 0) { return keyl }
-            }
-            return true;
-        }
-
-        function vis_by_link_score(score) {
-            if (isNumber(score)) {
-                if (score >= 0.666) { return key3 }
-                else if (score >= 0.333) { return key2 }
-                else if (score >= 0) { return key1 }
-            }
-            return true;
-        }
-
         function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n) }
 
         function resize() {
@@ -812,43 +773,7 @@ $(function() {
             h = height;
         }
 
-        function keydown() {
-            if (d3.event.keyCode === 32) { force.stop() }
-            else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
-                switch (String.fromCharCode(d3.event.keyCode)) {
-                    case 'C': keyc = !keyc; break;
-                    case 'S': keys = !keys; break;
-                    case 'T': keyt = !keyt; break;
-                    case 'R': keyr = !keyr; break;
-                    case 'X': keyx = !keyx; break;
-                    case 'D': keyd = !keyd; break;
-                    case 'L': keyl = !keyl; break;
-                    case 'M': keym = !keym; break;
-                    case 'H': keyh = !keyh; break;
-                    case '1': key1 = !key1; break;
-                    case '2': key2 = !key2; break;
-                    case '3': key3 = !key3; break;
-                    case '0': key0 = !key0; break;
-                }
-
-                link.style('display', function(d) {
-                    const flag  = vis_by_type('circle') && vis_by_type('circle') && vis_by_node_score(d.source.datasource) && vis_by_node_score(d.target.datasource) && vis_by_link_score(d.datasource);
-                    linkedByIndex[d.source.index + ',' + d.target.index] = flag;
-                    return flag ? 'inline' : 'none';
-                });
-                node.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none' });
-                text.style('display', function(d) { return (key0 || hasConnections(d)) && vis_by_type('circle') && vis_by_node_score(d.datasource) ? 'inline' : 'none' });
-
-                if (highlight_node !== null) {
-                    if ((key0 || hasConnections(highlight_node)) && vis_by_type('circle') && vis_by_node_score(highlight_node.datasource)) {
-                        if (focus_node !== null) { set_focus(focus_node) }
-                        set_highlight(highlight_node);
-                    } else {
-                        exit_highlight();
-                    }
-                }
-            }
-        }
+        function keydown() { if (d3.event.keyCode === 32) { force.stop() } }
 
         function exit_highlight() {
             highlight_node = null;
