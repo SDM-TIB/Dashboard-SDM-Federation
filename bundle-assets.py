@@ -93,7 +93,7 @@ bundles = {
         output=JS_PATH + 'd3.min.js'
     ),
     'datatables_js': Bundle(
-        NPM_PATH + 'datatables.net/js/jquery.dataTables.min.js',
+        NPM_PATH + 'datatables.net/js/dataTables.min.js',
         NPM_PATH + 'datatables.net-responsive/js/dataTables.responsive.min.js',
         NPM_PATH + 'datatables.net-select/js/dataTables.select.min.js',
         NPM_PATH + 'datatables.net-buttons/js/dataTables.buttons.min.js',
@@ -104,7 +104,7 @@ bundles = {
     ),
     'datatables_css': Bundle(
         NPM_PATH + 'datatables.net-responsive-dt/css/responsive.dataTables.min.css',
-        NPM_PATH + 'datatables.net-dt/css/jquery.dataTables.min.css',
+        NPM_PATH + 'datatables.net-dt/css/dataTables.dataTables.min.css',
         NPM_PATH + 'datatables.net-select-dt/css/select.dataTables.min.css',
         NPM_PATH + 'datatables.net-buttons-dt/css/buttons.dataTables.min.css',
         filters='cssmin',
