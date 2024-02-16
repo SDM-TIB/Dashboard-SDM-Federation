@@ -59,19 +59,37 @@ label {
   font-size: 0.875rem;
   font-weight: bold;
 }
+.dt-length {
+  float: left;
+}
+.dt-length select {
+  margin-right: 5px;
+}
 .dt-length label {
-  padding-top: 0.38rem;
+  padding-top: 0.42rem;
   margin-bottom: 0 !important;
 }
 .dt-search {
+  float: right;
   margin-bottom: 10px;
 }
 .dt-search label {
-  padding-top: 0.2rem;
+  padding-top: 0.45rem;
   margin-bottom: 0 !important;
 }
 .dt-buttons {
+  float: left;
   margin-right: 2rem;
+}
+.dt-info {
+  clear: both;
+  float: left;
+  padding-top: .755rem;
+  margin-left: 5px;
+}
+.dt-paging {
+  float: right;
+  padding-top: .25em;
 }
 a {
   text-decoration: none;

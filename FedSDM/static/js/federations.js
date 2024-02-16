@@ -39,6 +39,7 @@ $(function() {
                 responsive: false,
                 defaultContent: '-1',
                 select: true,
+                dom: 'lfrtip',
                 columnDefs: [
                     { target: 1, render: number_renderer },
                     { target: 2, render: number_renderer },
@@ -139,7 +140,8 @@ $(function() {
                         render: number_renderer
                     }
                 ],
-                select: true
+                select: true,
+                dom: 'lfrtip'
             });
         } else { statsTable.clear().draw() }
         let datas = [];
@@ -216,6 +218,7 @@ $(function() {
                 order: [[ 1, 'desc' ]],
                 responsive: false,
                 select: true,
+                dom: 'lfrtip',
                 defaultContent: '<i>Not set</i>',
                 columnDefs: [{ target: 0, visible: false, searchable: false }],
                 ajax: '/federation/datasources?graph=' + federation
