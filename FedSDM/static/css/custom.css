@@ -59,14 +59,14 @@ label {
   font-size: 0.875rem;
   font-weight: bold;
 }
-.dataTables_length label {
+.dt-length label {
   padding-top: 0.38rem;
   margin-bottom: 0 !important;
 }
-.dataTables_filter {
+.dt-search {
   margin-bottom: 10px;
 }
-.dataTables_filter label {
+.dt-search label {
   padding-top: 0.2rem;
   margin-bottom: 0 !important;
 }
