@@ -131,14 +131,8 @@ $(function() {
                 responsive: false,
                 defaultContent: '-1',
                 columnDefs: [
-                    {
-                        target: 1,
-                        render: number_renderer
-                    },
-                    {
-                        target: 2,
-                        render: number_renderer
-                    }
+                    { target: 1, render: number_renderer },
+                    { target: 2, render: number_renderer }
                 ],
                 select: true,
                 dom: 'lfrtip'
