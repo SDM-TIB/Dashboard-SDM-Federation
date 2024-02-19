@@ -153,7 +153,6 @@ $(function() {
                 let barData = { labels: [], rdfmts: [], triples: [] };
                 for (const d in datas) {
                     let rem = [];
-                    //console.log(datas)
                     rem.push(datas[d].ds);
                     let rdfmts = datas[d].rdfmts;
 
