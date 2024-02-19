@@ -251,7 +251,6 @@ $(function() {
 
     // Remove data source click action
     button_remove_source.on('click', function() {
-        // delete where {<http://ontario.tib.eu/Federation1/datasource/Ensembl-json> ?p ?o}
         $.ajax({
             type: 'GET',
             headers: {
