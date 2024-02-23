@@ -28,6 +28,18 @@ $(function() {
         if (yasqe == null) { initialize_yasqe() }
     });
 
+    function query_result_renderer(data, type, row, meta) {
+        console.log('In the render function...')
+        console.log(data)
+        const val = data['value'];
+        if (data['type'] === 'uri') {
+            return '<a href="' + val + '">' + val + '</a>'
+        }
+        else {
+            return val  // TODO: Display the datatypes?
+        }
+    }
+
     function initialize_yasqe() {
         yasqe = YASQE(document.getElementById('yasqe'), {
             viewportMargin: Infinity,  // display full query
@@ -91,20 +103,18 @@ $(function() {
                                 select: true,
                                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
                                 dom: 'Blfrtip',
-                                buttons: table_buttons('sparql-results')
+                                buttons: table_buttons('sparql-results'),
+                                columnDefs: [{ targets: '_all', render: query_result_renderer }]
                             });
                             queryTriples = data.query_triples;
                             let resultMap = {};
                             for (let i = 0; i < results.length; i++) {
                                 let row = results[i],
                                     row_ml = [];
-                                // TODO: Display the datatypes?
                                 for (let j = 0; j < vars.length; j++) {
-                                    let val = row[vars[j]]['value'];
-                                    // if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')) }
-                                    if ('http' === val.substring(0, 4)) { row_ml.push('<a href="' + val + '">' + val + '</a>') }
-                                    else { row_ml.push(val) }
-                                    resultMap[vars[j]] = val;
+                                    const entry = row[vars[j]];
+                                    row_ml.push(entry);
+                                    resultMap[vars[j]] = entry['value'];
                                 }
                                 table.row.add(row_ml).draw(false);
                             }
@@ -255,11 +265,9 @@ $(function() {
                         const row_ml = [],
                               resultMap = {};
                         for (let j = 0; j < vars.length; j++) {
-                            let val = row[vars[j]]['value'];
-                            // if (val.indexOf('^^<') !== -1) { val = val.substring(0, val.indexOf('^^')) }
-                            if ('http' === val.substring(0, 4)) { row_ml.push('<a href="' + val + '">' + val + '</a>') }
-                            else { row_ml.push(val) }
-                            resultMap[vars[j]] = val;
+                            const entry = row[vars[j]];
+                            row_ml.push(entry);
+                            resultMap[vars[j]] = entry['value'];
                         }
 
                         table.row.add(row_ml).draw(false);
@@ -273,9 +281,7 @@ $(function() {
                                     column.search(val ? '^' + val + '$' : '', true, false).draw();
                                 });
                             column.data().unique().sort().each(function(d) {
-                                let val = d;
-                                const lt_idx = val.indexOf('&lt;');
-                                if (lt_idx > 0) { val = val.substring(lt_idx + 4, val.indexOf('&gt;')) }
+                                const val = d['value'];
                                 select.append('<option value=' + val + '>' + val + '</option>');
                             });
                         });
