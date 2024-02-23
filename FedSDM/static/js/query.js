@@ -145,13 +145,7 @@ $(function() {
                             table.on('select', function(e, dt, type, indexes) {
                                 selectedRow = table.rows( indexes ).data().toArray();
                                 selectedRowData = [];
-                                for (let i in selectedRow[0]) {
-                                    let lt_idx = selectedRow[0][i].indexOf('&lt;');
-                                    if (lt_idx > 0) {
-                                        let value = selectedRow[0][i].substring(lt_idx + 4, selectedRow[0][i].indexOf('&gt;'));
-                                        selectedRowData.push(value);
-                                    } else { selectedRowData.push(selectedRow[0][i]) }
-                                }
+                                for (let i in selectedRow[0]) { selectedRowData.push(selectedRow[0][i]['value']) }
                                 $('#add_feedback').prop('disabled', false);
                             }).on('deselect', function() {
                                 $('#add_feedback').prop('disabled', true);
