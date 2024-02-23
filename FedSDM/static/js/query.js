@@ -124,21 +124,9 @@ $(function() {
                                         .appendTo($(column.footer()).empty())
                                         .on('change', function() {
                                             let val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                            console.log(val);
-//
-//                                          var lt_idx = val.indexOf('&lt;');
-//                                          if (lt_idx > 0) {
-//                                              val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
-//                                          }
                                             column.search(val ? '^' + val + '$' : '', true, false).draw();
                                         });
                                 column.data().unique().sort().each(function(d) {
-//                                    let val = d,
-//                                        lt_idx = val.indexOf('&lt;');
-//                                    if (lt_idx > 0) {
-//                                        val = val.substring(lt_idx + 4, val.indexOf('&gt;'));
-//                                    }
-                                    // console.log('data', d, val);
                                     select.append('<option value=' + d + '>' + d + '</option>');
                                 } );
                             });
