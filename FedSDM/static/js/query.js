@@ -29,15 +29,10 @@ $(function() {
     });
 
     function query_result_renderer(data, type, row, meta) {
-        console.log('In the render function...')
-        console.log(data)
         const val = data['value'];
-        if (data['type'] === 'uri') {
-            return '<a href="' + val + '">' + val + '</a>'
-        }
-        else {
-            return val  // TODO: Display the datatypes?
-        }
+        if (data['type'] === 'uri') { return '<a href="' + val + '">' + val + '</a>' }
+        else if (data['type'] === 'typed-literal') { return val + '<sup class="gray">' + data['datatype'].replace('http://www.w3.org/2001/XMLSchema#', ' xsd:') + '</sup>' }
+        else { return val }
     }
 
     function initialize_yasqe() {
