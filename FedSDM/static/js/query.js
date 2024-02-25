@@ -28,7 +28,7 @@ $(function() {
         if (yasqe == null) { initialize_yasqe() }
     });
 
-    function query_result_renderer(data, type, row, meta) {
+    function query_result_renderer(data) {
         const val = data['value'];
         if (data['type'] === 'uri') { return '<a href="' + val + '">' + val + '</a>' }
         else if (data['type'] === 'typed-literal') { return val + '<sup class="gray">' + data['datatype'].replace('http://www.w3.org/2001/XMLSchema#', ' xsd:') + '</sup>' }
