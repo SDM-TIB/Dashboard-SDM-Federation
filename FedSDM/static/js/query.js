@@ -299,10 +299,7 @@ $(function() {
      */
     var getAutocompletionsArrayFromJson = function(result) {
         let completionsArray = [];
-        // console.log('parsing');
-        // console.log(result);
         result.forEach(function(row) {  // remove first line, as this one contains the projection variable
-            // console.log(row);
             if ('type' in row) { completionsArray.push(row['type']) }  // remove quotes
             else { completionsArray.push(row['property']) }  // remove quotes
         });
