@@ -107,7 +107,6 @@ $(function() {
                 sources = data.sources;
                 mNodes = data.nodes;
                 mLinks = data.links;
-                mSourcesCard = sources.length;
                 for (let i = 0; i < sources.length; i++) {
                     const v = sources[i].id,
                           name  = sources[i].name;
