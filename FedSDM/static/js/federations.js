@@ -253,9 +253,7 @@ $(function() {
     button_remove_source.on('click', function() {
         $.ajax({
             type: 'GET',
-            headers: {
-                Accept : 'application/json'
-            },
+            headers: { Accept : 'application/json' },
             url: '/federation/api/removeds',
             data: { 'ds': selectedSource[0][0], 'fed': federation },
             dataType: 'json',
