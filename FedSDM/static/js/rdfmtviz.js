@@ -870,7 +870,6 @@ $(function() {
     // Draws an arc diagram for the provided undirected graph
     function drawGraph(graph) {
         let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
-        // create svg image
         graph_container.empty();
         let diameter = 2 * (22 * graph.nodes.length) / Math.PI;
         diameter = diameter < 200 ? 200 : (diameter > 1200 ? 1200 : diameter);
@@ -881,7 +880,6 @@ $(function() {
             .attr('height', 980);
 
         radius = diameter / 2;
-        // create plot area within svg image
         let plot = svg.append('g')
             .attr('width', diameter)
             .attr('height', diameter)
