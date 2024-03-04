@@ -102,14 +102,12 @@ $(function() {
                                 columnDefs: [{ targets: '_all', render: query_result_renderer }]
                             });
                             queryTriples = data.query_triples;
-                            let resultMap = {};
                             for (let i = 0; i < results.length; i++) {
                                 let row = results[i],
                                     row_ml = [];
                                 for (let j = 0; j < vars.length; j++) {
                                     const entry = row[vars[j]];
                                     row_ml.push(entry);
-                                    resultMap[vars[j]] = entry['value'];
                                 }
                                 table.row.add(row_ml).draw(false);
                             }
@@ -239,12 +237,10 @@ $(function() {
                             return;
                         }
                         elemTimeTotal.html(' ' + data.time_total + ' sec');
-                        const row_ml = [],
-                              resultMap = {};
+                        const row_ml = [];
                         for (let j = 0; j < vars.length; j++) {
                             const entry = row[vars[j]];
                             row_ml.push(entry);
-                            resultMap[vars[j]] = entry['value'];
                         }
 
                         table.row.add(row_ml).draw(false);
