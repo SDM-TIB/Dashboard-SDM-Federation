@@ -267,7 +267,6 @@ $(function() {
                 console.log(textStatus);
             }
         });
-
         set_disabled_prop_ds_buttons(true);
     });
 
