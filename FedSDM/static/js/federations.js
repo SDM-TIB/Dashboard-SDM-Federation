@@ -275,9 +275,7 @@ $(function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: 'GET',
-            headers: {
-                Accept : 'application/json'
-            },
+            headers: { Accept : 'application/json' },
             url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
             data: {'query': 'all'},
             dataType: 'json',
