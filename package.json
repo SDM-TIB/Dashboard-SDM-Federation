@@ -12,7 +12,7 @@
     "datatables.net-buttons-dt": "3.0.1",
     "datatables.net-select": "2.0.0",
     "datatables.net-select-dt": "2.0.0",
-    "pdfmake": "0.2.9",
+    "pdfmake": "0.2.10",
     "bootstrap": "5.3.3",
     "d3": "2.10.3",
     "yasgui-yasqe": "2.11.22",
