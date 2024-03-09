@@ -316,9 +316,7 @@ $(function() {
     button_all_links.on('click', function() {
         $.ajax({
             type: 'GET',
-            headers: {
-                Accept : 'application/json'
-            },
+            headers: { Accept : 'application/json' },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
             crossDomain: true,
             success: function(data) {
