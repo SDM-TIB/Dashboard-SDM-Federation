@@ -414,9 +414,7 @@ $(function() {
             $.ajax({
                 type: 'POST',
                 async: false,
-                headers: {
-                    Accept : 'application/json'
-                },
+                headers: { Accept : 'application/json' },
                 url: '/federation/addsource?fed=' + federation,
                 data: {
                     'name': name.val(),
