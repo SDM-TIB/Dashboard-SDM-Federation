@@ -453,8 +453,7 @@ $(function() {
     // Submits the data to add a new data source, keeps the dialog open, and resets the form elements after a
     // successful request so that the user can add a second data source without reopening the dialog.
     function saveAndMore() {
-        let valid = addDataSource(false);
-        if (valid) {
+        if (addDataSource(false)) {
             addSourceForm[0].reset();
             allFields.removeClass('ui-state-error');
         }
