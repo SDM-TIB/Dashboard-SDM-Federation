@@ -474,9 +474,7 @@ $(function() {
             $.ajax({
                 type: 'POST',
                 async: false,
-                headers: {
-                    Accept : 'application/json'
-                },
+                headers: { Accept : 'application/json' },
                 url: '/federation/editsource?fed=' + federation,
                 data: {
                     'id': eid,
