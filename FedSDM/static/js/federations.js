@@ -141,9 +141,7 @@ $(function() {
         let datas = [];
         $.ajax({
             type: 'GET',
-            headers: {
-                Accept : 'application/json'
-            },
+            headers: { Accept : 'application/json' },
             url: '/federation/stats',
             data: {'graph': fed},
             dataType: 'json',
