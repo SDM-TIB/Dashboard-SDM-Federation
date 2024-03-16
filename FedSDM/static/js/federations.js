@@ -519,7 +519,11 @@ $(function() {
                 async: false,
                 headers: { Accept : 'application/json' },
                 url: '/federation/create',
-                data: {'name': name, 'description': desc, 'is_public': fedPublic.is(':checked')},
+                data: {
+                    'name': name,
+                    'description': desc,
+                    'is_public': fedPublic.is(':checked')
+                },
                 success: function(data) {
                     console.log(data);
                     if (data !== null && data.length > 0) {
