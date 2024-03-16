@@ -145,7 +145,6 @@ $(function() {
             url: '/federation/stats',
             data: {'graph': fed},
             dataType: 'json',
-            crossDomain: true,
             success: function(data) {
                 datas = data.data;
                 let barData = { labels: [], rdfmts: [], triples: [] };
@@ -255,7 +254,6 @@ $(function() {
             url: '/federation/api/removeds',
             data: { 'ds': selectedSource[0][0], 'fed': federation },
             dataType: 'json',
-            crossDomain: true,
             success: function(data) {
                 if (data === true) { table.row('.selected').remove().draw(false) }
             },
@@ -277,7 +275,6 @@ $(function() {
             url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
             data: {'query': 'all'},
             dataType: 'json',
-            crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) { alert('Recreating RDF-MTs for ' + selectedSource[0][0] + ' is underway...') }
                 else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
@@ -297,7 +294,6 @@ $(function() {
             type: 'GET',
             headers: { Accept : 'application/json' },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
-            crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) { alert('Finding links in progress...') }
                 else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
@@ -316,7 +312,6 @@ $(function() {
             type: 'GET',
             headers: { Accept : 'application/json' },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
-            crossDomain: true,
             success: function(data) {
                 if (data != null && data.status === 1) { alert('Finding links in progress...') }
                 else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
@@ -427,7 +422,6 @@ $(function() {
                     'organization': organization.val()
                 },
                 dataType: 'json',
-                crossDomain: true,
                 success: function(data) {
                     if (data.status >= 0) { manage(federation) }
                     else {
@@ -488,7 +482,6 @@ $(function() {
                     'organization': edit_organization.val().trim()
                 },
                 dataType: 'json',
-                crossDomain: true,
                 success: function(data) {
                     if (data != null && data.length > 0) {
                         manage(federation);
@@ -527,7 +520,6 @@ $(function() {
                 headers: { Accept : 'application/json' },
                 url: '/federation/create',
                 data: {'name': name, 'description': desc, 'is_public': fedPublic.is(':checked')},
-                crossDomain: true,
                 success: function(data) {
                     console.log(data);
                     if (data !== null && data.length > 0) {
