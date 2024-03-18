@@ -143,7 +143,7 @@ $(function() {
             type: 'GET',
             headers: { Accept : 'application/json' },
             url: '/federation/stats',
-            data: {'graph': fed},
+            data: { 'graph': fed },
             dataType: 'json',
             success: function(data) {
                 datas = data.data;
