@@ -45,3 +45,6 @@ If you changed the JavaScript dependencies, you need to re-bundle the assets in 
 ```bash
 make build
 ```
+
+## License
+Lynx FedSDM is licensed under GPL-3.0, see the [license file](LICENSE).
