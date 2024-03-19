@@ -273,7 +273,7 @@ $(function() {
             type: 'GET',
             headers: { Accept : 'application/json' },
             url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
-            data: {'query': 'all'},
+            data: { 'query': 'all' },
             dataType: 'json',
             success: function(data) {
                 if (data != null && data.status === 1) { alert('Recreating RDF-MTs for ' + selectedSource[0][0] + ' is underway...') }
