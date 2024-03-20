@@ -141,7 +141,7 @@ $(function() {
         let datas = [];
         $.ajax({
             type: 'GET',
-            headers: { Accept : 'application/json' },
+            headers: { Accept: 'application/json' },
             url: '/federation/stats',
             data: { 'graph': fed },
             dataType: 'json',
@@ -250,7 +250,7 @@ $(function() {
     button_remove_source.on('click', function() {
         $.ajax({
             type: 'GET',
-            headers: { Accept : 'application/json' },
+            headers: { Accept: 'application/json' },
             url: '/federation/api/removeds',
             data: { 'ds': selectedSource[0][0], 'fed': federation },
             dataType: 'json',
@@ -271,7 +271,7 @@ $(function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: 'GET',
-            headers: { Accept : 'application/json' },
+            headers: { Accept: 'application/json' },
             url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
             data: { 'query': 'all' },
             dataType: 'json',
@@ -292,7 +292,7 @@ $(function() {
         console.log(selectedSource[0][0]);
         $.ajax({
             type: 'GET',
-            headers: { Accept : 'application/json' },
+            headers: { Accept: 'application/json' },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
             success: function(data) {
                 if (data != null && data.status === 1) { alert('Finding links in progress...') }
@@ -310,7 +310,7 @@ $(function() {
     button_all_links.on('click', function() {
         $.ajax({
             type: 'GET',
-            headers: { Accept : 'application/json' },
+            headers: { Accept: 'application/json' },
             url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
             success: function(data) {
                 if (data != null && data.status === 1) { alert('Finding links in progress...') }
@@ -407,7 +407,7 @@ $(function() {
             $.ajax({
                 type: 'POST',
                 async: false,
-                headers: { Accept : 'application/json' },
+                headers: { Accept: 'application/json' },
                 url: '/federation/addsource?fed=' + federation,
                 data: {
                     'name': name.val(),
@@ -466,7 +466,7 @@ $(function() {
             $.ajax({
                 type: 'POST',
                 async: false,
-                headers: { Accept : 'application/json' },
+                headers: { Accept: 'application/json' },
                 url: '/federation/editsource?fed=' + federation,
                 data: {
                     'id': eid,
@@ -517,7 +517,7 @@ $(function() {
             $.ajax({
                 type: 'POST',
                 async: false,
-                headers: { Accept : 'application/json' },
+                headers: { Accept: 'application/json' },
                 url: '/federation/create',
                 data: {
                     'name': name,
