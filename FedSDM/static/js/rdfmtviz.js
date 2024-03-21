@@ -97,7 +97,7 @@ $(function() {
         const url = encodeURIComponent(selectedRow[0][2]);
         $.ajax({
             type: 'GET',
-            headers: { Accept : 'application/json' },
+            headers: { Accept: 'application/json' },
             url: '/rdfmts/api/mtdetails?mt=' + url + '&fed=' + federation,
             dataType: 'json',
             crossDomain: true,
