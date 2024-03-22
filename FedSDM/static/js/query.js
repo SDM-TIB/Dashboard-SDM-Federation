@@ -181,9 +181,7 @@ $(function() {
         if (valid) {
             $.ajax({
                 type: 'POST',
-                headers: {
-                    Accept : 'application/json'
-                },
+                headers: { Accept: 'application/json' },
                 url: '/query/feedback?fed=' + federation,
                 data: {
                     'desc': feedbackDesc.val(),
