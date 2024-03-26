@@ -13,9 +13,7 @@ const chartOptions = {
     scales: {
         y: {
             beginAtZero: true,
-            grid: {
-                offset: true
-            }
+            grid: { offset: true }
         }
     },
     animations: {
@@ -27,9 +25,7 @@ const chartOptions = {
     plugins: {
         legend: {
             display: true,
-            labels: {
-                boxWidth: 12
-            }
+            labels: { boxWidth: 12 }
         },
         tooltip: {
             callbacks: {
