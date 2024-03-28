@@ -41,9 +41,7 @@ $(function() {
             backdrop: true,            // grey edit window during query execution
             tabSize: 2,                // modify codemirror tab handling to solely use 2 spaces
             indentUnit: 2,
-            extraKeys: {
-                Tab: function(cm) { cm.replaceSelection(new Array(cm.getOption('indentUnit') + 1).join(' ')) }
-            },
+            extraKeys: { Tab: function(cm) { cm.replaceSelection(new Array(cm.getOption('indentUnit') + 1).join(' ')) } },
             sparql: {
                 showQueryButton: true,
                 endpoint: '/query/sparql',
