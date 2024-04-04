@@ -27,6 +27,13 @@
             </li>
         </ul>
         <hr>
+        <ul class="nav nav-pills flex-column mt-sm-auto mb-0 align-items-center align-items-sm-start" id="menu2">
+            <li class="nav-item">
+                <a href="{{ url_for('info') }}" class="nav-link px-0 align-middle">
+                    <i class="fs-6 fa-solid fa-circle-info fa-fw"></i> <span class="ms-1 d-none d-sm-inline">About FedSDM</span>
+                </a>
+            </li>
+        </ul>
         <div class="dropdown pb-4">
             <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa-solid fa-user fa-fw"></i>&nbsp;{% if g.user %}<span class="ms-1 d-none d-sm-inline">{{ g.user['username'] }}</span>&nbsp;{% endif %}&nbsp;<i class="fa-solid fa-caret-down"></i>
