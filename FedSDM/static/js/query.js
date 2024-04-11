@@ -256,12 +256,6 @@ $(function() {
                         });
                         response = true;
                     }
-//                    ,
-//                        error: function(jqXHR, textStatus, errorThrown){
-//                            console.log(jqXHR.status);
-//                            console.log(jqXHR.responseText);
-//                            console.log(textStatus);
-//                        }
                 });
                 req.done(function() {
                     // This makes it able to send new request on the next interval
