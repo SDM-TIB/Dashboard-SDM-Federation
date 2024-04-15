@@ -110,7 +110,8 @@ def create_app() -> Flask:
 
     @app.route('/info')
     def info():
-        return render_template('info.jinja2')
+        from DeTrusty import __version__ as version_detrusty
+        return render_template('info.jinja2', version_detrusty=version_detrusty)
 
     @app.route('/favicon.ico')
     def favicon():
