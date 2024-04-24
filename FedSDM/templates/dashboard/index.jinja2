@@ -113,13 +113,11 @@
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
-<script>
-window.onload = function() {
-    let dsStats = JSON.parse('{{ dsStats | tojson | safe }}'),
-        fedStats = JSON.parse('{{ fedStats | tojson | safe }}'),
-        stats = JSON.parse('{{ stats | tojson | safe }}');
-    setFederation(dsStats, fedStats);
-    setStats(stats);
-};
+<script defer>
+let dsStats = JSON.parse('{{ dsStats | tojson | safe }}'),
+    fedStats = JSON.parse('{{ fedStats | tojson | safe }}'),
+    stats = JSON.parse('{{ stats | tojson | safe }}');
+setFederation(dsStats, fedStats);
+setStats(stats);
 </script>
 {% endblock %}
