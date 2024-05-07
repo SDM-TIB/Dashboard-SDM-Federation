@@ -130,22 +130,22 @@
 <script src="{{ url_for('static', filename='js/colors.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/federations.js') }}"></script>
-<script>
-$(function() {
-    let federations = JSON.parse('{{ fedStats | tojson | safe }}');
-    federationOverview(federations);
+<script defer>
+let federations = JSON.parse('{{ fedStats | tojson | safe }}'),
+    federation = federationList.val();
+federationOverview(federations);
+showFederations(federation);
 
-    let activeTab = window.location.hash;
-    if (activeTab) {
-        if (activeTab === "#home") {
-            $('#maincontent a[href="#home"]').trigger("click");
-            $('#federations-list').val('All')
-                                  .change();
-        }
-        else if (activeTab === "#All") {
-            $('#maincontent a[href="#fed"]').trigger("click");
-        }
+let activeTab = window.location.hash;
+if (activeTab) {
+    if (activeTab === "#home") {
+        $('#maincontent a[href="#home"]').trigger("click");
+        $('#federations-list').val('All')
+                              .change();
     }
-});
+    else if (activeTab === "#All") {
+        $('#maincontent a[href="#fed"]').trigger("click");
+    }
+}
 </script>
 {% endblock %}
