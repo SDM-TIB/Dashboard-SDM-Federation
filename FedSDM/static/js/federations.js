@@ -87,12 +87,12 @@ function set_disabled_prop_ds_buttons(disabled) {
     button_edit_source.prop('disabled', disabled);
     button_remove_source.prop('disabled', disabled);
     button_recompute_mts.prop('disabled', disabled);
+    button_links.prop('disabled', disabled);
 }
 
 // If no federation is selected, then all action buttons will be disabled.
 function disableButtons() {
     button_add_source.prop('disabled', true);
-    button_links.prop('disabled', true);
     button_all_links.prop('disabled', true);
     set_disabled_prop_ds_buttons(true);
 }
@@ -217,13 +217,14 @@ function manage(fed) {
             selectedSource = null;
         });
     } else {
+        selectedSource = null;
         table.clear().draw();
         set_disabled_prop_ds_buttons(true);
         table.ajax.url('/federation/datasources?graph=' + fed).load();
     }
     table.on('draw', function() {
-        if (table.column(0).data().length > 0) { button_links.prop('disabled', false) }
-        else { button_links.prop('disabled', true) }
+        if (table.column(0).data().length > 0) { button_all_links.prop('disabled', false) }
+        else { button_all_links.prop('disabled', true) }
     });
 }
 
