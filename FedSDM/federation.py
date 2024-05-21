@@ -207,8 +207,8 @@ def data_sources(graph) -> Response:
 
 
 @bp.route('/addsource', methods=['POST'])
-@use_kwargs({'fed': fields.Str(required=True)}, location='query')
 @use_kwargs({
+    'fed': fields.Str(required=True),
     'url': fields.Str(required=True),
     'dstype': fields.Str(required=True),
     'name': fields.Str(required=True),
@@ -256,7 +256,7 @@ def api_add_source(fed, url, dstype, name, desc='', params='', keywords='', vers
 
     """
     if len(fed) == 0:  # TODO: Maybe better to check if the federation actually exists?
-        return Response(json.dumps({}), mimetype='application/json')
+        return Response(json.dumps({'status': -1}), mimetype='application/json')
     session['fed'] = fed
 
     prefix = 'http://ontario.tib.eu/'
@@ -337,8 +337,8 @@ def add_data_source(federation: str, data_source: DataSource) -> Tuple[dict, Opt
 
 
 @bp.route('/editsource', methods=['POST'])
-@use_kwargs({'fed': fields.Str(required=True)}, location='query')
 @use_kwargs({
+    'fed': fields.Str(required=True),
     'id_': fields.Str(required=True, data_key='id'),
     'url': fields.Str(required=True),
     'dstype': fields.Str(required=True),
@@ -394,7 +394,7 @@ def api_edit_source(fed, id_, url, dstype, name, desc='', params='', keywords=''
 
     """
     if len(fed) == 0:  # TODO: Maybe better to check if the federation actually exists?
-        return Response(json.dumps({}), mimetype='application/json')
+        return Response(json.dumps({'status': -3}), mimetype='application/json')
     session['fed'] = fed
 
     ds = DataSource(
@@ -422,9 +422,9 @@ def api_edit_source(fed, id_, url, dstype, name, desc='', params='', keywords=''
 
     if not ds.is_accessible():
         if rr:
-            return {'status': -1}, None
+            return Response(json.dumps({'status': -1}), mimetype='application/json')
         else:
-            return {'status': -2}, None
+            return Response(json.dumps({'status': -2}), mimetype='application/json')
     else:
         # TODO: Is it a good idea to re-create the MTs here?
         mgr = RDFMTMgr(mdb, fed)
@@ -432,7 +432,7 @@ def api_edit_source(fed, id_, url, dstype, name, desc='', params='', keywords=''
         p = Process(target=mgr.create, args=(ds, out_queue, ))
         p.start()
         logger.info('Collecting RDF-MTs started')
-        return {'status': 1}, out_queue
+        return Response(json.dumps({'status': 1}), mimetype='application/json')
 
 
 @bp.route('/api/findlinks', methods=['GET', 'POST'])

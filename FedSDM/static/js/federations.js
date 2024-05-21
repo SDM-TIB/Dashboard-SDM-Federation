@@ -14,7 +14,6 @@ const federationList = $('#federations-list'),
       button_all_links = $('#find_all_links');
 let statsTable = null,
     sourceStatsChart = null,
-    bsLoaded = 0,
     table = null,
     selectedSource = null;
 const prefix = 'http://ontario.tib.eu/federation/g/';
@@ -133,29 +132,25 @@ function basic_stat(fed) {
             dom: 'lfrtip'
         });
     } else { statsTable.clear().draw() }
-    let datas = [];
-    $.ajax({
-        type: 'GET',
-        headers: { Accept: 'application/json' },
-        url: '/federation/stats',
-        data: { 'graph': fed },
-        dataType: 'json',
-        success: function(data) {
-            datas = data.data;
+
+    fetch('/federation/stats?graph=' + fed, { headers: { Accept: 'application/json' } })
+        .then(res => res.json())
+        .then(data => data.data)
+        .then(data => {
             let barData = { labels: [], rdfmts: [], triples: [] };
-            for (const d in datas) {
+            for (const d in data) {
                 let rem = [];
-                rem.push(datas[d].ds);
-                let rdfmts = datas[d].rdfmts;
+                rem.push(data[d].ds);
+                let rdfmts = data[d].rdfmts;
 
                 rem.push(rdfmts);
-                let triples = datas[d].triples;
+                let triples = data[d].triples;
                 if (triples == null) { triples = '-1' }
 
                 rem.push(triples);
                 statsTable.row.add(rem).draw(false);
 
-                barData.labels.push(datas[d].ds);
+                barData.labels.push(data[d].ds);
                 rdfmts = log10(rdfmts);
                 barData.rdfmts.push(rdfmts);
                 triples = log10(triples);
@@ -180,14 +175,8 @@ function basic_stat(fed) {
                 sourceStatsChart.data.datasets = sourceStatsToBarChart(barData);
                 sourceStatsChart.update();
             }
-        },
-        error: function(jqXHR, textStatus) {
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(textStatus);
-        }
-    });
-    bsLoaded = 1;
+        })
+        .catch(err => console.error(err));
 }
 
 // Sets up the management tab with information about data sources in a given federation.
@@ -244,80 +233,45 @@ button_edit_source.on('click', function() {
 
 // Remove data source click action
 button_remove_source.on('click', function() {
-    $.ajax({
-        type: 'GET',
-        headers: { Accept: 'application/json' },
-        url: '/federation/api/removeds',
-        data: { 'ds': selectedSource[0][0], 'fed': federation },
-        dataType: 'json',
-        success: function(data) {
-            if (data === true) { table.row('.selected').remove().draw(false) }
-        },
-        error: function(jqXHR, textStatus) {
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(textStatus);
-        }
-    });
+    // TODO: The backend is not yet implemented
+    fetch('/federation/api/removeds?ds=' + encodeURIComponent(selectedSource[0][0]) + '&fed=' + encodeURIComponent(federation), { headers: { Accept: 'application/json' } })
+        .then(res => res.json())
+        .then(data => { console.log(data); if (data === true) { table.row('.selected').remove().draw(false) } })
+        .catch(err => console.error(err));
     set_disabled_prop_ds_buttons(true);
 });
 
 // Recompute RDF Molecule Templates click action
 button_recompute_mts.on('click', function() {
-    console.log(selectedSource[0][0]);
-    $.ajax({
-        type: 'GET',
-        headers: { Accept: 'application/json' },
-        url: '/federation/api/recreatemts?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
-        data: { 'query': 'all' },
-        dataType: 'json',
-        success: function(data) {
+    fetch('/federation/api/recreatemts?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]) + '&query=all', { headers: { Accept: 'application/json' } })
+        .then(res => res.json())
+        .then(data => {
             if (data != null && data.status === 1) { alert('Recreating RDF-MTs for ' + selectedSource[0][0] + ' is underway...') }
             else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
-        },
-        error: function(jqXHR, textStatus) {
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(textStatus);
-        }
-    });
+        })
+        .catch(err => console.error(err));
 });
 
 // Find links click action
 button_links.on('click', function() {
-    console.log(selectedSource[0][0]);
-    $.ajax({
-        type: 'GET',
-        headers: { Accept: 'application/json' },
-        url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]),
-        success: function(data) {
+    fetch('/federation/api/findlinks?fed=' + encodeURIComponent(federation) + '&datasource=' + encodeURIComponent(selectedSource[0][0]), { headers: { Accept: 'application/json' } })
+        .then(res => res.json())
+        .then(data => {
             if (data != null && data.status === 1) { alert('Finding links in progress...') }
             else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
-        },
-        error: function(jqXHR, textStatus) {
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(textStatus);
-        }
-    });
+        })
+        .catch(err => console.error(err));
 });
 
 // Find all links click action
 button_all_links.on('click', function() {
-    $.ajax({
-        type: 'GET',
-        headers: { Accept: 'application/json' },
-        url: '/federation/api/findlinks?fed=' + encodeURIComponent(federation),
-        success: function(data) {
+    fetch('/federation/api/findlinks?fed=' + encodeURIComponent(federation), { headers: { Accept: 'application/json' } })
+        .then(res => res.json())
+        .then(data => {
             if (data != null && data.status === 1) { alert('Finding links in progress...') }
             else { alert('Cannot start the process. Please check if there are data sources in this federation.') }
-        },
-        error: function(jqXHR, textStatus) {
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(textStatus);
-        }
-    });
+        })
+        .catch(err => console.error(err));
 });
 
 // Constants used in the management dialog functions
@@ -393,58 +347,57 @@ $('#edit-source-btn').on('click', function() { updateDS(true) });
 
 // Adds a new data source using the FedSDM API. If the parameter 'close' is true, then the dialog will be closed
 // after adding the new source. Otherwise, the dialog stays open in order to add another source to the federation.
-function addDataSource(close) {
+async function addDataSource(close) {
     resetTips();
     allFields.removeClass('ui-state-error');
-    const valid = checkLength(name, 'name', 2, 169) && checkLength(URL, 'URL', 6, 100);
+    let valid = checkLength(name, 'name', 2, 169) && checkLength(URL, 'URL', 6, 100);
     //valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, 'Data source should consist of a-z, 0-9, underscores, spaces and must begin with a letter.' );
     //valid = valid && checkRegexp( URL, emailRegex, 'eg. ui@jquery.com' );
     if (valid) {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            headers: { Accept: 'application/json' },
-            url: '/federation/addsource?fed=' + federation,
-            data: {
-                'name': name.val(),
-                'url': URL.val(),
-                'dstype': ds_type.val(),
-                'keywords': keywords.val(),
-                'params': params.val(),
-                'types': types.val(),
-                'desc': desc.val(),
-                'version': version.val(),
-                'homepage': homepage.val(),
-                'organization': organization.val()
-            },
-            dataType: 'json',
-            success: function(data) {
+        let data = new FormData();
+        data.append('fed', federation);
+        data.append('name', name.val());
+        data.append('url', URL.val());
+        data.append('dstype', ds_type.val());
+        data.append('keywords', keywords.val());
+        data.append('params', params.val());
+        data.append('types', types.val());
+        data.append('desc', desc.val());
+        data.append('version', version.val());
+        data.append('homepage', homepage.val());
+        data.append('organization', organization.val());
+        valid = await fetch('/federation/addsource', {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: data
+            })
+            .then(res => res.json())
+            .then(data => {
                 if (data.status >= 0) { manage(federation) }
                 else {
                     close = false;
                     updateTips('Error while adding data source to the federation!');
+                    return false;
                 }
                 table.clear().draw();
                 table.ajax.url('/federation/datasources?graph=' + federation).load();
-            },
-            error: function(jqXHR, textStatus) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        });
-    } else { close = false }
-    if (close) { addSourceModal.modal('hide') }
+                if (close) { addSourceModal.modal('hide') }
+                return true;
+            })
+            .catch(err => console.log(err));
+    }
     return valid;
 }
 
 // Submits the data to add a new data source, keeps the dialog open, and resets the form elements after a
 // successful request so that the user can add a second data source without reopening the dialog.
 function saveAndMore() {
-    if (addDataSource(false)) {
-        addSourceForm[0].reset();
-        allFields.removeClass('ui-state-error');
-    }
+    addDataSource(false).then(res => {
+        if (res) {
+            addSourceForm[0].reset();
+            allFields.removeClass('ui-state-error');
+        }
+    });
 }
 
 // Validates the form elements in the edit data source dialog and sends the request for updating the source
@@ -459,44 +412,38 @@ function updateDS(close) {
         table.row.add([eid, edit_name.val(), edit_URL.val(), edit_ds_type.val(), edit_keywords.val(), edit_homepage.val(), edit_organization.val(), edit_desc.val(), edit_version.val(), edit_params.val(),]).draw(false);
         button_edit_source.prop('disabled', true);
         button_remove_source.prop('disabled', true);
-        $.ajax({
-            type: 'POST',
-            async: false,
-            headers: { Accept: 'application/json' },
-            url: '/federation/editsource?fed=' + federation,
-            data: {
-                'id': eid,
-                'name': edit_name.val().trim(),
-                'url': edit_URL.val().trim(),
-                'dstype': edit_ds_type.val().trim(),
-                'keywords': edit_keywords.val().trim(),
-                'params': edit_params.val().trim(),
-                'types': edit_types.val().trim(),
-                'desc': edit_desc.val().trim(),
-                'version': edit_version.val().trim(),
-                'homepage': edit_homepage.val().trim(),
-                'organization': edit_organization.val().trim()
-            },
-            dataType: 'json',
-            success: function(data) {
-                if (data != null && data.length > 0) {
-                    manage(federation);
-                    console.log(data);
-                } else {
+
+        let data = new FormData();
+        data.append('fed', federation);
+        data.append('id', eid);
+        data.append('name', edit_name.val().trim());
+        data.append('url', edit_URL.val().trim());
+        data.append('dstype', edit_ds_type.val().trim());
+        data.append('keywords', edit_keywords.val().trim());
+        data.append('params', edit_params.val().trim());
+        data.append('types', edit_types.val().trim());
+        data.append('desc', edit_desc.val().trim());
+        data.append('version', edit_version.val().trim());
+        data.append('homepage', edit_homepage.val().trim());
+        data.append('organization', edit_organization.val().trim());
+        fetch('/federation/editsource', {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: data
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status >= 0) { manage(federation); }
+                else {
                     close = false;
                     updateTips('Error while editing data source!');
                 }
                 table.clear().draw();
                 table.ajax.url('/federation/datasources?graph=' + federation).load();
-            },
-            error: function(jqXHR, textStatus) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        });
-    } else { close = false }
-    if (close) { editSourceModal.modal('hide') }
+                if (close) { editSourceModal.modal('hide') }
+            })
+            .catch(err => console.log(err));
+    }
     return valid;
 }
 
@@ -510,17 +457,17 @@ function createNewFederation(close) {
           valid = checkLength(fedName, 'name', 2, 169);
     console.log(name + ' ' + desc);
     if (valid) {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            headers: { Accept: 'application/json' },
-            url: '/federation/create',
-            data: {
-                'name': name,
-                'description': desc,
-                'is_public': fedPublic.is(':checked')
-            },
-            success: function(data) {
+        let data = new FormData();
+        data.append('name', name);
+        data.append('description', desc);
+        data.append('is_public', fedPublic.is(':checked'))
+        fetch('/federation/create', {
+                method: 'POST',
+                headers: { Accept: 'text/plain' },
+                body: data
+            })
+            .then(res => res.text())
+            .then(data => {
                 console.log(data);
                 if (data !== null && data.length > 0) {
                     federation = data;
@@ -530,18 +477,11 @@ function createNewFederation(close) {
                     federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
                     showFederations(federation);
                     $('#maincontent a[href="#manage"]').tab('show');
-                } else {
-                    close = false;
-                    updateTips('Error while creating the new federation! Please try again later!');
-                }
-            },
-            error: function(jqXHR, textStatus) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        });
-    } else { close = false }
-    if (close) { fedModal.modal('hide') }
+                    // TODO: Update the federation stats table
+                    if (close) { fedModal.modal('hide') }
+                } else { updateTips('Error while creating the new federation! Please try again later!'); }
+            })
+            .catch(err => console.log(err));
+    }
     return valid;
 }
