@@ -3,7 +3,6 @@ $(function() {
     let federation = federationList.val(),
         queryResultsTable = $('#query_result_table'),
         yasqe = null,
-        query = null,
         queryTriples = [],
         queryVars = [],
         table = null, selectedRow = null, selectedRowData = [],
@@ -75,8 +74,6 @@ $(function() {
                         }
                         $('#time_first').html(' ' + data.time_first + ' sec');
                         $('#time_total').html(' ' + data.time_total + ' sec');
-
-                        query = encodeURIComponent(yasqe.getValue());
 
                         const results = data.result,
                               vars = data.vars;
@@ -151,7 +148,6 @@ $(function() {
             },
             value: 'SELECT DISTINCT ?concept WHERE {\n\t?s a ?concept\n} LIMIT 10'
         });
-        query = encodeURIComponent(yasqe.getValue());
     }
 
     const addFeedbackDialog = $('#feedbackModal');
