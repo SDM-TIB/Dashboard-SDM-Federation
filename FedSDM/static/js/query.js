@@ -10,22 +10,22 @@ $(function() {
         response = false,
         shouldStop = false;
 
-    if (federation != null && federation !== '') {
-        $('#query_row').show();
-        $('#result_row').hide();
-        initialize_yasqe();
-    } else {
-        $('#result_info').hide();
-        $('#result_status').hide();
-        $('#query_row').hide();
-        $('#result_row').hide();
+    function initialize_ui() {
+        if (federation != null && federation !== '') {
+            $('#query_row').show();
+            $('#result_row').hide();
+            if (yasqe == null) { initialize_yasqe() }
+        } else {
+            $('#result_info').hide();
+            $('#result_status').hide();
+            $('#query_row').hide();
+            $('#result_row').hide();
+        }
     }
 
     federationList.on('change', function() {
         federation = $(this).val();
-        $('#query_row').show();
-        $('#result_row').hide();
-        if (yasqe == null) { initialize_yasqe() }
+        initialize_ui();
     });
 
     function query_result_renderer(data) {
@@ -371,4 +371,5 @@ $(function() {
 
     // TODO: add more example queries here
 
+    initialize_ui();
 });
