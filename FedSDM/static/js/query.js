@@ -36,6 +36,11 @@ $(function() {
     }
 
     function initialize_yasqe() {
+        // register our custom autocompleters
+        YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
+        YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
+        // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
+        YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
         yasqe = YASQE(document.getElementById('yasqe'), {
             viewportMargin: Infinity,  // display full query
             backdrop: true,            // grey edit window during query execution
@@ -147,11 +152,6 @@ $(function() {
             value: 'SELECT DISTINCT ?concept WHERE {\n\t?s a ?concept\n} LIMIT 10'
         });
         query = encodeURIComponent(yasqe.getValue());
-        // register our custom autocompleters
-        YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
-        YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
-        // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
-        YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
     }
 
     const addFeedbackDialog = $('#feedbackModal');
