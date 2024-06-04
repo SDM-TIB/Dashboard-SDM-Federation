@@ -166,40 +166,41 @@ addFeedbackDialog.on('hidden.bs.modal', function() {
 });
 $('#add-feedback-btn').on('click', function() { addFeedback(true) });
 
-function addFeedback(close) {
+async function addFeedback(close) {
     allFeedbackFields.removeClass('ui-state-error');
-    const valid = checkSelection(feedbackPredicates, 'column') && checkLength(feedbackDesc, 'description', 2, 500);
+    let valid = checkSelection(feedbackPredicates, 'column') && checkLength(feedbackDesc, 'description', 2, 500);
     console.log({'desc': feedbackDesc.val(), 'pred': feedbackPredicates.val(), 'query': yasqe.getValue(), 'row': selectedRowData, 'columns': queryVars});
 
     if (valid) {
-        $.ajax({
-            type: 'POST',
-            headers: { Accept: 'application/json' },
-            url: '/query/feedback?fed=' + federation,
-            data: {
-                'desc': feedbackDesc.val(),
-                'pred': feedbackPredicates.val(),
-                'query': yasqe.getValue(),
-                'row': selectedRowData,
-                'columns': queryVars
-            },
-            dataType: 'json',
-            crossDomain: true,
-            success: function(data) {
+        let data = new FormData();
+        data.append('fed', federation)
+        data.append('desc', feedbackDesc.val());
+        data.append('pred', feedbackPredicates.val());
+        data.append('query', yasqe.getValue());
+        data.append('row[]', selectedRowData);
+        data.append('columns[]', queryVars);
+        console.log(data);
+
+        valid = await fetch('/query/feedback', {
+                method: 'POST',
+                headers: { Accept: 'application/text' },
+                body: data
+            })
+            .then(res => res.text())
+            .then(data => {
                 console.log(data);
-                if (data === null || data.length === 0) { $('#validateTips').html('Error while adding feedback!') }
-            },
-            error: function(jqXHR, textStatus) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        });
+                if (data === null || data.length === 0) {
+                    $('#validateTips').html('Error while adding feedback!');
+                    return false;
+                }
+                return true;
+            })
+            .catch(err => console.log(err));
     } else {
         close = false;
         console.log('Invalid data...');
     }
-    if (close) { addFeedbackDialog.modal('hide') }
+    if (valid && close) { addFeedbackDialog.modal('hide') }
     return valid;
 }
 
@@ -210,15 +211,14 @@ $('#add_feedback').on('click', function() {
     feedbackPredicates.append('<option value="All">All</option>');
 });
 
-function show_incremental(vars) {
+async function show_incremental(vars) {
     if (response === true) {
         // No new request can be sent unless a response from the last request was received
         response = false;
         if (shouldStop === false) {
-            let req = $.ajax({
-                type: 'GET',
-                url: '/query/nextresult',
-                success: function(data) {
+            await fetch('/query/nextresult')
+                .then(res => res.json())
+                .then(data => {
                     let row = data.result;
                     let elemTimeTotal = $('#time_total');
                     if (row.length === 0 || row === 'EOF') {
@@ -250,18 +250,16 @@ function show_incremental(vars) {
                         });
                     });
                     response = true;
-                }
-            });
-            req.done(function() {
-                // This makes it able to send new request on the next interval
-                if (response === true && shouldStop === false) {
-                    response = true;
-                    show_incremental(vars);
-                } else {
-                    shouldStop = false;
-                    $('#btnStop').prop('disabled', true);
-                }
-            });
+                })
+                .catch(err => console.log(err));
+
+            if (response === true && shouldStop === false) {
+                response = true;
+                await show_incremental(vars);
+            } else {
+                shouldStop = false;
+                $('#btnStop').prop('disabled', true);
+            }
         }
     }
 }

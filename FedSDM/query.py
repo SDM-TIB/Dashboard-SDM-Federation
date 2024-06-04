@@ -56,8 +56,9 @@ def query() -> str:
 
 
 @bp.route('/feedback', methods=['POST'])
-@use_kwargs({'fed': fields.Str(required=True)}, location='query')
+#@use_kwargs({'fed': fields.Str(required=True)}, location='query')
 @use_kwargs({
+    'fed': fields.Str(required=True),
     'pred': fields.Str(required=True),
     'row': fields.List(fields.Str(), required=True, data_key='row[]'),
     'columns': fields.List(fields.Str(), required=True, data_key='columns[]'),
