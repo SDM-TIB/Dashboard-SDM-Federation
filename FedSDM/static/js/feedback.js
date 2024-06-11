@@ -69,7 +69,7 @@ $(function() {
             table = $('#reported_issues').DataTable({
                 order: [[1, 'desc']],
                 responsive: true,
-                select: true,
+                select: { style: 'single' },
                 defaultContent: '<i>Not set</i>'
             });
 
