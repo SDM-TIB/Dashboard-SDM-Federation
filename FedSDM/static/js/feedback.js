@@ -82,8 +82,8 @@ $(function() {
                 editIssue.prop('disabled', true);
                 detailsIssue.prop('disabled', true);
                 selectedRow = null;
-            }).on('dblclick', function(e, dt, type, indexes) {
-                const rowData = issueTable.rows(indexes).data().toArray();
+            }).on('dblclick', 'tbody tr', function() {
+                const rowData = [issueTable.row(this).data()];
                 console.log('report id', rowData[0][0]);
                 get_issue_details(rowData);
             });
