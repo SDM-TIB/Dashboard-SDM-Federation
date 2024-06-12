@@ -27,15 +27,9 @@ $(function() {
 
     // Loads the issue details and opens a dialog showing the details of the specific issue
     function get_issue_details(issueData) {
-        $.ajax({
-            type: 'GET',
-            headers: {
-                Accept : 'application/json'
-            },
-            url: '/feedback/details?iid=' + issueData[0][0],
-            dataType: 'json',
-            crossDomain: true,
-            success: function(data) {
+        fetch('/feedback/details?iid=' + issueData[0][0], { headers: { Accept: 'application/json' } })
+            .then(res => res.json())
+            .then(data => {
                 console.log('details ', data);
                 $('#user').val(issueData[0][2]);
                 $('#query').val(issueData[0][3]);
@@ -46,13 +40,8 @@ $(function() {
                 $('#pred').val(data['pred']);
                 $('#rowJSON').val(JSON.stringify(data['row'], undefined, 4));
                 feedbackDialog.modal('show');
-            },
-            error: function(jqXHR, textStatus) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        });
+            })
+            .catch(err => console.error(err));
     }
 
     // Loads the data for all reported issues and populates a table with the received information.
@@ -93,34 +82,24 @@ $(function() {
             detailsIssue.prop('disabled', true);
         }
 
-        $.ajax({
-            type: 'GET',
-            headers: {
-                Accept : 'application/json'
-            },
-            url: '/feedback/issues?fed=' + federation,
-            crossDomain: true,
-            success: function(data) {
-                const datas = data.data;
-                for (const d in datas) {
+        fetch('/feedback/issues?fed=' + federation, { headers: { Accept: 'application/json' } })
+            .then(res => res.json())
+            .then(data => data.data)
+            .then(data => {
+                for (const d in data) {
                     let row = [
-                        datas[d].id,
-                        datas[d].fed,
-                        datas[d].user,
-                        datas[d].query,
-                        datas[d].desc,
-                        datas[d].status,
-                        datas[d].created
+                        data[d].id,
+                        data[d].fed,
+                        data[d].user,
+                        data[d].query,
+                        data[d].desc,
+                        data[d].status,
+                        data[d].created
                     ];
                     table.row.add(row).draw(false);
                 }
-            },
-            error: function(jqXHR, textStatus) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus);
-            }
-        })
+            })
+            .catch(err => console.error(err));
     }
 
     // Event handler for 'on click' of the 'issue details' button.
