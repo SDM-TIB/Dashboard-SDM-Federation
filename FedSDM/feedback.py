@@ -67,18 +67,17 @@ def feedback_list(fed) -> Response:
     """
     res = []
     db = get_db()
-    if fed is None:
+    if fed is None or fed.lower() == 'all':
         feedbacks = db.execute(
             'SELECT distinct f.id as id, f.federationID as fed, f.issueDesc as desc, f.created as created, '
             '     f.issueQuery as query , u.username as user, f.issueStatus as status'
-            ' FROM feedbackreport f JOIN user u On f.userID = u.id '
+            ' FROM feedbackreport f JOIN user u ON f.userID = u.id '
             ' ORDER BY created DESC'
         ).fetchall()
     else:
-        # TODO: Handle the case of all federations
         feedbacks = db.execute(
-            'SELECT distinct f.id as id, f.federationID as fed, f.created as created, '
-            '     f.issueDesc as desc, f.issueQuery as query , u.username as user, f.issueStatus as status'
+            'SELECT distinct f.id as id, f.federationID as fed, f.issueDesc as desc, f.created as created, '
+            '     f.issueQuery as query , u.username as user, f.issueStatus as status'
             ' FROM feedbackreport f JOIN user u ON f.userID = u.id WHERE f.federationID="' + fed + '" '
             ' ORDER BY created DESC'
         ).fetchall()
