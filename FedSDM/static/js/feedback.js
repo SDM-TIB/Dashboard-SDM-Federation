@@ -13,15 +13,12 @@ let federation = federationList.val(),
     feedbackDialog = $('#detailsModal'),
     selectedRow = null;
 
-if (federation != null && federation !== '') {
-    load_table(federation);
-}
+if (federation != null && federation !== '') { load_table(federation); }
 
 federationList.on('change', function() {
     federation = $(this).val();
-    if (federation != null && federation !== '') {
-        load_table(federation);
-    }
+    if (federation != null && federation !== '') { load_table(federation); }
+    else { clear_table(); }
 });
 
 // Loads the issue details and opens a dialog showing the details of the specific issue
@@ -75,11 +72,7 @@ function load_table(federation) {
             console.log('report id', rowData[0][0]);
             get_issue_details(rowData);
         });
-    } else {
-        table.clear().draw();
-        editIssue.prop('disabled', true);
-        detailsIssue.prop('disabled', true);
-    }
+    } else { clear_table(); }
 
     fetch('/feedback/issues?fed=' + federation, { headers: { Accept: 'application/json' } })
         .then(res => res.json())
@@ -99,6 +92,13 @@ function load_table(federation) {
             }
         })
         .catch(err => console.error(err));
+}
+
+// Clears the table with the issue details.
+function clear_table() {
+    table.clear().draw();
+    editIssue.prop('disabled', true);
+    detailsIssue.prop('disabled', true);
 }
 
 // Event handler for 'on click' of the 'issue details' button.
