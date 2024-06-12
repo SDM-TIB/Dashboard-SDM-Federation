@@ -94,13 +94,9 @@ mt_details.on('click', function() {
     mt_details.hide();
     $('#backToTable').show();
     const url = encodeURIComponent(selectedRow[0][2]);
-    $.ajax({
-        type: 'GET',
-        headers: { Accept: 'application/json' },
-        url: '/rdfmts/api/mtdetails?mt=' + url + '&fed=' + federation,
-        dataType: 'json',
-        crossDomain: true,
-        success: function(data) {
+    fetch('/rdfmts/api/mtdetails?mt=' + url + '&fed=' + federation, { headers: { Accept: 'application/json' } })
+        .then(res => res.json())
+        .then(data => {
             console.log('url: ' + url)
             console.log('detail returned: ' + data);
             sources = data.sources;
@@ -135,13 +131,8 @@ mt_details.on('click', function() {
             mNodes = flatNodes;
             $("#mt_viz").show();
             draw_details();
-        },
-        error: function(jqXHR, textStatus) {
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(textStatus);
-        }
-    });
+        })
+        .catch(err => console.error(err));
 });
 
 function draw_details() {
