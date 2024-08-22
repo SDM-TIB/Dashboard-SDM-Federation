@@ -29,15 +29,15 @@
         });
 
         $(function() {
-            $('#menu a').filter(function() {
-                return this.href === window.location.href.split('#')[0];
-            }).addClass('active');
+            $('#menu a')
+                .filter(function() { return this.href === window.location.href.split('#')[0]; })
+                .addClass('active');
         });
 
         $(function() {
-           $('#menu2 a').filter(function() {
-               return this.href === window.location.href.split('#')[0];
-           }).addClass('active');
+           $('#menu2 a')
+               .filter(function() { return this.href === window.location.href.split('#')[0]; })
+               .addClass('active');
         });
     </script>
 </head>
