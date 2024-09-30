@@ -55,7 +55,7 @@ services:
     image: fedsdm
     build:
       context: ../
-      dockerfile: ../Dockerfile-alpine
+      dockerfile: Dockerfile-alpine
     networks:
       - lslod
     volumes:
