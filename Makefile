@@ -1,6 +1,6 @@
 # Makefile for building FedSDM
 
-.PHONY: help install bundle rebuild build run-example stop-example example-run example-stop dep-outdated
+.PHONY: help install bundle rebuild build run-example stop-example example-run example-stop dep-outdated outdated
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -37,3 +37,5 @@ example-stop: stop-example
 dep-outdated:
 	python3 -m pip list --outdated
 	npm outdated || true
+
+outdated: dep-outdated
