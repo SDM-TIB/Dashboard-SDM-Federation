@@ -470,3 +470,7 @@ a:hover {
 .gray {
   color: #666;
 }
+
+.multi-elements i {
+  margin-right: 5px;
+}
