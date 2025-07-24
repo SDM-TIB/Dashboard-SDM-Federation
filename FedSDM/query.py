@@ -306,7 +306,7 @@ def execute_query(graph: str, query_: str, output: Queue = Queue()):
     mdb = get_mdb()
     config = ConfigSimpleStore(graph, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
     start = time()
-    decomposer = Decomposer(query_, config)
+    decomposer = Decomposer(query_, config, joinstarslocally=False)
     decomposed_query = decomposer.decompose()
     logger.info(decomposed_query)
     if decomposed_query is None:
