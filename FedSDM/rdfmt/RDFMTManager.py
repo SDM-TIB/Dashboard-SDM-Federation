@@ -48,7 +48,7 @@ class RDFMTMgr(object):
         """(Re-)creates the RDF Molecule Templates of a datasource within the federation.
 
         This method (re-)creates the RDF Molecule Templates of a single datasource within the
-        federation the :class:`RDFMTMgr` instance was initialized for.
+        federation for which the :class:`RDFMTMgr` instance was initialized.
 
         Parameters
         ----------
