@@ -3,7 +3,7 @@
     "jquery": "3.7.1",
     "jquery.md5": "1.0.2",
     "chart.js": "4.5.0",
-    "@fortawesome/fontawesome-free": "7.0.1",
+    "@fortawesome/fontawesome-free": "7.1.0",
     "datatables.net": "2.3.4",
     "datatables.net-dt": "2.3.4",
     "datatables.net-responsive": "3.0.6",
