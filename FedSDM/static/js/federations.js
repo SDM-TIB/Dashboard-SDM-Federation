@@ -112,6 +112,18 @@ function sourceStatsToBarChart(data) {
             data: data.rdfmts,
             borderWidth: 1,
             backgroundColor: colorNumberMolecules,
+        }, {
+            id: 3,
+            label: '# of Properties (log)',
+            data: data.properties,
+            borderWidth: 1,
+            backgroundColor: colorNumberProperties
+        }, {
+            id: 4,
+            label: '# of Links (log)',
+            data: data.links,
+            borderWidth: 1,
+            backgroundColor: colorNumberLinks
         }
     ];
 }
@@ -126,7 +138,9 @@ function basic_stat(fed) {
             defaultContent: '-1',
             columnDefs: [
                 { target: 1, render: number_renderer },
-                { target: 2, render: number_renderer }
+                { target: 2, render: number_renderer },
+                { target: 3, render: number_renderer },
+                { target: 4, render: number_renderer }
             ],
             select: true,
             dom: 'lfrtip'
@@ -137,17 +151,24 @@ function basic_stat(fed) {
         .then(res => res.json())
         .then(data => data.data)
         .then(data => {
-            let barData = { labels: [], rdfmts: [], triples: [] };
+            let barData = { labels: [], rdfmts: [], triples: [], properties: [], links: [] };
             for (const d in data) {
                 let rem = [];
                 rem.push(data[d].ds);
-                let rdfmts = data[d].rdfmts;
 
+                let rdfmts = data[d].rdfmts;
                 rem.push(rdfmts);
+
                 let triples = data[d].triples;
                 if (triples == null) { triples = '-1' }
-
                 rem.push(triples);
+
+                let properties = data[d].properties;
+                rem.push(properties);
+
+                let links = data[d].links;
+                rem.push(links);
+
                 statsTable.row.add(rem).draw(false);
 
                 barData.labels.push(data[d].ds);
@@ -155,9 +176,13 @@ function basic_stat(fed) {
                 barData.rdfmts.push(rdfmts);
                 triples = log10(triples);
                 barData.triples.push(triples);
+                properties = log10(properties);
+                barData.properties.push(properties);
+                links = log10(links);
+                barData.links.push(links);
             }
 
-            $('#sourceStatsChartContainer').height(62 + 70 * barData.labels.length);
+            $('#sourceStatsChartContainer').height(62 + 110 * barData.labels.length);
             if (sourceStatsChart == null) {
                 sourceStatsChart = new Chart($('#sourceStatsChart'), {
                     type: 'bar',
