@@ -34,118 +34,164 @@ function query_result_renderer(data) {
 }
 
 function initialize_yasqe() {
-    // register our custom autocompleters
-    YASQE.registerAutocompleter('customPropertyCompleter', customPropertyCompleter);
-    YASQE.registerAutocompleter('customClassCompleter', customClassCompleter);
-    // and, to make sure we don't use the other property and class autocompleters, overwrite the default enabled completers
-    YASQE.defaults.autocompleters = ['customClassCompleter', 'customPropertyCompleter'];
-    yasqe = YASQE(document.getElementById('yasqe'), {
-        viewportMargin: Infinity,  // display full query
-        backdrop: true,            // grey edit window during query execution
-        tabSize: 2,                // modify codemirror tab handling to solely use 2 spaces
+    Yasqe.forkAutocompleter('property', {
+        name: 'customPropertyCompleter',
+        bulk: true,
+        autoShow: true,
+        persistenceId: 'customProperties',
+        get: function(yasqe) {
+            return new Promise(function(resolve) {
+                $.ajax({
+                    data: { query: 'SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000' },
+                    url: '/query/sparql',
+                    success: function(data) { resolve(getAutocompletionsArrayFromJson(data.result)) }
+                });
+            });
+        }
+    });
+
+    Yasqe.forkAutocompleter('class', {
+        name: 'customClassCompleter',
+        bulk: true,
+        autoShow: true,
+        get: function(yasqe) {
+            const filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
+                ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
+                ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
+                ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
+                ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
+                ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
+                ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
+                ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && ' +
+                ' !regex(str(?type), "nodeID://", "i") ) ';
+            return new Promise(function(resolve) {
+                $.ajax({
+                    data: { query: 'SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000' },
+                    url: '/query/sparql',
+                    success: function(data) { resolve(getAutocompletionsArrayFromJson(data.result)) }
+                });
+            });
+        }
+    });
+
+    yasqe = new Yasqe(document.getElementById('yasqe'), {
+        showQueryButton: true,
+        tabSize: 2,
         indentUnit: 2,
+        autocompleters: ['customPropertyCompleter', 'customClassCompleter'],
         extraKeys: { Tab: function(cm) { cm.replaceSelection(new Array(cm.getOption('indentUnit') + 1).join(' ')) } },
-        sparql: {
-            showQueryButton: true,
-            endpoint: '/query/sparql',
-            callbacks: {
-                beforeSend: function(jqXHR, setting) {
-                    $('#result_status').hide();
-                    $('#btnVisualize').hide();
-                    $('#btnShowTable').hide();
-                    setting.url = '/query/sparql?federation=' + federation + '&query=' + encodeURIComponent(yasqe.getValue());
-                    setting.crossDomain = true;
-                    setting.data ={ 'query': yasqe.getValue() };
-                    $('#result_info').hide();
-                    queryResultsTable.empty();
-                },
-                success: function(data) {
-                    $('#result_table_div').empty()
-                        .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="query_result_table"></table>');
-                    queryResultsTable = $('#query_result_table');
-
-                    if ('error' in data) {
-                        $('#result_row').show();
-                        $('#result_info').show();
-                        $('#result_status').html('Error: ' + data.error)
-                            .show();
-                        return true;
-                    }
-                    $('#time_first').html(' ' + data.time_first + ' sec');
-                    $('#time_total').html(' ' + data.time_total + ' sec');
-
-                    const results = data.result,
-                        vars = data.vars;
-                    if (results.length > 0) {
-                        $('#result_status').hide();
-                        $('#result_info').show();
-                        $('#result_row').show();
-
-                        let tableHeader = '<thead><tr>',
-                            tableFooter = '<tfoot><tr>';
-                        for (let i = 0; i < vars.length; i++) {
-                            tableHeader =  tableHeader + '<th>' + vars[i] + '</th> ';
-                            tableFooter =  tableFooter + '<th>' + vars[i] + '</th> ';
-                            queryVars.push(vars[i]);
-                        }
-                        queryResultsTable.append(tableHeader + '</tr></thead>')
-                            .append('<tbody></tbody>')
-                            .append(tableFooter + '</tr></tfoot>');
-
-                        table = queryResultsTable.DataTable({
-                            responsive: false,
-                            select: true,
-                            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
-                            dom: 'Blfrtip',
-                            buttons: table_buttons('sparql-results'),
-                            columnDefs: [{ targets: '_all', render: query_result_renderer }]
-                        });
-                        queryTriples = data.query_triples;
-                        for (let i = 0; i < results.length; i++) {
-                            let row = results[i],
-                                row_ml = [];
-                            for (let j = 0; j < vars.length; j++) {
-                                const entry = row[vars[j]];
-                                row_ml.push(entry);
-                            }
-                            table.row.add(row_ml).draw(false);
-                        }
-                        table.columns().every(function() {
-                            let column = this,
-                                select = $('<select><option value="">All</option></select>')
-                                    .appendTo($(column.footer()).empty())
-                                    .on('change', function() {
-                                        let val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                    });
-                            column.data().unique().sort().each(function(d) {
-                                select.append('<option value=' + d + '>' + d + '</option>');
-                            } );
-                        });
-                        table.on('select', function(e, dt, type, indexes) {
-                            selectedRow = table.rows( indexes ).data().toArray();
-                            selectedRowData = [];
-                            for (let i in selectedRow[0]) { selectedRowData.push(selectedRow[0][i]['value']) }
-                            $('#add_feedback').prop('disabled', false);
-                        }).on('deselect', function() {
-                            $('#add_feedback').prop('disabled', true);
-                            selectedRow = null;
-                        });
-                    } else {
-                        $('#result_status').html('No results found!')
-                            .show();
-                        $('#result_info').show();
-                        $('#result_row').show();
-                        response = false;
-                        return true;
-                    }
-                    response = true;
-                    $('#btnStop').prop('disabled', false);
-                    show_incremental(vars);
-                } // end of sparql success callback function
-            }
+        requestConfig: {
+            endpoint: window.location.origin + '/query/sparql',
+            method: 'GET'
         },
         value: 'SELECT DISTINCT ?concept WHERE {\n\t?s a ?concept\n} LIMIT 10'
+    });
+
+    yasqe.on('queryBefore', function(instance) {
+        instance.config.requestConfig.endpoint = window.location.origin + '/query/sparql?federation=' + encodeURIComponent(federation);
+        $('#result_status').hide();
+        $('#btnVisualize').hide();
+        $('#btnShowTable').hide();
+        $('#result_info').hide();
+        queryResultsTable.empty();
+    });
+
+    yasqe.on('queryResponse', function(instance, queryResp) {
+        if (queryResp instanceof Error) {
+            $('#result_row').show();
+            $('#result_info').show();
+            $('#result_status').html('Error: ' + queryResp.message).show();
+            return;
+        }
+
+        let data;
+        try {
+            data = JSON.parse(queryResp.content);
+        } catch(e) {
+            $('#result_row').show();
+            $('#result_info').show();
+            $('#result_status').html('Error: could not parse response').show();
+            return;
+        }
+
+        $('#result_table_div').empty()
+            .append('<table style="width: 100%" class="table table-striped table-bordered table-hover" id="query_result_table"></table>');
+        queryResultsTable = $('#query_result_table');
+
+        if ('error' in data) {
+            $('#result_row').show();
+            $('#result_info').show();
+            $('#result_status').html('Error: ' + data.error).show();
+            return;
+        }
+
+        $('#time_first').html(' ' + data.time_first + ' sec');
+        $('#time_total').html(' ' + data.time_total + ' sec');
+
+        const results = data.result,
+            vars = data.vars;
+
+        if (results.length > 0) {
+            $('#result_status').hide();
+            $('#result_info').show();
+            $('#result_row').show();
+
+            let tableHeader = '<thead><tr>',
+                tableFooter = '<tfoot><tr>';
+            for (let i = 0; i < vars.length; i++) {
+                tableHeader += '<th>' + vars[i] + '</th> ';
+                tableFooter += '<th>' + vars[i] + '</th> ';
+                queryVars.push(vars[i]);
+            }
+            queryResultsTable.append(tableHeader + '</tr></thead>')
+                .append('<tbody></tbody>')
+                .append(tableFooter + '</tr></tfoot>');
+
+            table = queryResultsTable.DataTable({
+                responsive: false,
+                select: true,
+                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
+                dom: 'Blfrtip',
+                buttons: table_buttons('sparql-results'),
+                columnDefs: [{ targets: '_all', render: query_result_renderer }]
+            });
+            queryTriples = data.query_triples;
+            for (let i = 0; i < results.length; i++) {
+                let row = results[i], row_ml = [];
+                for (let j = 0; j < vars.length; j++) { row_ml.push(row[vars[j]]) }
+                table.row.add(row_ml).draw(false);
+            }
+            table.columns().every(function() {
+                let column = this,
+                    select = $('<select><option value="">All</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function() {
+                            let val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
+                        });
+                column.data().unique().sort().each(function(d) {
+                    select.append('<option value=' + d + '>' + d + '</option>');
+                });
+            });
+            table.on('select', function(e, dt, type, indexes) {
+                selectedRow = table.rows(indexes).data().toArray();
+                selectedRowData = [];
+                for (let i in selectedRow[0]) { selectedRowData.push(selectedRow[0][i]['value']) }
+                $('#add_feedback').prop('disabled', false);
+            }).on('deselect', function() {
+                $('#add_feedback').prop('disabled', true);
+                selectedRow = null;
+            });
+
+            response = true;
+            $('#btnStop').prop('disabled', false);
+            show_incremental(vars);
+        } else {
+            $('#result_status').html('No results found!').show();
+            $('#result_info').show();
+            $('#result_row').show();
+            response = false;
+        }
     });
 }
 
@@ -154,9 +200,9 @@ const addFeedbackForm = addFeedbackDialog.find('form').on('submit', function(eve
     event.preventDefault();
     addFeedback(true);
 });
-const feedbackDesc =  $('#feedbackDesc'),
-    feedbackPredicates = $('#feedbackPredicates'),
-    allFeedbackFields = $([]).add(feedbackDesc).add(feedbackPredicates);
+const feedbackDesc = $('#feedbackDesc'),
+      feedbackPredicates = $('#feedbackPredicates'),
+      allFeedbackFields = $([]).add(feedbackDesc).add(feedbackPredicates);
 
 addFeedbackDialog.on('shown.bs.modal', function() { feedbackDesc.trigger('focus'); });
 addFeedbackDialog.on('hidden.bs.modal', function() {
@@ -173,7 +219,7 @@ async function addFeedback(close) {
 
     if (valid) {
         let data = new FormData();
-        data.append('fed', federation)
+        data.append('fed', federation);
         data.append('desc', feedbackDesc.val());
         data.append('pred', feedbackPredicates.val());
         data.append('query', yasqe.getValue());
@@ -229,11 +275,7 @@ async function show_incremental(vars) {
                     }
                     elemTimeTotal.html(' ' + data.time_total + ' sec');
                     const row_ml = [];
-                    for (let j = 0; j < vars.length; j++) {
-                        const entry = row[vars[j]];
-                        row_ml.push(entry);
-                    }
-
+                    for (let j = 0; j < vars.length; j++) { row_ml.push(row[vars[j]]) }
                     table.row.add(row_ml).draw(false);
 
                     table.columns().every(function() {
