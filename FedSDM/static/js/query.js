@@ -33,52 +33,73 @@ function query_result_renderer(data) {
     else { return val }
 }
 
+// Fetches the first batch from /query/sparql then drains /query/nextresult
+// until EOF, returning a flat array of completion strings.
+async function collectAllResults(sparqlQuery) {
+    const base = window.location.origin;
+
+    const firstHttpResp = await fetch(
+        base + '/query/sparql?federation=' + encodeURIComponent(federation) +
+        '&query=' + encodeURIComponent(sparqlQuery)
+    );
+    if (!firstHttpResp.ok) return [];
+    const firstResp = await firstHttpResp.json();
+    if (!firstResp.result || firstResp.error) return [];
+    const rows = [...firstResp.result];
+
+    while (true) {
+        const nextHttpResp = await fetch(base + '/query/nextresult');
+        if (!nextHttpResp.ok) break;
+        const next = await nextHttpResp.json();
+        if (!next.result || next.result === 'EOF' || next.result.length === 0) break;
+        rows.push(next.result);
+    }
+    return getAutocompletionsArrayFromJson(rows);
+}
+
+// Register custom completers once at module load, before any Yasqe instance is created.
+// forkAutocompleter() inherits isValidCompletionPosition / preProcessToken /
+// postProcessSuggestion from the built-in completers and only replaces get()
+// with a call to the project's own endpoint, passing the current federation.
+Yasqe.forkAutocompleter('property', {
+    name: 'customPropertyCompleter',
+    bulk: true,
+    autoShow: true,
+    persistenceId: function() { return 'customProperties_' + federation; },
+    get: function() {
+        return collectAllResults(
+            'SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000'
+        );
+    }
+});
+
+Yasqe.forkAutocompleter('class', {
+    name: 'customClassCompleter',
+    bulk: true,
+    autoShow: true,
+    persistenceId: function() { return 'customClasses_' + federation; },
+    get: function() {
+        // TODO: restore FILTER once DeTrusty handles nested && chains
+        // const filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
+        //     ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
+        //     ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
+        //     ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
+        //     ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
+        //     ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
+        //     ' !regex(str(?type), "nodeID://", "i") ) ';
+        // return collectAllResults('SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000');
+        return collectAllResults(
+            'SELECT DISTINCT ?type WHERE { ?s a ?type } LIMIT 1000'
+        );
+    }
+});
+
 function initialize_yasqe() {
-    Yasqe.forkAutocompleter('property', {
-        name: 'customPropertyCompleter',
-        bulk: true,
-        autoShow: true,
-        persistenceId: 'customProperties',
-        get: function(yasqe) {
-            return new Promise(function(resolve) {
-                $.ajax({
-                    data: { query: 'SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000' },
-                    url: '/query/sparql',
-                    success: function(data) { resolve(getAutocompletionsArrayFromJson(data.result)) }
-                });
-            });
-        }
-    });
-
-    Yasqe.forkAutocompleter('class', {
-        name: 'customClassCompleter',
-        bulk: true,
-        autoShow: true,
-        get: function(yasqe) {
-            const filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
-                ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
-                ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
-                ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
-                ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
-                ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
-                ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
-                ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && ' +
-                ' !regex(str(?type), "nodeID://", "i") ) ';
-            return new Promise(function(resolve) {
-                $.ajax({
-                    data: { query: 'SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000' },
-                    url: '/query/sparql',
-                    success: function(data) { resolve(getAutocompletionsArrayFromJson(data.result)) }
-                });
-            });
-        }
-    });
-
     yasqe = new Yasqe(document.getElementById('yasqe'), {
         showQueryButton: true,
         tabSize: 2,
         indentUnit: 2,
-        autocompleters: ['customPropertyCompleter', 'customClassCompleter'],
+        autocompleters: ['variables', 'prefixes', 'customPropertyCompleter', 'customClassCompleter'],
         extraKeys: { Tab: function(cm) { cm.replaceSelection(new Array(cm.getOption('indentUnit') + 1).join(' ')) } },
         requestConfig: {
             endpoint: window.location.origin + '/query/sparql',
@@ -303,87 +324,14 @@ $('#btnStop').on('click', function() {
     shouldStop = true;
 });
 
-/**
- * We use most of the default settings for the property and class autocompletion types. This includes:
- * -  the pre-/post-processing of tokens
- * -  detecting whether we are in a valid autocompletion position
- * -  caching of the suggestion list. These are cached for a period of a month on the client side.
- */
-var getAutocompletionsArrayFromJson = function(result) {
+const getAutocompletionsArrayFromJson = function(result) {
     let completionsArray = [];
-    result.forEach(function(row) {  // remove first line, as this one contains the projection variable
-        if ('type' in row) { completionsArray.push(row['type']) }  // remove quotes
-        else { completionsArray.push(row['property']) }  // remove quotes
+    result.forEach(function(row) {
+        if ('type' in row) { completionsArray.push(row['type']['value']) }
+        else { completionsArray.push(row['property']['value']) }
     });
     return completionsArray;
 }
-
-var customPropertyCompleter = function(yasqe) {
-    // we use several functions from the regular property autocompleter (this way, we don't have to re-define code such as determining whether we are in a valid autocompletion position)
-    var returnObj = {
-        isValidCompletionPosition: function() { return YASQE.Autocompleters.properties.isValidCompletionPosition(yasqe) },
-        preProcessToken: function(token) { return YASQE.Autocompleters.properties.preProcessToken(yasqe, token) },
-        postProcessToken: function(token, suggestedString) { return YASQE.Autocompleters.properties.postProcessToken(yasqe, token, suggestedString) }
-    };
-
-    // in this case we assume the properties will fit in memory. So, turn on bulk loading, which will make autocompleting a lot faster
-    returnObj.bulk = true;
-    returnObj.async = true;
-
-    // and, as everything is in memory, enable autoShowing the completions
-    returnObj.autoShow = true;
-
-    returnObj.persistent = 'customProperties';  // this will store the sparql results in the client-cache for a month.
-    returnObj.get = function(token, callback) {
-        // all we need from these parameters is the last one: the callback to pass the array of completions to
-        var sparqlQuery = 'SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000';
-        $.ajax({
-            data: { query: sparqlQuery },
-            url: YASQE.defaults.sparql.endpoint,
-            // headers: { Accept: 'text/csv' },  //ask for csv. Simple, and uses less bandwidth
-            success: function(data) {
-                // console.log(sparqlQuery);
-                // console.log(data);
-                callback(getAutocompletionsArrayFromJson(data.result));
-            }
-        });
-    };
-    return returnObj;
-};
-
-var customClassCompleter = function(yasqe) {
-    let returnObj = {
-        isValidCompletionPosition: function() { return YASQE.Autocompleters.classes.isValidCompletionPosition(yasqe) },
-        preProcessToken: function(token) { return YASQE.Autocompleters.classes.preProcessToken(yasqe, token) },
-        postProcessToken: function(token, suggestedString) { return YASQE.Autocompleters.classes.postProcessToken(yasqe, token, suggestedString) }
-    };
-    returnObj.bulk = true;
-    returnObj.async = true;
-    returnObj.autoShow = true;
-    returnObj.get = function(token, callback) {
-        const filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
-            ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
-            ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
-            ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
-            ' !regex(str(?type), "http://purl.org/dc/terms/Dataset", "i") && ' +
-            ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
-            ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
-            ' !regex(str(?type), "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/", "i") && '+
-            ' !regex(str(?type), "nodeID://", "i") ) '
-        const sparqlQuery = 'SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000';
-        $.ajax({
-            data: { query: sparqlQuery },
-            url: YASQE.defaults.sparql.endpoint,
-            // headers: { Accept: 'text/csv' },  //ask for csv. Simple, and uses less bandwidth
-            success: function(data) {
-                // console.log(sparqlQuery);
-                // console.log(data);
-                callback(getAutocompletionsArrayFromJson(data.result));
-            }
-        });
-    };
-    return returnObj;
-};
 
 $('#classes').on('click', function() { yasqe.setValue('SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}') });
 
