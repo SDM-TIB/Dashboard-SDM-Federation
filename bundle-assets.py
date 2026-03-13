@@ -88,7 +88,7 @@ bundles = {
         output=JS_PATH + 'Chart.min.js'
     ),
     'd3_js': Bundle(
-        NPM_PATH + 'd3/d3.v2.min.js',
+        NPM_PATH + 'd3/dist/d3.min.js',
         filters='rjsmin',
         output=JS_PATH + 'd3.min.js'
     ),
