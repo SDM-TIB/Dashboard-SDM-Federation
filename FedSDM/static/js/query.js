@@ -33,30 +33,6 @@ function query_result_renderer(data) {
     else { return val }
 }
 
-// Fetches the first batch from /query/sparql then drains /query/nextresult
-// until EOF, returning a flat array of completion strings.
-async function collectAllResults(sparqlQuery) {
-    const base = window.location.origin;
-
-    const firstHttpResp = await fetch(
-        base + '/query/sparql?federation=' + encodeURIComponent(federation) +
-        '&query=' + encodeURIComponent(sparqlQuery)
-    );
-    if (!firstHttpResp.ok) return [];
-    const firstResp = await firstHttpResp.json();
-    if (!firstResp.result || firstResp.error) return [];
-    const rows = [...firstResp.result];
-
-    while (true) {
-        const nextHttpResp = await fetch(base + '/query/nextresult');
-        if (!nextHttpResp.ok) break;
-        const next = await nextHttpResp.json();
-        if (!next.result || next.result === 'EOF' || next.result.length === 0) break;
-        rows.push(next.result);
-    }
-    return getAutocompletionsArrayFromJson(rows);
-}
-
 // Register custom completers once at module load, before any Yasqe instance is created.
 // forkAutocompleter() inherits isValidCompletionPosition / preProcessToken /
 // postProcessSuggestion from the built-in completers and only replaces get()
@@ -67,9 +43,14 @@ Yasqe.forkAutocompleter('property', {
     autoShow: true,
     persistenceId: function() { return 'customProperties_' + federation; },
     get: function() {
-        return collectAllResults(
-            'SELECT DISTINCT ?property WHERE { ?s ?property ?obj } LIMIT 1000'
-        );
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                data: { federation: federation },
+                url: window.location.origin + '/query/properties',
+                success: function(data) { resolve(data.result || []); },
+                error: function(xhr, status, err) { reject(err); }
+            });
+        });
     }
 });
 
@@ -79,18 +60,14 @@ Yasqe.forkAutocompleter('class', {
     autoShow: true,
     persistenceId: function() { return 'customClasses_' + federation; },
     get: function() {
-        // TODO: restore FILTER once DeTrusty handles nested && chains
-        // const filters = 'FILTER (!regex(str(?type), "http://www.w3.org/ns/sparql-service-description", "i") && ' +
-        //     ' !regex(str(?type), "http://www.openlinksw.com/schemas/virtrdf#", "i") && ' +
-        //     ' !regex(str(?type), "http://www.w3.org/2000/01/rdf-schema#", "i") && ' +
-        //     ' !regex(str(?type), "http://www.w3.org/1999/02/22-rdf-syntax-ns#", "i") && ' +
-        //     ' !regex(str(?type), "http://www.w3.org/2002/07/owl#", "i") && ' +
-        //     ' !regex(str(?type), "http://rdfs.org/ns/void#", "i") && ' +
-        //     ' !regex(str(?type), "nodeID://", "i") ) ';
-        // return collectAllResults('SELECT DISTINCT ?type WHERE { ?s a ?type . ' + filters + ' } LIMIT 1000');
-        return collectAllResults(
-            'SELECT DISTINCT ?type WHERE { ?s a ?type } LIMIT 1000'
-        );
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                data: { federation: federation },
+                url: window.location.origin + '/query/classes',
+                success: function(data) { resolve(data.result || []); },
+                error: function(xhr, status, err) { reject(err); }
+            });
+        });
     }
 });
 
@@ -323,15 +300,6 @@ $('#btnStop').on('click', function() {
     response = false;
     shouldStop = true;
 });
-
-const getAutocompletionsArrayFromJson = function(result) {
-    let completionsArray = [];
-    result.forEach(function(row) {
-        if ('type' in row) { completionsArray.push(row['type']['value']) }
-        else { completionsArray.push(row['property']['value']) }
-    });
-    return completionsArray;
-}
 
 $('#classes').on('click', function() { yasqe.setValue('SELECT DISTINCT ?c WHERE {\n\t?s a ?c\n}') });
 

@@ -197,6 +197,73 @@ def get_next_result() -> Response:
         return jsonify(time_total=total, time_first=first, total_rows=1, result=[], error=str(emsg))
 
 
+
+@bp.route('/classes', methods=['GET'])
+def get_classes() -> Response:
+    """Returns all RDF classes known for a federation from its source descriptions.
+
+    Reads directly from the RDF Molecule Templates stored in the metadata knowledge
+    graph — no SPARQL query is sent to the federation endpoints. This makes it fast
+    and independent of endpoint availability.
+
+    The request must include the query parameter ``federation`` with the URI of the
+    federation of interest.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response with a ``result`` list of class URI strings, or an ``error``
+        key if the federation parameter is missing.
+    """
+    federation = request.args.get('federation', None)
+    if federation is None or len(federation) < 6:
+        return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
+    try:
+        mdb = get_mdb()
+        config = ConfigSimpleStore(federation, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
+        classes = sorted(config.metadata.keys())
+        return jsonify({'result': classes})
+    except Exception as e:
+        logger.exception(e)
+        return jsonify({'result': [], 'error': str(e)})
+
+
+@bp.route('/properties', methods=['GET'])
+def get_properties() -> Response:
+    """Returns all properties known for a federation from its source descriptions.
+
+    Reads directly from the RDF Molecule Templates stored in the metadata knowledge
+    graph — no SPARQL query is sent to the federation endpoints.
+
+    The request must include the query parameter ``federation`` with the URI of the
+    federation of interest. An optional ``class`` parameter can be used to restrict
+    the results to the properties of a single RDF class.
+
+    Returns
+    -------
+    flask.Response
+        A JSON response with a ``result`` list of property URI strings, or an ``error``
+        key if the federation parameter is missing.
+    """
+    federation = request.args.get('federation', None)
+    if federation is None or len(federation) < 6:
+        return jsonify({'result': [], 'error': 'Please select the federation you want to query'})
+    rdf_class = request.args.get('class', None)
+    try:
+        mdb = get_mdb()
+        config = ConfigSimpleStore(federation, mdb.query_endpoint, mdb.update_endpoint, 'dba', 'dba123')
+        properties = set()
+        source = config.metadata if rdf_class is None else {rdf_class: config.metadata[rdf_class]} \
+            if rdf_class in config.metadata else {}
+        for cls_data in source.values():
+            for pred in cls_data.get('predicates', []):
+                properties.add(pred['predicate'])
+        return jsonify({'result': sorted(properties)})
+    except Exception as e:
+        logger.exception(e)
+        return jsonify({'result': [], 'error': str(e)})
+
+
 @bp.route('/sparql', methods=['POST', 'GET'])
 def sparql() -> Response:
     """Serves requests to '/query/sparql'.
