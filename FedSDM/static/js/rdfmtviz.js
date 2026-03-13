@@ -5,8 +5,8 @@ const graph_container = $('#graph'),
       mt_details = $('#mt_details'),
       mt_viz = $('#mt_viz'),
       graphArea = document.getElementById('graph'),
-      size = d3.scale.pow().exponent(1).domain([1, 100]).range([8, 36]),  // The largest node for each cluster.
-      curve = d3.svg.diagonal().projection(function(d) { return [d.x, d.y] });
+      size = d3.scalePow().exponent(1).domain([1, 100]).range([8, 36]),  // The largest node for each cluster.
+      curve = d3.linkVertical().x(function(d) { return d.x }).y(function(d) { return d.y });
 
 data_sources.prop('disabled', true);
 mt_details.prop('disabled', true);
@@ -68,6 +68,20 @@ let stats = null,
 
 window.jsdata = [];
 
+// d3 v7: map old string symbol types to d3 symbol type objects
+const symbolTypeMap = {
+    'circle':      d3.symbolCircle,
+    'diamond':     d3.symbolDiamond,
+    'cross':       d3.symbolCross,
+    'triangle-up': d3.symbolTriangle,
+    'square':      d3.symbolSquare,
+    'star':        d3.symbolStar,
+    'wye':         d3.symbolWye
+};
+function resolveSymbolType(typeStr) {
+    return symbolTypeMap[typeStr] || d3.symbolCircle;
+}
+
 if (federation != null && federation !== '') { load_data(federation) }
 
 federation_list.on('change', function() { load_data($(this).val()) });
@@ -104,7 +118,7 @@ mt_details.on('click', function() {
             mLinks = data.links;
             for (let i = 0; i < sources.length; i++) {
                 const v = sources[i].id,
-                      name  = sources[i].name;
+                      name = sources[i].name;
                 sourceIDs[name] = v;
                 sourcesNames[v] = name;
             }
@@ -121,10 +135,9 @@ mt_details.on('click', function() {
             let flatNodes = [];
             $.each(mNodes, function (key, val) {
                 flatNodes.push(val);
-                MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
-                if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
-                else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
-
+                MTCards['All'].push({ 'label': val.label, 'value': val.weight });
+                if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }
+                else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }
                 if (val.datasource in mSourceNodes) { mSourceNodes[val.datasource].push(val) }
                 else { mSourceNodes[val.datasource] = [val] }
             });
@@ -150,9 +163,6 @@ $('#backToTable').on('click', function() {
 
 function get_rdfmts_stats(fed) {
     if (fed == null || (fed === federation && loaded === 1)) { return }
-    $('#fedName').html(fed);
-    $('#vizFedName').html(fed);
-    $('#gaFedName').html(fed);
     if (stats == null || stats === 'undefined') {
         let rdfmtsDataTable = $('#rdfmts_data_table');
         rdfmtsDataTable.empty()
@@ -193,14 +203,10 @@ function get_rdfmts_stats(fed) {
         stats.ajax.url('/rdfmts/api/rdfmtstats?graph=' + fed).load();
     }
 }
+
 function get_rdfmts(fed) {
     if (fed == null || (fed === federation && visualized === 1)) { return }
     $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) { jsdata = data2 });
-    $('#fedName').html(fed);
-    $('#gaFedName').html(fed);
-    $('#vizFedName').html(fed);
-
-    // list of subjects and objects for the DAG
     $.getJSON('/rdfmts/api/rdfmts?graph=' + fed, function(data) {
         sources = data.sources;
         nodes = data.nodes;
@@ -208,10 +214,10 @@ function get_rdfmts(fed) {
         sourcesCard = sources.length;
         max_score = sourcesCard;
         let legend = '',
-            data_sources_html = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>' ;
+            data_sources_html = '<li class="datasource"><a href="#" class="datasource" id="source-0">All</a></li><li class="dropdown-divider"></li>';
         for (let i = 0; i < sources.length; i++) {
             const v = sources[i].id,
-                  name  = sources[i].name;
+                  name = sources[i].name;
             sourceIDs[name] = v;
             sourcesNames[v] = name;
             data_sources_html += '<li class="datasource"><a href="#" class="datasource" id="source-' + (i + 1) + '">' + name + '</a></li>';
@@ -272,9 +278,9 @@ function get_rdfmts(fed) {
         MTCards = { 'All': [] };
         $.each(nodes, function (key, val) {
             flatNodes.push(val);
-            MTCards['All'].push({ 'label': val.label, 'value': val.weight }); //, 'color': color(val.datasource)
-            if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }  //, 'color': color(val.datasource)
-            else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }  // , 'color': color(val.datasource)
+            MTCards['All'].push({ 'label': val.label, 'value': val.weight });
+            if (val.datasource in MTCards) { MTCards[val.datasource].push({ 'label': val.label, 'value': val.weight }) }
+            else { MTCards[val.datasource] = [{ 'label': val.label, 'value': val.weight }] }
             if (val.datasource in sourceNodes) { sourceNodes[val.datasource].push(val) }
             else { sourceNodes[val.datasource] = [val] }
         });
@@ -361,7 +367,9 @@ function createDonut(title, labels_, data_) {
 
 function drawDonut(source_mt) {
     donut_charts.forEach(value => value.destroy());
-    graph_container.empty();
+    graph_container.empty()
+        .css('height', '')
+        .css('min-height', '');
     graph_legend.hide();
     if (source_mt !== 'All') {
         for (let i = 0; i < jsdata.data.length; i++) {
@@ -376,9 +384,7 @@ function drawDonut(source_mt) {
             labels_.push(MTCards[source_mt][i]['label']);
             data_.push(MTCards[source_mt][i]['value']);
         }
-
-        const title = sourcesNames[source_mt];
-        createDonut(title, labels_, data_);
+        createDonut(sourcesNames[source_mt], labels_, data_);
     } else {
         $.each(MTCards, function (key, val) {
             for (let i = 0; i < jsdata.data.length; i++) {
@@ -393,9 +399,7 @@ function drawDonut(source_mt) {
                 labels_.push(val[i]['label']);
                 data_.push(val[i]['value']);
             }
-
-            const ds_name = sourcesNames[key] ? sourcesNames[key] : federation;
-            createDonut(ds_name, labels_, data_);
+            createDonut(sourcesNames[key] ? sourcesNames[key] : federation, labels_, data_);
         });
     }
 }
@@ -404,16 +408,19 @@ $('#stop_force').on('click', function() { if (force) { force.stop() } });
 $('#start_force').on('click', function() {
     if (force) {
         linkDistance += 10;
-        force.linkDistance(linkDistance).gravity(0.05).start();
+        force.force('link').distance(linkDistance);
+        force.alpha(0.3).restart();
     }
 });
 $('#reset_force').on('click', function() {
     if (force) {
-        linkDistance = 150
+        linkDistance = 150;
         const fit = Math.sqrt(aNodes.length / (width * height));
         nCharge = (-1 / fit);
         nGravity = (8 * fit);
-        force.linkDistance(linkDistance).gravity(0.05).start();
+        force.force('link').distance(linkDistance);
+        force.force('charge').strength(nCharge);
+        force.alpha(0.3).restart();
     }
 });
 $('#graphVizForce').on('click', function() {
@@ -483,13 +490,11 @@ function network(data, prev, index, expand) {
     if (prev) {
         prev.nodes.forEach(function(n) {
             const i = index(n);
-            let o;
-
             if (n.size > 0) {
                 gn[i] = n;
                 n.size = 0;
             } else {
-                o = gc[i] || (gc[i] = { x: 0, y: 0, count: 0 });
+                let o = gc[i] || (gc[i] = { x: 0, y: 0, count: 0 });
                 o.x += n.x;
                 o.y += n.y;
                 o.count += 1;
@@ -555,7 +560,8 @@ function network(data, prev, index, expand) {
 function drawRDFMTS(nodes, links, divCanvas) {
     console.log('nodes: ' + nodes + '\nlinks:' + links);
     let svg;
-    height = 980;
+    const MAX_H = 600;
+    height = MAX_H;
     if (divCanvas == null) {
         graph_container.empty();
         svg = d3.select('#graph').append('svg');
@@ -569,7 +575,9 @@ function drawRDFMTS(nodes, links, divCanvas) {
         mt_viz.show();
         canvas = 'mtviz';
     }
-    let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]),
+    svg.attr('width', width).attr('height', height);
+
+    let zoom = d3.zoom().scaleExtent([min_zoom, max_zoom]),
         g = svg.append('g');
 
     svg.attr('opacity', 1e-6)
@@ -584,7 +592,7 @@ function drawRDFMTS(nodes, links, divCanvas) {
         toWhite = 'fill';
     }
 
-    svg.style('cursor','move');
+    svg.style('cursor', 'move');
     let linkedByIndex = {};
     links.forEach(function(d) { linkedByIndex[d.source + ',' + d.target] = true });
 
@@ -593,70 +601,91 @@ function drawRDFMTS(nodes, links, divCanvas) {
     nCharge = (-1 / fit);
     if (force) { force.stop() }
     net = network(data, net, getGroup, expand);
-    console.log('network:', net, expand);
-    force = d3.layout.force()
-        .nodes(net.nodes)
-        .links(net.links)
-        .linkDistance(function(l) {
-            const n1 = l.source,
-                  n2 = l.target;
-            return divCanvas ? 250 : 200 +
-                Math.min(20 * Math.min((n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
-                    (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))),
-                    -30 + 30 * Math.min((n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)), (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))),
-                    300);
-        })
-        .linkStrength(2)
-        .gravity(0.05)   // 0.05 gravity+charge tweaked to ensure good 'grouped' view (e.g. green group not smack between blue & orange)
-        .charge(-600)    // charge is important to turn single-linked groups to the outside
-        .friction(0.5)   // friction adjusted to get dampened display
-        .size([width,height])
-        .start(); //.chargeDistance(1000) .linkDistance(300)
 
-    link = g.selectAll('.link').data(net.links, linkID);
+    // Scatter nodes near the centre so forceCenter does not have to fight (0,0) cold starts
+    net.nodes.forEach(function(d) {
+        if (d.x == null || d.x === 0) { d.x = width  / 2 + (Math.random() - 0.5) * 100; }
+        if (d.y == null || d.y === 0) { d.y = height / 2 + (Math.random() - 0.5) * 100; }
+    });
+
+    force = d3.forceSimulation(net.nodes)
+        .force('link', d3.forceLink(net.links)
+            .id(function(d) { return d.index })
+            .distance(function(l) {
+                const n1 = l.source, n2 = l.target;
+                return divCanvas ? 250 : 200 +
+                    Math.min(
+                        20 * Math.min(
+                            (n1.size || (n1.datasource !== n2.datasource ? n1.group_data.size : 0)),
+                            (n2.size || (n1.datasource !== n2.datasource ? n2.group_data.size : 0))
+                        ),
+                        -30 + 30 * Math.min(
+                            (n1.link_count || (n1.datasource !== n2.datasource ? n1.group_data.link_count : 0)),
+                            (n2.link_count || (n1.datasource !== n2.datasource ? n2.group_data.link_count : 0))
+                        ),
+                        300
+                    );
+            })
+            .strength(0.5)
+        )
+        .force('charge', d3.forceManyBody().strength(-600))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('x', d3.forceX(width / 2).strength(0.05))
+        .force('y', d3.forceY(height / 2).strength(0.05))
+        .velocityDecay(0.5);
+
+    let link = g.selectAll('.link').data(net.links, linkID);
     link.exit().remove();
-    link.enter().append('line')
+    link = link.enter().append('line')
         .attr('class', 'link')
         .attr('x1', function(d) { return d.source.x })
         .attr('y1', function(d) { return d.source.y })
         .attr('x2', function(d) { return d.target.x })
         .attr('y2', function(d) { return d.target.y })
         .style('stroke-width', nominal_stroke)
-        .style('stroke', function(d) { return color(d.datasource) });
-    node = g.selectAll('.node').data(net.nodes, nodeID);
+        .style('stroke', function(d) { return color(d.datasource) })
+        .merge(g.selectAll('.link'));
+
+    let node = g.selectAll('.node').data(net.nodes, nodeID);
     node.exit().remove();
-    node.enter().append('g')
+    const nodeEnter = node.enter().append('g')
         .attr('class', function(d) { return 'node' + (d.size ? '' : ' leaf') })
-        .attr('cx', function(d) { return d.x })
-        .attr('cy', function(d) { return d.y })
-        .on('dblclick', function(d) {
-            console.log(d.datasource + ': ' + expand[d.datasource])
+        .on('dblclick', function(event, d) {
             expand[d.datasource] = !expand[d.datasource];
             drawRDFMTS(nodes, links, divCanvas);
         })
-        .on('mouseover', function(d) { set_highlight(d) })
-        .on('mousedown', function(d) {
-            d3.event.stopPropagation();
+        .on('mouseover', function(event, d) { set_highlight(d) })
+        .on('mousedown', function(event, d) {
+            event.stopPropagation();
             focus_node = d;
             set_focus(d);
             if (highlight_node === null) { set_highlight(d) }
         })
         .on('mouseout', function() { exit_highlight() });
 
-    node.call(force.drag);
+    node = nodeEnter.merge(node);
+
+    const dragBehavior = d3.drag()
+        .on('start', function(event, d) {
+            if (!event.active) force.alphaTarget(0.3).restart();
+            d.fx = d.x; d.fy = d.y;
+        })
+        .on('drag', function(event, d) { d.fx = event.x; d.fy = event.y; })
+        .on('end', function(event, d) {
+            if (!event.active) force.alphaTarget(0);
+            d.fx = null; d.fy = null;
+        });
+    node.call(dragBehavior);
 
     let ci = 0;
     let circle = node.append('path')
-        .attr('d', d3.svg.symbol()
-            .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size,2) : Math.PI * Math.pow(size(25) || nominal_base_node_size,2) })
-            .type(function(d) { return d.size ? 'circle' : d.type })
+        .attr('d', d3.symbol()
+            .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) || nominal_base_node_size, 2) : Math.PI * Math.pow(size(25) || nominal_base_node_size, 2) })
+            .type(function(d) { return resolveSymbolType(d.size ? 'circle' : d.type) })
         )
         .style(toColor, function(d) {
             if (divCanvas == null) { return color(d.datasource) }
-            else {
-                ci += 1;
-                return color(d.datasource + (ci - 1));
-            }
+            else { ci += 1; return color(d.datasource + (ci - 1)); }
         })
         .style('stroke-width', nominal_stroke)
         .style(toWhite, 'white');
@@ -668,14 +697,14 @@ function drawRDFMTS(nodes, links, divCanvas) {
         .style('font-size', function(d) { return d.size ? 16 + 'px' : nominal_text_size + 'px' });
 
     if (text_center) {
-        text.text(function (d) { if (d.label) { return d.label } else { return sourcesNames[d.datasource] } })
+        text.text(function(d) { return d.label ? d.label : sourcesNames[d.datasource] })
             .style('text-anchor', 'middle');
     } else {
         text.attr('dx', function() { return (size(65) - size(30) || nominal_base_node_size) })
-            .text(function(d) { if (d.label) return  '\u2002'+ d.label; else return '\u2002'+ sourcesNames[d.datasource] });
+            .text(function(d) { return d.label ? '\u2002' + d.label : '\u2002' + sourcesNames[d.datasource] });
     }
 
-    d3.select(window).on('mouseup', function() {
+    d3.select(window).on('mouseup.rdfmt', function() {
         if (focus_node !== null) {
             focus_node = null;
             if (highlight_trans < 1) {
@@ -687,33 +716,34 @@ function drawRDFMTS(nodes, links, divCanvas) {
         if (highlight_node === null) { exit_highlight() }
     });
 
-    zoom.on('zoom', function() {
+    zoom.on('zoom', function(event) {
+        const t = event.transform;
         let stroke = nominal_stroke;
-        if (nominal_stroke * zoom.scale() > max_stroke) { stroke = max_stroke / zoom.scale() }
-
+        if (nominal_stroke * t.k > max_stroke) { stroke = max_stroke / t.k }
         link.style('stroke-width', stroke);
-        circle.style('stroke-width',stroke);
+        circle.style('stroke-width', stroke);
 
         let base_radius = nominal_base_node_size;
-        if (nominal_base_node_size * zoom.scale() > max_base_node_size) { base_radius = max_base_node_size / zoom.scale() }
-        circle.attr('d', d3.svg.symbol()
-            .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius,2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius,2) })
-            .type(function(d) { return d.size ? 'circle' :  d.type })
+        if (nominal_base_node_size * t.k > max_base_node_size) { base_radius = max_base_node_size / t.k }
+        circle.attr('d', d3.symbol()
+            .size(function(d) { return d.size ? Math.PI * Math.pow(size(65 + d.size > 200 ? 200 : d.size) * base_radius / nominal_base_node_size || base_radius, 2) : Math.PI * Math.pow(size(25) * base_radius / nominal_base_node_size || base_radius, 2) })
+            .type(function(d) { return resolveSymbolType(d.size ? 'circle' : d.type) })
         );
         if (!text_center) { text.attr('dx', function() { return ((size(65) - size(30)) * base_radius / nominal_base_node_size || base_radius) }) }
         text.style('font-size', function(d) {
-            let text_size = nominal_text_size;
-            if (d.size) { text_size = 16 }
-            if (nominal_text_size * zoom.scale() > max_text_size) { text_size = max_text_size / zoom.scale() }
+            let text_size = d.size ? 16 : nominal_text_size;
+            if (nominal_text_size * t.k > max_text_size) { text_size = max_text_size / t.k }
             return text_size + 'px';
         });
-        g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+        g.attr('transform', t);
     });
 
     svg.call(zoom);
 
     resize();
-    d3.select(window).on('resize', resize).on('keydown', keydown);
+    d3.select(window).on('resize.rdfmt', resize);
+    d3.select(window).on('keydown.rdfmt', function(event) { if (event.keyCode === 32) { force.stop() } });
+
     let centroids = {};
     for (let i = 0; i < max_score; i += 3) {
         centroids[i] = { x: 200 * (i/3 + 1), y: 200 };
@@ -721,8 +751,8 @@ function drawRDFMTS(nodes, links, divCanvas) {
         centroids[i+2] = { x: 200 * (i/3 + 1), y: 600 };
     }
 
-    force.on('tick', function(e) {
-        const k = .1 * e.alpha;
+    force.on('tick', function() {
+        const k = 0.1 * force.alpha();
 
         // push nodes toward their designated focus
         net.nodes.forEach(function(o) {
@@ -732,21 +762,21 @@ function drawRDFMTS(nodes, links, divCanvas) {
             }
         });
 
-        text.forEach(function(o) {
+        text.each(function(o) {
             if (centroids[o.datasource]) {
                 o.y += (centroids[o.datasource].y - o.y) * k;
                 o.x += (centroids[o.datasource].x - o.x) * k;
             }
         });
+
         link.attr('x1', function(d) { return d.source.x })
             .attr('y1', function(d) { return d.source.y })
             .attr('x2', function(d) { return d.target.x })
             .attr('y2', function(d) { return d.target.y });
 
         node.attr('cx', function(d) { return d.x })
-            .attr('cy', function(d) { return d.y });
-
-        node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
+            .attr('cy', function(d) { return d.y })
+            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
         text.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')' });
     });
 
@@ -755,14 +785,15 @@ function drawRDFMTS(nodes, links, divCanvas) {
     function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n) }
 
     function resize() {
-        const width = $('#' + canvas).width(), height = 980;
-        svg.attr('width', width).attr('height', height);
-        force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
-        w = width;
-        h = height;
+        const rw = $('#' + canvas).width(),
+              rh = MAX_H;
+        svg.attr('width', rw).attr('height', rh);
+        force.force('center', d3.forceCenter(rw / 2, rh / 2));
+        force.force('x', d3.forceX(rw / 2).strength(0.05));
+        force.force('y', d3.forceY(rh / 2).strength(0.05));
+        force.restart();
+        w = rw; h = rh;
     }
-
-    function keydown() { if (d3.event.keyCode === 32) { force.stop() } }
 
     function exit_highlight() {
         highlight_node = null;
@@ -788,7 +819,7 @@ function drawRDFMTS(nodes, links, divCanvas) {
         svg.style('cursor', 'pointer');
         if (focus_node !== null) { d = focus_node }
         highlight_node = d;
-        highlight_color = color(d.datasource);  // added this to make highlight color same as the color of the node
+        highlight_color = color(d.datasource);
         if (highlight_color !== 'white') {
             circle.style(toWhite, function(o) { return isConnected(d, o) ? highlight_color : 'white' });
             text.style('font-weight', function(o) { return isConnected(d, o) ? 'bold' : 'normal' });
@@ -797,7 +828,7 @@ function drawRDFMTS(nodes, links, divCanvas) {
     }
 }
 
-function get_rdfmts_graph_analysis(fed, source){
+function get_rdfmts_graph_analysis(fed, source) {
     if (fed == null || source == null || (fed === federation && source === gSource && gaLoaded === 1)) { return }
 
     $('#fedName').html(fed);
@@ -822,18 +853,18 @@ function get_rdfmts_graph_analysis(fed, source){
     }
 }
 
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    const target = $(e.target).attr('href')  // activated tab
+$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+    const target = $(e.target).attr('href');
     if (target === '#visualize') { tabVisible = '#visualize' }
     else if (target === '#analysis') { tabVisible = '#analysis' }
     else { tabVisible = '#home' }
 });
 
-function addTooltip(circle) {  // generates a tooltip for an SVG circle element based on its ID
+function addTooltip(circle) {
     const x = parseFloat(circle.attr('cx')),
-        y = parseFloat(circle.attr('cy')),
-        r = parseFloat(circle.attr('r')),
-        text = circle.attr('id');
+          y = parseFloat(circle.attr('cy')),
+          r = parseFloat(circle.attr('r')),
+          text = circle.attr('id');
 
     let tooltip = d3.select('#plot')
         .append('text')
@@ -859,29 +890,36 @@ function addTooltip(circle) {  // generates a tooltip for an SVG circle element 
 
 // Draws an arc diagram for the provided undirected graph
 function drawGraph(graph) {
-    let zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom]);
+    let zoom = d3.zoom().scaleExtent([min_zoom, max_zoom]);
     graph_container.empty();
+    const gw = graph_container.width(),
+          gh = 600;
     let diameter = 2 * (22 * graph.nodes.length) / Math.PI;
     diameter = diameter < 200 ? 200 : (diameter > 1200 ? 1200 : diameter);
 
-    let svg = d3.select('#graph').append('svg');
+    let svg = d3.select('#graph').append('svg')
+        .attr('width', gw)
+        .attr('height', gh);
+
     svg.append('g').classed('chartLayer', true)
-        .attr('width', graph_container.width())
-        .attr('height', 980);
+        .attr('width', gw)
+        .attr('height', gh);
 
     radius = diameter / 2;
+
     let plot = svg.append('g')
         .attr('width', diameter)
         .attr('height', diameter)
-        .attr('id', 'plot')
-        .attr('transform', 'translate(' + graph_container.width() / 2 + ', ' + 980 / 2 + ')');
+        .attr('id', 'plot');
 
-    zoom.on('zoom', function() { plot.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')') });
+    zoom.on('zoom', function(event) { plot.attr('transform', event.transform) });
     svg.call(zoom);
 
-    circleLayout(graph.nodes);  // calculate node positions
-    drawCurves(graph.links);  // draw edges first
-    drawNodes(graph.nodes);  // draw nodes last
+    svg.call(zoom.transform, d3.zoomIdentity.translate(gw / 2, gh / 2));
+
+    circleLayout(graph.nodes);
+    drawCurves(graph.links);
+    drawNodes(graph.nodes);
 }
 
 // Calculates node locations
@@ -889,35 +927,30 @@ function circleLayout(nodes) {
     // sort nodes by group
     nodes.sort(function(a, b) { return a.datasource - b.datasource });
 
-    // used to scale node index to theta value
-    const scale = d3.scale.linear()
+    const scale = d3.scaleLinear()
         .domain([0, nodes.length])
         .range([0, 2 * Math.PI]);
 
     // Transform polar coordinates into Cartesian coordinates
     nodes.forEach(function(d, i) {
-        const theta  = scale(i),
-              radial = radius - margin;
+        const theta = scale(i), radial = radius - margin;
         d.x = radial * Math.sin(theta);
         d.y = radial * Math.cos(theta);
     });
 }
 
-function dragged(d) {
-    d.x = d3.event.x;
-    d.y = d3.event.y;
+function dragged(event, d) {
+    const [mx, my] = d3.pointer(event, this.parentNode);
+    d.x = mx;
+    d.y = my;
     d3.select(this).attr('cx', d.x).attr('cy', d.y);
-    circularLink.filter(function(l) { return l.source === d }).attr('x1', d.x).attr('y1', d.y);
-    circularLink.filter(function(l) { return l.target === d }).attr('x2', d.x).attr('y2', d.y);
-    circularLink.filter(function(l) { return l.source === d }).attr('d', curve);
-    circularLink.filter(function(l) { return l.target === d }).attr('d', curve);
+    circularLink.attr('d', curve);
 }
 
 // Draws nodes with tooltips
 function drawNodes(nodes) {
     circularNode = d3.select('#plot').selectAll('.node')
-        .data(nodes)
-        .enter()
+        .data(nodes).enter()
         .append('circle')
         .attr('class', 'node')
         .attr('id', function(d) { return d.label })
@@ -925,16 +958,15 @@ function drawNodes(nodes) {
         .attr('cy', function(d) { return d.y })
         .attr('r', 10)
         .style('fill', function(d) { return color(d.datasource) })
-        .on('mouseover', function() { addTooltip(d3.select(this)) })
+        .on('mouseover', function(event, d) { addTooltip(d3.select(this)) })
         .on('mouseout', function() { d3.select('#tooltip').remove() })
-        .call(d3.behavior.drag().on('drag', dragged));
+        .call(d3.drag().on('drag', dragged));
 }
 
 // Draws curved edges between nodes
 function drawCurves(links) {
     circularLink = d3.select('#plot').selectAll('.link')
-        .data(links)
-        .enter()
+        .data(links).enter()
         .append('path')
         .attr('class', 'link')
         .style('stroke-width', nominal_stroke)
