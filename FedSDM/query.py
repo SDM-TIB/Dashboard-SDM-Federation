@@ -168,6 +168,8 @@ def get_next_result() -> Response:
         value to tell the user what happened.
 
     """
+    if 'vars' not in session or 'start' not in session:
+        return jsonify(time_total=0, time_first=0, total_rows=0, result='EOF', error='No active query')
     vars_ = session['vars']
     start = session['start']
     first = session['first']
