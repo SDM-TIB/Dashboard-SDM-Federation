@@ -258,52 +258,43 @@ $('#add_feedback').on('click', function() {
 });
 
 async function show_incremental(vars) {
-    if (response === true) {
-        // No new request can be sent unless a response from the last request was received
+    // No new request can be sent unless a response from the last request was received
+    while (response === true && shouldStop === false) {
         response = false;
-        if (shouldStop === false) {
-            await fetch('/query/nextresult')
-                .then(res => res.json())
-                .then(data => {
-                    let row = data.result;
-                    let elemTimeTotal = $('#time_total');
-                    if (row.length === 0 || row === 'EOF') {
-                        $('#btnVisualize').show();
-                        elemTimeTotal.html(' ' + data.time_total + ' sec');
-                        response = false;
-                        return;
-                    }
+        await fetch('/query/nextresult')
+            .then(res => res.json())
+            .then(data => {
+                let row = data.result;
+                let elemTimeTotal = $('#time_total');
+                if (row.length === 0 || row === 'EOF') {
+                    $('#btnVisualize').show();
                     elemTimeTotal.html(' ' + data.time_total + ' sec');
-                    const row_ml = [];
-                    for (let j = 0; j < vars.length; j++) { row_ml.push(row[vars[j]]) }
-                    table.row.add(row_ml).draw(false);
+                    return;
+                }
+                elemTimeTotal.html(' ' + data.time_total + ' sec');
+                const row_ml = [];
+                for (let j = 0; j < vars.length; j++) { row_ml.push(row[vars[j]]) }
+                table.row.add(row_ml).draw(false);
 
-                    table.columns().every(function() {
-                        const column = this;
-                        const select = $('<select><option value="">All</option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function() {
-                                const val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                column.search(val ? '^' + val + '$' : '', true, false).draw();
-                            });
-                        column.data().unique().sort().each(function(d) {
-                            const val = d['value'];
-                            select.append('<option value=' + val + '>' + val + '</option>');
+                table.columns().every(function() {
+                    const column = this;
+                    const select = $('<select><option value="">All</option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function() {
+                            const val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
                         });
+                    column.data().unique().sort().each(function(d) {
+                        const val = d['value'];
+                        select.append('<option value=' + val + '>' + val + '</option>');
                     });
-                    response = true;
-                })
-                .catch(err => console.log(err));
-
-            if (response === true && shouldStop === false) {
+                });
                 response = true;
-                await show_incremental(vars);
-            } else {
-                shouldStop = false;
-                $('#btnStop').prop('disabled', true);
-            }
-        }
+            })
+            .catch(err => console.log(err));
     }
+    shouldStop = false;
+    $('#btnStop').prop('disabled', true);
 }
 
 $('#btnStop').on('click', function() {
