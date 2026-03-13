@@ -128,12 +128,12 @@ bundles = {
         output=JS_PATH + 'pdfmake.bundle.min.js'
     ),
     'yasqe_js': Bundle(
-        NPM_PATH + 'yasgui-yasqe/dist/yasqe.bundled.min.js',
+        NPM_PATH + '@zazuko/yasqe/build/yasqe.min.js',
         filters='rjsmin',
-        output=JS_PATH + 'yasqe.bundled.min.js'
+        output=JS_PATH + 'yasqe.min.js'
     ),
     'yasqe_css': Bundle(
-        NPM_PATH + 'yasgui-yasqe/dist/yasqe.min.css',
+        NPM_PATH + '@zazuko/yasqe/build/yasqe.min.css',
         filters='cssmin',
         output=CSS_PATH + 'yasqe.min.css'
     )
