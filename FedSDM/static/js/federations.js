@@ -31,10 +31,10 @@ federationOverview = function(feds) {
         statsTableFed = $('#federations-statistics').DataTable({
             order: [[ 1, 'desc' ]],
             responsive: false,
-            defaultContent: '-1',
             select: true,
             dom: 'lfrtip',
             columnDefs: [
+                { targets: '_all', defaultContent: '-1' },
                 { target: 1, render: number_renderer },
                 { target: 2, render: number_renderer },
                 { target: 3, render: number_renderer },
@@ -135,8 +135,8 @@ function basic_stat(fed) {
         statsTable = $('#basic-statistics').DataTable({
             order: [[ 1, 'desc' ]],
             responsive: false,
-            defaultContent: '-1',
             columnDefs: [
+                { targets: '_all', defaultContent: '-1' },
                 { target: 1, render: number_renderer },
                 { target: 2, render: number_renderer },
                 { target: 3, render: number_renderer },
@@ -218,9 +218,16 @@ function manage(fed) {
             responsive: false,
             select: true,
             dom: 'lfrtip',
-            defaultContent: '<i>Not set</i>',
-            columnDefs: [{ target: 0, visible: false, searchable: false }],
-            ajax: '/federation/datasources?graph=' + federation
+            columnDefs: [
+                { targets: '_all', defaultContent: '<i>Not set</i>' },
+                { target: 0, visible: false, searchable: false }
+            ],
+            ajax: function(data, callback) {
+                fetch('/federation/datasources?graph=' + federation)
+                    .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+                    .then(callback)
+                    .catch(err => console.error('Failed to load data sources:', err));
+            }
         });
         // data source table select action
         table.on('select', function(e, dt, type, indexes) {
@@ -234,7 +241,7 @@ function manage(fed) {
         selectedSource = null;
         table.clear().draw();
         set_disabled_prop_ds_buttons(true);
-        table.ajax.url('/federation/datasources?graph=' + fed).load();
+        table.ajax.reload();
     }
     table.on('draw', function() {
         if (table.column(0).data().length > 0) { button_all_links.prop('disabled', false) }
@@ -405,8 +412,8 @@ async function addDataSource(close) {
                     return false;
                 }
                 table.clear().draw();
-                table.ajax.url('/federation/datasources?graph=' + federation).load();
-                if (close) { addSourceModal.modal('hide') }
+                table.ajax.reload();
+                if (close) { bootstrap.Modal.getInstance(addSourceModal[0]).hide(); }
                 return true;
             })
             .catch(err => console.log(err));
@@ -464,8 +471,8 @@ function updateDS(close) {
                     updateTips('Error while editing data source!');
                 }
                 table.clear().draw();
-                table.ajax.url('/federation/datasources?graph=' + federation).load();
-                if (close) { editSourceModal.modal('hide') }
+                table.ajax.reload();
+                if (close) { bootstrap.Modal.getInstance(editSourceModal[0]).hide(); }
             })
             .catch(err => console.log(err));
     }
@@ -501,9 +508,11 @@ function createNewFederation(close) {
                     federation = prefix + name.replaceAll(' ', '-');
                     federationList.append('<option value=' + federation + ' selected>' + name + '</option>');
                     showFederations(federation);
-                    $('#maincontent a[href="#manage"]').tab('show');
+                    bootstrap.Tab.getOrCreateInstance(
+                        document.querySelector('#maincontent a[href="#manage"]')
+                    ).show();
                     // TODO: Update the federation stats table
-                    if (close) { fedModal.modal('hide') }
+                    if (close) { bootstrap.Modal.getInstance(fedModal[0]).hide(); }
                 } else { updateTips('Error while creating the new federation! Please try again later!'); }
             })
             .catch(err => console.log(err));

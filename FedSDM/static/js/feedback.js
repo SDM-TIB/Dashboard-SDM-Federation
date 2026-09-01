@@ -35,7 +35,7 @@ function get_issue_details(issueData) {
             $('#var').val(data['var']);
             $('#pred').val(data['pred']);
             $('#rowJSON').val(JSON.stringify(data['row'], undefined, 4));
-            feedbackDialog.modal('show');
+            bootstrap.Modal.getOrCreateInstance(feedbackDialog[0]).show();
         })
         .catch(err => console.error(err));
 }
@@ -55,7 +55,7 @@ function load_table(federation) {
             order: [[1, 'desc']],
             responsive: true,
             select: { style: 'single' },
-            defaultContent: '<i>Not set</i>'
+            columnDefs: [{ targets: '_all', defaultContent: '<i>Not set</i>' }]
         });
 
         let issueTable = table;
@@ -67,7 +67,8 @@ function load_table(federation) {
             editIssue.prop('disabled', true);
             detailsIssue.prop('disabled', true);
             selectedRow = null;
-        }).on('dblclick', 'tbody tr', function() {
+        });
+        $('#reported_issues tbody').on('dblclick', 'tr', function() {
             const rowData = [issueTable.row(this).data()];
             console.log('report id', rowData[0][0]);
             get_issue_details(rowData);

@@ -171,15 +171,20 @@ function get_rdfmts_stats(fed) {
             order: [[1, 'desc']],
             responsive: true,
             select: true,
-            defaultContent: '<i>Not set</i>',
             columnDefs: [
+                { targets: '_all', defaultContent: '<i>Not set</i>' },
                 { target: 3, render: number_renderer },
                 { target: 4, render: number_renderer }
             ],
             lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
             dom: 'Blfrtip',
             buttons: table_buttons('rdfmts_data_table'),
-            ajax: '/rdfmts/api/rdfmtstats?graph=' + fed
+            ajax: function(data, callback) {
+                fetch('/rdfmts/api/rdfmtstats?graph=' + federation)
+                    .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+                    .then(callback)
+                    .catch(err => console.error('Failed to load RDF-MT stats:', err));
+            }
         });
         loaded = 1;
         let statstable = stats;
@@ -200,14 +205,19 @@ function get_rdfmts_stats(fed) {
     } else {
         console.log('Redrawing table...');
         stats.clear().draw();
-        stats.ajax.url('/rdfmts/api/rdfmtstats?graph=' + fed).load();
+        stats.ajax.reload();
     }
 }
 
 function get_rdfmts(fed) {
     if (fed == null || (fed === federation && visualized === 1)) { return }
-    $.getJSON('/rdfmts/api/rdfmtstats?graph=' + fed, function(data2) { jsdata = data2 });
-    $.getJSON('/rdfmts/api/rdfmts?graph=' + fed, function(data) {
+    fetch('/rdfmts/api/rdfmtstats?graph=' + fed)
+        .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+        .then(function(data2) { jsdata = data2; })
+        .catch(err => console.error('Failed to load RDF-MT stats:', err));
+    fetch('/rdfmts/api/rdfmts?graph=' + fed)
+        .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+        .then(function(data) {
         sources = data.sources;
         nodes = data.nodes;
         links = data.links;
@@ -285,7 +295,8 @@ function get_rdfmts(fed) {
             else { sourceNodes[val.datasource] = [val] }
         });
         aNodes = flatNodes;
-    });
+    })
+    .catch(err => console.error('Failed to load RDF-MTs:', err));
 }
 
 function createDonut(title, labels_, data_) {
@@ -844,16 +855,21 @@ function get_rdfmts_graph_analysis(fed, source) {
             lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, 'All'] ],
             dom: 'Blfrtip',
             buttons: table_buttons('mt-graph-analysis'),
-            ajax: '/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source
+            ajax: function(data, callback) {
+                fetch('/rdfmts/api/rdfmtanalysis?graph=' + federation + '&source=' + gSource)
+                    .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+                    .then(callback)
+                    .catch(err => console.error('Failed to load RDF-MT analysis:', err));
+            }
         });
         gaLoaded = 1;
     } else {
         gtable.clear().draw();
-        gtable.ajax.url('/rdfmts/api/rdfmtanalysis?graph=' + fed + '&source=' + source).load();
+        gtable.ajax.reload();
     }
 }
 
-$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
     const target = $(e.target).attr('href');
     if (target === '#visualize') { tabVisible = '#visualize' }
     else if (target === '#analysis') { tabVisible = '#analysis' }
