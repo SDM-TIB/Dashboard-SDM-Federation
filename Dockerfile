@@ -1,4 +1,4 @@
-FROM python:3.13.14-slim-trixie
+FROM python:3.13.18-slim-trixie
 
 # Define environment variables
 ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
