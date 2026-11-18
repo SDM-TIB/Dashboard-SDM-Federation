@@ -14,7 +14,7 @@
     "datatables.net-select-dt": "4.1.0",
     "pdfmake": "0.3.14",
     "bootstrap": "5.3.9",
-    "d3": "7.9.0",
+    "d3": "7.9.2",
     "@zazuko/yasqe": "4.6.2",
     "jszip": "3.10.2"
   }
