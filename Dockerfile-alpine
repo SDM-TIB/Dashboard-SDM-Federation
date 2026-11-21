@@ -1,3 +1,6 @@
+ARG VIRTUOSO_VERSION=7.2.17
+FROM prohde/virtuoso-opensource-7:${VIRTUOSO_VERSION}-alpine AS virtuoso
+
 FROM python:3.13.18-alpine3.24
 
 # Define environment variables
@@ -12,16 +15,20 @@ ENV METADATA_ENDPOINT="http://localhost:9000/sparql" \
     VIRT_PARAMETERS_NUMBEROFBUFFERS="340000" \
     VIRT_PARAMETERS_MAXDIRTYBUFFERS="250000" \
     VIRT_PARAMETERS_MAXQUERYMEM="2G" \
-    VIRTUOSO_HOME="/opt/virtuoso-opensource"
+    VIRTUOSO_HOME="/opt/virtuoso-opensource" \
+    PATH=/opt/virtuoso-opensource/bin:$PATH \
+    GOSU=su-exec \
+    DBA_PASSWORD=dba \
+    VIRT_PARAMETERS_DIRSALLOWED="., ../vad, /usr/share/proj, /database/toLoad"
 
 # Set up prerequisites
-COPY --from=prohde/virtuoso-opensource-7:7.2.17-alpine /opt/virtuoso-opensource /opt/virtuoso-opensource
+COPY --from=virtuoso /opt/virtuoso-opensource /opt/virtuoso-opensource
+COPY --from=virtuoso /virtuoso-entrypoint.sh /virtuoso-entrypoint.sh
 RUN ln -s /opt/virtuoso-opensource/database /database &&\
-    ln -s /opt/virtuoso-opensource/bin/virtuoso-entrypoint.sh /virtuoso-entrypoint.sh &&\
     addgroup -S virtuoso &&\
     adduser -D -S -G virtuoso virtuoso &&\
     chown -R virtuoso:virtuoso /opt/virtuoso-opensource &&\
-    apk add --no-cache bash libldap libstdc++ curl
+    apk add --no-cache bash libldap libstdc++ curl su-exec
 
 # Set the working directory to /FedSDM
 WORKDIR /FedSDM
